@@ -5,20 +5,52 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IBRA-APTS</title>
+<style>
+table {
+  /* Not required only for visualizing */
+  border-collapse: collapse; margin:auto;  
+  width: 95%;
+  margin-left:5px; 
+}
+button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  width:100px;
+  margin-left:30px;
+  border-radius:20px;
+ box-shadow: 0 8px 8px 0  rgba(0,0,0,0.5);
+}
+</style>
 </head>
 <body style="background-color:powderblue; margin-left: 0px;">
 <div style="text-align:center; width:100%; height:75px; position:fixed; background-color: yellow; top:0px;    ">
 <h3>Indian Bank Retirees' Association, (AP&TS)</h3>
+
 </div>
 <div id="div1">
 <input type="text"  id='myInput' onkeyup="dispdata()" style="margin-top:80px; width:50%; margin-left:25%; height:30px; border-radius:15px;  background-color: cyan;  border:0px;  outline:0;" placeholder="Search here...">
 
-<p id='getnames' style="margin-left :50px; "></p>
+<p id='getnames' style="margin-left :5px; "></p>
 </div>
-<div  id="div2" style="width:80%; margin-left:10%; position:center; ; display:none">
+<div  id="div2" style="width:80%; margin-left:5px; position:center; ; display:none">
 <br><br><br><br>
-<p id="details" style="margin-left:25px; "> </p>
-<input type=button id='btn1' value='Close' onclick='hide()' 
+<p id="details" style="margin-left:5px; "> 
+
+
+</table>
+
+
+</p>
+<button  onclick='hide()' id='btn1'>Close</button>  
 </div>
 
 <script>
@@ -51,27 +83,28 @@ document.getElementById("getnames").innerHTML=tablebody
 }
 
 function nameclick(membershipNo){
+toDisplay = "<table border=1><tr>"
 document.getElementById("div2").style.display = "block";
 document.getElementById("div1").style.display = "none";
 document.getElementById("myInput").value=""
 membno= membershipNo*1-1 ; 
 membData= tempData.filter(a => a.id ===membershipNo*1)
-toDisplay = "Name:  " + membData[0].name + "<br>"
-toDisplay += "Membership No:" + membData[0].id + "<br>"
-toDisplay += "Address: <br>" + membData[0].add1 + "<br>"
+toDisplay += "<tr><td>Name<td> " + membData[0].name + "<br>"
+toDisplay += "<tr><td>Mem. No<td>" + membData[0].id + "<br>"
+toDisplay += "<tr><td>Address: <td>" + membData[0].add1 + "<br>"
 if(membData[0].add2.length>0){toDisplay += membData[0].add2+"<br>" }
 if(membData[0].add3.length>0){toDisplay += membData[0].add3+"<br>" }
 if(membData[0].place.length>0){toDisplay += membData[0].place+ "  " +membData[0].pincode + "<br>"   }
 if(membData[0].district.length>0){toDisplay += membData[0].district+" District <br>" }
-toDisplay += "Phones: <br>"
+toDisplay += "<tr><td>Phones: <td>"
 if(membData[0].fixed.length>0){toDisplay += membData[0].fixed + " / "}
 if(membData[0].mobile1>0){toDisplay += membData[0].mobile1 }
 if(membData[0].mobile2>0){toDisplay +=   " / "+ membData[0].mobile2}
-toDisplay += "<br>SR No: " + membData[0].srno + "<br>"
-toDisplay += "Pension Br: " +membData[0].pensionbr + "<br>"
-toDisplay += "Pension Acc: " +membData[0].sbac.toString().replace(/\b[\dX][-. \dX]+(\d{4})\b/g, '******** $1') + "<br>"
-toDisplay += "<input type=button id='btn1' value='close' onclick='hide()' "
-document.getElementById("details").innerHTML=toDisplay
+toDisplay += "<tr><td>SR No<td> " + membData[0].srno + "<br>"
+toDisplay += "<tr><td>Pension Br<td>" +membData[0].pensionbr + "<br>"
+toDisplay += "<tr><td>Pension Acc<td> " +membData[0].sbac.toString().replace(/\b[\dX][-. \dX]+(\d{4})\b/g, '******** $1') + "<br>"
+//toDisplay += "<input type=button id='btn1' value='close' onclick='hide()' "
+document.getElementById("details").innerHTML=toDisplay+"<table>"
 }
 function hide(){
 document.getElementById("div2").style.display = "none";
