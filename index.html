@@ -1,9 +1,24 @@
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IBRA-APTS</title>
 <style>
+.container
+{
+width:360px;
+//border:1px solid black;
+//height:100vh;
+ 
+}
+.bottomdiv
+{bottom:0px; 
+background:green;
+position:fixed;
+width:360px;
+
+}
 table {
   /* Not required only for visualizing */
   border-collapse: collapse; ;  
@@ -24,32 +39,40 @@ button {
   margin: 4px 2px;
   cursor: pointer;
   width:100px;
-  margin-left:30px;
+  margin-left:130px;
   border-radius:20px;
  box-shadow: 0 8px 8px 0  rgba(0,0,0,0.5);
 }
 </style>
 </head>
+
 <body style="background-color:powderblue; margin-left: 0px;">
-<div style="text-align:center; width:360px; height:75px; position:fixed; background-color: yellow; top:0px;    ">
+<div class="container">
+<div style="text-align:center; width:360px; height:50px; position:fixed; background-color: red; top:0px;  color:white;  ">
 <h3>Indian Bank Retirees' Association, (AP&TS)</h3>
 
 </div>
 <div id="div1">
 <input type="text"  id='myInput' onkeyup="dispdata()" style="margin-top:80px; width:50%; margin-left:25%; height:30px; border-radius:15px;  background-color: cyan;  border:0px;  outline:0;" placeholder="Search here...">
 
-<p id='getnames' style="margin-left :1px; "></p>
+<p id='getnames' style="margin-left :1px; scroll:auto;  "></p>
 </div>
 <div  id="div2" style="width:360px; margin-left:1px; position:center; ; display:none">
 <br><br><br><br>
-<p id="details" style="margin-left:1px; "> 
+<p id="details" style="margin-left:1px;  "> 
 
 
 
 
 
 </p>
-<button  onclick='hide()' id='btn1'>Close</button>  
+
+</div>
+
+<div class="bottomdiv">
+<button  onclick='hide()' id='btn1'>Home</button>  
+</div>
+
 </div>
 
 <script>
@@ -77,7 +100,7 @@ toTable = tempData.filter(a => a.name.toLowerCase().includes(filter.toLowerCase(
 }).map (a => [a.id, a.name]);
 tablebody=""
 toTable.forEach(function(a){tablebody+= "<span onClick='nameclick(this.id)' id="+ a[0] + ">" +a[1].toUpperCase() + "</span><br>"})
-document.getElementById("getnames").innerHTML=tablebody
+document.getElementById("getnames").innerHTML=tablebody+"<br><br><br>"
 }
 }
 
