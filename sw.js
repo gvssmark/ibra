@@ -3,7 +3,7 @@ self.addEventListener('install', (e) => {
     caches.open('fox-store').then((cache) => cache.addAll([
       
       'index.js',
-      i'ndex.html',
+      'index.html',
       'images/ibra192.png',
       'images/ibra512.png',
             ])),
