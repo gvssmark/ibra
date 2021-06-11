@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,8 +29,14 @@ table {
  width: 95%;
   margin-left: 1px;
   margin-right: 1px;
-  
+  border:1px soild black;
+  text-transform:capitalize;
 }
+p{
+text-transform:capitalize;
+}
+
+b{color:red; }
 button {
   background-color: #4CAF50; /* Green */
   border: none;
@@ -49,7 +56,7 @@ button {
 </style>
 </head>
 
-<body style="background-color:powderblue; margin-left: 0px;">
+<body style="background-color:silver; margin-left: 0px;">
 <div class="container">
 <div style="text-align:center; width:360px; height:50px; position:fixed; background-color: red; top:0px;  color:white;  ">
 <h4>Indian Bank Retirees' Association, (AP&TS)</h4>
@@ -58,11 +65,11 @@ button {
 <div id="div1">
 <input type="text"  id='myInput' onkeyup="dispdata()" style="margin-top:80px; width:50%; margin-left:25%; height:30px; border-radius:15px;  background-color: cyan;  border:0px;  outline:0;" placeholder="Search here...">
 
-<p id='getnames' style="margin-left :1px; scroll:auto;  "></p>
+<p id='getnames' style="margin-left :15px; scroll:auto;  "></p>
 </div>
 <div  id="div2" style="width:360px; margin-left:1px; position:center; ; display:none">
 <br><br><br><br>
-<p id="details" style="margin-left:1px;  "> 
+<p id="details" style="margin-left:5px;  "> 
 
 
 
@@ -114,20 +121,20 @@ document.getElementById("div1").style.display = "none";
 document.getElementById("myInput").value=""
 membno= membershipNo*1-1 ; 
 membData= tempData.filter(a => a.id ===membershipNo*1)
-toDisplay += "<tr><td>Name<td> " + membData[0].name 
-toDisplay += "<tr><td>Mem. No<td>" + membData[0].id 
-toDisplay += "<tr><td>Address: <td>" + membData[0].add1 +"<br>"
-if(membData[0].add2.length>0){toDisplay += membData[0].add2+"<br>" }
-if(membData[0].add3.length>0){toDisplay += membData[0].add3+"<br>" }
-if(membData[0].place.length>0){toDisplay += membData[0].place+ "  " +membData[0].pincode + "<br>"   }
-if(membData[0].district.length>0){toDisplay += membData[0].district+" District <br>" }
-toDisplay += "<tr><td>Phones: <td>"
+toDisplay += "<tr><td colspan=2><b>Name</b> " + membData[0].name.toLowerCase() +" (" + membData[0].id +" )"
+//toDisplay += "<tr><td>Mem. No<td>" + membData[0].id 
+toDisplay += "<tr><td colspan='2'><b>Address: </b><br>" + membData[0].add1.toLowerCase() +"<br>"
+if(membData[0].add2.length>0){toDisplay += membData[0].add2.toLowerCase()+"<br>" }
+if(membData[0].add3.length>0){toDisplay += membData[0].add3.toLowerCase()+"<br>" }
+if(membData[0].place.length>0){toDisplay += membData[0].place.toLowerCase()+ "  " +membData[0].pincode + "<br>"   }
+if(membData[0].district.length>0){toDisplay += membData[0].district.toLowerCase()+" District <br>" }
+toDisplay += "<tr><td colspan=2><b>Phones: </b>"
 if(membData[0].fixed.length>0){toDisplay += membData[0].fixed + " / "}
 if(membData[0].mobile1>0){toDisplay += membData[0].mobile1 }
 if(membData[0].mobile2>0){toDisplay +=   " / "+ membData[0].mobile2}
-toDisplay += "<tr><td>SR No<td> " + membData[0].srno 
-toDisplay += "<tr><td>Pension Br<td>" +membData[0].pensionbr 
-toDisplay += "<tr><td>Pension Acc<td> " +membData[0].sbac.toString().replace(/\b[\dX][-. \dX]+(\d{4})\b/g, '******** $1') + "<br>"
+toDisplay += "<tr><td colspan=2><b>SR No: </b>" + membData[0].srno 
+toDisplay += "<tr><td colspan=2><b>Pension Br:</b>" +membData[0].pensionbr 
+toDisplay += "<tr><td colspan=2><b>Pension Acc: </b> " +membData[0].sbac.toString().replace(/\b[\dX][-. \dX]+(\d{4})\b/g, '******** $1') + "<br>"
 //toDisplay += "<input type=button id='btn1' value='close' onclick='hide()' "
 document.getElementById("details").innerHTML=toDisplay+"<table>"
 }
