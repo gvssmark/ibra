@@ -1,6 +1,6 @@
 {
     "short_name": "IBRA",
-    "name": "Indian Bank Retirees' Association (AP &TS)",
+    "name": "Indian Bank Retirees' Association <br>(AP &TS)",
     "icons": [
       {
         "src": "images/ibra192.png",
@@ -16,7 +16,7 @@
     ],
     "start_url": "index.html",
     "background_color": "#3367D6",
-      "theme_color": "#3367D6
+      "theme_color": "#3367D6",
     "display": "standalone",
     "description": "IBRA APTS",
      "orientation" : "portrait" 
