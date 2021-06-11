@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,7 +36,7 @@ table {
 p{
 text-transform:capitalize;
 }
-
+p{margin-left:5px; }
 b{color:red; }
 button {
   background-color: #4CAF50; /* Green */
@@ -70,12 +71,27 @@ button {
 <div  id="div2" style="width:360px; margin-left:1px; position:center; ; display:none">
 <br><br><br><br>
 <p id="details" style="margin-left:5px;  "> 
-
-
-
-
-
 </p>
+
+<div>
+<h4>Family Pensioners</h4>
+<p id='fampenlist'></p>
+</div>
+
+<div>
+<h4>Pension Account No Not available</h4>
+<p id='penac'></p>
+</div>
+
+<div>
+<h4>Pension Branch Details Not available</h4>
+<p id='penbrname'></p>
+</div>
+
+<div>
+<h4>SR Number Not available</h4>
+<p id='nilSRNo'></p>
+</div>
 
 </div>
 
@@ -92,7 +108,63 @@ async function getMyData (){
 response= await fetch(url)
 data= await response.json()
 tempData=data["user"]
-dispdata()
+activeMembers= tempData.filter(a => a.name !=="")
+.sort(function(a, b) {return a.name.localeCompare(b.name)});
+
+familyPensioners= activeMembers.filter(a => a.fampen !=="").map(a => ({id: a.id, name: a.name, fampen: a.fampen}));
+
+noSbac = activeMembers.filter(a => a.sbac ==="" ).map(a => ({id: a.id, name: a.name}));
+
+noPensionBr = activeMembers.filter(a => a.pensionbr ==="" ).map(a => ({id: a.id, name: a.name}));
+
+noSrno = activeMembers.filter(a => a.srno ==="" ).map(a => ({id: a.id, name: a.name}));
+
+
+
+allplaces = activeMembers.map(a => a.place);
+
+function unq(a){
+return Array.from(new Set(a));
+}
+LivingIn = unq(allplaces).sort();
+
+
+allPenBranches = activeMembers.map(a => a.pensionbr);
+
+PensionDrawingBranch = unq(allPenBranches).sort();
+
+
+
+//table body for list of family pensioners :
+famPensionerList=""
+familyPensioners.forEach(function(a){famPensionerList+= "<tr><td><span onClick='nameclick(this.id)' id="+ a.id + ">" +a.name + "</span></td><tr>"})
+
+//console.log(famPensionerList)
+
+
+//table body for list of pensioners without sb account:
+noAccountNo=""
+noSbac.forEach(function(a){noAccountNo+= "<tr><td><span onClick='nameclick(this.id)' id="+ a.id + ">" +a.name + "</span></td><tr>"})
+//console.log(noAccountNo)
+
+//table body for list of pensioners without sr no:
+
+noSrNo=""
+noSrno.forEach(function(a){noSrNo+= "<tr><td><span onClick='nameclick(this.id)' id="+ a.id + ">" +a.name + "</span></td><tr>"})
+//console.log(noSrNo)
+
+//table body for list of pensioners without pension branch:
+
+noBranch=""
+noPensionBr.forEach(function(a){noBranch+= "<tr><td><span onClick='nameclick(this.id)' id="+ a.id + ">" +a.name + "</span></td><tr>"})
+//console.log(noBranch)
+
+document.getElementById('fampenlist').innerHTML="<table border=1>" + famPensionerList+ "</table><br><br>"
+document.getElementById('penac').innerHTML="<table border=1>" + noAccountNo+ "</table><br><br>"
+document.getElementById('nilSRNo').innerHTML="<table border=1>" + noSrNo+ "</table><br><br><br><br>"
+document.getElementById('penbrname').innerHTML="<table border=1>" + noBranch+ "</table><br><br><br>"
+
+
 }
 
 getMyData()
@@ -115,19 +187,20 @@ document.getElementById("getnames").innerHTML=tablebody+"<br><br><br>"
 }
 
 function nameclick(membershipNo){
+document.documentElement.scrollTop = 0;
 toDisplay = "<table border=1><tr>"
 document.getElementById("div2").style.display = "block";
 document.getElementById("div1").style.display = "none";
 document.getElementById("myInput").value=""
 membno= membershipNo*1-1 ; 
 membData= tempData.filter(a => a.id ===membershipNo*1)
-toDisplay += "<tr><td colspan=2><b>Name</b> " + membData[0].name.toLowerCase() +" (" + membData[0].id +" )"
+toDisplay += "<tr><td colspan=2><b>Name</b> " + membData[0].name+" (" + membData[0].id +" )"
 //toDisplay += "<tr><td>Mem. No<td>" + membData[0].id 
-toDisplay += "<tr><td colspan='2'><b>Address: </b><br>" + membData[0].add1.toLowerCase() +"<br>"
-if(membData[0].add2.length>0){toDisplay += membData[0].add2.toLowerCase()+"<br>" }
-if(membData[0].add3.length>0){toDisplay += membData[0].add3.toLowerCase()+"<br>" }
-if(membData[0].place.length>0){toDisplay += membData[0].place.toLowerCase()+ "  " +membData[0].pincode + "<br>"   }
-if(membData[0].district.length>0){toDisplay += membData[0].district.toLowerCase()+" District <br>" }
+toDisplay += "<tr><td colspan='2'><b>Address: </b><br>" + membData[0].add1 +"<br>"
+if(membData[0].add2.length>0){toDisplay += membData[0].add2+"<br>" }
+if(membData[0].add3.length>0){toDisplay += membData[0].add3+"<br>" }
+if(membData[0].place.length>0){toDisplay += membData[0].place+ "  " +membData[0].pincode + "<br>"   }
+if(membData[0].district.length>0){toDisplay += membData[0].district+" District <br>" }
 toDisplay += "<tr><td colspan=2><b>Phones: </b>"
 if(membData[0].fixed.length>0){toDisplay += membData[0].fixed + " / "}
 if(membData[0].mobile1>0){toDisplay += membData[0].mobile1 }
