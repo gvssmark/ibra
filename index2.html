@@ -1,7 +1,3 @@
-
-
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,6 +20,7 @@ width:360px;
 background:green;
 position:fixed;
 width:360px;
+height:40px;
 
 }
 table {
@@ -40,6 +37,7 @@ text-transform:capitalize;
 }
 p{margin-left:5px; }
 b{color:red; }
+#btn1{height:40px; padding:0px;}
 button {
   background-color: #4CAF50; /* Green */
   border: none;
@@ -150,14 +148,22 @@ button {
 <button onclick="noPenAc()" class="button button3">No Pension Account Number</button><br>
 <button onclick="noPenbr()" class="button button4">No Pension Branch</button><br>
 <button onclick="nosrno()" class="button button5">No SR Number</button><br>
+
+<button onclick="placeStay()" class="button button1">Place of Stay</button><br>
+<button onclick="brsPens()" class="button button2">Pension Branches</button><br>
+
+
 </div>
 <!---- cut from here -->
 
 
 <div  id="div2" style="width:360px; margin-left:1px; position:center; ; display:none">
 <br><br><br><br>
+<p id="details" style="margin-left:5px;  "> 
+</p>
+
 <!-- Modal content -->
-<div id="myModal" class="modal"  style="display:block">
+<div id="myModal" class="modal"  style="display:none">
 
   
   <div class="modal-content">
@@ -173,8 +179,6 @@ button {
   </div>
   
  <!-- Modal content End-->
-<p id="details" style="margin-left:5px;  "> 
-</p>
 </div>
 
 
@@ -187,23 +191,39 @@ button {
 </div>
 
 <div id="divFamPen" style="display:none">
+<br><br>
 <h4>Family Pensioners</h4>
 <p id='fampenlist'></p>
 </div>
 
 <div id="divNoPenAc" style="display:none">
+<br><br>
 <h4>Pension Account No Not available</h4>
 <p id='penac'></p>
 </div>
 
 <div id="divNoPenBr" style="display:none">
+<br><br>
 <h4>Pension Branch Details Not available</h4>
 <p id='penbrname'></p>
 </div>
 
 <div id="divNoSrno" style="display:none">
+<br><br>
 <h4>SR Number Not available</h4>
 <p id='nilSRNo'></p>
+</div>
+
+<div id="divplacesTable" style="display:none">
+<br><br>
+<h4>Place of Stay</h4>
+<p id='pdivplacesTable'></p>
+</div>
+
+<div id="divpenbrs" style="display:none">
+<br><br>
+<h4>Pension Branches</h4>
+<p id='ppenbrs'></p>
 </div>
 
 <div id="div1" style="display:none">
@@ -256,12 +276,13 @@ function unq(a){
 return Array.from(new Set(a));
 }
 LivingIn = unq(allplaces).sort();
-
+placesTable=""
+LivingIn.forEach(function(a){placesTable+= "<tr><td>"+a})
 
 allPenBranches = activeMembers.map(a => a.pensionbr);
-
 PensionDrawingBranch = unq(allPenBranches).sort();
-
+penbrs=""
+PensionDrawingBranch.forEach(function(a){penbrs+= "<tr><td>"+a})
 
 
 //table body for list of family pensioners :
@@ -292,6 +313,9 @@ document.getElementById('fampenlist').innerHTML="<table border=1>" + famPensione
 document.getElementById('penac').innerHTML="<table border=1>" + noAccountNo+ "</table><br><br>"
 document.getElementById('nilSRNo').innerHTML="<table border=1>" + noSrNo+ "</table><br><br><br><br>"
 document.getElementById('penbrname').innerHTML="<table border=1>" + noBranch+ "</table><br><br><br>"
+
+document.getElementById('pdivplacesTable').innerHTML="<table border=1>" + placesTable+ "</table><br><br><br>"
+document.getElementById('ppenbrs').innerHTML="<table border=1>" + penbrs+ "</table><br><br><br>"
 
 
 }
@@ -338,10 +362,10 @@ toDisplay += "<tr><td colspan=2><b>SR No: </b>" + membData[0].srno
 toDisplay += "<tr><td colspan=2><b>Pension Br:</b>" +membData[0].pensionbr 
 toDisplay += "<tr><td colspan=2><b>Pension Acc: </b> " +membData[0].sbac.toString().replace(/\b[\dX][-. \dX]+(\d{4})\b/g, '******** $1') + "<br>"
 //toDisplay += "<input type=button id='btn1' value='close' onclick='hide()' "
-document.getElementById("details").innerHTML=toDisplay+"<table>"
+//document.getElementById("details").innerHTML=toDisplay+"<table>"
 document.getElementById("membDataModal").innerHTML=toDisplay+"<table>"
 document.getElementById("myModal").style.display = "block";
-document.getElementById("details").style.display = "none";
+//document.getElementById("details").style.display = "none";
 document.getElementById("modalHeader").innerHTML=membData[0].name
 document.getElementById("buttonsDiv").style.display = "none";
 
@@ -360,6 +384,10 @@ document.getElementById("divFamPen").style.display = "none";
 document.getElementById("divNoPenAc").style.display = "none";
 document.getElementById("divNoPenBr").style.display = "none";
 document.getElementById("divNoSrno").style.display = "none";
+
+document.getElementById("divplacesTable").style.display = "none";
+document.getElementById("divpenbrs").style.display = "none";
+
 }
 
 function searchClick(){
@@ -385,6 +413,18 @@ document.getElementById("divNoPenBr").style.display = "block";
 function nosrno(){
 hideall()
 document.getElementById("divNoSrno").style.display = "block";
+}
+
+
+function placeStay(){
+hideall()
+document.getElementById("divplacesTable").style.display = "block";
+}
+
+
+function brsPens(){
+hideall()
+document.getElementById("divpenbrs").style.display = "block";
 }
 
 
