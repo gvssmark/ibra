@@ -218,12 +218,14 @@ button {
 <br><br>
 <h4>Place of Stay</h4>
 <p id='pdivplacesTable'></p>
+<br><br>
 </div>
 
 <div id="divpenbrs" style="display:none">
 <br><br>
 <h4>Pension Branches</h4>
 <p id='ppenbrs'></p>
+<br><br>
 </div>
 
 <div id="div1" style="display:none">
@@ -314,12 +316,15 @@ document.getElementById('penac').innerHTML="<table border=1>" + noAccountNo+ "</
 document.getElementById('nilSRNo').innerHTML="<table border=1>" + noSrNo+ "</table><br><br><br><br>"
 document.getElementById('penbrname').innerHTML="<table border=1>" + noBranch+ "</table><br><br><br>"
 
-document.getElementById('pdivplacesTable').innerHTML="<table border=1>" + placesTable+ "</table><br><br><br>"
-document.getElementById('ppenbrs').innerHTML="<table border=1>" + penbrs+ "</table><br><br><br>"
+placesTemp = "<table border=1 id='tablePlaces'>" + placesTable+ "</table>"
+document.getElementById('pdivplacesTable').innerHTML=placesTemp
+
+penbrTemp = "<table border=1 id='penBr'>" + penbrs+ "</table>"
+document.getElementById('ppenbrs').innerHTML=penbrTemp;
 
 
 }
-
+penbrTemp=""
 getMyData()
 
 function dispdata(){
@@ -426,6 +431,17 @@ function brsPens(){
 hideall()
 document.getElementById("divpenbrs").style.display = "block";
 }
+
+function tableClick(table){
+if (table != null) {
+    for (var i = 0; i < table.rows.length; i++) {
+        for (var j = 0; j < table.rows[i].cells.length; j++)
+        table.rows[i].cells[j].onclick = function () {
+            tableText(this);
+        };
+    }
+}}
+
 
 
 
