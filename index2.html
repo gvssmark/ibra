@@ -1,0 +1,344 @@
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IBRA-APTS</title>
+ <script src="index.js" defer></script>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#317EFB"/>
+ <link rel="apple-touch-icon" href="images/ibra512.png">
+<style>
+.container
+{
+width:360px;
+//border:1px solid black;
+//height:100vh;
+ 
+}
+.bottomdiv
+{bottom:0px; 
+background:green;
+position:fixed;
+width:360px;
+
+}
+table {
+  /* Not required only for visualizing */
+  border-collapse: collapse; ;  
+ width: 95%;
+  margin-left: 1px;
+  margin-right: 1px;
+  border:1px soild black;
+  text-transform:capitalize;
+}
+p{
+text-transform:capitalize;
+}
+p{margin-left:5px; }
+b{color:red; }
+button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  width:100px;
+  margin-left:130px;
+  border-radius:20px;
+ box-shadow: 0 8px 8px 0  rgba(0,0,0,0.5);
+}
+
+-------------
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+ position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 150px; /* Location of the box */
+  left: 0;
+  top: 0px;
+  width: 300px; /* Full width */
+  height: 400px; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  font-size:small;
+  //border-radius:20px;
+}
+
+/* Modal Content */
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 80%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+  from {top:-300px; opacity:0} 
+  to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+  from {top:-300px; opacity:0}
+  to {top:0; opacity:1}
+}
+
+/* The Close Button */
+.close {
+  color: white;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-header {
+  padding: 1px 1px;
+  height:50px;
+  background-color: #5cb85c;
+  color: white;
+}
+
+.modal-body {padding: 1px 1px;}
+
+
+
+------------------
+
+</style>
+</head>
+<body style="background-color:silver; margin-left: 0px;">
+
+
+
+<div class="container" style="display:block">
+
+<div style="text-align:center; width:360px; height:50px; position:fixed; background-color: red; top:0px;  color:white;  ">
+<h4>Indian Bank Retirees' Association, (AP&TS)</h4>
+
+</div>
+<div id="div1">
+<input type="text"  id='myInput' onkeyup="dispdata()" style="margin-top:80px; width:50%; margin-left:25%; height:30px; border-radius:15px;  background-color: cyan;  border:0px;  outline:0;" placeholder="Search here...">
+
+<p id='getnames' style="margin-left :15px; scroll:auto;  "></p>
+</div>
+<div  id="div2" style="width:360px; margin-left:1px; position:center; ; display:none">
+<br><br><br><br>
+<!-- Modal content -->
+<div id="myModal" class="modal"  style="display:block">
+
+  
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h4 id="modalHeader">Modal Header</h4>
+    </div>
+    <div class="modal-body">
+      <p id="membData"></p>
+     </div>
+    
+  </div>
+  </div>
+  
+ <!-- Modal content End-->
+<p id="details" style="margin-left:5px;  "> 
+</p>
+
+<div>
+<h4>Family Pensioners</h4>
+<p id='fampenlist'></p>
+</div>
+
+<div>
+<h4>Pension Account No Not available</h4>
+<p id='penac'></p>
+</div>
+
+<div>
+<h4>Pension Branch Details Not available</h4>
+<p id='penbrname'></p>
+</div>
+
+<div>
+<h4>SR Number Not available</h4>
+<p id='nilSRNo'></p>
+</div>
+
+</div>
+
+<div class="bottomdiv">
+<button  onclick='hide()' id='btn1'>Home</button>  
+</div>
+
+</div>
+
+
+
+<script>
+//closing modal window
+var modal = document.getElementById("myModal");
+var span = document.getElementsByClassName("close")[0];
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+    document.getElementById("div1").style.display = "block";
+  }
+}
+span.onclick = function() {
+  modal.style.display = "none";
+//  document.getElementById("div1").style.display = "block";
+  // from where modal originated is to be shown
+}
+
+//--------------------
+
+
+url='https://script.google.com/macros/s/AKfycbzI9SDFOzYLYKRKJTlse0XpsEiF8XfbyxwUUH22evlGkEPDIt2V/exec'
+async function getMyData (){
+response= await fetch(url)
+data= await response.json()
+tempData=data["user"]
+activeMembers= tempData.filter(a => a.name !=="")
+.sort(function(a, b) {return a.name.localeCompare(b.name)});
+
+familyPensioners= activeMembers.filter(a => a.fampen !=="").map(a => ({id: a.id, name: a.name, fampen: a.fampen}));
+
+noSbac = activeMembers.filter(a => a.sbac ==="" ).map(a => ({id: a.id, name: a.name}));
+
+noPensionBr = activeMembers.filter(a => a.pensionbr ==="" ).map(a => ({id: a.id, name: a.name}));
+
+noSrno = activeMembers.filter(a => a.srno ==="" ).map(a => ({id: a.id, name: a.name}));
+
+
+
+allplaces = activeMembers.map(a => a.place);
+
+function unq(a){
+return Array.from(new Set(a));
+}
+LivingIn = unq(allplaces).sort();
+
+
+allPenBranches = activeMembers.map(a => a.pensionbr);
+
+PensionDrawingBranch = unq(allPenBranches).sort();
+
+
+
+//table body for list of family pensioners :
+famPensionerList=""
+familyPensioners.forEach(function(a){famPensionerList+= "<tr><td><span onClick='nameclick(this.id)' id="+ a.id + ">" +a.name + "</span></td><tr>"})
+
+//console.log(famPensionerList)
+
+
+//table body for list of pensioners without sb account:
+noAccountNo=""
+noSbac.forEach(function(a){noAccountNo+= "<tr><td><span onClick='nameclick(this.id)' id="+ a.id + ">" +a.name + "</span></td><tr>"})
+//console.log(noAccountNo)
+
+//table body for list of pensioners without sr no:
+
+noSrNo=""
+noSrno.forEach(function(a){noSrNo+= "<tr><td><span onClick='nameclick(this.id)' id="+ a.id + ">" +a.name + "</span></td><tr>"})
+//console.log(noSrNo)
+
+//table body for list of pensioners without pension branch:
+
+noBranch=""
+noPensionBr.forEach(function(a){noBranch+= "<tr><td><span onClick='nameclick(this.id)' id="+ a.id + ">" +a.name + "</span></td><tr>"})
+//console.log(noBranch)
+
+document.getElementById('fampenlist').innerHTML="<table border=1>" + famPensionerList+ "</table><br><br>"
+document.getElementById('penac').innerHTML="<table border=1>" + noAccountNo+ "</table><br><br>"
+document.getElementById('nilSRNo').innerHTML="<table border=1>" + noSrNo+ "</table><br><br><br><br>"
+document.getElementById('penbrname').innerHTML="<table border=1>" + noBranch+ "</table><br><br><br>"
+
+
+}
+
+getMyData()
+
+function dispdata(){
+let  filter = document.getElementById("myInput").value.toLowerCase()
+if (filter.length<=4){document.getElementById("getnames").innerHTML="" }
+if (filter.length>=3){
+toTable = tempData.filter(a => a.name.toLowerCase().includes(filter.toLowerCase()))
+.sort((a, b) => {
+    let fa = a.name.toLowerCase(), fb = b.name.toLowerCase();
+    if (fa < fb) {return -1;}
+    if (fa > fb) {return  1;}
+    return 0;
+}).map (a => [a.id, a.name]);
+tablebody=""
+toTable.forEach(function(a){tablebody+= "<span onClick='nameclick(this.id)' id="+ a[0] + ">" +a[1].toUpperCase() + "</span><br>"})
+document.getElementById("getnames").innerHTML=tablebody+"<br><br><br>"
+}
+}
+
+function nameclick(membershipNo){
+document.documentElement.scrollTop = 0;
+toDisplay = "<table border=1><tr>"
+document.getElementById("div2").style.display = "block";
+document.getElementById("div1").style.display = "none";
+document.getElementById("myInput").value=""
+membno= membershipNo*1-1 ; 
+membData= tempData.filter(a => a.id ===membershipNo*1)
+toDisplay += "<tr><td colspan=2><b>Name</b> " + membData[0].name+" (" + membData[0].id +" )"
+//toDisplay += "<tr><td>Mem. No<td>" + membData[0].id 
+toDisplay += "<tr><td colspan='2'><b>Address: </b><br>" + membData[0].add1 +"<br>"
+if(membData[0].add2.length>0){toDisplay += membData[0].add2+"<br>" }
+if(membData[0].add3.length>0){toDisplay += membData[0].add3+"<br>" }
+if(membData[0].place.length>0){toDisplay += membData[0].place+ "  " +membData[0].pincode + "<br>"   }
+if(membData[0].district.length>0){toDisplay += membData[0].district+" District <br>" }
+toDisplay += "<tr><td colspan=2><b>Phones: </b>"
+if(membData[0].fixed.length>0){toDisplay += membData[0].fixed + " / "}
+if(membData[0].mobile1>0){toDisplay += membData[0].mobile1 }
+if(membData[0].mobile2>0){toDisplay +=   " / "+ membData[0].mobile2}
+toDisplay += "<tr><td colspan=2><b>SR No: </b>" + membData[0].srno 
+toDisplay += "<tr><td colspan=2><b>Pension Br:</b>" +membData[0].pensionbr 
+toDisplay += "<tr><td colspan=2><b>Pension Acc: </b> " +membData[0].sbac.toString().replace(/\b[\dX][-. \dX]+(\d{4})\b/g, '******** $1') + "<br>"
+//toDisplay += "<input type=button id='btn1' value='close' onclick='hide()' "
+document.getElementById("details").innerHTML=toDisplay+"<table>"
+document.getElementById("membData").innerHTML=toDisplay+"<table>"
+document.getElementById("myModal").style.display = "block";
+document.getElementById("details").style.display = "none";
+document.getElementById("modalHeader").innerHTML=membData[0].name
+
+}
+function hide(){
+document.getElementById("div2").style.display = "none";
+document.getElementById("div1").style.display = "block";
+document.getElementById("getnames").innerHTML="" 
+}
+
+</script>
+
+
+</body>
+</html>
