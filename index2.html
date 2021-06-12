@@ -51,11 +51,14 @@ button {
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
-  width:100px;
-  margin-left:130px;
-  border-radius:20px;
- box-shadow: 0 8px 8px 0  rgba(0,0,0,0.5);
+  width:300px;
+  margin-left:30px;
 }
+
+.button2 {background-color: #008CBA;} /* Blue */
+.button3 {background-color: #f44336;} /* Red */ 
+.button4 {background-color: #e7e7e7; color: black;} /* Gray */ 
+.button5 {background-color: #555555;} /* Black */
 
 -------------
 
@@ -73,7 +76,7 @@ button {
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
   font-size:small;
-  //border-radius:20px;
+  
 }
 
 /* Modal Content */
@@ -140,13 +143,17 @@ button {
 
 <div style="text-align:center; width:360px; height:50px; position:fixed; background-color: red; top:0px;  color:white;  ">
 <h4>Indian Bank Retirees' Association, (AP&TS)</h4>
-
 </div>
-<div id="div1">
-<input type="text"  id='myInput' onkeyup="dispdata()" style="margin-top:80px; width:50%; margin-left:25%; height:30px; border-radius:15px;  background-color: cyan;  border:0px;  outline:0;" placeholder="Search here...">
-
-<p id='getnames' style="margin-left :15px; scroll:auto;  "></p>
+<div id="buttonsDiv"><br><br><br>
+<button onclick="searchClick()" class="button">Search by Name</button><br>
+<button onclick="FamBtnClick()" class="button button2">Family Pensioners</button><br>
+<button onclick="noPenAc()" class="button button3">No Pension Account Number</button><br>
+<button onclick="noPenbr()" class="button button4">No Pension Branch</button><br>
+<button onclick="nosrno()" class="button button5">No SR Number</button><br>
 </div>
+<!---- cut from here -->
+
+
 <div  id="div2" style="width:360px; margin-left:1px; position:center; ; display:none">
 <br><br><br><br>
 <!-- Modal content -->
@@ -159,7 +166,7 @@ button {
       <h4 id="modalHeader">Modal Header</h4>
     </div>
     <div class="modal-body">
-      <p id="membData"></p>
+      <p id="membDataModal"></p>
      </div>
     
   </div>
@@ -168,28 +175,10 @@ button {
  <!-- Modal content End-->
 <p id="details" style="margin-left:5px;  "> 
 </p>
-
-<div>
-<h4>Family Pensioners</h4>
-<p id='fampenlist'></p>
 </div>
 
-<div>
-<h4>Pension Account No Not available</h4>
-<p id='penac'></p>
-</div>
 
-<div>
-<h4>Pension Branch Details Not available</h4>
-<p id='penbrname'></p>
-</div>
 
-<div>
-<h4>SR Number Not available</h4>
-<p id='nilSRNo'></p>
-</div>
-
-</div>
 
 <div class="bottomdiv">
 <button  onclick='hide()' id='btn1'>Home</button>  
@@ -197,6 +186,31 @@ button {
 
 </div>
 
+<div id="divFamPen" style="display:none">
+<h4>Family Pensioners</h4>
+<p id='fampenlist'></p>
+</div>
+
+<div id="divNoPenAc" style="display:none">
+<h4>Pension Account No Not available</h4>
+<p id='penac'></p>
+</div>
+
+<div id="divNoPenBr" style="display:none">
+<h4>Pension Branch Details Not available</h4>
+<p id='penbrname'></p>
+</div>
+
+<div id="divNoSrno" style="display:none">
+<h4>SR Number Not available</h4>
+<p id='nilSRNo'></p>
+</div>
+
+<div id="div1" style="display:none">
+<input type="text"  id='myInput' onkeyup="dispdata()" style="margin-top:80px; width:50%; margin-left:25%; height:30px; border-radius:15px;  background-color: cyan;  border:0px;  outline:0;" placeholder="Search here...">
+
+<p id='getnames' style="margin-left :15px; scroll:auto;  "></p>
+</div>
 
 
 <script>
@@ -206,7 +220,7 @@ var span = document.getElementsByClassName("close")[0];
 window.onclick = function(event) {
   if (event.target == modal) {
     modal.style.display = "none";
-    document.getElementById("div1").style.display = "block";
+  // document.getElementById("buttonsDiv").style.display = "block";
   }
 }
 span.onclick = function() {
@@ -325,17 +339,59 @@ toDisplay += "<tr><td colspan=2><b>Pension Br:</b>" +membData[0].pensionbr
 toDisplay += "<tr><td colspan=2><b>Pension Acc: </b> " +membData[0].sbac.toString().replace(/\b[\dX][-. \dX]+(\d{4})\b/g, '******** $1') + "<br>"
 //toDisplay += "<input type=button id='btn1' value='close' onclick='hide()' "
 document.getElementById("details").innerHTML=toDisplay+"<table>"
-document.getElementById("membData").innerHTML=toDisplay+"<table>"
+document.getElementById("membDataModal").innerHTML=toDisplay+"<table>"
 document.getElementById("myModal").style.display = "block";
 document.getElementById("details").style.display = "none";
 document.getElementById("modalHeader").innerHTML=membData[0].name
+document.getElementById("buttonsDiv").style.display = "none";
+
 
 }
 function hide(){
-document.getElementById("div2").style.display = "none";
-document.getElementById("div1").style.display = "block";
-document.getElementById("getnames").innerHTML="" 
+hideall()
+document.getElementById("buttonsDiv").style.display = "block";
 }
+
+function hideall(){
+document.getElementById("div2").style.display = "none";
+document.getElementById("div1").style.display = "none";
+document.getElementById("buttonsDiv").style.display = "none";
+document.getElementById("divFamPen").style.display = "none";
+document.getElementById("divNoPenAc").style.display = "none";
+document.getElementById("divNoPenBr").style.display = "none";
+document.getElementById("divNoSrno").style.display = "none";
+}
+
+function searchClick(){
+hideall()
+document.getElementById("div1").style.display = "block";
+}
+
+function FamBtnClick(){
+hideall()
+document.getElementById("divFamPen").style.display = "block";
+}
+
+function noPenAc(){
+hideall()
+document.getElementById("divNoPenAc").style.display = "block";
+}
+
+function noPenbr(){
+hideall()
+document.getElementById("divNoPenBr").style.display = "block";
+}
+
+function nosrno(){
+hideall()
+document.getElementById("divNoSrno").style.display = "block";
+}
+
+
+
+
+
+
 
 </script>
 
