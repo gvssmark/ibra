@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -236,6 +237,9 @@ button {
 
 
 <script>
+
+myVar=""
+
 //closing modal window
 var modal = document.getElementById("myModal");
 var span = document.getElementsByClassName("close")[0];
@@ -316,10 +320,10 @@ document.getElementById('penac').innerHTML="<table border=1>" + noAccountNo+ "</
 document.getElementById('nilSRNo').innerHTML="<table border=1>" + noSrNo+ "</table><br><br><br><br>"
 document.getElementById('penbrname').innerHTML="<table border=1>" + noBranch+ "</table><br><br><br>"
 
-placesTemp = "<table border=1 id='tablePlaces'>" + placesTable+ "</table>"
+placesTemp = "<table border=1 id='tablePlaces' onclick='placesTableClick()' >" + placesTable+ "</table>"
 document.getElementById('pdivplacesTable').innerHTML=placesTemp
 
-penbrTemp = "<table border=1 id='penBr'>" + penbrs+ "</table>"
+penbrTemp = "<table onclick='pensionBranchesTableClick()' border=1 id='penBr'>" + penbrs+ "</table>"
 document.getElementById('ppenbrs').innerHTML=penbrTemp;
 
 
@@ -426,18 +430,33 @@ hideall()
 document.getElementById("divplacesTable").style.display = "block";
 }
 
+function placesTableClick(){
+tableClick(tablePlaces);
+inSelectedCity = activeMembers.filter(a => a.place.toUpperCase() === myVar.toUpperCase()).map(a => ({id: a.id, name: a.name, place: a.place, pin: a.pincode})).sort((a, b) => a.pin - b.pin);
+}
+
+function pensionBranchesTableClick(){
+tableClick(penBr)
+inThisPensionBranch = activeMembers.filter(a => a.pensionbr.toUpperCase() === myVar.toUpperCase()).map(a => ({id: a.id, name: a.name, pensionbr: a.pensionbr}));
+
+}
+
 
 function brsPens(){
 hideall()
 document.getElementById("divpenbrs").style.display = "block";
 }
 
+
+
 function tableClick(table){
 if (table != null) {
     for (var i = 0; i < table.rows.length; i++) {
         for (var j = 0; j < table.rows[i].cells.length; j++)
         table.rows[i].cells[j].onclick = function () {
-            tableText(this);
+           myVar=this.innerText;
+           //alert(myVar);
+         //   console.log(myVar)
         };
     }
 }}
