@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -276,7 +277,7 @@ noSrno = activeMembers.filter(a => a.srno ==="" ).map(a => ({id: a.id, name: a.n
 
 
 
-allplaces = activeMembers.map(a => a.place);
+allplaces = activeMembers.filter(a => a.place !=="").map(a => a.place);
 
 function unq(a){
 return Array.from(new Set(a));
@@ -285,7 +286,7 @@ LivingIn = unq(allplaces).sort();
 placesTable=""
 LivingIn.forEach(function(a){placesTable+= "<tr><td>"+a})
 
-allPenBranches = activeMembers.map(a => a.pensionbr);
+allPenBranches = activeMembers.filter(a => a.pensionbr !=="").map(a => a.pensionbr );
 PensionDrawingBranch = unq(allPenBranches).sort();
 penbrs=""
 PensionDrawingBranch.forEach(function(a){penbrs+= "<tr><td>"+a})
@@ -431,14 +432,19 @@ document.getElementById("divplacesTable").style.display = "block";
 }
 
 function placesTableClick(){
+
 tableClick(tablePlaces);
+
 inSelectedCity = activeMembers.filter(a => a.place.toUpperCase() === myVar.toUpperCase()).map(a => ({id: a.id, name: a.name, place: a.place, pin: a.pincode})).sort((a, b) => a.pin - b.pin);
+//myVar=""
 }
 
 function pensionBranchesTableClick(){
-tableClick(penBr)
-inThisPensionBranch = activeMembers.filter(a => a.pensionbr.toUpperCase() === myVar.toUpperCase()).map(a => ({id: a.id, name: a.name, pensionbr: a.pensionbr}));
 
+tableClick(penBr)
+
+inThisPensionBranch = activeMembers.filter(a => a.pensionbr.toUpperCase() === myVar.toUpperCase()).map(a => ({id: a.id, name: a.name, pensionbr: a.pensionbr}));
+//myVar=""
 }
 
 
