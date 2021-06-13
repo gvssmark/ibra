@@ -105,6 +105,12 @@ button {
 </div>
 
 <script>
+ 
+ //prevent back button
+ window.addEventListener('load', function() {
+  window.history.pushState({}, '')
+})
+ 
 
 url='https://script.google.com/macros/s/AKfycbzI9SDFOzYLYKRKJTlse0XpsEiF8XfbyxwUUH22evlGkEPDIt2V/exec'
 async function getMyData (){
