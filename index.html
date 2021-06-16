@@ -1,231 +1,652 @@
-
-
-
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IBRA-APTS</title>
- <script src="index.js" defer></script>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#317EFB"/>
- <link rel="apple-touch-icon" href="images/ibra512.png">
-<style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IBRA-APTS</title>
+    <script src="index.js" defer></script>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#317EFB" />
+    <link rel="apple-touch-icon" href="images/ibra512.png">
+    <style>
+        body {
+            width: 360px;
+            text-transform: capitalize;
+            background-color: silver;
+            margin-left: 0px;
+        }
 
-body{overscroll-behavior: contain; text-size:small;}
-.container
-{
-width:360px;
-//border:1px solid black;
-//height:100vh;
- 
-}
-.bottomdiv
-{bottom:0px; 
-background:green;
-position:fixed;
-width:360px;
+        #topHead {
+            text-align: center;
+            width: 360px;
+            height: 50px;
+            position: fixed;
+            background-color: red;
+            top: 0px;
+            color: white;
+        }
 
-}
-table {
-  /* Not required only for visualizing */
-  border-collapse: collapse; ;  
- width: 95%;
-  margin-left: 1px;
-  margin-right: 1px;
-  border:1px soild black;
-  text-transform:capitalize;
-}
-p{
-text-transform:capitalize;
-}
-p{margin-left:5px; }
-b{color:red; }
-button {
-  background-color: #4CAF50; /* Green */
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  width:100px;
-  margin-left:130px;
-  border-radius:20px;
- box-shadow: 0 8px 8px 0  rgba(0,0,0,0.5);
-}
-</style>
+        #div2 {
+            width: 360px;
+            margin-left: 1px;
+            position: center;
+            ;
+            display: none"
+
+        }
+
+        #divFamPen {
+            display: none
+        }
+
+        #details {
+            margin-left: 5px;
+        }
+
+        #divNoPenAc {
+            display: none;
+        }
+
+        .container {
+            width: 360px;
+            display: block;
+        }
+
+        #divNoPenBr {
+            display: none;
+        }
+
+        #divNoSrno {
+            display: none;
+        }
+
+        #divplacesTable {
+            display: none;
+        }
+
+        #divpenbrs {
+            display: none;
+        }
+
+        #div1 {
+            display: none;
+        }
+
+        #myInput {
+            margin-top: 80px;
+            width: 50%;
+            margin-left: 25%;
+            height: 30px;
+            border-radius: 15px;
+            background-color: cyan;
+            border: 0px;
+            outline: 0;
+        }
+
+        #getnames {
+            margin-left: 15px;
+            scroll: auto;
+        }
+
+        #ec {
+            width: 360px;
+            display: none
+        }
+
+        .bottomdiv {
+            bottom: 0px;
+            background: green;
+            position: fixed;
+            width: 360px;
+            height: 40px;
+
+        }
+
+        table {
+            /* Not required only for visualizing */
+            border-collapse: collapse;
+            ;
+            width: 95%;
+            margin-left: 1px;
+            margin-right: 1px;
+            border: 1px soild black;
+            text-transform: capitalize;
+        }
+
+        p {
+            text-transform: capitalize;
+        }
+
+        p {
+            margin-left: 5px;
+        }
+
+        b {
+            color: red;
+        }
+
+        #btn1 {
+            height: 40px;
+            padding: 0px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            width: 300px;
+            margin-left: 30px;
+        }
+
+        .button2 {
+            background-color: #008CBA;
+        }
+
+        /* Blue */
+        .button3 {
+            background-color: #f44336;
+        }
+
+        /* Red */
+        .button4 {
+            background-color: #e7e7e7;
+            color: black;
+        }
+
+        /* Gray */
+        .button5 {
+            background-color: #555555;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            padding-top: 1px;
+            /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 355px;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: pink;
+            margin: auto;
+            padding: 2px;
+            padding-bottom: 2px;
+            border: 1px solid #888;
+            width: 95%;
+            border-radius: 15px;
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
-<body style="background-color:silver; margin-left: 0px;">
-<div class="container">
-<div style="text-align:center; width:360px; height:50px; position:fixed; background-color: red; top:0px;  color:white;  ">
-<h4>Indian Bank Retirees' Association, (AP&TS)</h4>
+<body>
 
-</div>
-<div id="div1">
-<input type="text"  id='myInput' onkeyup="dispdata()" style="margin-top:80px; width:50%; margin-left:25%; height:30px; border-radius:15px;  background-color: cyan;  border:0px;  outline:0;" placeholder="Search here...">
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h4 align=center id="nameHeader">Sudhakar Babu</h4>
+            <p id="modalData"> </p>
+        </div>
+    </div>
 
-<p id='getnames' style="margin-left :15px; scroll:auto;  "></p>
-</div>
-<div  id="div2" style="width:360px; margin-left:1px; position:center; ; display:none">
-<br><br><br><br>
-<p id="details" style="margin-left:5px;  "> 
-</p>
+    <div class="container">
+        <div id="topHead">
+            <h4>Indian Bank Retirees' Association, (AP&TS)</h4>
+        </div>
+        <div id="buttonsDiv"><br><br><br>
+            <button onclick="searchClick()" class="button">Search by Name</button><br>
+            <button onclick="FamBtnClick()" class="button button2">Family Pensioners</button><br>
+            <button onclick="noPenAc()" class="button button3">No Pension Account Number</button><br>
+            <button onclick="noPenbr()" class="button button4">No Pension Branch</button><br>
+            <button onclick="nosrno()" class="button button5">No SR Number</button><br>
+            <button onclick="placeStay()" class="button button1">Place of Stay</button><br>
+            <button onclick="brsPens()" class="button button2">Pension Branches</button><br>
+            <button onclick="ecShow()" class="button button4">Executive Committee</button><br>
+        </div>
+        <div id="div2">
+            <p id="details"></p>
+        </div>
+        <div class="bottomdiv">
+            <button onclick='hide()' id='btn1'>Home</button>
+        </div>
+    </div>
 
-<div>
-<h4>Family Pensioners</h4>
-<p id='fampenlist'></p>
-</div>
+    <div id="divFamPen">
+        <br><br>
+        <h4>Family Pensioners</h4>
+        <p id='fampenlist'></p>
+    </div>
 
-<div>
-<h4>Pension Account No Not available</h4>
-<p id='penac'></p>
-</div>
+    <div id="divNoPenAc">
+        <br><br>
+        <h4>Pension Account No Not available</h4>
+        <p id='penac'></p>
+    </div>
 
-<div>
-<h4>Pension Branch Details Not available</h4>
-<p id='penbrname'></p>
-</div>
+    <div id="divNoPenBr">
+        <br><br>
+        <h4>Pension Branch Details Not available</h4>
+        <p id='penbrname'></p>
+    </div>
 
-<div>
-<h4>SR Number Not available</h4>
-<p id='nilSRNo'></p>
-</div>
+    <div id="divNoSrno">
+        <br><br>
+        <h4>SR Number Not available</h4>
+        <p id='nilSRNo'></p>
+    </div>
 
-</div>
+    <div id="divplacesTable">
+        <br><br>
+        <h4>Place of Stay</h4>
+        <p id='pdivplacesTable'></p>
+        <br><br>
+    </div>
 
-<div class="bottomdiv">
-<button  onclick='hide()' id='btn1'>Home</button>  
-</div>
+    <div id="divpenbrs">
+        <br><br>
+        <h4>Pension Branches</h4>
+        <p id='ppenbrs'></p>
+        <br><br>
+    </div>
 
-</div>
+    <div id="div1">
+        <input type="text" id='myInput' placeholder="Search here..." onkeyup="dispdata()">
+        <p id='getnames'></p>
+    </div>
+    <div id="ec">
+        <br><br>
+        <h4 align=center>Executive Committee</h4>
+        <table border=1 width=400>
+            <tr bgcolor=yellow>
+                <td>Chairman</td>
+            </tr>
+            <tr>
+                <td>MV Muralidhara Rao (99598 78810)</td>
+            </tr>
+            <tr bgcolor=yellow>
+                <td>President</td>
+            </tr>
+            <tr>
+                <td>BV Narayana Rao (99480 79562)</td>
+            </tr>
+            <tr bgcolor=yellow>
+                <td>Sr Vice President</td>
+            </tr>
+            <tr>
+                <td>S Kabirdas (94400 49288)</td>
+            </tr>
+            <tr bgcolor=yellow>
+                <td>Vice President</td>
+            </tr>
+            <tr>
+                <td>N Mahendra Rao (83097 56274)</td>
+            </tr>
+            <tr>
+                <td>Salapaka Rama Krishna (96527 37826)</td>
+            </tr>
+            <tr>
+                <td>RV Chandrasekhar Rao (98339 88280)</td>
+            </tr>
+            <tr>
+                <td>M Kameswara Rao (99480 76232) </td>
+            </tr>
+            <tr bgcolor=yellow>
+                <td>General Secretary </td>
+            </tr>
+            <tr>
+                <td>Md Mastan (94923 56786)</td>
+            </tr>
+            <tr bgcolor=yellow>
+                <td>Joint General Secretary </td>
+            </tr>
+            <tr>
+                <td>PV Ramana Kumar (9177980595) </td>
+            </tr>
+            <tr>
+                <td>G Ramachandra Rao (99858 74587) </td>
+            </tr>
+            <tr bgcolor=yellow>
+                <td>Deputy General Secretary </td>
+            </tr>
+            <tr>
+                <td> NV Ramana (99492 50433) </td>
+            </tr>
+            <tr>
+                <td> BH Rayappa (94406 06576) </td>
+            </tr>
+            <tr>
+                <td>A Manohar Rao (94408 43995) </td>
+            </tr>
+            <tr>
+                <td>P Veerabhadra Rao (94933 36472) </td>
+            </tr>
+            <tr bgcolor=yellow>
+                <td>Treasurer</td>
+            </tr>
+            <tr>
+                <td>PP Sharma (98852 36463)</td>
+            </tr>
+            <tr bgcolor=yellow>
+                <td>Asst Treasurer</td>
+            </tr>
+            <tr>
+                <td>GVSS Markandeyulu (99890 36183)</td>
+            </tr>
+            <tr bgcolor=yellow>
+                <td>Organising Secretary</td>
+            </tr>
+            <tr>
+                <td>V Venkateswara Rao (98661 66669)</td>
+            </tr>
+            <tr>
+                <td>TSN Rao (98669 10215)</td>
+            </tr>
+            <tr>
+                <td>Krishna Mohan (99124 97702)</td>
+            </tr>
+            <tr>
+                <td>PV Narayana Rao (91600 20311)</td>
+            </tr>
+            <tr>
+                <td>Prabhakar Reddy (98493 73741)</td>
+            </tr>
+            <tr>
+                <td>Vedula Nageswara Rao (98852 91899)</td>
+            </tr>
+            <tr>
+                <td>G Veera Venkata Rao (73820 05196)</td>
+            </tr>
+            <tr bgcolor=yellow>
+                <td>Executive Committee</td>
+            </tr>
+            <tr>
+                <td>K Suribabu(98488 74699)</td>
+            </tr>
+            <tr>
+                <td>P Srinivas(79813 90086)</td>
+            </tr>
+            <tr>
+                <td>Chenna Madhava Rao(99088 54659)</td>
+            </tr>
+            <tr>
+                <td>Raja Anna Rao(78930 70344)</td>
+            </tr>
+            <tr>
+                <td>Chitti Babu(99634 27277)</td>
+            </tr>
+            <tr>
+                <td>L Narasimha Rao(98661 05885)</td>
+            </tr>
+            <tr>
+                <td>Zafrulla Khan(91608 55473)</td>
+            </tr>
+            <tr>
+                <td>K Sukumar(80080 29359)</td>
+            </tr>
+            <tr>
+                <td>MV Srinivasan(98857 38674)</td>
+            </tr>
+            <tr>
+                <td>M Seshasai(99890 35330)</td>
+            </tr>
+            <tr>
+                <td>K Subramanyam(94901 95203)</td>
+            </tr>
+            <tr>
+                <td>P Krishna Prasad(98665 02270)</td>
+            </tr>
+            <tr>
+                <td>Addanki Subba Rao(94403 57259)</td>
+            </tr>
+            <tr>
+                <td>Jasthi Rama Krishna(95730 73888)</td>
+            </tr>
+            <tr>
+                <td>NV Swamy(96860 61034)</td>
+            </tr>
+            <tr>
+                <td>D Narayana Rao()</td>
+            </tr>
+            <tr>
+                <td>B Visalakshi(98482 69562)</td>
+            </tr>
+            <tr>
+                <td>K Usha Rani(94928 79210)</td>
+            </tr>
+            <tr>
+                <td>P Annapoorna(98487 96565)</td>
+            </tr>
+        </table>
+        <br><br><br>
+    </div>
 
-<script>
- 
- 
- 
- 
+    <script>
 
-url='https://script.google.com/macros/s/AKfycbzI9SDFOzYLYKRKJTlse0XpsEiF8XfbyxwUUH22evlGkEPDIt2V/exec'
-async function getMyData (){
-response= await fetch(url)
-data= await response.json()
-tempData=data["user"]
-activeMembers= tempData.filter(a => a.name !=="")
-.sort(function(a, b) {return a.name.localeCompare(b.name)});
+        function titleCase(str) {
+            return str.toLowerCase().replace(/\b(\w)/g, s => s.toUpperCase());
+        }
+        myVar = ""
 
-familyPensioners= activeMembers.filter(a => a.fampen !=="").map(a => ({id: a.id, name: a.name, fampen: a.fampen}));
+        var modal = document.getElementById("myModal");
+        var span = document.getElementsByClassName("close")[0];
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
 
-noSbac = activeMembers.filter(a => a.sbac ==="" ).map(a => ({id: a.id, name: a.name}));
+        url = 'https://script.google.com/macros/s/AKfycbzI9SDFOzYLYKRKJTlse0XpsEiF8XfbyxwUUH22evlGkEPDIt2V/exec'
+        async function getMyData() {
+            response = await fetch(url)
+            data = await response.json()
+            tempData = data["user"]
+            activeMembers = tempData.filter(a => a.name !== "")
+                .sort(function (a, b) { return a.name.localeCompare(b.name) });
 
-noPensionBr = activeMembers.filter(a => a.pensionbr ==="" ).map(a => ({id: a.id, name: a.name}));
+            familyPensioners = activeMembers.filter(a => a.fampen !== "").map(a => ({ id: a.id, name: a.name, fampen: a.fampen }));
+            noSbac = activeMembers.filter(a => a.sbac === "").map(a => ({ id: a.id, name: a.name }));
+            noPensionBr = activeMembers.filter(a => a.pensionbr === "").map(a => ({ id: a.id, name: a.name }));
+            noSrno = activeMembers.filter(a => a.srno === "").map(a => ({ id: a.id, name: a.name }));
+            allplaces = activeMembers.filter(a => a.place !== "").map(a => a.place);
 
-noSrno = activeMembers.filter(a => a.srno ==="" ).map(a => ({id: a.id, name: a.name}));
+            function unq(a) {
+                return Array.from(new Set(a));
+            }
+
+            LivingIn = unq(allplaces).sort();
+            placesTable = ""
+            LivingIn.forEach(function (a) { placesTable += "<tr><td>" + a })
+
+            allPenBranches = activeMembers.filter(a => a.pensionbr !== "").map(a => a.pensionbr);
+            PensionDrawingBranch = unq(allPenBranches).sort();
+            penbrs = ""
+            PensionDrawingBranch.forEach(function (a) { penbrs += "<tr><td>" + a })
+            famPensionerList = ""
+            familyPensioners.forEach(function (a) { famPensionerList += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + titleCase(a.name) + "</span></td><tr>" })
+            noAccountNo = ""
+            noSbac.forEach(function (a) { noAccountNo += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + titleCase(a.name) + "</span></td><tr>" })
+            noSrNo = ""
+            noSrno.forEach(function (a) { noSrNo += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + titleCase(a.name) + "</span></td><tr>" })
+            noBranch = ""
+            noPensionBr.forEach(function (a) { noBranch += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + titleCase(a.name) + "</span></td><tr>" })
+            document.getElementById('fampenlist').innerHTML = "<table border=1>" + famPensionerList + "</table><br><br>"
+            document.getElementById('penac').innerHTML = "<table border=1>" + noAccountNo + "</table><br><br>"
+            document.getElementById('nilSRNo').innerHTML = "<table border=1>" + noSrNo + "</table><br><br><br><br>"
+            document.getElementById('penbrname').innerHTML = "<table border=1>" + noBranch + "</table><br><br><br>"
+            placesTemp = "<table border=1 id='tablePlaces' onclick='placesTableClick()' >" + titleCase(placesTable) + "</table>"
+            document.getElementById('pdivplacesTable').innerHTML = placesTemp
+            penbrTemp = "<table onclick='pensionBranchesTableClick()' border=1 id='penBr'>" + titleCase(penbrs) + "</table>"
+            document.getElementById('ppenbrs').innerHTML = penbrTemp;
+        }
+        penbrTemp = ""
+        getMyData()
+
+        function dispdata() {
+            let filter = document.getElementById("myInput").value.toLowerCase()
+            if (filter.length <= 4) { document.getElementById("getnames").innerHTML = "" }
+            if (filter.length >= 3) {
+                toTable = tempData.filter(a => a.name.toLowerCase().includes(filter.toLowerCase()))
+                    .sort((a, b) => {
+                        let fa = a.name.toLowerCase(), fb = b.name.toLowerCase();
+                        if (fa < fb) { return -1; }
+                        if (fa > fb) { return 1; }
+                        return 0;
+                    }).map(a => [a.id, a.name]);
+                tablebody = ""
+                toTable.forEach(function (a) { tablebody += "<span onClick='nameclick(this.id)' id=" + a[0] + ">" + titleCase(a[1].toUpperCase()) + "</span><br>" })
+                document.getElementById("getnames").innerHTML = tablebody + "<br><br><br>"
+            }
+        }
+
+        function nameclick(membershipNo) {
+            document.documentElement.scrollTop = 0;
+            toDisplay = "<table border=1><tr>"
+            document.getElementById("myInput").value = ""
+            membno = membershipNo * 1 - 1;
+            membData = tempData.filter(a => a.id === membershipNo * 1)
+            toDisplay += "<tr><td colspan=2><b>Name</b> " + membData[0].name + " (" + membData[0].id + " )"
+            toDisplay += "<tr><td colspan='2'><b>Address: </b><br>" + membData[0].add1 + "<br>"
+            if (membData[0].add2.length > 0) { toDisplay += membData[0].add2 + "<br>" }
+            if (membData[0].add3.length > 0) { toDisplay += membData[0].add3 + "<br>" }
+            if (membData[0].place.length > 0) { toDisplay += membData[0].place + "  " + membData[0].pincode + "<br>" }
+            if (membData[0].district.length > 0) { toDisplay += membData[0].district + " District <br>" }
+            toDisplay += "<tr><td colspan=2><b>Phones: </b>"
+            if (membData[0].fixed.length > 0) { toDisplay += membData[0].fixed + " / " }
+            if (membData[0].mobile1 > 0) { toDisplay += membData[0].mobile1 }
+            if (membData[0].mobile2 > 0) { toDisplay += " / " + membData[0].mobile2 }
+            toDisplay += "<tr><td colspan=2><b>SR No: </b>" + membData[0].srno
+            toDisplay += "<tr><td colspan=2><b>Pension Br:</b>" + membData[0].pensionbr
+            toDisplay += "<tr><td colspan=2><b>Pension Acc: </b> " + membData[0].sbac.toString().replace(/\b[\dX][-. \dX]+(\d{4})\b/g, '******** $1') + "<br>"
+            document.getElementById("buttonsDiv").style.display = "none";
+            document.getElementById("modalData").innerHTML = titleCase(toDisplay) + "<table>"
+            document.getElementById("nameHeader").innerHTML = membData[0].name
+             
+            
+            modal.style.display = "block";
+        }
+        function hide() {
+            hideall()
+            document.getElementById("buttonsDiv").style.display = "block";
+        }
+
+        function hideall() {
+            document.getElementById("div2").style.display = "none";
+            document.getElementById("div1").style.display = "none";
+            document.getElementById("buttonsDiv").style.display = "none";
+            document.getElementById("divFamPen").style.display = "none";
+            document.getElementById("divNoPenAc").style.display = "none";
+            document.getElementById("divNoPenBr").style.display = "none";
+            document.getElementById("divNoSrno").style.display = "none";
+            document.getElementById("ec").style.display = "none";
+            document.getElementById("divplacesTable").style.display = "none";
+            document.getElementById("divpenbrs").style.display = "none";
+        }
+
+        function searchClick() {
+            hideall()
+            document.getElementById("div1").style.display = "block";
+        }
+
+        function ecShow() {
+            hideall()
+            document.getElementById("ec").style.display = "block";
+        }
+
+        function FamBtnClick() {
+            hideall()
+            document.getElementById("divFamPen").style.display = "block";
+        }
+
+        function noPenAc() {
+            hideall()
+            document.getElementById("divNoPenAc").style.display = "block";
+        }
+
+        function noPenbr() {
+            hideall()
+            document.getElementById("divNoPenBr").style.display = "block";
+        }
+
+        function nosrno() {
+            hideall()
+            document.getElementById("divNoSrno").style.display = "block";
+        }
 
 
+        function placeStay() {
+            hideall()
+            document.getElementById("divplacesTable").style.display = "block";
+        }
 
-allplaces = activeMembers.map(a => a.place);
+        function placesTableClick() {
+            tableClick(tablePlaces);
+            inSelectedCity = activeMembers.filter(a => a.place.toUpperCase() === myVar.toUpperCase()).map(a => ({ id: a.id, name: a.name, place: a.place, pin: a.pincode })).sort((a, b) => a.pin - b.pin);
+        }
 
-function unq(a){
-return Array.from(new Set(a));
-}
-LivingIn = unq(allplaces).sort();
+        function pensionBranchesTableClick() {
+            tableClick(penBr)
+            inThisPensionBranch = activeMembers.filter(a => a.pensionbr.toUpperCase() === myVar.toUpperCase()).map(a => ({ id: a.id, name: a.name, pensionbr: a.pensionbr }));
+        }
 
-
-allPenBranches = activeMembers.map(a => a.pensionbr);
-
-PensionDrawingBranch = unq(allPenBranches).sort();
-
-
-
-//table body for list of family pensioners :
-famPensionerList=""
-familyPensioners.forEach(function(a){famPensionerList+= "<tr><td><span onClick='nameclick(this.id)' id="+ a.id + ">" +a.name + "</span></td><tr>"})
-
-//console.log(famPensionerList)
-
-
-//table body for list of pensioners without sb account:
-noAccountNo=""
-noSbac.forEach(function(a){noAccountNo+= "<tr><td><span onClick='nameclick(this.id)' id="+ a.id + ">" +a.name + "</span></td><tr>"})
-//console.log(noAccountNo)
-
-//table body for list of pensioners without sr no:
-
-noSrNo=""
-noSrno.forEach(function(a){noSrNo+= "<tr><td><span onClick='nameclick(this.id)' id="+ a.id + ">" +a.name + "</span></td><tr>"})
-//console.log(noSrNo)
-
-//table body for list of pensioners without pension branch:
-
-noBranch=""
-noPensionBr.forEach(function(a){noBranch+= "<tr><td><span onClick='nameclick(this.id)' id="+ a.id + ">" +a.name + "</span></td><tr>"})
-//console.log(noBranch)
-
-document.getElementById('fampenlist').innerHTML="<table border=1>" + famPensionerList+ "</table><br><br>"
-document.getElementById('penac').innerHTML="<table border=1>" + noAccountNo+ "</table><br><br>"
-document.getElementById('nilSRNo').innerHTML="<table border=1>" + noSrNo+ "</table><br><br><br><br>"
-document.getElementById('penbrname').innerHTML="<table border=1>" + noBranch+ "</table><br><br><br>"
+        function brsPens() {
+            hideall()
+            document.getElementById("divpenbrs").style.display = "block";
+        }
 
 
-}
-
-getMyData()
-
-function dispdata(){
-let  filter = document.getElementById("myInput").value.toLowerCase()
-if (filter.length<=4){document.getElementById("getnames").innerHTML="" }
-if (filter.length>=3){
-toTable = tempData.filter(a => a.name.toLowerCase().includes(filter.toLowerCase()))
-.sort((a, b) => {
-    let fa = a.name.toLowerCase(), fb = b.name.toLowerCase();
-    if (fa < fb) {return -1;}
-    if (fa > fb) {return  1;}
-    return 0;
-}).map (a => [a.id, a.name]);
-tablebody=""
-toTable.forEach(function(a){tablebody+= "<span onClick='nameclick(this.id)' id="+ a[0] + ">" +a[1].toUpperCase() + "</span><br>"})
-document.getElementById("getnames").innerHTML=tablebody+"<br><br><br>"
-}
-}
-
-function nameclick(membershipNo){
-document.documentElement.scrollTop = 0;
-toDisplay = "<table border=1><tr>"
-document.getElementById("div2").style.display = "block";
-document.getElementById("div1").style.display = "none";
-document.getElementById("myInput").value=""
-membno= membershipNo*1-1 ; 
-membData= tempData.filter(a => a.id ===membershipNo*1)
-toDisplay += "<tr><td colspan=2><b>Name</b> " + membData[0].name+" (" + membData[0].id +" )"
-//toDisplay += "<tr><td>Mem. No<td>" + membData[0].id 
-toDisplay += "<tr><td colspan='2'><b>Address: </b><br>" + membData[0].add1 +"<br>"
-if(membData[0].add2.length>0){toDisplay += membData[0].add2+"<br>" }
-if(membData[0].add3.length>0){toDisplay += membData[0].add3+"<br>" }
-if(membData[0].place.length>0){toDisplay += membData[0].place+ "  " +membData[0].pincode + "<br>"   }
-if(membData[0].district.length>0){toDisplay += membData[0].district+" District <br>" }
-toDisplay += "<tr><td colspan=2><b>Phones: </b>"
-if(membData[0].fixed.length>0){toDisplay += membData[0].fixed + " / "}
-if(membData[0].mobile1>0){toDisplay += membData[0].mobile1 }
-if(membData[0].mobile2>0){toDisplay +=   " / "+ membData[0].mobile2}
-toDisplay += "<tr><td colspan=2><b>SR No: </b>" + membData[0].srno 
-toDisplay += "<tr><td colspan=2><b>Pension Br:</b>" +membData[0].pensionbr 
-toDisplay += "<tr><td colspan=2><b>Pension Acc: </b> " +membData[0].sbac.toString().replace(/\b[\dX][-. \dX]+(\d{4})\b/g, '******** $1') + "<br>"
-//toDisplay += "<input type=button id='btn1' value='close' onclick='hide()' "
-document.getElementById("details").innerHTML=toDisplay+"<table>"
-}
-function hide(){
-document.getElementById("div2").style.display = "none";
-document.getElementById("div1").style.display = "block";
-document.getElementById("getnames").innerHTML="" 
-}
-
-</script>
-
-
+        function tableClick(table) {
+            if (table != null) {
+                for (var i = 0; i < table.rows.length; i++) {
+                    for (var j = 0; j < table.rows[i].cells.length; j++)
+                        table.rows[i].cells[j].onclick = function () {
+                            myVar = this.innerText;
+                        };
+                }
+            }
+        }
+    </script>
 </body>
+
 </html>
