@@ -14,7 +14,7 @@
             background-color: #fff2cc;
             margin-left: 0px;
             font-size:small;
-           overscroll-behavior: contain;
+            overscroll-behavior: contain;
         }
 
         #topHead {
@@ -245,7 +245,7 @@
             <button onclick="noPenAc()" class="button button3">Data Cleaning</button><br>
       <!--      <button onclick="noPenbr()" class="button button4">No Pension Branch</button><br>
             <button onclick="nosrno()" class="button button5">No SR Number</button><br> -->
-            <button onclick="placeStay()" class="button button1">Place of Stay- Under Construction </button><br>
+            <button onclick="placeStay()" class="button button1">Place of Stay</button><br>
             <button onclick="brsPens()" class="button button2">Pension Branches</button><br>
             <button onclick="ecShow()" class="button button4">Executive Committee</button><br>
         </div>
@@ -455,7 +455,7 @@
                 <td>NV Swamy(96860 61034)</td>
             </tr>
             <tr>
-                <td>D Narayana Rao()</td>
+                <td>D Narayana Rao(94401 54871)</td>
             </tr>
             <tr>
                 <td>B Visalakshi(98482 69562)</td>
@@ -472,6 +472,12 @@
 
 <div id="pensionInThisBranch">
 <p id="ParaPensionInThisBranch" ></p>
+</div>
+
+<div id="personsInThisCity">
+<p id="ParapersonsInThisCity" ></p>
+
+
 
 </div>
 
@@ -515,7 +521,7 @@
 
             LivingIn = unq(allplaces).sort();
             placesTable = ""
-            LivingIn.forEach(function (a) { placesTable += "<tr><td>" + a })
+             LivingIn.forEach(function (val,index) { placesTable += "<tr><td><span onClick='funCityPerson(this.id)'  id='"+index+"'>" + val +"</span>" })
 
             allPenBranches = activeMembers.filter(a => a.pensionbr !== "").map(a => a.pensionbr);
             PensionDrawingBranch = unq(allPenBranches).sort();
@@ -542,13 +548,26 @@
         penbrTemp = ""
         getMyData()
 
+function funCityPerson(a){
+i=LivingIn[a]
+alert(i)
+inThisPlace=activeMembers.filter(a => a.place === i)
+personsHere=""
+inThisPlace.forEach(function (a) { personsHere += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td></tr>" })
+
+document.getElementById('ParapersonsInThisCity').innerHTML="<table  border=1>" + personsHere +"</table>" 
+
+}
+
+
 penbrIndex=0;
 function penBrClick(penbrIndex){
 i=PensionDrawingBranch[penbrIndex]
 drawingPensionHere = activeMembers.filter(a => a.pensionbr === i)
 inthisBranch=""
-
 drawingPensionHere.forEach(function (a) { inthisBranch += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td></tr>" })
+
+
 
 ParaPensionInThisBranch
 document.getElementById('ParaPensionInThisBranch').innerHTML="<br><br><br> <h4 align=center>Pensioners of  <b> "+ i +"  </b>Branch </h4><table border=1>" + inthisBranch +"</table>"
