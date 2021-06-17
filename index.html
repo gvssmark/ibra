@@ -12,10 +12,8 @@
         body {
             width: 360px;
             text-transform: capitalize;
-            background-color: silver;
+            background-color: #fff2cc;
             margin-left: 0px;
-            overscroll-behavior: contain;
-font-size:small;
         }
 
         #topHead {
@@ -109,7 +107,7 @@ font-size:small;
             border-collapse: collapse;
             ;
             width: 95%;
-            margin-left: 1px;
+            margin-left: 5px;
             margin-right: 1px;
             border: 1px soild black;
             text-transform: capitalize;
@@ -194,13 +192,14 @@ font-size:small;
 
         /* Modal Content */
         .modal-content {
-            background-color: pink;
+            background-color: #99ffcc;
             margin: auto;
             padding: 2px;
             padding-bottom: 2px;
             border: 1px solid #888;
             width: 95%;
             border-radius: 15px;
+            margin-top: 53px;
         }
 
         /* The Close Button */
@@ -232,7 +231,7 @@ font-size:small;
 
     <div class="container">
         <div id="topHead">
-            <h4>Indian Bank Retirees' Association, (AP&TS)</h4>
+            <h4 align=center>Indian Bank Retirees' Association, (AP&TS)</h4>
         </div>
         <div id="buttonsDiv"><br><br><br>
             <button onclick="searchClick()" class="button">Search by Name</button><br>
@@ -254,38 +253,38 @@ font-size:small;
 
     <div id="divFamPen">
         <br><br>
-        <h4>Family Pensioners</h4>
+        <h4 align=center>Family Pensioners</h4>
         <p id='fampenlist'></p>
     </div>
 
     <div id="divNoPenAc">
         <br><br>
-        <h4>Pension Account No Not available</h4>
+        <h4 align=center>Pension Account No Not available</h4>
         <p id='penac'></p>
     </div>
 
     <div id="divNoPenBr">
         <br><br>
-        <h4>Pension Branch Details Not available</h4>
+        <h4 align=center>Pension Branch Details Not available</h4>
         <p id='penbrname'></p>
     </div>
 
     <div id="divNoSrno">
         <br><br>
-        <h4>SR Number Not available</h4>
+        <h4 align=center>SR Number Not available</h4>
         <p id='nilSRNo'></p>
     </div>
 
     <div id="divplacesTable">
         <br><br>
-        <h4>Place of Stay</h4>
+        <h4 align=center>Place of Stay</h4>
         <p id='pdivplacesTable'></p>
         <br><br>
     </div>
 
     <div id="divpenbrs">
         <br><br>
-        <h4>Pension Branches</h4>
+        <h4 align=center>Pension Branches</h4>
         <p id='ppenbrs'></p>
         <br><br>
     </div>
@@ -461,6 +460,13 @@ font-size:small;
         <br><br><br>
     </div>
 
+<div id="pensionInThisBranch">
+<p id="ParaPensionInThisBranch" ></p>
+
+</div>
+
+
+
     <script>
 
         function titleCase(str) {
@@ -504,7 +510,8 @@ font-size:small;
             allPenBranches = activeMembers.filter(a => a.pensionbr !== "").map(a => a.pensionbr);
             PensionDrawingBranch = unq(allPenBranches).sort();
             penbrs = ""
-            PensionDrawingBranch.forEach(function (a) { penbrs += "<tr><td>" + a })
+            PensionDrawingBranch.forEach(function (val,index) { penbrs += "<tr><td><span onClick='penBrClick(this.id)'  id='"+index+"'>" + titleCase(val) +"</span>" })
+
             famPensionerList = ""
             familyPensioners.forEach(function (a) { famPensionerList += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + titleCase(a.name) + "</span></td><tr>" })
             noAccountNo = ""
@@ -517,25 +524,40 @@ font-size:small;
             document.getElementById('penac').innerHTML = "<table border=1>" + noAccountNo + "</table><br><br>"
             document.getElementById('nilSRNo').innerHTML = "<table border=1>" + noSrNo + "</table><br><br><br><br>"
             document.getElementById('penbrname').innerHTML = "<table border=1>" + noBranch + "</table><br><br><br>"
-            placesTemp = "<table border=1 id='tablePlaces' onclick='placesTableClick()' >" + titleCase(placesTable) + "</table>"
+            placesTemp = "<table border=1 id='tablePlaces'  >" + titleCase(placesTable) + "</table>"
             document.getElementById('pdivplacesTable').innerHTML = placesTemp
-            penbrTemp = "<table onclick='pensionBranchesTableClick()' border=1 id='penBr'>" + titleCase(penbrs) + "</table>"
+            penbrTemp = "<table  border=1 id='penBr'>" + penbrs + "</table>"
             document.getElementById('ppenbrs').innerHTML = penbrTemp;
         }
         penbrTemp = ""
         getMyData()
 
+penbrIndex=0;
+function penBrClick(penbrIndex){
+i=titleCase(PensionDrawingBranch[penbrIndex])
+drawingPensionHere = activeMembers.filter(a => titleCase(a.pensionbr) === i)
+inthisBranch=""
+
+drawingPensionHere.forEach(function (a) { inthisBranch += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td></tr>" })
+
+ParaPensionInThisBranch
+document.getElementById('ParaPensionInThisBranch').innerHTML="<br><br><br> <h4 align=center>Pensioners of  <b> "+ i +"  </b>Branch </h4><table border=1>" + inthisBranch +"</table>"
+
+document.getElementById("pensionInThisBranch").style.display = "block";
+document.getElementById("divpenbrs").style.display = "none";
+
+
+}
+
+
+
+
         function dispdata() {
             let filter = document.getElementById("myInput").value.toLowerCase()
             if (filter.length <= 4) { document.getElementById("getnames").innerHTML = "" }
             if (filter.length >= 3) {
-                toTable = tempData.filter(a => a.name.toLowerCase().includes(filter.toLowerCase()))
-                    .sort((a, b) => {
-                        let fa = a.name.toLowerCase(), fb = b.name.toLowerCase();
-                        if (fa < fb) { return -1; }
-                        if (fa > fb) { return 1; }
-                        return 0;
-                    }).map(a => [a.id, a.name]);
+                toTable = activeMembers.filter(a => a.name.toLowerCase().includes(filter.toLowerCase()))
+                    .map(a => [a.id, a.name]);
                 tablebody = ""
                 toTable.forEach(function (a) { tablebody += "<span onClick='nameclick(this.id)' id=" + a[0] + ">" + titleCase(a[1].toUpperCase()) + "</span><br>" })
                 document.getElementById("getnames").innerHTML = tablebody + "<br><br><br>"
@@ -558,8 +580,13 @@ font-size:small;
             if (membData[0].fixed.length > 0) { toDisplay += membData[0].fixed + " / " }
             if (membData[0].mobile1 > 0) { toDisplay += membData[0].mobile1 }
             if (membData[0].mobile2 > 0) { toDisplay += " / " + membData[0].mobile2 }
-            toDisplay += "<tr><td colspan=2><b>SR No: </b>" + membData[0].srno
+            toDisplay += "<tr><td colspan=2><b>Email: </b>" + membData[0].email
+            toDisplay += "<tr><td colspan=2><b>S R No: </b>" + membData[0].srno
+            toDisplay += "<tr><td colspan=2><b>Application Scanned:</b>" + membData[0].scanned
             toDisplay += "<tr><td colspan=2><b>Pension Br:</b>" + membData[0].pensionbr
+            if(membData[0].fampen != ""){
+            toDisplay += "<tr><td colspan=2><b>Family Pension of :</b>" + membData[0].fampen
+            }
             toDisplay += "<tr><td colspan=2><b>Pension Acc: </b> " + membData[0].sbac.toString().replace(/\b[\dX][-. \dX]+(\d{4})\b/g, '******** $1') + "<br>"
             document.getElementById("buttonsDiv").style.display = "none";
             document.getElementById("modalData").innerHTML = titleCase(toDisplay) + "<table>"
@@ -584,6 +611,7 @@ font-size:small;
             document.getElementById("ec").style.display = "none";
             document.getElementById("divplacesTable").style.display = "none";
             document.getElementById("divpenbrs").style.display = "none";
+            document.getElementById("pensionInThisBranch").style.display = "none";
         }
 
         function searchClick() {
@@ -622,15 +650,9 @@ font-size:small;
             document.getElementById("divplacesTable").style.display = "block";
         }
 
-        function placesTableClick() {
-            tableClick(tablePlaces);
-            inSelectedCity = activeMembers.filter(a => a.place.toUpperCase() === myVar.toUpperCase()).map(a => ({ id: a.id, name: a.name, place: a.place, pin: a.pincode })).sort((a, b) => a.pin - b.pin);
-        }
+        
 
-        function pensionBranchesTableClick() {
-            tableClick(penBr)
-            inThisPensionBranch = activeMembers.filter(a => a.pensionbr.toUpperCase() === myVar.toUpperCase()).map(a => ({ id: a.id, name: a.name, pensionbr: a.pensionbr }));
-        }
+        
 
         function brsPens() {
             hideall()
