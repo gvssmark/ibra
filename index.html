@@ -11,7 +11,6 @@
     <style>
         body {
             width: 360px;
-            text-transform: capitalize;
             background-color: #fff2cc;
             margin-left: 0px;
             font-size:small;
@@ -111,11 +110,11 @@
             margin-left: 5px;
             margin-right: 1px;
             border: 1px soild black;
-            text-transform: capitalize;
+            
         }
 
         p {
-            text-transform: capitalize;
+            
         }
 
         p {
@@ -511,21 +510,21 @@
             allPenBranches = activeMembers.filter(a => a.pensionbr !== "").map(a => a.pensionbr);
             PensionDrawingBranch = unq(allPenBranches).sort();
             penbrs = ""
-            PensionDrawingBranch.forEach(function (val,index) { penbrs += "<tr><td><span onClick='penBrClick(this.id)'  id='"+index+"'>" + titleCase(val) +"</span>" })
+            PensionDrawingBranch.forEach(function (val,index) { penbrs += "<tr><td><span onClick='penBrClick(this.id)'  id='"+index+"'>" + val +"</span>" })
 
             famPensionerList = ""
-            familyPensioners.forEach(function (a) { famPensionerList += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + titleCase(a.name) + "</span></td><tr>" })
+            familyPensioners.forEach(function (a) { famPensionerList += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td><tr>" })
             noAccountNo = ""
-            noSbac.forEach(function (a) { noAccountNo += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + titleCase(a.name) + "</span></td><tr>" })
+            noSbac.forEach(function (a) { noAccountNo += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td><tr>" })
             noSrNo = ""
-            noSrno.forEach(function (a) { noSrNo += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + titleCase(a.name) + "</span></td><tr>" })
+            noSrno.forEach(function (a) { noSrNo += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td><tr>" })
             noBranch = ""
-            noPensionBr.forEach(function (a) { noBranch += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + titleCase(a.name) + "</span></td><tr>" })
+            noPensionBr.forEach(function (a) { noBranch += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td><tr>" })
             document.getElementById('fampenlist').innerHTML = "<table border=1>" + famPensionerList + "</table><br><br>"
             document.getElementById('penac').innerHTML = "<table border=1>" + noAccountNo + "</table><br><br>"
             document.getElementById('nilSRNo').innerHTML = "<table border=1>" + noSrNo + "</table><br><br><br><br>"
             document.getElementById('penbrname').innerHTML = "<table border=1>" + noBranch + "</table><br><br><br>"
-            placesTemp = "<table border=1 id='tablePlaces'  >" + titleCase(placesTable) + "</table>"
+            placesTemp = "<table border=1 id='tablePlaces'  >" + placesTable + "</table>"
             document.getElementById('pdivplacesTable').innerHTML = placesTemp
             penbrTemp = "<table  border=1 id='penBr'>" + penbrs + "</table>"
             document.getElementById('ppenbrs').innerHTML = penbrTemp;
@@ -535,8 +534,8 @@
 
 penbrIndex=0;
 function penBrClick(penbrIndex){
-i=titleCase(PensionDrawingBranch[penbrIndex])
-drawingPensionHere = activeMembers.filter(a => titleCase(a.pensionbr) === i)
+i=PensionDrawingBranch[penbrIndex]
+drawingPensionHere = activeMembers.filter(a => a.pensionbr === i)
 inthisBranch=""
 
 drawingPensionHere.forEach(function (a) { inthisBranch += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td></tr>" })
@@ -560,7 +559,7 @@ document.getElementById("divpenbrs").style.display = "none";
                 toTable = activeMembers.filter(a => a.name.toLowerCase().includes(filter.toLowerCase()))
                     .map(a => [a.id, a.name]);
                 tablebody = ""
-                toTable.forEach(function (a) { tablebody += "<span onClick='nameclick(this.id)' id=" + a[0] + ">" + titleCase(a[1].toUpperCase()) + "</span><br>" })
+                toTable.forEach(function (a) { tablebody += "<span onClick='nameclick(this.id)' id=" + a[0] + ">" + a[1].toUpperCase() + "</span><br>" })
                 document.getElementById("getnames").innerHTML = tablebody + "<br><br><br>"
             }
         }
