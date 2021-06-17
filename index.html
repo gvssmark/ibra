@@ -216,7 +216,12 @@
             text-decoration: none;
             cursor: pointer;
         }
-    </style>
+        
+        #t1 {background:  cyan;}
+        #t2 {background: cyan ;}
+        #t3 {background: yellow;}
+
+</style>
 </head>
 
 <body>
@@ -236,9 +241,9 @@
         <div id="buttonsDiv"><br><br><br>
             <button onclick="searchClick()" class="button">Search by Name</button><br>
             <button onclick="FamBtnClick()" class="button button2">Family Pensioners</button><br>
-            <button onclick="noPenAc()" class="button button3">No Pension Account Number</button><br>
-            <button onclick="noPenbr()" class="button button4">No Pension Branch</button><br>
-            <button onclick="nosrno()" class="button button5">No SR Number</button><br>
+            <button onclick="noPenAc()" class="button button3">Data Cleaning</button><br>
+      <!--      <button onclick="noPenbr()" class="button button4">No Pension Branch</button><br>
+            <button onclick="nosrno()" class="button button5">No SR Number</button><br> -->
             <button onclick="placeStay()" class="button button1">Place of Stay</button><br>
             <button onclick="brsPens()" class="button button2">Pension Branches</button><br>
             <button onclick="ecShow()" class="button button4">Executive Committee</button><br>
@@ -261,6 +266,10 @@
         <br><br>
         <h4 align=center>Pension Account No Not available</h4>
         <p id='penac'></p>
+              <h4 align=center>Pension Branch Details Not available</h4>
+        <p id='penbrname'></p>  
+                <h4 align=center>SR Number Not available</h4>
+        <p id='nilSRNo'></p>
     </div>
 
     <div id="divNoPenBr">
@@ -515,15 +524,15 @@
             famPensionerList = ""
             familyPensioners.forEach(function (a) { famPensionerList += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td><tr>" })
             noAccountNo = ""
-            noSbac.forEach(function (a) { noAccountNo += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td><tr>" })
+            noSbac.forEach(function (a) { noAccountNo += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span><td>No Ac No<tr>" })
             noSrNo = ""
-            noSrno.forEach(function (a) { noSrNo += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td><tr>" })
+            noSrno.forEach(function (a) { noSrNo += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span><td>No SR No<tr>" })
             noBranch = ""
-            noPensionBr.forEach(function (a) { noBranch += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td><tr>" })
+            noPensionBr.forEach(function (a) { noBranch += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span><td>No Branch<tr>" })
             document.getElementById('fampenlist').innerHTML = "<table border=1>" + famPensionerList + "</table><br><br>"
-            document.getElementById('penac').innerHTML = "<table border=1>" + noAccountNo + "</table><br><br>"
-            document.getElementById('nilSRNo').innerHTML = "<table border=1>" + noSrNo + "</table><br><br><br><br>"
-            document.getElementById('penbrname').innerHTML = "<table border=1>" + noBranch + "</table><br><br><br>"
+            document.getElementById('penac').innerHTML = "<table id='t1' border=1>" + noAccountNo + "</table><br><br>"
+            document.getElementById('nilSRNo').innerHTML = "<table id='t2' border=1>" + noSrNo + "</table><br><br><br><br>"
+            document.getElementById('penbrname').innerHTML = "<table id='t3' border=1>" + noBranch + "</table><br><br><br>"
             placesTemp = "<table border=1 id='tablePlaces'  >" + placesTable + "</table>"
             document.getElementById('pdivplacesTable').innerHTML = placesTemp
             penbrTemp = "<table  border=1 id='penBr'>" + penbrs + "</table>"
