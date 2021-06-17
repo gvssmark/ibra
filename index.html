@@ -550,7 +550,7 @@
 
 function funCityPerson(a){
 i=LivingIn[a]
-alert(i)
+
 inThisPlace=activeMembers.filter(a => a.place === i)
 personsHere=""
 inThisPlace.forEach(function (a) { personsHere += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td></tr>" })
