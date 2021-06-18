@@ -556,6 +556,7 @@ function funCityPerson(a){
 i=LivingIn[a]
 
 inThisPlace=activeMembers.filter(a => a.place === i)
+    unqPinCodes = unq(inThisPlace.map(a => a.pincode).sort())
 personsHere=""
 inThisPlace.forEach(function (a) { personsHere += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td></tr>" })
 
