@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 
@@ -62,6 +63,9 @@
         }
 
         #divplacesTable {
+            display: none;
+        }
+        #personsInThisCity {
             display: none;
         }
 
@@ -555,8 +559,9 @@ inThisPlace=activeMembers.filter(a => a.place === i)
 personsHere=""
 inThisPlace.forEach(function (a) { personsHere += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td></tr>" })
 
-document.getElementById('ParapersonsInThisCity').innerHTML="<table  border=1>" + personsHere +"</table>" 
-
+document.getElementById('ParapersonsInThisCity').innerHTML="<br><br><h4 align=center>Persons Living in   <b>"+ i+"</b></h4><table  border=1>" + personsHere +"</table>" 
+document.getElementById("personsInThisCity").style.display = "block";
+document.getElementById("divplacesTable").style.display = "none";
 }
 
 
@@ -641,6 +646,7 @@ document.getElementById("divpenbrs").style.display = "none";
             document.getElementById("divplacesTable").style.display = "none";
             document.getElementById("divpenbrs").style.display = "none";
             document.getElementById("pensionInThisBranch").style.display = "none";
+            document.getElementById("personsInThisCity").style.display = "none";
         }
 
         function searchClick() {
