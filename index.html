@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html>
 
@@ -17,6 +18,24 @@
             font-size:small;
             overscroll-behavior: contain;
         }
+        
+        .badge {
+  display: inline-block;
+   padding: 0;
+    width: 25px;
+    height: 25px;    
+    line-height: 25px;
+    font-size: small;
+    font-weight: lighter !important;
+    color: #fff !important;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    background-color: #d73d33;
+    border-radius:50px;
+//    position: relative;
+    top: -3px;
+    }
 
         #topHead {
             text-align: center;
@@ -519,9 +538,7 @@
             noSrno = activeMembers.filter(a => a.srno === "").map(a => ({ id: a.id, name: a.name }));
             allplaces = activeMembers.filter(a => a.place !== "").map(a => a.place);
 
-            function unq(a) {
-                return Array.from(new Set(a));
-            }
+         
 
             LivingIn = unq(allplaces).sort();
             placesTable = ""
@@ -553,14 +570,21 @@
         getMyData()
 
 function funCityPerson(a){
-i=LivingIn[a]
+town=LivingIn[a]
 
-inThisPlace=activeMembers.filter(a => a.place === i)
+inThisPlace=activeMembers.filter(a => a.place === town)
+numberInThisPlace=inThisPlace.length;
     unqPinCodes = unq(inThisPlace.map(a => a.pincode).sort())
-personsHere=""
-inThisPlace.forEach(function (a) { personsHere += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td></tr>" })
 
-document.getElementById('ParapersonsInThisCity').innerHTML="<br><br><h4 align=center>Persons Living in   <b>"+ i+"</b></h4><table  border=1>" + personsHere +"</table>" 
+personsHere=""
+
+for (i=0; i<unqPinCodes.length; i++){
+thispincode=inThisPlace.filter(a =>a.pincode === unqPinCodes[i]) 
+personsHere += "<tr bgcolor=cyan><td>"+inThisPlace[0].place +"-" + unqPinCodes[i]+"<span class='badge'>" +thispincode.length+"</span>"
+thispincode.forEach(function (a) { personsHere += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td></tr>" })
+}
+
+document.getElementById('ParapersonsInThisCity').innerHTML="<br><br><h4 align=center><span class='badge'>"+numberInThisPlace+"</span>Retirees Living in   <b>"+ town+"</b></h4><table  border=1>" + personsHere +"</table><br><br><br>" 
 document.getElementById("personsInThisCity").style.display = "block";
 document.getElementById("divplacesTable").style.display = "none";
 }
@@ -573,10 +597,10 @@ drawingPensionHere = activeMembers.filter(a => a.pensionbr === i)
 inthisBranch=""
 drawingPensionHere.forEach(function (a) { inthisBranch += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td></tr>" })
 
-
+numberOfPensionsersThisBranch = drawingPensionHere.length
 
 ParaPensionInThisBranch
-document.getElementById('ParaPensionInThisBranch').innerHTML="<br><br><br> <h4 align=center>Pensioners of  <b> "+ i +"  </b>Branch </h4><table border=1>" + inthisBranch +"</table>"
+document.getElementById('ParaPensionInThisBranch').innerHTML="<br><br><br> <h4 align=center><span class='badge'>"+numberOfPensionsersThisBranch+"</span>Pensioners of  <b> "+ i +"  </b>Branch </h4><table border=1>" + inthisBranch +"</table>"
 
 document.getElementById("pensionInThisBranch").style.display = "block";
 document.getElementById("divpenbrs").style.display = "none";
@@ -706,6 +730,11 @@ document.getElementById("divpenbrs").style.display = "none";
                 }
             }
         }
+        
+        
+           function unq(a) {
+                return Array.from(new Set(a));
+            }
     </script>
 </body>
 
