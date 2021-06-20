@@ -602,13 +602,13 @@ document.getElementById("regions").style.display = "block";
             PensionDrawingBranch.forEach(function (val,index) { penbrs += "<tr><td><span onClick='penBrClick(this.id)'  id='"+index+"'>" + val +"</span>" })
 
             famPensionerList = ""
-            familyPensioners.forEach(function (a) { famPensionerList += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td><tr>" })
+            familyPensioners.forEach(function (a) { famPensionerList += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td></tr>" })
             noAccountNo = ""
-            noSbac.forEach(function (a) { noAccountNo += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span><td>No Ac No<tr>" })
+            noSbac.forEach(function (a) { noAccountNo += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span><td>No Ac No</tr>" })
             noSrNo = ""
-            noSrno.forEach(function (a) { noSrNo += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span><td>No SR No<tr>" })
+            noSrno.forEach(function (a) { noSrNo += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span><td>No SR No</tr>" })
             noBranch = ""
-            noPensionBr.forEach(function (a) { noBranch += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span><td>No Branch<tr>" })
+            noPensionBr.forEach(function (a) { noBranch += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span><td>No Branch</tr>" })
             document.getElementById('fampenlist').innerHTML = "<table border=1>" + famPensionerList + "</table><br><br>"
             document.getElementById('penac').innerHTML = "<table id='t1' border=1>" + noAccountNo + "</table><br><br>"
             document.getElementById('nilSRNo').innerHTML = "<table id='t2' border=1>" + noSrNo + "</table><br><br><br><br>"
