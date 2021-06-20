@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html>
 
@@ -244,6 +245,28 @@
         #t1 {background:  cyan;}
         #t2 {background: cyan ;}
         #t3 {background: yellow;}
+        
+        
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+.list{
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 8px 6px;
+  text-decoration: none;
+}
+
 
 </style>
 </head>
@@ -271,7 +294,9 @@
             <button onclick="placeStay()" class="button button1">Place of Stay</button><br>
             <button onclick="brsPens()" class="button button2">Pension Branches</button><br>
             <button onclick="ecShow()" class="button button4">Executive Committee</button><br>
-        </div>
+            <button onclick="allregionsMenu()" class="button button1">All Members</button><br>
+
+</div>
         <div id="div2">
             <p id="details"></p>
         </div>
@@ -499,14 +524,41 @@
 
 <div id="personsInThisCity">
 <p id="ParapersonsInThisCity" ></p>
-
-
-
 </div>
+
+<div id="regions" style="display:none">
+<div style="background:powderblue; top:0; width:360px; height:40px; overflow:auto; position:fixed;  ">
+<ul>
+  <li onclick="selectedRegion(allmemb,0)"  class="list" >All</li>
+  <li  onclick="selectedRegion(vsp,1)" class="list" >VSP</li>
+  <li  onclick="selectedRegion(god,2)" class="list" >GOD</li>
+  <li  onclick="selectedRegion(vij,3)" class="list" >VIJ</li>
+  <li onclick="selectedRegion(seema,4)"  class="list" >SEEMA</li>
+  <li  onclick="selectedRegion(hyd,5)" class="list" >HYD</li>
+  <li  onclick="selectedRegion(oth,6)" class="list" >OTH</li>
+
+</ul>
+</div>
+<div style="background:powderblue; width:360px;   height:65px; margin-top:40px; top:0; position:fixed; ">
+      <input type="text" id='input_fitterName' onkeyup="fiterName()"
+        style="margin-top:5px; width:180px; margin-left:25%; height:30px; border-radius:15px;  background-color: white;  border:0px;  outline:0;  "
+        placeholder="Search for a Member here...">
+        <h4 id='regionHeading'align=center style="margin-top:3px;"></h4>
+    </div>
+   <div style="width:360px; margin-top:105px; background:powderblue;">
+   <p id=paraInThisRegion></p>
+   </div>
+   
+   </div>
 
 
 
     <script>
+function allregionsMenu(){
+ hideall()
+document.getElementById("regions").style.display = "block";
+}
+
 
         function titleCase(str) {
             return str.toLowerCase().replace(/\b(\w)/g, s => s.toUpperCase());
@@ -565,6 +617,15 @@
             document.getElementById('pdivplacesTable').innerHTML = placesTemp
             penbrTemp = "<table  border=1 id='penBr'>" + penbrs + "</table>"
             document.getElementById('ppenbrs').innerHTML = penbrTemp;
+            vsp = activeMembers.filter(a => a.area === "VSP").map(a => ({ id: a.id, name: a.name }));
+          vij = activeMembers.filter(a => a.area === "VIJ").map(a => ({ id: a.id, name: a.name }));
+          god = activeMembers.filter(a => a.area === "GOD").map(a => ({ id: a.id, name: a.name }));
+          seema = activeMembers.filter(a => a.area === "SEEMA").map(a => ({ id: a.id, name: a.name }));
+          hyd = activeMembers.filter(a => a.area === "HYD").map(a => ({ id: a.id, name: a.name }));
+          oth = activeMembers.filter(a => a.area === "OTH").map(a => ({ id: a.id, name: a.name }));
+          blank = activeMembers.filter(a => a.area === "BLANK").map(a => ({ id: a.id, name: a.name }));
+allmemb = activeMembers.map(a => ({ id: a.id, name: a.name }));
+selectedRegion(allmemb,0)
         }
         penbrTemp = ""
         getMyData()
@@ -624,7 +685,7 @@ document.getElementById("divpenbrs").style.display = "none";
         }
 
         function nameclick(membershipNo) {
-            document.documentElement.scrollTop = 0;
+       //     document.documentElement.scrollTop = 0;
             toDisplay = "<table border=1><tr>"
             document.getElementById("myInput").value = ""
             membno = membershipNo * 1 - 1;
@@ -672,6 +733,7 @@ document.getElementById("divpenbrs").style.display = "none";
             document.getElementById("divpenbrs").style.display = "none";
             document.getElementById("pensionInThisBranch").style.display = "none";
             document.getElementById("personsInThisCity").style.display = "none";
+            document.getElementById("regions").style.display = "none";
         }
 
         function searchClick() {
@@ -731,7 +793,38 @@ document.getElementById("divpenbrs").style.display = "none";
             }
         }
         
-        
+   function selectedRegion(array,n){
+   document.documentElement.scrollTop = 0;
+regions=["All", "Visakhapatnam", "Godavari", "Vijayawada", "Seema", "Hyderabad", "Other States"]
+document.getElementById('regionHeading').innerHTML="Memebers in "+ regions[n]+ " Region<span class='badge'>"+array.length+"</span>"
+inThisRegion="<table id='regionTable' width=358 border=1>"
+array.forEach(function (a) { inThisRegion += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td></tr>" })
+inThisRegion +="</table><br><br><br>" 
+document.getElementById('paraInThisRegion').innerHTML=inThisRegion
+}
+
+
+
+
+ function fiterName() {
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("input_fitterName");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("regionTable");
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+    }
+   
            function unq(a) {
                 return Array.from(new Set(a));
             }
