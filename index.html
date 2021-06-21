@@ -619,14 +619,14 @@ document.getElementById("regions").style.display = "block";
             document.getElementById('pdivplacesTable').innerHTML = placesTemp
             penbrTemp = "<table  border=1 id='penBr'>" + penbrs + "</table>"
             document.getElementById('ppenbrs').innerHTML = penbrTemp;
-            vsp = activeMembers.filter(a => a.area === "VSP").map(a => ({ id: a.id, name: a.name }));
-          vij = activeMembers.filter(a => a.area === "VIJ").map(a => ({ id: a.id, name: a.name }));
-          god = activeMembers.filter(a => a.area === "GOD").map(a => ({ id: a.id, name: a.name }));
-          seema = activeMembers.filter(a => a.area === "SEEMA").map(a => ({ id: a.id, name: a.name }));
-          hyd = activeMembers.filter(a => a.area === "HYD").map(a => ({ id: a.id, name: a.name }));
-          oth = activeMembers.filter(a => a.area === "OTH").map(a => ({ id: a.id, name: a.name }));
-          blank = activeMembers.filter(a => a.area === "BLANK").map(a => ({ id: a.id, name: a.name }));
-allmemb = activeMembers.map(a => ({ id: a.id, name: a.name }));
+            vsp = activeMembers.filter(a => a.area === "VSP").map(a => ({ id: a.id, name: a.name, fampen:a.fampen  }));
+          vij = activeMembers.filter(a => a.area === "VIJ").map(a => ({ id: a.id, name: a.name, fampen:a.fampen  }));
+          god = activeMembers.filter(a => a.area === "GOD").map(a => ({ id: a.id, name: a.name, fampen:a.fampen  }));
+          seema = activeMembers.filter(a => a.area === "SEEMA").map(a => ({ id: a.id, name: a.name , fampen:a.fampen }));
+          hyd = activeMembers.filter(a => a.area === "HYD").map(a => ({ id: a.id, name: a.name, fampen:a.fampen  }));
+          oth = activeMembers.filter(a => a.area === "OTH").map(a => ({ id: a.id, name: a.name , fampen:a.fampen }));
+          blank = activeMembers.filter(a => a.area === "BLANK").map(a => ({ id: a.id, name: a.name, fampen:a.fampen  }));
+allmemb = activeMembers.map(a => ({ id: a.id, name: a.name , fampen:a.fampen }));
 selectedRegion(allmemb,0)
         }
         penbrTemp = ""
