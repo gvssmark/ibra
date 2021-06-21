@@ -19,7 +19,9 @@
             font-size:small;
             overscroll-behavior: contain;
         }
-        
+        .fam{background:yellow}
+
+
         .badge {
   display: inline-block;
    padding: 0;
@@ -798,7 +800,7 @@ document.getElementById("divpenbrs").style.display = "none";
 regions=["All", "Visakhapatnam", "Godavari", "Vijayawada", "Seema", "Hyderabad", "Other States"]
 document.getElementById('regionHeading').innerHTML="Memebers in "+ regions[n]+ " Region<span class='badge'>"+array.length+"</span>"
 inThisRegion="<table id='regionTable' width=358 border=1>"
-array.forEach(function (a) { inThisRegion += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td></tr>" })
+array.forEach(function (a) { inThisRegion += "<tr class='"+ (a.fampen.length>0 ? "fam" : "ser") +"'><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td></tr>" })
 inThisRegion +="</table><br><br><br>" 
 document.getElementById('paraInThisRegion').innerHTML=inThisRegion
 }
