@@ -2,6 +2,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html>
 
@@ -43,6 +44,25 @@
 //    position: relative;
     top: -3px;
     }
+
+.badge1{
+  display: inline-block;
+   padding: 0;
+    width: 25px;
+    height: 25px;    
+    line-height: 25px;
+    font-size: small;
+    font-weight: lighter !important;
+    color: black !important;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    background-color: yellow;
+    border-radius:50px;
+//    position: relative;
+    top: -3px;
+    }
+
 
         #topHead {
             text-align: center;
@@ -250,7 +270,7 @@
         
         #t1 {background:  cyan;}
         #t2 {background: cyan ;}
-        #t3 {background: yellow;}
+        #t3 {background: pink;}
         
         
 ul {
@@ -282,7 +302,7 @@ li {
     <div id="myModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h4 align=center id="nameHeader">Sudhakar Babu</h4>
+            <h4 align=center id="nameHeader"></h4>
             <p id="modalData"> </p>
         </div>
     </div>
@@ -589,11 +609,11 @@ document.getElementById("regions").style.display = "block";
             tempData = data["user"]
             activeMembers = tempData.filter(a => a.name !== "")
                 .sort(function (a, b) { return a.name.localeCompare(b.name) });
-
+activeMembers.forEach(function(element){element.pentype = (element.fampen.length>0 ? "fam" : "ser")})
             familyPensioners = activeMembers.filter(a => a.fampen !== "").map(a => ({ id: a.id, name: a.name, fampen: a.fampen }));
-            noSbac = activeMembers.filter(a => a.sbac === "").map(a => ({ id: a.id, name: a.name }));
-            noPensionBr = activeMembers.filter(a => a.pensionbr === "").map(a => ({ id: a.id, name: a.name }));
-            noSrno = activeMembers.filter(a => a.srno === "").map(a => ({ id: a.id, name: a.name }));
+            noSbac = activeMembers.filter(a => a.sbac === "").map(a => ({ id: a.id, name: a.name, pentype: a.pentype }));
+            noPensionBr = activeMembers.filter(a => a.pensionbr === "").map(a => ({ id: a.id, name: a.name, pentype: a.pentype }));
+            noSrno = activeMembers.filter(a => a.srno === "").map(a => ({ id: a.id, name: a.name, pentype: a.pentype }));
             allplaces = activeMembers.filter(a => a.place !== "").map(a => a.place);
 
          
@@ -610,11 +630,11 @@ document.getElementById("regions").style.display = "block";
             famPensionerList = ""
             familyPensioners.forEach(function (a) { famPensionerList += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td></tr>" })
             noAccountNo = ""
-            noSbac.forEach(function (a) { noAccountNo += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span><td>No Ac No</tr>" })
+            noSbac.forEach(function (a) { noAccountNo += "<tr class='" + a.pentype +"'><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span><td>No Ac No</tr>" })
             noSrNo = ""
-            noSrno.forEach(function (a) { noSrNo += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span><td>No SR No</tr>" })
+            noSrno.forEach(function (a) { noSrNo += "<tr class='" + a.pentype +"'><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span><td>No SR No</tr>" })
             noBranch = ""
-            noPensionBr.forEach(function (a) { noBranch += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span><td>No Branch</tr>" })
+            noPensionBr.forEach(function (a) { noBranch += "<tr class='" + a.pentype +"'><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span><td>No Branch</tr>" })
             document.getElementById('fampenlist').innerHTML = "<table border=1>" + famPensionerList + "</table><br><br>"
             document.getElementById('penac').innerHTML = "<table id='t1' border=1>" + noAccountNo + "</table><br><br>"
             document.getElementById('nilSRNo').innerHTML = "<table id='t2' border=1>" + noSrNo + "</table><br><br><br><br>"
@@ -648,7 +668,7 @@ personsHere=""
 for (i=0; i<unqPinCodes.length; i++){
 thispincode=inThisPlace.filter(a =>a.pincode === unqPinCodes[i]) 
 personsHere += "<tr bgcolor=cyan><td>"+inThisPlace[0].place +"-" + unqPinCodes[i]+"<span class='badge'>" +thispincode.length+"</span>"
-thispincode.forEach(function (a) { personsHere += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td></tr>" })
+thispincode.forEach(function (a) { personsHere += "<tr class='" + a.pentype +"'><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td></tr>" })
 }
 
 document.getElementById('ParapersonsInThisCity').innerHTML="<br><br><h4 align=center><span class='badge'>"+numberInThisPlace+"</span>Retirees Living in   <b>"+ town+"</b></h4><table  border=1>" + personsHere +"</table><br><br><br>" 
@@ -662,7 +682,7 @@ function penBrClick(penbrIndex){
 i=PensionDrawingBranch[penbrIndex]
 drawingPensionHere = activeMembers.filter(a => a.pensionbr === i)
 inthisBranch=""
-drawingPensionHere.forEach(function (a) { inthisBranch += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td></tr>" })
+drawingPensionHere.forEach(function (a) { inthisBranch += "<tr class='" + a.pentype +"'><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td></tr>" })
 
 numberOfPensionsersThisBranch = drawingPensionHere.length
 
@@ -711,7 +731,7 @@ document.getElementById("divpenbrs").style.display = "none";
             toDisplay += "<tr><td colspan=2><b>Application Scanned:</b>" + membData[0].scanned
             toDisplay += "<tr><td colspan=2><b>Pension Br:</b>" + membData[0].pensionbr
             if(membData[0].fampen != ""){
-            toDisplay += "<tr><td colspan=2><b>Family Pension of :</b>" + membData[0].fampen
+            toDisplay += "<tr bgcolor=yellow><td colspan=2><b>Family Pension of :</b>" + membData[0].fampen
             }
             toDisplay += "<tr><td colspan=2><b>Pension Acc: </b> " + membData[0].sbac.toString().replace(/\b[\dX][-. \dX]+(\d{4})\b/g, '******** $1') + "<br>"
             document.getElementById("buttonsDiv").style.display = "none";
@@ -801,8 +821,9 @@ document.getElementById("divpenbrs").style.display = "none";
         
    function selectedRegion(array,n){
    document.documentElement.scrollTop = 0;
+   famPensionersCount = array.filter(a =>a.fampen.length>0).length
 regions=["All", "Visakhapatnam", "Godavari", "Vijayawada", "Seema", "Hyderabad", "Other States"]
-document.getElementById('regionHeading').innerHTML="Memebers in "+ regions[n]+ " Region<span class='badge'>"+array.length+"</span>"
+document.getElementById('regionHeading').innerHTML="Memebers in "+ regions[n]+ " Region<span class='badge'>"+array.length+"</span><span class='badge1'>" +famPensionersCount+"</span>"
 inThisRegion="<table id='regionTable' width=358 border=1>"
 array.forEach(function (a) { inThisRegion += "<tr class='"+ (a.fampen.length>0 ? "fam" : "ser") +"'><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td></tr>" })
 inThisRegion +="</table><br><br><br>" 
