@@ -4,6 +4,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html>
 
@@ -322,9 +323,15 @@ li {
             <button onclick="brsPens()" class="button button2">Pension Branches</button><br>
             <button onclick="ecShow()" class="button button4">Executive Committee</button><br>
             <button onclick="allregionsMenu()" class="button button1">All Members</button><br>
-
+            <button onclick="welfare()" class="button button2">Welfare Schemes</button><br>
 </div>
-        <div id="div2">
+
+<div id="welf" style="display:none">
+    <iframe style="height:600px; width:360px;"src="https://gvssmark.github.io/ibra/welfare.html" allowTransparency="true" background="transparent"></iframe>
+</div>
+
+
+<div id="div2">
             <p id="details"></p>
         </div>
         <div class="bottomdiv">
@@ -601,6 +608,7 @@ document.getElementById("divpenbrs").style.display = "none";
             document.getElementById("pensionInThisBranch").style.display = "none";
             document.getElementById("personsInThisCity").style.display = "none";
             document.getElementById("regions").style.display = "none";
+             document.getElementById("welf").style.display = "none";
         }
 
         function searchClick() {
@@ -613,6 +621,10 @@ document.getElementById("divpenbrs").style.display = "none";
             document.getElementById("ec").style.display = "block";
         }
 
+     function welfare() {
+            hideall()
+            document.getElementById("welf").style.display = "block";
+        }
         function FamBtnClick() {
             hideall()
             document.getElementById("divFamPen").style.display = "block";
