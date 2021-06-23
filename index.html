@@ -347,11 +347,11 @@ li {
 
     <div id="divNoPenAc">
         <br><br>
-        <h4 align=center>Pension Account No Not available</h4>
+        <h4 align=center>Pension Account No Not available<span class='badge' id='penacno'></span></h4>
         <p id='penac'></p>
-              <h4 align=center>Pension Branch Details Not available</h4>
+              <h4 align=center>Pension Branch Details Not available<span class='badge' id='penbrno'></span></h4>
         <p id='penbrname'></p>  
-                <h4 align=center>SR Number Not available</h4>
+                <h4 align=center>SR Number Not available<span class='badge' id='srnonil'></span></h4>
         <p id='nilSRNo'></p>
     </div>
 
@@ -464,7 +464,10 @@ activeMembers.forEach(function(element){element.pentype = (element.fampen.length
             noSrno = activeMembers.filter(a => a.srno === "").map(a => ({ id: a.id, name: a.name, pentype: a.pentype }));
             allplaces = activeMembers.filter(a => a.place !== "").map(a => a.place);
 
-         
+     
+penacno.innerHTML=noSbac.length
+penbrno.innerHTML=noPensionBr.length
+srnonil.innerHTML=noSrno.length    
 
             LivingIn = unq(allplaces).sort();
             placesTable = ""
