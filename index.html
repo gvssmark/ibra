@@ -327,7 +327,7 @@ li {
 </div>
 
 <div id="welf" style="display:none">
-    <iframe style="height:600px; width:360px;"src="https://gvssmark.github.io/ibra/welfare.html" allowTransparency="true" background="transparent"></iframe>
+    <iframe id="welfareIframe" style="height:600px; width:360px;"src="https://gvssmark.github.io/ibra/welfare.html" allowTransparency="true" background="transparent"></iframe>
 </div>
 
 
@@ -626,6 +626,9 @@ document.getElementById("divpenbrs").style.display = "none";
 
      function welfare() {
             hideall()
+         document.getElementById("welfareIframe").src = "https://gvssmark.github.io/ibra/welfare.html";
+
+
             document.getElementById("welf").style.display = "block";
         }
         function FamBtnClick() {
