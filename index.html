@@ -1,10 +1,3 @@
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html>
 
@@ -16,7 +9,8 @@
     <meta name="theme-color" content="#317EFB" />
     <link rel="apple-touch-icon" href="images/ibra512.png">
     <style>
-        body {
+mark{background:blue; color:white}
+body {
             width: 360px;
             background-color: #fff2cc;
             margin-left: 0px;
@@ -343,7 +337,14 @@ li {
 
     <div id="divFamPen">
         <br><br>
-        <h4 align=center>Family Pensioners</h4>
+ <div style="background:powderblue; width:360px;   height:56px; margin-top:40px; top:0; position:fixed; ">
+      <input type="text" id='fampenSearch' onkeyup="filterFamPensionerName()"
+        style="margin-top:5px; width:180px; margin-left:25%; height:30px; border-radius:15px;  background-color: white;  border:0px;  outline:0;  "
+        placeholder="Search Service / Family Pensioner...">
+        <h4 style='margin-top:1px;' align=center>Family Pensioners</h4>
+</div>
+<br><br><br>
+ 
         <p id='fampenlist'></p>
     </div>
 
@@ -412,6 +413,8 @@ li {
   <li onclick="selectedRegion(seema,4)"  class="list" >SEEMA</li>
   <li  onclick="selectedRegion(hyd,5)" class="list" >HYD</li>
   <li  onclick="selectedRegion(oth,6)" class="list" >OTH</li>
+  <li  onclick="selectedRegion(allMembNoWise,7)" class="list" >MemNo</li>
+  
 
 </ul>
 </div>
@@ -481,14 +484,14 @@ srnonil.innerHTML=noSrno.length
             PensionDrawingBranch.forEach(function (val,index) { penbrs += "<tr><td><span onClick='penBrClick(this.id)'  id='"+index+"'>" + val +"</span>" })
 
             famPensionerList = ""
-            familyPensioners.forEach(function (a) { famPensionerList += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td></tr>" })
+            familyPensioners.forEach(function (a) { famPensionerList += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + " (<mark>"+a.fampen+ "</mark>)</span></td></tr>" })
             noAccountNo = ""
             noSbac.forEach(function (a) { noAccountNo += "<tr class='" + a.pentype +"'><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span><td>No Ac No</tr>" })
             noSrNo = ""
             noSrno.forEach(function (a) { noSrNo += "<tr class='" + a.pentype +"'><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span><td>No SR No</tr>" })
             noBranch = ""
             noPensionBr.forEach(function (a) { noBranch += "<tr class='" + a.pentype +"'><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span><td>No Branch</tr>" })
-            document.getElementById('fampenlist').innerHTML = "<table border=1>" + famPensionerList + "</table><br><br>"
+            document.getElementById('fampenlist').innerHTML = "<table border=1 id='fampentable'>" + famPensionerList + "</table><br><br>"
             document.getElementById('penac').innerHTML = "<table id='t1' border=1>" + noAccountNo + "</table><br><br>"
             document.getElementById('nilSRNo').innerHTML = "<table id='t2' border=1>" + noSrNo + "</table><br><br><br><br>"
             document.getElementById('penbrname').innerHTML = "<table id='t3' border=1>" + noBranch + "</table><br><br><br>"
@@ -503,6 +506,7 @@ srnonil.innerHTML=noSrno.length
           hyd = activeMembers.filter(a => a.area === "HYD").map(a => ({ id: a.id, name: a.name, fampen:a.fampen  }));
           oth = activeMembers.filter(a => a.area === "OTH").map(a => ({ id: a.id, name: a.name , fampen:a.fampen }));
           blank = activeMembers.filter(a => a.area === "BLANK").map(a => ({ id: a.id, name: a.name, fampen:a.fampen  }));
+          allMembNoWise=activeMembers.map(a => ({ id: a.id, name: a.name, fampen:a.fampen  })).sort(function(a,b){return a.id - b.id})
 allmemb = activeMembers.map(a => ({ id: a.id, name: a.name , fampen:a.fampen }));
 selectedRegion(allmemb,0)
         }
@@ -687,15 +691,32 @@ document.getElementById("divpenbrs").style.display = "none";
    function selectedRegion(array,n){
    document.documentElement.scrollTop = 0;
    famPensionersCount = array.filter(a =>a.fampen.length>0).length
-regions=["All", "Visakhapatnam", "Godavari", "Vijayawada", "Seema", "Hyderabad", "Other States"]
+regions=["All", "Visakhapatnam", "Godavari", "Vijayawada", "Seema", "Hyderabad", "Other States","Membershipwise"]
 document.getElementById('regionHeading').innerHTML="Memebers in "+ regions[n]+ " Region<span class='badge'>"+array.length+"</span><span class='badge1'>" +famPensionersCount+"</span>"
 inThisRegion="<table id='regionTable' width=358 border=1>"
-array.forEach(function (a) { inThisRegion += "<tr class='"+ (a.fampen.length>0 ? "fam" : "ser") +"'><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td></tr>" })
+array.forEach(function (a) { inThisRegion += "<tr class='"+ (a.fampen.length>0 ? "fam" : "ser") +"'><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "<td>" + a.id + "</span></td></tr>" })
 inThisRegion +="</table><br><br><br>" 
 document.getElementById('paraInThisRegion').innerHTML=inThisRegion
 }
 
-
+ function filterFamPensionerName() {
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("fampenSearch");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("fampentable");
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+    }
 
 
  function fiterName() {
