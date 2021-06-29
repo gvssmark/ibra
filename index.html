@@ -23,6 +23,8 @@
             font-size:small;
             overscroll-behavior: contain;
         }
+         a{text-decoration:none;}
+
         .fam{background:yellow}
 .active, .btn:hover {
   background-color: red;
@@ -575,7 +577,11 @@ document.getElementById("divpenbrs").style.display = "none";
             if (membData[0].district.length > 0) { toDisplay += membData[0].district + " District <br>" }
             toDisplay += "<tr><td colspan=2><b>Phones: </b>"
             if (membData[0].fixed.length > 0) { toDisplay += membData[0].fixed + " / " }
-            if (membData[0].mobile1 > 0) { toDisplay += membData[0].mobile1 }
+            
+            if (membData[0].mobile1 > 0) { toDisplay +="<a href=tel:"+membData[0].mobile1 +"><mark style='background:red; color:white'>"+membData[0].mobile1+"</mark></a>"}
+
+          //  if (membData[0].mobile1 > 0) { toDisplay += membData[0].mobile1 }
+            
             if (membData[0].mobile2 > 0) { toDisplay += " / " + membData[0].mobile2 }
             toDisplay += "<tr><td colspan=2><b>Email: </b>" + membData[0].email
             toDisplay += "<tr><td colspan=2><b>S R No: </b>" + membData[0].srno
