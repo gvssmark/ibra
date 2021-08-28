@@ -594,7 +594,9 @@ document.getElementById("divpenbrs").style.display = "none";
             if(membData[0].fampen != ""){
             toDisplay += "<tr bgcolor=yellow><td colspan=2><b>Family Pension of :</b>" + membData[0].fampen
             }
-            toDisplay += "<tr><td colspan=2><b>Pension Acc: </b> " + membData[0].sbac.toString().replace(/\b[\dX][-. \dX]+(\d{4})\b/g, '******** $1') + "<br>"
+            toDisplay += "<tr><td colspan=2><b>Pension Acc: </b> " + membData[0].sbac
+//.toString()
+//.replace(/\b[\dX][-. \dX]+(\d{4})\b/g, '******** $1') + "<br>"
             document.getElementById("buttonsDiv").style.display = "none";
             document.getElementById("modalData").innerHTML = toDisplay + "<table>"
             document.getElementById("nameHeader").innerHTML = membData[0].name
