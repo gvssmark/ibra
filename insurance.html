@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html>
 
@@ -53,14 +54,14 @@ display:none;
 
     <div class="container">
         <div id="topHead">
-            <h3 align=center>Indian Bank Retirees' Association, (AP&TS)<br>Insurance List</h3>
+            <h3 align=center>Indian Bank Retirees' Association, (AP&TS)<br>NIA Health Insurance List</h3>
         </div>
      
 
 
 
 <div id="div2">
-            <p id="details">this is test</p>
+            <p id="details"></p>
         </div>
         <div id="bottomdiv" class="bottomdiv" onclick="homeClick()">
             <h3 align=center >Home</h3>
@@ -73,8 +74,8 @@ display:none;
     <script>
 
  monthsArray = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-membList="<br><h4 align=center>Click on Name to get Details</h4><table  border=1><tr><td>SR No<td>Name"
-    
+membList="<br><br><br><h4 align=center>Click on Name to get Details</h4><table  border=1><tr><td>SR No<td>Name"
+  //  https://script.google.com/macros/s/AKfycbwJ1VlGrnkV1Gv4Jei1OBHPjCLPjjJ6-Kc_BnEUcvhaUtGRYFg/exec
         url = 'https://script.google.com/macros/s/AKfycbwJ1VlGrnkV1Gv4Jei1OBHPjCLPjjJ6-Kc_BnEUcvhaUtGRYFg/exec'
         async function getMyData() {
             response = await fetch(url)
@@ -125,6 +126,8 @@ function nameclick(srno){
  <tr><td> Premium Paid:<td>Rs.${membData[0].premium} 
  <tr><td> Nominee Name:<td>${membData[0].nomname} 
  <tr><td> Nominee DOB:<td>${nomdob} 
+ <tr><td> Nominee Relation:<td>${membData[0].nomrelation} 
+ </table><br><br><br>
   
  `
  
