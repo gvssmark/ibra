@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html>
 
@@ -113,7 +114,7 @@ function nameclick(srno){
  <tr><td> Name:<td>${membData[0].name}
  <tr><td> Date of Birth:<td>${dob} 
  <tr><td> Spouse Name:<td>${membData[0].spname} 
- <tr><td> Spouse Date of Birth:<td>${spdob} 
+ <tr><td> Spouse Date of Birth:<td>${membData[0].spname.length>0?spdob:""} 
  <tr><td> Adhar :<td>${membData[0].adhar} 
  <tr><td> PAN:<td>${membData[0].pan} 
  <tr><td> Mobile No:<td>${membData[0].mobile} 
@@ -126,7 +127,10 @@ function nameclick(srno){
  <tr><td> Premium Paid:<td>Rs.${membData[0].premium} 
  <tr><td> Nominee Name:<td>${membData[0].nomname} 
  <tr><td> Nominee DOB:<td>${nomdob} 
- <tr><td> Nominee Relation:<td>${membData[0].nomrelation} 
+ <tr><td> Nominee Relation:<td>${membData[0].nomrelation}
+<tr><td> Retired from:<td>${membData[0].bankname}
+
+
  </table><br><br><br>
   
  `
