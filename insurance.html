@@ -11,7 +11,6 @@ body {
             background-color: #fff2cc;
             margin-left: 0px;
             font-size:small;
-            overscroll-behavior: contain;
         }
         #topHead {
             text-align: center;
@@ -50,13 +49,7 @@ display:none;
 
 <body>
 
-    <div id="myModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h4 align=center id="nameHeader"></h4>
-            <p id="modalData"> </p>
-        </div>
-    </div>
+    
 
     <div class="container">
         <div id="topHead">
@@ -67,7 +60,7 @@ display:none;
 
 
 <div id="div2">
-            <p id="details"></p>
+            <p id="details">this is test</p>
         </div>
         <div id="bottomdiv" class="bottomdiv" onclick="homeClick()">
             <h3 align=center >Home</h3>
@@ -114,7 +107,7 @@ function nameclick(srno){
     spdob=spdob.getDate()+'-'+monthsArray[spdob.getMonth()+1]+'-'+spdob.getFullYear()
     nomdob=nomdob.getDate()+'-'+monthsArray[nomdob.getMonth()+1]+'-'+nomdob.getFullYear()
     //bm= mydata.bm?mydata.bm:0;
- indMember=`<br><table border=1>
+ indMember=`<br><br><br><table border=1>
 <tr><td> SR No:<td>${membData[0].srno} 
  <tr><td> Name:<td>${membData[0].name}
  <tr><td> Date of Birth:<td>${dob} 
@@ -132,7 +125,7 @@ function nameclick(srno){
  <tr><td> Premium Paid:<td>Rs.${membData[0].premium} 
  <tr><td> Nominee Name:<td>${membData[0].nomname} 
  <tr><td> Nominee DOB:<td>${nomdob} 
-  <table><br><br>
+  
  `
  
  document.getElementById('details').innerHTML =indMember
