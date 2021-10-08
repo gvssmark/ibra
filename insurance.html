@@ -1,11 +1,13 @@
 
 
 
+
 <!DOCTYPE html>
 <html>
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://drive.google.com/uc?id=1-3v4FiFpez0DqErKAd_4s5_H9JuE0qlM"></script>
     <title>IBRA-APTS-Insurance</title>
     <style>
 body {
@@ -62,6 +64,7 @@ display:none;
 
 
 <div id="div2">
+<p id="recon"><br><br><br></p>
             <p id="details"></p>
         </div>
         <div id="bottomdiv" class="bottomdiv" onclick="homeClick()">
@@ -75,7 +78,7 @@ display:none;
     <script>
 
  monthsArray = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-membList="<br><br><br><h4 align=center>Click on Name to get Details</h4><table  border=1><tr><td>SR No<td>Name"
+membList="<br><h4 align=center>Click on Name to get Details</h4><table  border=1><tr><td>SR No<td>Name"
   //  https://script.google.com/macros/s/AKfycbwJ1VlGrnkV1Gv4Jei1OBHPjCLPjjJ6-Kc_BnEUcvhaUtGRYFg/exec
         url = 'https://script.google.com/macros/s/AKfycbwJ1VlGrnkV1Gv4Jei1OBHPjCLPjjJ6-Kc_BnEUcvhaUtGRYFg/exec'
         async function getMyData() {
@@ -84,8 +87,20 @@ membList="<br><br><br><h4 align=center>Click on Name to get Details</h4><table  
             tempData = data["user"]
             
        
-            
+  
+extable1="<table border=1>"
+for (i=0; i<2; i++){
+extable1 += `<tr><td>${extradata[i][0]}<td>${extradata[i][1]}`
+}
+
+extable2="<table border=1>"
+for (i=2; i<extradata.length; i++){
+extable2 += `<tr><td>${extradata[i][0]}<td>${extradata[i][1]}`
+}
+          
              tempData.forEach(function (a) { membList += "<tr><td>" + a.srno +"<td> <span onClick='nameclick(this.id)' id=" + a.srno + ">" + toTitleCase(a.name) + "</span>" })
+             
+             document.getElementById('recon').innerHTML = "<br><br><br>"+extable1 +"</table><br><b>Amount Received but Application Not Received </b>"+ extable2 + "</table>"
              document.getElementById('details').innerHTML =  membList + "</table><br><br>"
         }
 getMyData()
