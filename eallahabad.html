@@ -1,0 +1,169 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://drive.google.com/uc?id=1-3v4FiFpez0DqErKAd_4s5_H9JuE0qlM"></script>
+    <title>IBRA-APTS-Insurance</title>
+    <style>
+body {
+            width: 360px;
+            background-color: #fff2cc;
+            margin-left: 0px;
+            font-size:small;
+        }
+        #topHead {
+            text-align: center;
+            width: 360px;
+            height: 50px;
+            position: fixed;
+            background-color: red;
+            top: 0px;
+            color: white;
+        }
+
+
+        table {
+            /* Not required only for visualizing */
+            
+            border-collapse: collapse;
+            ;
+            width: 95%;
+            margin-left: 5px;
+            margin-right: 1px;
+            border: 1px soild black;
+            
+        }
+      .bottomdiv {
+            bottom: 0px;
+            background: green;
+            position: fixed;
+            width: 360px;
+            height: 40px;
+color: white;
+display:none;
+        }
+
+</style>
+</head>
+
+<body>
+
+    
+
+    <div class="container">
+        <div id="topHead">
+            <h3 align=center>Indian Bank Retirees' Association, (AP&TS)<br>NIA Health Insurance List</h3>
+        </div>
+     
+
+
+
+<div id="div2">
+<p id="recon"><br><br><br></p>
+            <p id="details"></p>
+        </div>
+        <div id="bottomdiv" class="bottomdiv" onclick="homeClick()">
+            <h3 align=center >Home</h3>
+        </div>
+    </div>
+
+
+
+
+    <script>
+
+ monthsArray = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+membList="<br><h4 align=center>Click on Name to get Details</h4><table  border=1><tr><td>SR No<td>Name"
+  //  https://script.google.com/macros/s/AKfycbwJ1VlGrnkV1Gv4Jei1OBHPjCLPjjJ6-Kc_BnEUcvhaUtGRYFg/exec
+        url = 'https://script.google.com/macros/s/AKfycbwJ1VlGrnkV1Gv4Jei1OBHPjCLPjjJ6-Kc_BnEUcvhaUtGRYFg/exec'
+        async function getMyData() {
+            response = await fetch(url)
+            data = await response.json()
+            tempData = data["user"]
+            eallhabad = tempData.filter(a => a.srno >400000)
+       
+  
+extable1="<table border=1>"
+for (i=0; i<2; i++){
+extable1 += `<tr><td>${extradata[i][0]}<td>${extradata[i][1]}`
+}
+
+extable2="<table border=1>"
+for (i=2; i<extradata.length; i++){
+extable2 += `<tr><td>${extradata[i][0]}<td>${extradata[i][1]}`
+}
+          
+             eallhabad.forEach(function (a) { membList += "<tr><td>" + a.srno +"<td> <span onClick='nameclick(this.id)' id=" + a.srno + ">" + toTitleCase(a.name) + "</span>" })
+             
+             document.getElementById('recon').innerHTML = "<br><br><br>"+extable1 +"</table><br><b>Amount Received but Application Not Received - All Members</b>"+ extable2 + "</table>"
+             document.getElementById('details').innerHTML =  membList + "</table><br><br>"
+        }
+getMyData()
+        
+        function toTitleCase(str) {
+  return str.replace(
+    /\w\S*/g,
+    function(txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    }
+  );
+}
+function nameclick(srno){
+//alert(srno)
+ document.getElementById('details').innerHTML =  ""
+  membData = tempData.filter(a => a.srno === srno* 1)
+   dob = new Date(membData[0].dob)
+   spdob = new Date(membData[0].spdob)
+   nomdob = new Date(membData[0].nomdob)
+    dob=dob.getDate()+'-'+monthsArray[dob.getMonth()+1]+'-'+dob.getFullYear()
+    spdob=spdob.getDate()+'-'+monthsArray[spdob.getMonth()+1]+'-'+spdob.getFullYear()
+    nomdob=nomdob.getDate()+'-'+monthsArray[nomdob.getMonth()+1]+'-'+nomdob.getFullYear()
+    //bm= mydata.bm?mydata.bm:0;
+ indMember=`<br><br><br><table border=1>
+<tr><td> SR No:<td>${membData[0].srno} 
+ <tr><td> Name:<td>${membData[0].name}
+ <tr><td> Date of Birth:<td>${dob} 
+ <tr><td> Spouse Name:<td>${membData[0].spname} 
+ <tr><td> Spouse Date of Birth:<td>${membData[0].spname.length>0?spdob:""} 
+ <tr><td> Adhar :<td>${membData[0].adhar} 
+ <tr><td> PAN:<td>${membData[0].pan} 
+ <tr><td> Mobile No:<td>${membData[0].mobile} 
+ <tr><td> Email ID:<td>${membData[0].email} 
+ <tr><td> Address:<td>${membData[0].address} 
+ <tr><td> City:<td>${membData[0].city} 
+ <tr><td> PIN Code:<td>${membData[0].pincode} 
+ <tr><td> Insurance Base:<td>Rs.${membData[0].base} 
+ <tr><td> Super Topup:<td>Rs.${membData[0].topup} 
+ <tr><td> Premium Paid:<td>Rs.${membData[0].premium} 
+ <tr><td> Nominee Name:<td>${membData[0].nomname} 
+ <tr><td> Nominee DOB:<td>${nomdob} 
+ <tr><td> Nominee Relation:<td>${membData[0].nomrelation}
+<tr><td> Retired from:<td>${membData[0].bankname}
+
+
+ </table><br><br><br>
+  
+ `
+ 
+ document.getElementById('details').innerHTML =indMember
+ document.getElementById("bottomdiv").style.display = "block";
+ 
+}
+ 
+ function homeClick(){
+ document.getElementById('details').innerHTML =  membList + "</table><br><br>"
+ document.getElementById("bottomdiv").style.display = "none";
+ }
+ 
+ 
+ 
+    </script>
+</body>
+
+</html>
