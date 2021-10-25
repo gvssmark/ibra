@@ -2,6 +2,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html>
 
@@ -47,6 +48,7 @@ body {
 color: white;
 display:none;
         }
+.lotclr {color:red;}
 
 </style>
 </head>
@@ -78,7 +80,7 @@ display:none;
     <script>
 
  monthsArray = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-membList="<br><h4 align=center>Click on Name to get Details</h4><table  border=1><tr><td>SR No<td>Name"
+membList="<br><h4 align=center>Click on Name to get Details</h4><table  border=1><tr><td>Slno<td>SR No<td>Name<td>Lot"
   //  https://script.google.com/macros/s/AKfycbwJ1VlGrnkV1Gv4Jei1OBHPjCLPjjJ6-Kc_BnEUcvhaUtGRYFg/exec
         url = 'https://script.google.com/macros/s/AKfycbwJ1VlGrnkV1Gv4Jei1OBHPjCLPjjJ6-Kc_BnEUcvhaUtGRYFg/exec'
         async function getMyData() {
@@ -97,8 +99,8 @@ extable2="<table border=1>"
 for (i=2; i<extradata.length; i++){
 extable2 += `<tr><td>${extradata[i][0]}<td>${extradata[i][1]}`
 }
-          
-             tempData.forEach(function (a) { membList += "<tr><td>" + a.srno +"<td> <span onClick='nameclick(this.id)' id=" + a.srno + ">" + toTitleCase(a.name) + "</span>" })
+          slno=0
+             tempData.forEach(function (a,b) { membList += "<tr><td>"+ ++slno +"<td>" + a.srno +"<td> <span onClick='nameclick(this.id)' id=" + a.srno + ">" + toTitleCase(a.name) + "</span>" +"<td class='lotclr'>" + a.lot  })
              
              document.getElementById('recon').innerHTML = "<br><br><br>"+extable1 +"</table><br><b>Amount Received but Application Not Received </b>"+ extable2 + "</table>"
              document.getElementById('details').innerHTML =  membList + "</table><br><br>"
