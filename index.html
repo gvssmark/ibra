@@ -503,12 +503,12 @@ srnonil.innerHTML=noSrno.length
             document.getElementById('pdivplacesTable').innerHTML = placesTemp
             penbrTemp = "<table  border=1 id='penBr'>" + penbrs + "</table>"
             document.getElementById('ppenbrs').innerHTML = penbrTemp;
-            vsp = activeMembers.filter(a => a.area === "VSP").map(a => ({ id: a.id, name: a.name, fampen:a.fampen  }));
-          vij = activeMembers.filter(a => a.area === "VIJ").map(a => ({ id: a.id, name: a.name, fampen:a.fampen  }));
-          god = activeMembers.filter(a => a.area === "GOD").map(a => ({ id: a.id, name: a.name, fampen:a.fampen  }));
-          seema = activeMembers.filter(a => a.area === "SEEMA").map(a => ({ id: a.id, name: a.name , fampen:a.fampen }));
-          hyd = activeMembers.filter(a => a.area === "HYD").map(a => ({ id: a.id, name: a.name, fampen:a.fampen  }));
-          oth = activeMembers.filter(a => a.area === "OTH").map(a => ({ id: a.id, name: a.name , fampen:a.fampen }));
+          vsp = activeMembers.filter(a => a.area.substr(0,3) === "VSP").map(a => ({ id: a.id, name: a.name, fampen:a.fampen  }));
+          vij = activeMembers.filter(a => a.area.substr(0,3) === "VIJ").map(a => ({ id: a.id, name: a.name, fampen:a.fampen  }));
+          god = activeMembers.filter(a => a.area.substr(0,3) === "GOD").map(a => ({ id: a.id, name: a.name, fampen:a.fampen  }));
+          seema = activeMembers.filter(a => a.area.substr(0,4) === "SEEMA").map(a => ({ id: a.id, name: a.name , fampen:a.fampen }));
+          hyd = activeMembers.filter(a => a.area.substr(0,3) === "HYD").map(a => ({ id: a.id, name: a.name, fampen:a.fampen  }));
+          oth = activeMembers.filter(a => a.area.substr(0,3) === "OTH").map(a => ({ id: a.id, name: a.name , fampen:a.fampen }));
 eab = activeMembers.filter(a => a.area.substr(-3).toUpperCase() === "EAB").map(a => ({ id: a.id, name: a.name , fampen:a.fampen }));
          
           blank = activeMembers.filter(a => a.area === "BLANK").map(a => ({ id: a.id, name: a.name, fampen:a.fampen  }));
