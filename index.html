@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html>
 
@@ -12,7 +13,7 @@
     <style>
 mark{background:blue; color:white}
 body {
-            width: 360px;
+            width: 100%;
             background-color: #fff2cc;
             margin-left: 0px;
             font-size:small;
@@ -65,7 +66,7 @@ body {
 
         #topHead {
             text-align: center;
-            width: 360px;
+            width: 100%;
             height: 50px;
             position: fixed;
             background-color: red;
@@ -74,7 +75,7 @@ body {
         }
 
         #div2 {
-            width: 360px;
+            width: 100%;
             margin-left: 1px;
             position: center;
             ;
@@ -95,7 +96,7 @@ body {
         }
 
         .container {
-            width: 360px;
+            width: 100%;
             display: block;
         }
 
@@ -125,7 +126,7 @@ body {
         #myInput {
             margin-top: 80px;
             width: 50%;
-            margin-left: 25%;
+            margin-left: 20%;
             height: 30px;
             border-radius: 15px;
             background-color: cyan;
@@ -139,7 +140,7 @@ body {
         }
 
         #ec {
-            width: 360px;
+            width: 100%;
             display: none
         }
 
@@ -147,7 +148,7 @@ body {
             bottom: 0px;
             background: green;
             position: fixed;
-            width: 360px;
+            width: 100%;
             height: 40px;
 
         }
@@ -192,7 +193,7 @@ body {
             font-size: 16px;
             margin: 4px 2px;
             cursor: pointer;
-            width: 300px;
+            width: 80%;
             margin-left: 30px;
         }
 
@@ -228,7 +229,7 @@ body {
             /* Location of the box */
             left: 0;
             top: 0;
-            width: 360px;
+            width: 100%;
             /* Full width */
             height: 100%;
             /* Full height */
@@ -338,7 +339,7 @@ li {
 
     <div id="divFamPen">
         <br><br>
- <div style="background:powderblue; width:360px;   height:56px; margin-top:40px; top:0; position:fixed; ">
+ <div style="background:powderblue; width:100%;   height:56px; margin-top:40px; top:0; position:fixed; ">
       <input type="text" id='fampenSearch' onkeyup="filterFamPensionerName()"
         style="margin-top:5px; width:180px; margin-left:25%; height:30px; border-radius:15px;  background-color: white;  border:0px;  outline:0;  "
         placeholder="Search Service / Family Pensioner...">
@@ -391,7 +392,7 @@ li {
     </div>
     <div id="ec">
     
-      <iframe style="height:100%; width:100%;;"src="https://gvssmark.github.io/ibra/committee.html" allowTransparency="true" background="transparent"></iframe>
+      <iframe style="height:600px;width:100% ;"src="https://gvssmark.github.io/ibra/committee.html" allowTransparency="true" background="transparent"></iframe>
         
         <br>
     </div>
@@ -405,7 +406,7 @@ li {
 </div>
 
 <div id="regions" style="display:none">
-<div style="background:powderblue; top:0; width:370px; height:40px; overflow:auto; position:fixed;  ">
+<div style="background:powderblue; top:0; ; height:40px; overflow:auto; position:fixed; width: 100%; ">
 <ul>
   <li onclick="selectedRegion(allmemb,0)"  class="list active" >All</li>
   <li  onclick="selectedRegion(vsp,1)" class="list" >VSP</li>
@@ -421,13 +422,13 @@ li {
 
 </ul>
 </div>
-<div style="background:powderblue; width:360px;   height:65px; margin-top:40px; top:0; position:fixed; ">
+<div style="background:powderblue; ;   height:65px; margin-top:40px; top:0; position:fixed; width:100% ">
       <input type="text" id='input_fitterName' onkeyup="fiterName()"
         style="margin-top:5px; width:180px; margin-left:25%; height:30px; border-radius:15px;  background-color: white;  border:0px;  outline:0;  "
         placeholder="Search for a Member here...">
         <h4 id='regionHeading'align=center style="margin-top:3px;"></h4>
     </div>
-   <div style="width:360px; margin-top:105px; background:powderblue;">
+   <div style="; margin-top:105px; background:powderblue;">
    <p id=paraInThisRegion></p>
    </div>
    
@@ -700,7 +701,7 @@ document.getElementById("divpenbrs").style.display = "none";
    famPensionersCount = array.filter(a =>a.fampen.length>0).length
 regions=["All", "Visakhapatnam", "Godavari", "Vijayawada", "Seema", "Hyderabad", "Other States","e Allahabad","Membershipwise"]
 document.getElementById('regionHeading').innerHTML="Memebers in "+ regions[n]+ " Region<span class='badge'>"+array.length+"</span><span class='badge1'>" +famPensionersCount+"</span>"
-inThisRegion="<table id='regionTable' width=358 border=1>"
+inThisRegion="<table id='regionTable'  border=1>"
 array.forEach(function (a) { inThisRegion += "<tr class='"+ (a.fampen.length>0 ? "fam" : "ser") +"'><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "<td>" + a.id + "</span></td></tr>" })
 inThisRegion +="</table><br><br><br>" 
 document.getElementById('paraInThisRegion').innerHTML=inThisRegion
