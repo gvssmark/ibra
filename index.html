@@ -508,7 +508,7 @@ srnonil.innerHTML=noSrno.length
           seema = activeMembers.filter(a => a.area === "SEEMA").map(a => ({ id: a.id, name: a.name , fampen:a.fampen }));
           hyd = activeMembers.filter(a => a.area === "HYD").map(a => ({ id: a.id, name: a.name, fampen:a.fampen  }));
           oth = activeMembers.filter(a => a.area === "OTH").map(a => ({ id: a.id, name: a.name , fampen:a.fampen }));
-eab = activeMembers.filter(a => a.area.substr(-3) === "eAB").map(a => ({ id: a.id, name: a.name , fampen:a.fampen }));
+eab = activeMembers.filter(a => a.area.substr(-3).toUpperCase() === "EAB").map(a => ({ id: a.id, name: a.name , fampen:a.fampen }));
          
           blank = activeMembers.filter(a => a.area === "BLANK").map(a => ({ id: a.id, name: a.name, fampen:a.fampen  }));
           allMembNoWise=activeMembers.map(a => ({ id: a.id, name: a.name, fampen:a.fampen  })).sort(function(a,b){return a.id - b.id})
