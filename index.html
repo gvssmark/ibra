@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 
@@ -404,7 +405,7 @@ li {
 </div>
 
 <div id="regions" style="display:none">
-<div style="background:powderblue; top:0; width:360px; height:40px; overflow:auto; position:fixed;  ">
+<div style="background:powderblue; top:0; width:370px; height:40px; overflow:auto; position:fixed;  ">
 <ul>
   <li onclick="selectedRegion(allmemb,0)"  class="list active" >All</li>
   <li  onclick="selectedRegion(vsp,1)" class="list" >VSP</li>
@@ -413,7 +414,9 @@ li {
   <li onclick="selectedRegion(seema,4)"  class="list" >SEEMA</li>
   <li  onclick="selectedRegion(hyd,5)" class="list" >HYD</li>
   <li  onclick="selectedRegion(oth,6)" class="list" >OTH</li>
-  <li  onclick="selectedRegion(allMembNoWise,7)" class="list" >MemNo</li>
+<li  onclick="selectedRegion(eab,7)" class="list" >eAB</li>
+  
+  <li  onclick="selectedRegion(allMembNoWise,8)" class="list" >MemNo</li>
   
 
 </ul>
@@ -505,6 +508,8 @@ srnonil.innerHTML=noSrno.length
           seema = activeMembers.filter(a => a.area === "SEEMA").map(a => ({ id: a.id, name: a.name , fampen:a.fampen }));
           hyd = activeMembers.filter(a => a.area === "HYD").map(a => ({ id: a.id, name: a.name, fampen:a.fampen  }));
           oth = activeMembers.filter(a => a.area === "OTH").map(a => ({ id: a.id, name: a.name , fampen:a.fampen }));
+eab = activeMembers.filter(a => a.area.substr(-3) === "eAB").map(a => ({ id: a.id, name: a.name , fampen:a.fampen }));
+         
           blank = activeMembers.filter(a => a.area === "BLANK").map(a => ({ id: a.id, name: a.name, fampen:a.fampen  }));
           allMembNoWise=activeMembers.map(a => ({ id: a.id, name: a.name, fampen:a.fampen  })).sort(function(a,b){return a.id - b.id})
 allmemb = activeMembers.map(a => ({ id: a.id, name: a.name , fampen:a.fampen }));
@@ -693,7 +698,7 @@ document.getElementById("divpenbrs").style.display = "none";
    function selectedRegion(array,n){
    document.documentElement.scrollTop = 0;
    famPensionersCount = array.filter(a =>a.fampen.length>0).length
-regions=["All", "Visakhapatnam", "Godavari", "Vijayawada", "Seema", "Hyderabad", "Other States","Membershipwise"]
+regions=["All", "Visakhapatnam", "Godavari", "Vijayawada", "Seema", "Hyderabad", "Other States","e Allahabad","Membershipwise"]
 document.getElementById('regionHeading').innerHTML="Memebers in "+ regions[n]+ " Region<span class='badge'>"+array.length+"</span><span class='badge1'>" +famPensionersCount+"</span>"
 inThisRegion="<table id='regionTable' width=358 border=1>"
 array.forEach(function (a) { inThisRegion += "<tr class='"+ (a.fampen.length>0 ? "fam" : "ser") +"'><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "<td>" + a.id + "</span></td></tr>" })
