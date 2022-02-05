@@ -488,9 +488,9 @@ document.getElementById("regions").style.display = "block";
             activeMembers = tempData.filter(a => a.name !== "")
                 .sort(function (a, b) { return a.name.localeCompare(b.name) });
 //activeMembers.forEach(function(element){element.pentype = (element.fampen.length>0 ? "fam" : "ser")})
-            familyPensioners = activeMembers.filter(a => a.fampen !== "").map(a => ({ id: a.id, name: a.name, fampen: a.fampen }));
+        //    familyPensioners = activeMembers.filter(a => a.fampen !== "").map(a => ({ id: a.id, name: a.name, fampen: a.fampen }));
             activeMembers.forEach(function(element){element.IBorEAB = (element.area.substr(-3).toUpperCase() ==='EAB' ? "EAB" : "IB"), element.pentype = (element.fampen.length>0 ? "fam" : "ser")})
-
+familyPensioners = activeMembers.filter(a => a.fampen !== "").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB  }));
             noSbac = activeMembers.filter(a => a.sbac === "").map(a => ({ id: a.id, name: a.name, pentype: a.pentype }));
             noPensionBr = activeMembers.filter(a => a.pensionbr === "").map(a => ({ id: a.id, name: a.name, pentype: a.pentype }));
             noSrno = activeMembers.filter(a => a.srno === "").map(a => ({ id: a.id, name: a.name, pentype: a.pentype }));
@@ -511,7 +511,8 @@ srnonil.innerHTML=noSrno.length
             PensionDrawingBranch.forEach(function (val,index) { penbrs += "<tr><td><span onClick='penBrClick(this.id)'  id='"+index+"'>" + val +"</span>" })
 
             famPensionerList = ""
-            familyPensioners.forEach(function (a) { famPensionerList += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + " (<mark>"+a.fampen+ "</mark>)</span></td></tr>" })
+            //familyPensioners.forEach(function (a) { famPensionerList += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + " (<mark>"+a.fampen+ "</mark>)</span></td></tr>" })
+            familyPensioners.forEach(function (a) { famPensionerList += "<tr><td class="+ (a.ibeab === 'EAB' ? "ibeab" : " ")+"><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + " (<mark>"+a.fampen+ "</mark>)</span></td></tr>" })
             noAccountNo = ""
             noSbac.forEach(function (a) { noAccountNo += "<tr class='" + a.pentype +"'><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span><td>No Ac No</tr>" })
             noSrNo = ""
