@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html>
 
@@ -21,7 +22,9 @@ body {
         }
          a{text-decoration:none;}
 
-        .fam{background:yellow}
+        .fam{background:yellow;}
+        .ibeab {background:pink;}
+        
 .active, .btn:hover {
   background-color: red;
   color: white;
@@ -63,6 +66,24 @@ body {
     top: -3px;
     }
 
+
+.eabbadge{
+  display: inline-block;
+   padding: 0;
+    width: 25px;
+    height: 25px;    
+    line-height: 25px;
+    font-size: small;
+    font-weight: lighter !important;
+    color: black !important;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    background-color: pink;
+    border-radius:50px;
+//    position: relative;
+    top: -3px;
+    }
 
         #topHead {
             text-align: center;
@@ -466,8 +487,10 @@ document.getElementById("regions").style.display = "block";
             tempData = data["user"]
             activeMembers = tempData.filter(a => a.name !== "")
                 .sort(function (a, b) { return a.name.localeCompare(b.name) });
-activeMembers.forEach(function(element){element.pentype = (element.fampen.length>0 ? "fam" : "ser")})
+//activeMembers.forEach(function(element){element.pentype = (element.fampen.length>0 ? "fam" : "ser")})
             familyPensioners = activeMembers.filter(a => a.fampen !== "").map(a => ({ id: a.id, name: a.name, fampen: a.fampen }));
+            activeMembers.forEach(function(element){element.IBorEAB = (element.area.substr(-3).toUpperCase() ==='EAB' ? "EAB" : "IB"), element.pentype = (element.fampen.length>0 ? "fam" : "ser")})
+
             noSbac = activeMembers.filter(a => a.sbac === "").map(a => ({ id: a.id, name: a.name, pentype: a.pentype }));
             noPensionBr = activeMembers.filter(a => a.pensionbr === "").map(a => ({ id: a.id, name: a.name, pentype: a.pentype }));
             noSrno = activeMembers.filter(a => a.srno === "").map(a => ({ id: a.id, name: a.name, pentype: a.pentype }));
@@ -503,17 +526,17 @@ srnonil.innerHTML=noSrno.length
             document.getElementById('pdivplacesTable').innerHTML = placesTemp
             penbrTemp = "<table  border=1 id='penBr'>" + penbrs + "</table>"
             document.getElementById('ppenbrs').innerHTML = penbrTemp;
-          vsp = activeMembers.filter(a => a.area.substr(0,3) === "VSP").map(a => ({ id: a.id, name: a.name, fampen:a.fampen  }));
-          vij = activeMembers.filter(a => a.area.substr(0,3) === "VIJ").map(a => ({ id: a.id, name: a.name, fampen:a.fampen  }));
-          god = activeMembers.filter(a => a.area.substr(0,3) === "GOD").map(a => ({ id: a.id, name: a.name, fampen:a.fampen  }));
-          seema = activeMembers.filter(a => a.area.substr(0,5) === "SEEMA").map(a => ({ id: a.id, name: a.name , fampen:a.fampen }));
-          hyd = activeMembers.filter(a => a.area.substr(0,3) === "HYD").map(a => ({ id: a.id, name: a.name, fampen:a.fampen  }));
-          oth = activeMembers.filter(a => a.area.substr(0,3) === "OTH").map(a => ({ id: a.id, name: a.name , fampen:a.fampen }));
-eab = activeMembers.filter(a => a.area.substr(-3).toUpperCase() === "EAB").map(a => ({ id: a.id, name: a.name , fampen:a.fampen }));
+          vsp = activeMembers.filter(a => a.area.substr(0,3) === "VSP").map(a => ({ id: a.id, name: a.name, fampen:a.fampen,ibeab: a.IBorEAB  }));
+          vij = activeMembers.filter(a => a.area.substr(0,3) === "VIJ").map(a => ({ id: a.id, name: a.name, fampen:a.fampen, ibeab: a.IBorEAB  }));
+          god = activeMembers.filter(a => a.area.substr(0,3) === "GOD").map(a => ({ id: a.id, name: a.name, fampen:a.fampen , ibeab: a.IBorEAB  }));
+          seema = activeMembers.filter(a => a.area.substr(0,5) === "SEEMA").map(a => ({ id: a.id, name: a.name , fampen:a.fampen , ibeab: a.IBorEAB }));
+          hyd = activeMembers.filter(a => a.area.substr(0,3) === "HYD").map(a => ({ id: a.id, name: a.name, fampen:a.fampen , ibeab: a.IBorEAB  }));
+          oth = activeMembers.filter(a => a.area.substr(0,3) === "OTH").map(a => ({ id: a.id, name: a.name , fampen:a.fampen, ibeab: a.IBorEAB  }));
+eab = activeMembers.filter(a => a.area.substr(-3).toUpperCase() === "EAB").map(a => ({ id: a.id, name: a.name , fampen:a.fampen, ibeab: a.IBorEAB  }));
          
-          blank = activeMembers.filter(a => a.area === "BLANK").map(a => ({ id: a.id, name: a.name, fampen:a.fampen  }));
-          allMembNoWise=activeMembers.map(a => ({ id: a.id, name: a.name, fampen:a.fampen  })).sort(function(a,b){return a.id - b.id})
-allmemb = activeMembers.map(a => ({ id: a.id, name: a.name , fampen:a.fampen }));
+          blank = activeMembers.filter(a => a.area === "BLANK").map(a => ({ id: a.id, name: a.name, fampen:a.fampen , ibeab: a.IBorEAB  }));
+          allMembNoWise=activeMembers.map(a => ({ id: a.id, name: a.name, fampen:a.fampen, ibeab: a.IBorEAB   })).sort(function(a,b){return a.id - b.id})
+allmemb = activeMembers.map(a => ({ id: a.id, name: a.name , fampen:a.fampen, ibeab: a.IBorEAB  }));
 selectedRegion(allmemb,0)
         }
         penbrTemp = ""
@@ -579,7 +602,7 @@ document.getElementById("divpenbrs").style.display = "none";
             document.getElementById("myInput").value = ""
             membno = membershipNo * 1 - 1;
             membData = tempData.filter(a => a.id === membershipNo * 1)
-            toDisplay += "<tr><td colspan=2><b>Name</b> " + membData[0].name + " (" + membData[0].id + " )"
+            toDisplay += "<tr><td colspan=2><b>Membership No</b> "  + membData[0].id 
             toDisplay += "<tr><td colspan='2'><b>Address: </b><br>" + membData[0].add1 + "<br>"
             if (membData[0].add2.length > 0) { toDisplay += membData[0].add2 + "<br>" }
             if (membData[0].add3.length > 0) { toDisplay += membData[0].add3 + "<br>" }
@@ -601,7 +624,10 @@ document.getElementById("divpenbrs").style.display = "none";
             toDisplay += "<tr bgcolor=yellow><td colspan=2><b>Family Pension of :</b>" + membData[0].fampen
             }
             toDisplay += "<tr><td colspan=2><b>Pension Acc: </b> " + membData[0].sbac
-            toDisplay += "<tr><td colspan=2><b>Area: </b> " + membData[0].area
+            whichBank = membData[0].IBorEAB === 'IB' ? "Indian Bank":"e Allahabad Bank"
+            toDisplay += "<tr><td colspan=2><b>Retired from : </b> " + whichBank
+            toDisplay += "<tr><td colspan=2><b>Region : </b> " + membData[0].area.substr(0,3)
+            
 //.toString()
 //.replace(/\b[\dX][-. \dX]+(\d{4})\b/g, '******** $1') + "<br>"
             document.getElementById("buttonsDiv").style.display = "none";
@@ -700,13 +726,15 @@ document.getElementById("divpenbrs").style.display = "none";
    function selectedRegion(array,n){
    document.documentElement.scrollTop = 0;
    famPensionersCount = array.filter(a =>a.fampen.length>0).length
+   eabcount = array.filter(a =>a.ibeab === 'EAB' ).length
 regions=["All", "Visakhapatnam", "Godavari", "Vijayawada", "Seema", "Hyderabad", "Other States","e Allahabad","Membershipwise"]
-document.getElementById('regionHeading').innerHTML="Memebers in "+ regions[n]+ " Region<span class='badge'>"+array.length+"</span><span class='badge1'>" +famPensionersCount+"</span>"
+document.getElementById('regionHeading').innerHTML="Memebers in "+ regions[n]+ " Region<span class='badge'>"+array.length+"</span><span class='badge1'>" +famPensionersCount+"</span> <span class='eabbadge'>" +eabcount+"</span>"
 inThisRegion="<table id='regionTable'  border=1>"
-array.forEach(function (a) { inThisRegion += "<tr class='"+ (a.fampen.length>0 ? "fam" : "ser") +"'><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "<td>" + a.id + "</span></td></tr>" })
+array.forEach(function (a) { inThisRegion += "<tr ><td class='"+ (a.fampen.length>0 ? "fam" : "ser") +"'><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "<td class='"+ (a.ibeab === 'EAB' ? "ibeab" : "")+"'>" + a.id + "</span></td></tr>" })
 inThisRegion +="</table><br><br><br>" 
 document.getElementById('paraInThisRegion').innerHTML=inThisRegion
 }
+//IBorEAB
 
  function filterFamPensionerName() {
       var input, filter, table, tr, td, i, txtValue;
@@ -766,3 +794,4 @@ document.getElementById('paraInThisRegion').innerHTML=inThisRegion
 </body>
 
 </html>
+
