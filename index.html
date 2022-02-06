@@ -556,8 +556,8 @@ personsHere=""
 
 for (i=0; i<unqPinCodes.length; i++){
 thispincode=inThisPlace.filter(a =>a.pincode === unqPinCodes[i]) 
-personsHere += "<tr bgcolor=cyan><td>"+inThisPlace[0].place +"-" + unqPinCodes[i]+"<span class='badge'>" +thispincode.length+"</span>"
-thispincode.forEach(function (a) { personsHere += "<tr class='" + a.pentype +"'><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td></tr>" })
+personsHere += "<tr bgcolor=cyan><td colspan=2 align=center>"+inThisPlace[0].place +"-" + unqPinCodes[i]+"<span class='badge'>" +thispincode.length+"</span>"
+thispincode.forEach(function (a) { personsHere += "<tr><td class= '" + a.pentype +"'><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name+ "</span></td><td>"+a.id+"</tr>" })
 }
 
 document.getElementById('ParapersonsInThisCity').innerHTML="<br><br><h4 align=center><span class='badge'>"+numberInThisPlace+"</span>Retirees Living in   <b>"+ town+"</b></h4><table  border=1>" + personsHere +"</table><br><br><br>" 
