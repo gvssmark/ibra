@@ -1,6 +1,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html>
 
@@ -494,19 +495,20 @@ familyPensioners = activeMembers.filter(a => a.fampen !== "").map(a => ({ id: a.
             noSbac = activeMembers.filter(a => a.sbac === "").map(a => ({ id: a.id, name: a.name, pentype: a.pentype }));
             noPensionBr = activeMembers.filter(a => a.pensionbr === "").map(a => ({ id: a.id, name: a.name, pentype: a.pentype }));
             noSrno = activeMembers.filter(a => a.srno === "").map(a => ({ id: a.id, name: a.name, pentype: a.pentype }));
-            allplaces = activeMembers.filter(a => a.place !== "").map(a => a.place);
+      //     allplaces = activeMembers.filter(a => a.place !== "").map(a => a.place);
 
      
 penacno.innerHTML=noSbac.length
 penbrno.innerHTML=noPensionBr.length
 srnonil.innerHTML=noSrno.length    
-
-            LivingIn = unq(allplaces).sort();
+ //           LivingIn = unq(allplaces).sort();
+  //          LivingIn = unq(LivingIn.map(function (e) {     return e.toUpperCase()}));
+LivingIn = unq(activeMembers.filter(a => a.place !== "").map(a => a.place.toUpperCase()).sort());
             placesTable = ""
              LivingIn.forEach(function (val,index) { placesTable += "<tr><td><span onClick='funCityPerson(this.id)'  id='"+index+"'>" + val +"</span>" })
 
-            allPenBranches = activeMembers.filter(a => a.pensionbr !== "").map(a => a.pensionbr);
-            PensionDrawingBranch = unq(allPenBranches).sort();
+           // allPenBranches = activeMembers.filter(a => a.pensionbr !== "").map(a => a.pensionbr);
+            PensionDrawingBranch = unq(activeMembers.filter(a => a.pensionbr !== "").map(a => a.pensionbr.toUpperCase())).sort();
             penbrs = ""
             PensionDrawingBranch.forEach(function (val,index) { penbrs += "<tr><td><span onClick='penBrClick(this.id)'  id='"+index+"'>" + val +"</span>" })
 
@@ -546,7 +548,7 @@ selectedRegion(allmemb,0)
 function funCityPerson(a){
 town=LivingIn[a]
 
-inThisPlace=activeMembers.filter(a => a.place === town)
+inThisPlace=activeMembers.filter(a => a.place.toUpperCase() === town)
 numberInThisPlace=inThisPlace.length;
     unqPinCodes = unq(inThisPlace.map(a => a.pincode).sort())
 
@@ -567,7 +569,7 @@ document.getElementById("divplacesTable").style.display = "none";
 penbrIndex=0;
 function penBrClick(penbrIndex){
 i=PensionDrawingBranch[penbrIndex]
-drawingPensionHere = activeMembers.filter(a => a.pensionbr === i)
+drawingPensionHere = activeMembers.filter(a => a.pensionbr.toUpperCase() === i)
 inthisBranch=""
 drawingPensionHere.forEach(function (a) { inthisBranch += "<tr class='" + a.pentype +"'><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span></td></tr>" })
 
