@@ -731,8 +731,7 @@ document.getElementById("divpenbrs").style.display = "none";
 regions=["All", "Visakhapatnam", "Godavari", "Vijayawada", "Seema", "Hyderabad", "Other States","e Allahabad","Membershipwise"]
 document.getElementById('regionHeading').innerHTML="Memebers in "+ regions[n]+ " Region<span class='badge'>"+array.length+"</span><span class='badge1'>" +famPensionersCount+"</span> <span class='eabbadge'>" +eabcount+"</span>"
 inThisRegion="<table id='regionTable'  border=1>"
-array.forEach(function (a) { inThisRegion += "<tr ><td class='"+ (a.fampen.length>0 ? "fam" : "ser") +"'><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "<td class='"+ (a.ibeab === 'EAB' ? "ibeab" : "")+"'>" + a.id + "</span></td></tr>" })
-inThisRegion +="</table><br><br><br>" 
+array.forEach(function (a) { inThisRegion += "<tr ><td class='"+ (a.fampen.length>0 ? "fam" : "ser") +"'><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + (a.fampen.length>0 ? " -- <mark>"+a.fampen+"</mark>" : "")+ "<td class='"+ (a.ibeab === 'EAB' ? "ibeab" : "")+"'>" + a.id + "</span></td></tr>" })inThisRegion +="</table><br><br><br>" 
 document.getElementById('paraInThisRegion').innerHTML=inThisRegion
 }
 //IBorEAB
