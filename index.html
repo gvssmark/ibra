@@ -290,9 +290,9 @@ body {
             cursor: pointer;
         }
         
-        #t1 {background:  cyan;}
-        #t2 {background: cyan ;}
-        #t3 {background: pink;}
+        #t1 {background:  0cyan;}
+        #t2 {background: 0cyan ;}
+        #t3 {background: 0pink;}
         
         
 ul {
@@ -516,11 +516,11 @@ LivingIn = unq(activeMembers.filter(a => a.place !== "").map(a => a.place.toUppe
             //familyPensioners.forEach(function (a) { famPensionerList += "<tr><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + " (<mark>"+a.fampen+ "</mark>)</span></td></tr>" })
             familyPensioners.forEach(function (a) { famPensionerList += "<tr><td class="+ (a.ibeab === 'EAB' ? "ibeab" : " ")+"><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + " (<mark>"+a.fampen+ "</mark>)</span></td></tr>" })
             noAccountNo = ""
-            noSbac.forEach(function (a) { noAccountNo += "<tr class='" + a.pentype +"'><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span><td>No Ac No</tr>" })
+            noSbac.forEach(function (a) { noAccountNo += "<tr class='" + a.pentype +"'><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span><td>"+ a.id +"</tr>" })
             noSrNo = ""
-            noSrno.forEach(function (a) { noSrNo += "<tr class='" + a.pentype +"'><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span><td>No SR No</tr>" })
+            noSrno.forEach(function (a) { noSrNo += "<tr class='" + a.pentype +"'><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span><td>"+ a.id +"</tr>" })
             noBranch = ""
-            noPensionBr.forEach(function (a) { noBranch += "<tr class='" + a.pentype +"'><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span><td>No Branch</tr>" })
+            noPensionBr.forEach(function (a) { noBranch += "<tr class='" + a.pentype +"'><td><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + "</span><td>"+ a.id +"</tr>" })
             document.getElementById('fampenlist').innerHTML = "<table border=1 id='fampentable'>" + famPensionerList + "</table><br><br>"
             document.getElementById('penac').innerHTML = "<table id='t1' border=1>" + noAccountNo + "</table><br><br>"
             document.getElementById('nilSRNo').innerHTML = "<table id='t2' border=1>" + noSrNo + "</table><br><br><br><br>"
