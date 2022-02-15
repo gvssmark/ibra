@@ -3,6 +3,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,6 +20,23 @@
             border: 1px soild black;
             
         }
+        .insurancebadge{
+  display: inline-block;
+   padding: 0;
+    width: 10px;
+    height: 10px;    
+    line-height: 10px;
+    font-size: small;
+    font-weight: lighter !important;
+    color: green !important;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    background-color: green;
+    border-radius:50px;
+//    position: relative;
+    top: -3px;
+    }
 ul {  list-style-type: none;  margin: 0;  padding: 0;  overflow: hidden;  background-color: #333;}
 li {  float: left;}
 .list{  display: block;  color: white;  text-align: center;  padding: 8px 10px;  text-decoration: none;}
@@ -76,12 +94,15 @@ insdata.sort(function (a, b) { return a.Name.localeCompare(b.Name) }).sort(funct
  
  
 function selectBank(bankArray){ 
+
+console.table(bankArray) 
 inThisRegion="<table id='regionTable'  border=1>"
-bankArray.forEach(function (a) { inThisRegion += "<tr ><td>" + a.SRNO + "<td>" + a.Name  })
+bankArray.forEach(function (a) { inThisRegion += "<tr ><td>" + a.SRNO + "<td>" + a.Name + (a.member === "Member" ? "&nbsp<span class='insurancebadge'>0</span>": "")
+  })
  inThisRegion +="</table><br><br><br>"
 document.getElementById('insmemb').innerHTML=inThisRegion
 }
-allbanks = unq(insdata.filter(a => a.Bank !== "").map(a =>a.Bank))
+allbanks = unq(oth.filter(a => a.Bank !== "").map(a =>a.Bank))
 
 function alltab(){
 alldata="<table border=1>"
@@ -174,6 +195,7 @@ document.getElementById('insmemb').innerHTML=stable
 </script>
 </body>
 </html>
+
 
 
 
