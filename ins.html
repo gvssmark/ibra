@@ -103,6 +103,16 @@ tmem = insdata.filter(a => a.member === "Member").length
 banksum += "<tr><td>Total<td>"+ tins +"<td>"+ tmem +"<td>"+(tins - tmem)+"</table>"
 document.getElementById('insmemb').innerHTML=banksum
 }
+      
+       var btnContainer = document.getElementById("regions");
+   var btns = btnContainer.getElementsByClassName("list");
+   for (var i = 0; i < btns.length; i++) {
+  btns[i].addEventListener("click", function() {
+    var current = document.getElementsByClassName("active");
+    current[0].className = current[0].className.replace(" active", "");
+    this.className += " active";
+  });
+}
 </script>
 </body>
 </html>
