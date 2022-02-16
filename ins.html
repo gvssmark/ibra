@@ -1,9 +1,3 @@
-
-
-
-
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,7 +12,6 @@
             margin-left: 5px;
             margin-right: 1px;
             border: 1px soild black;
-            
         }
         .insurancebadge{
   display: inline-block;
@@ -41,8 +34,6 @@ ul {  list-style-type: none;  margin: 0;  padding: 0;  overflow: hidden;  backgr
 li {  float: left;}
 .list{  display: block;  color: white;  text-align: center;  padding: 8px 10px;  text-decoration: none;}
 </style>
-
-
 </head>
 <body>
 <div id="regions" style="background:powderblue; top:0; ; height:40px; overflow:auto; position:fixed; width: 100%; ">
@@ -54,10 +45,8 @@ li {  float: left;}
 </ul>
 </div>
 <h3>IBRA Insurance Data</h3>
-
 <p id='insmemb'>This is a paragraph.</p>
 <script>
-
  url = 'https://script.google.com/macros/s/AKfycbzI9SDFOzYLYKRKJTlse0XpsEiF8XfbyxwUUH22evlGkEPDIt2V/exec'
         async function getMyData() {
             response = await fetch(url)
@@ -66,11 +55,8 @@ li {  float: left;}
             activeMembers = tempData.filter(a => a.name !== "")
                 .sort(function (a, b) { return a.name.localeCompare(b.name) });
                 addkey()
-            
                }
-                
                 getMyData()
-               
                  function addkey(){
 for (i=0; i<insdata.length; i++){
 insuredSRNO = insdata[i].SRNO
@@ -79,23 +65,14 @@ mstatus= xx.length>0 ?     "Member" : "not member"
 insdata[i].member= mstatus
 }
 }
-
-
-
                 </script>
                  <script src="https://drive.google.com/uc?id=1EeiSTfOD-0UA4hz1bwKwW2T7KM1XnndG"></script>
-  
 <script>
 insdata.sort(function (a, b) { return a.Name.localeCompare(b.Name) }).sort(function (a, b) { return a.Bank.localeCompare(b.Bank) });
  ib=insdata.filter(a => a.Bank ==="Indian Bank")
  eab=insdata.filter(a => a.Bank ==="e-Allhabad Bank")
  oth=insdata.filter(a => (a.Bank !=="Indian Bank" && a.Bank  !== "e-Allhabad Bank"))
-
- 
- 
 function selectBank(bankArray){ 
-
-console.table(bankArray) 
 inThisRegion="<table id='regionTable'  border=1>"
 bankArray.forEach(function (a) { inThisRegion += "<tr ><td>" + a.SRNO + "<td>" + a.Name + (a.member === "Member" ? "&nbsp<span class='insurancebadge'>0</span>": "")
   })
@@ -103,7 +80,6 @@ bankArray.forEach(function (a) { inThisRegion += "<tr ><td>" + a.SRNO + "<td>" +
 document.getElementById('insmemb').innerHTML=inThisRegion
 }
 allbanks = unq(oth.filter(a => a.Bank !== "").map(a =>a.Bank))
-
 function alltab(){
 alldata="<table border=1>"
 for (i=0; i<allbanks.length; i++){
@@ -113,9 +89,7 @@ tempbank.forEach(function (a) { alldata +="<tr><td>"+a.SRNO+ "<td>" + a.Name
 });
 document.getElementById('insmemb').innerHTML=alldata +"</table>"
 }}
-
 function unq(a) { return Array.from(new Set(a)); }
-
 function albk(){banksum = "<table border=1><tr><td>Bank<td>Insured<td>Memb<td>Non Memb"
 allbanks = unq(insdata.filter(a => a.Bank !== "").map(a =>a.Bank))
 for (i=0; i<allbanks.length; i++){
