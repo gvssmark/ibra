@@ -115,97 +115,19 @@ document.getElementById('insmemb').innerHTML=alldata +"</table>"
 }}
 
 function unq(a) { return Array.from(new Set(a)); }
-//albk()
 
-function albk(){
-tboi = insdata.filter (a => a.Bank ==="Bank Of India")
-tcan = insdata.filter (a => a.Bank ==="Canara Bank")
-tand = insdata.filter (a => a.Bank ==="e Andhra Bank")
-tsyn = insdata.filter (a => a.Bank ==="e Syndicate Bank")
-teab = insdata.filter (a => a.Bank ==="e-Allhabad Bank")
-ticic = insdata.filter (a => a.Bank ==="ICICI BANK")
-tib = insdata.filter (a => a.Bank ==="Indian Bank");
-tiob = insdata.filter (a => a.Bank ==="Indian Overseas Bank")
-tpnb = insdata.filter (a => a.Bank ==="Punjab National Bank")
-tsbi = insdata.filter (a => a.Bank ==="State Bank of India")
-tuco = insdata.filter (a => a.Bank ==="UCO BANK")
-tubi = insdata.filter (a => a.Bank ==="Union Bank of India")
-
-
-
-mboi= tboi.filter (a=> a.member ==="Member").length
-mcan= tcan.filter (a=> a.member ==="Member").length
-mand= tand.filter (a=> a.member ==="Member").length
-msyn= tsyn.filter (a=> a.member ==="Member").length
-meab= teab.filter (a=> a.member ==="Member").length
-micic= ticic.filter (a=> a.member ==="Member").length
-mib= tib.filter (a=> a.member ==="Member").length
-miob= tiob.filter (a=> a.member ==="Member").length
-mpnb= tpnb.filter (a=> a.member ==="Member").length
-msbi= tsbi.filter (a=> a.member ==="Member").length
-muco= tuco.filter (a=> a.member ==="Member").length
-mubi= tubi.filter (a=> a.member ==="Member").length
-
-
-
-stable ="<table border=1>"
-stable += "<tr><td>Bank<td>Insured<td>Memb<td>Non Memb"
-nb = tib.length -mib
-stable += "<tr><td>Indian Bank<td>"+tib.length +"<td>" + mib+"<td>" + nb
-nb = teab.length -meab
-stable += "<tr><td>e-Allhabad Bank<td>"+teab.length +"<td>" + meab+"<td>" + nb
-nb=tboi.length-mboi
-stable += "<tr><td>Bank Of India<td>"+tboi.length +"<td>" + mboi +"<td>" + nb
-nb = tcan.length - mcan
-stable += "<tr><td>Canara Bank<td>"+tcan.length +"<td>" + mcan +"<td>" + nb
-nb = tand.length -mand
-stable += "<tr><td>e Andhra Bank<td>"+tand.length +"<td>" + mand+"<td>" + nb
-nb = tsyn.length -msyn
-stable += "<tr><td>e Syndicate Bank<td>"+tsyn.length +"<td>" + msyn+"<td>" + nb
-
-nb = ticic.length -micic
-stable += "<tr><td>ICICI BANK<td>"+ticic.length +"<td>" + micic+"<td>" + nb
-
-nb = tiob.length -miob
-stable += "<tr><td>Indian Overseas Bank<td>"+tiob.length +"<td>" + miob+"<td>" + nb
-nb = tpnb.length -mpnb
-stable += "<tr><td>Punjab National Bank<td>"+tpnb.length +"<td>" + mpnb+"<td>" + nb
-nb = tsbi.length -msbi
-stable += "<tr><td>State Bank of India<td>"+tsbi.length +"<td>" + msbi+"<td>" + nb
-nb = tuco.length -muco
-stable += "<tr><td>UCO BANK<td>"+tuco.length +"<td>" + muco+"<td>" + nb
-nb = tubi.length -mubi
-stable += "<tr><td>Union Bank of India<td>"+tubi.length +"<td>" + mubi+"<td>" + nb
-stable += "</table>"
-
-document.getElementById('insmemb').innerHTML=stable
+function albk(){banksum = "<table border=1><tr><td>Bank<td>Insured<td>Memb<td>Non Memb"
+allbanks = unq(insdata.filter(a => a.Bank !== "").map(a =>a.Bank))
+for (i=0; i<allbanks.length; i++){
+bankcount = insdata.filter (a => a.Bank === allbanks[i])
+memcount = bankcount.filter (a=> a.member ==="Member").length
+banksum +="<tr><td>" +allbanks[i]+"<td>"+bankcount.length +"<td>" +memcount +"<td>"+ (bankcount.length - memcount)
 }
-
-
-
-
-
-
-
-
-
-
-
-
+tins = insdata.length
+tmem = insdata.filter(a => a.member = "Member").length
+banksum += "<tr><td>Total<td>"+ tins +"<td>"+ tmem +"<td>"+(tins - tmem)+"</table>"
+document.getElementById('insmemb').innerHTML=banksum
+}
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
