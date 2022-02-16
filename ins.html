@@ -98,7 +98,7 @@ memcount = bankcount.filter (a=> a.member ==="Member").length
 banksum +="<tr><td>" +allbanks[i]+"<td>"+bankcount.length +"<td>" +memcount +"<td>"+ (bankcount.length - memcount)
 }
 tins = insdata.length
-tmem = insdata.filter(a => a.member = "Member").length
+tmem = insdata.filter(a => a.member === "Member").length
 banksum += "<tr><td>Total<td>"+ tins +"<td>"+ tmem +"<td>"+(tins - tmem)+"</table>"
 document.getElementById('insmemb').innerHTML=banksum
 }
