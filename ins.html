@@ -85,11 +85,13 @@ bankArray.forEach(function (a) { inThisRegion += "<tr ><td>" + a.SRNO + "<td>" +
 document.getElementById('insmemb').innerHTML=inThisRegion
 }
 allbanks = unq(oth.filter(a => a.Bank !== "").map(a =>a.Bank))
-function alltab(){
+
+      function alltab(){
+            othbanks = unq(oth.filter(a => a.Bank !== "").map(a =>a.Bank))
 alldata="<table border=1>"
-for (i=0; i<allbanks.length; i++){
-tempbank = oth.filter(a => a.Bank === allbanks[i])
-alldata += "<tr><td align=center colspan=2 bgcolor=cyan>"+allbanks[i]+"--"+tempbank.length
+for (i=0; i<othbanks.length; i++){
+tempbank = oth.filter(a => a.Bank === othbanks[i])
+alldata += "<tr><td align=center colspan=2 bgcolor=cyan>"+othbanks[i]+"--"+tempbank.length
 tempbank.forEach(function (a) { alldata +="<tr><td>"+a.SRNO+ "<td>" + a.Name
 });
 document.getElementById('insmemb').innerHTML=alldata +"</table>"
