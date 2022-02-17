@@ -206,7 +206,7 @@ function showSrno(srno){
   thisdata = insdata.filter (a  => a.SRNO === srno*1)
       thisdata=thisdata[0]
 hi = `  <table border=1>
-<tr><td>Name<td>${thisdata.Name}
+<tr><td colspan=2 align=center bgcolor='pink'>${thisdata.Name}
 <tr><td>Retired from<td>${thisdata.Bank}
 <tr><td>SR No<td>${thisdata.SRNO}
 <tr><td>Mobile<td>${thisdata.Mobile}
