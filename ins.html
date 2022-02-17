@@ -204,18 +204,18 @@ function showSrno(srno){
 //alert(a)
  
   thisdata = insdata.filter (a  => a.SRNO === srno*1)
+      thisdata=thisdata[0]
 hi = `  <table border=1>
-<tr><td>Name<td>${thisdata[0].Name}
-<tr><td>Retired from<td>${thisdata[0].Bank}
-<tr><td>SR No<td>${thisdata[0].SRNO}
-<tr><td>Mobile<td>${thisdata[0].Mobile}
-<tr><td>Place<td>${thisdata[0].Place}
-<tr><td>Base Pol<td>${thisdata[0].Base}
-<tr><td>Sup Topup<td>${thisdata[0].STP}
-<tr><td>Single or Family<td>${thisdata[0].SorF}
-<tr><td>Membership No<td>${thisdata[0].MemNo}
-<tr><td>Member<td>${thisdata[0].member}
-</table> `
+<tr><td>Name<td>${thisdata.Name}
+<tr><td>Retired from<td>${thisdata.Bank}
+<tr><td>SR No<td>${thisdata.SRNO}
+<tr><td>Mobile<td>${thisdata.Mobile}
+<tr><td>Place<td>${thisdata.Place}
+<tr><td>Base Policy<td>${thisdata.Base}
+<tr><td>Sup Topup<td>${thisdata.STP}
+<tr><td>Single or Family<td>${thisdata.SorF}
+<tr><td>Membership No<td>${thisdata.MemNo>0?thisdata.MemNo :"Not a Member"}
+      </table> `
 
   document.getElementById('modalcontent').innerHTML=hi
    modal.style.display = "block";
