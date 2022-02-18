@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -90,8 +91,11 @@ li {  float: left;}
 </ul>
 </div>
 <h3>IBRA Insurance Data</h3>
+<div id='inputbox' style="display : none";>
+ <input type="text" id='myInput' placeholder="Search name here..." onkeyup="fiterName()">
+</div>
 <p id='insmemb'>Insurance 2021-22 Data</p>
-
+ 
 
 <!-- The Modal -->
 <div id="myModal" class="modal">
@@ -134,6 +138,7 @@ insdata.sort(function (a, b) { return a.Name.localeCompare(b.Name) }).sort(funct
  eab=insdata.filter(a => a.Bank ==="e-Allhabad Bank")
  oth=insdata.filter(a => (a.Bank !=="Indian Bank" && a.Bank  !== "e-Allhabad Bank"))
 function selectBank(bankArray){ 
+document.getElementById("inputbox").style.display = "block";
 inThisRegion="<table id='regionTable'  border=1>"
 bankArray.forEach(function (a) { inThisRegion += "<tr id='"+a.SRNO+"' onclick='showSrno(this.id)' ><td>" + a.SRNO + "<td>" + a.Name + (a.member === "Member" ? "&nbsp<span class='insurancebadge'>0</span>": "")
   })
@@ -143,6 +148,7 @@ document.getElementById('insmemb').innerHTML=inThisRegion
 allbanks = unq(oth.filter(a => a.Bank !== "").map(a =>a.Bank))
 
       function alltab(){
+      document.getElementById("inputbox").style.display = "none";
             othbanks = unq(oth.filter(a => a.Bank !== "").map(a =>a.Bank))
 alldata="<table border=1>"
 for (i=0; i<othbanks.length; i++){
@@ -153,7 +159,9 @@ tempbank.forEach(function (a) { alldata +="<tr><td>"+a.SRNO+ "<td>" + a.Name
 document.getElementById('insmemb').innerHTML=alldata +"</table>"
 }}
 function unq(a) { return Array.from(new Set(a)); }
-function albk(){banksum = "<table border=1><tr><td>Bank<td>Insured<td>Memb<td>Non Memb"
+function albk(){
+document.getElementById("inputbox").style.display = "none";
+banksum = "<table id='dataTable'  border=1><tr><td>Bank<td>Insured<td>Memb<td>Non Memb"
 allbanks = unq(insdata.filter(a => a.Bank !== "").map(a =>a.Bank))
 for (i=0; i<allbanks.length; i++){
 bankcount = insdata.filter (a => a.Bank === allbanks[i])
@@ -222,6 +230,27 @@ hi = `  <table border=1>
 
   
 }
+
+
+function fiterName() {
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("regionTable");
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[1];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+    }
 </script>
 </body>
 </html>
+
