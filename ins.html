@@ -153,6 +153,7 @@ insdata.sort(function (a, b) { return a.Name.localeCompare(b.Name) }).sort(funct
  eab=insdata.filter(a => a.Bank ==="e-Allhabad Bank")
  oth=insdata.filter(a => (a.Bank !=="Indian Bank" && a.Bank  !== "e-Allhabad Bank"))
 function selectBank(bankArray){ 
+      document.getElementById("myInput").value=""
  document.documentElement.scrollTop = 0;
 document.getElementById("inputbox").style.display = "block";
 inThisRegion="<table id='regionTable'  border=1>"
