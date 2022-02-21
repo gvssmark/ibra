@@ -232,6 +232,7 @@ inThisRegion="<table id='regionTable'  border=1><tr><td>Name<td>SR No"
 array.forEach(function (a) { inThisRegion += "<tr ><td class='"+ (a.fampen.length>0 ? "fam" : "ser") +"'><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name +   (a.fampen.length>0 ? " -- <mark>"+a.fampen+"</mark>" : "")+ "<td class='"+ (a.ibeab === 'EAB' ? "ibeab" : "")+"'>" + a.srno + "</span></td></tr>" })
        inThisRegion +="</table><br><br><br>" 
 document.getElementById('paraInThisRegion').innerHTML=inThisRegion
+	   window.scrollTo(0, 0);
 }
 
 isInsured = (srno) => insdata.filter(a => a.SRNO === srno).length;
