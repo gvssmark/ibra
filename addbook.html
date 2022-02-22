@@ -8,7 +8,7 @@
     <meta name="theme-color" content="#317EFB" />
     <link rel="apple-touch-icon" href="images/ibra512.png">
     <style>
-    body{background:powderblue; font-size:small}
+    body{background:powderblue; font-size:small; margin-left:0px}
     .active, .btn:hover {
   background-color: red;
   color: white;
@@ -30,6 +30,7 @@ li {
   text-align: center;
   padding: 2px 6px;
   text-decoration: none;
+  
 }
 
  table {
@@ -46,12 +47,13 @@ li {
           #myInput {
             margin-top: 0px;
             width: 50%;
-            margin-left: 20%;
+            margin-left: 25%;
             height: 30px;
             border-radius: 15px;
             background-color: cyan;
             border: 0px;
             outline: 0;
+            display:none;
         }
       /* The Modal (background) */
         .modal {
@@ -140,6 +142,7 @@ li {
     }
 
 
+
 .eabbadge{
   display: inline-block;
    padding: 0;
@@ -158,13 +161,48 @@ li {
     top: -3px;
     }
 
+.smallbadge{
+  display: inline-block;
+   padding: 0;
+    width: 10px;
+    height: 10px;    
+    line-height: 10px;
+    font-size: small;
+    font-weight: lighter !important;
+    color: green !important;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    background-color: yellow;
+    border-radius:50px;
+//    position: relative;
+    top: -3px;
+    }
 
+.smalleabbadge{
+  display: inline-block;
+   padding: 0;
+    width: 10px;
+    height: 10px;    
+    line-height: 10px;
+    font-size: small;
+    font-weight: lighter !important;
+    color: green !important;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    background-color: pink;
+    border-radius:50px;
+//    position: relative;
+    top: -3px;
+    }
+ .ibeab {background:pink;}
 </style>
     </head>
     <body>
     <div id="regions" style="display:block; ">
      
-<div style="background:powderblue; top:0; ; height:83px; overflow:auto; position:fixed; width: 100%; ">
+<div style="background:powderblue; top:0; ; height:83px; overflow:auto; position:fixed; width: 100%;  ">
 <ul>
   <li onclick="selectedRegion(allmemb,0)"  class="list active" >All</li>
   <li  onclick="selectedRegion(vsp,1)" class="list" >VSP</li>
@@ -183,7 +221,26 @@ li {
  <input type="text" id='myInput' placeholder="Search here..." onkeyup="fiterName()">
 </div>
 
-  <p id='paraInThisRegion' style="margin-top:85px;"></p>
+  <p id='paraInThisRegion' style="margin-top:85px; margin-left:5px;">
+  
+  <h3>Indian Bank Retirees' Association (AP &TS)</h3>
+  <h4>Members Address Book</h4>
+  
+  <table border=1>
+  <tr><td>Region<td>State / Districts
+  <tr><td>VSP<td>Srikakulam, Vizianagaram and Visakhapatnam
+  <tr><td>GOD<td>East and West Godavaris 
+  <tr><td>VIJ<td>Krishna, Guntur and Prakasam 
+  <tr><td>SEEMA<td>Entire Rayalaseema Area and Nellore 
+  <tr><td>HYD<td>All Districts of  Telangana State
+  <tr><td>OTH<td>All States other than AP & TS
+  <tr><td>eAB<td>List Earstwhile Allahabad Bank Retiress. These members are grouped in respsective regions 
+     </table>
+  <span class='smallbadge'>&nbsp;</span> &nbsp;indicates a Family Pensioner<br>
+ <span class='smalleabbadge'>&nbsp;</span> &nbsp;indicates an eAB Retiree<br><br>
+  Members are requested to verify the correctness of their address and suggest changes if any.
+  
+  </p>
   
      <div id="myModal" class="modal">
         <div class="modal-content">
@@ -213,7 +270,7 @@ eab = activeMembers.filter(a => a.area.substr(-3).toUpperCase() === "EAB").map(a
           blank = activeMembers.filter(a => a.area === "BLANK").map(a => ({ id: a.id, name: a.name, fampen:a.fampen , ibeab: a.IBorEAB  , srno: a.srno }));
           allMembNoWise=activeMembers.map(a => ({ id: a.id, name: a.name, fampen:a.fampen, ibeab: a.IBorEAB  , srno: a.srno   })).sort(function(a,b){return a.srno - b.srno})
 allmemb = activeMembers.map(a => ({ id: a.id, name: a.name , fampen:a.fampen, ibeab: a.IBorEAB , srno: a.srno   }));
-selectedRegion(allmemb,0)
+//selectedRegion(allmemb,0)
         }
         penbrTemp = ""
         getMyData()
@@ -221,18 +278,19 @@ selectedRegion(allmemb,0)
     
    function selectedRegion(array,n){
          document.getElementById("myInput").value = "";
+document.getElementById("myInput").style.display="block"
 
    document.documentElement.scrollTop = 0;
    famPensionersCount = array.filter(a =>a.fampen.length>0).length
    eabcount = array.filter(a =>a.ibeab === 'EAB' ).length
    
-regions=["All", "Visakhapatnam", "Godavari", "Vijayawada", "Seema", "Hyderabad", "Other States","e Allahabad","Membershipwise"]
-document.getElementById('regionHeading').innerHTML="Memebers in "+ regions[n]+ " Region<span class='badge'>"+array.length+"</span><span class='badge1'>" +famPensionersCount+"</span> <span class='eabbadge'>" +eabcount+"</span>"
+regions=["All Members", "Visakhapatnam Area", "Godavari Area", "Vijayawada Area", "Seema Area", "Hyderabad Area", "Other States","e Allahabad","SR No Sorted"]
+document.getElementById('regionHeading').innerHTML="Memebers in "+ regions[n]+ " <span class='badge'>"+array.length+"</span><span class='badge1'>" +famPensionersCount+"</span> <span class='eabbadge'>" +eabcount+"</span>"
 inThisRegion="<table id='regionTable'  border=1><tr><td>Name<td>SR No"
-array.forEach(function (a) { inThisRegion += "<tr ><td class='"+ (a.fampen.length>0 ? "fam" : "ser") +"'><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name +   (a.fampen.length>0 ? " -- <mark>"+a.fampen+"</mark>" : "")+ "<td class='"+ (a.ibeab === 'EAB' ? "ibeab" : "")+"'>" + a.srno + "</span></td></tr>" })
+array.forEach(function (a) { inThisRegion += "<tr onClick='nameclick(this.id)' id=" + a.id + "><td class='"+ (a.fampen.length>0 ? "fam" : "ser") +"'>" + a.name +   (a.fampen.length>0 ? " <span class='smallbadge'> &nbsp;</span> "+a.fampen : " ")+ (a.ibeab === 'EAB' ? "<span class='smalleabbadge'>&nbsp;" : "")+"</span>"+"<td align=right >" + a.srno + "</td></tr>" })
        inThisRegion +="</table><br><br><br>" 
 document.getElementById('paraInThisRegion').innerHTML=inThisRegion
-	   window.scrollTo(0, 0);
+window.scrollTo(0, 0);
 }
 
 isInsured = (srno) => insdata.filter(a => a.SRNO === srno).length;
