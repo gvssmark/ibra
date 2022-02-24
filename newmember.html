@@ -43,9 +43,23 @@ input{  border: 0px;
 <tr><td>Mobile No 2<td><input name="mobile2" type="text" placeholder="Mobile No2" required>
 <tr><td>Fixed Line<td><input name="fixedline" type="text" placeholder="Fixed Line" required>
 <tr><td>Pension Branch<td><input name="pensionbranch" type="text" placeholder="Pension Credit Branch" required>
-<tr><td>Pension Type<td><input name="pensiontype" type="text" placeholder="Pension Type Sevice/Family" required>
+
+
+<tr><td>Pension Type
+  <td><input type="radio" id="ser" name="pensiontype" value="Service" style='width: 20px;' required>
+  <label for="ser">Service</label><br>
+  <input type="radio" id="fam" name="pensiontype" value="Family" style='width: 20px;'>
+  <label for="fam">Family</label><br>
+
+
 <tr><td>Spouse Name<td><input name="spousename" type="text" placeholder="Name of the spouse" required>
-<tr><td>Retired from IB or EAB<td><input name="retiredfrom" type="text" placeholder="Retired from IB/eAB" required>
+<tr><td>Retired from IB or EAB
+<td><input type="radio" id="ib" name="retiredfrom" value="Indian Bank" style='width: 20px;' required>
+  <label for="ib">Indian Bank</label><br>
+  <input type="radio" id="eab" name="retiredfrom" value="e Allahabad Bank" style='width: 20px;'>
+  <label for="fam">e Allahabad Bank</label><br>
+
+
 <tr><td>Email Address<td><input name="email" type="text" placeholder="Email Address" required>
 </table><br>
   <button type="submit">Send</button>
