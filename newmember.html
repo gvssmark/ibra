@@ -16,14 +16,14 @@ body{background:powderblue;}
             margin-right: 1px;
   //         
             }
-input{      ;       
+input{  outline: none; border:0;   ;       
            width:90vw; }
            label{font-size:small}
            h4{color:red; text-align: center;}
            
            
            textarea:focus, input:focus{
-    outline: none; background:pink;
+    outline: none; border:0; background:pink;
 }
 
 
@@ -39,43 +39,34 @@ input{      ;
 <h4>Indian Bank Retirees' Association (AP & TS)</h4>
 <h4>Membership Form</h4>
 
-<label>Pension Ac No:</label><br><input name="pensionacno" type="text"  required>
+<label>Pension Account No:</label><br><input name="pensionacno" type="text"  required>
 <label>SR No:</label><br><input name="srno" type="text"  required>
 <label>Remittance Ref No:</label><br><input name="remittancerefno" type="text"  required>
 
-<label>Name of Pensioner:</label><br><input name="name" type="text"  required>
-<label>Address line 1: </label><br><input name="add1" type="text"  required>
-<label>Address line 2:</label><br><input name="add2" type="text"  required>
-<label>Address line 3:</label><br><input name="add3" type="text"  required>
+<label>Name of the Pensioner:</label><br><input name="name" type="text"  required>
+<label>House No / Flat No / Plot No: </label><br><input name="add1" type="text"  required>
+<label>Area / Building Name:</label><br><input name="add2" type="text"  required>
+<label>Locality:</label><br><input name="add3" type="text"  required>
 <label>Vill / Town / City:</label><br><input name="add4" type="text"  required>
 <label>District:</label><br><input name="district" type="text"  required>
 <label>State:</label><br><input name="state" type="text"  required>
 <label>PIN:</label><br><input name="pin" type="text"  required>
 <label>Mobile No 1:</label><br><input name="mobileno1" type="text"  required>
-<label>Mobile No 2:</label><br><input name="mobile2" type="text"  required>
-<label>Fixed Line:</label><br><input name="fixedline" type="text"  required>
+<label>Mobile No 2:</label><br><input name="mobile2" type="text"  >
+<label>Fixed Line:</label><br><input name="fixedline" type="text"  >
 <label>Pension Branch:</label><br><input name="pensionbranch" type="text"  required>
-<label>Spouse Name"</label><br><input name="spousename" type="text"  required>
+<label>Spouse Name:</label><br><input name="spousename" type="text"  required>
 <label>Email Address:</label><br><input name="email" type="email"  required>
 <label>Pension Type:</label>
     <input type="radio" id="ser" name="pensiontype" value="Service" style='width:10px;' required><label>Service</label>
     <input type="radio" id="fam" name="pensiontype" value="Family"  style='width:10px;' ><label >Family</label><br><br>
-  
-
-
-
-<label>Retired from:</label><input type="radio" id="ib" name="retiredfrom" style='width:10px;' value="Indian Bank" required>
+ <label>Retired from:</label><input type="radio" id="ib" name="retiredfrom" style='width:10px;' value="Indian Bank" required>
   <label for="ib">I B</label>
   <input type="radio" id="eab" name="retiredfrom" value="e Allahabad Bank"  style='width:10px;'>
   <label for="fam">e A B</label><br><br>
-
-
-
-
-
 <br>
 
-  <button type="submit">Send</button>
+  <button type="submit" >Submit Data</button>
 </form>
 <div>
 <script>
@@ -88,14 +79,14 @@ input{      ;
     fetch(scriptURL, { method: 'POST', body: new FormData(form)})
  //     .then(response => console.log('Success!', response))
  //     .catch(error => console.error('Error!', error.message))
-
-//form.reset();
+ alert("Successfully Submitted")
+form.reset();
   })
   function contin(){
   document.getElementById("general").style.display = "none";
   document.getElementById("dataform").style.display = "block";
   }
-  
+ 
 </script>
 </body>
 
