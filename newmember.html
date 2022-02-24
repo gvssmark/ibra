@@ -10,7 +10,7 @@
             /* Not required only for visualizing */
             border-collapse: collapse;
             ;
-            //width: 95%;
+            width: 95%;
             margin-left: 5px;
             margin-right: 1px;
             border: 1px soild black;
@@ -18,7 +18,7 @@
 input{  border: 0px;
             outline: 0;
             background:pink; 
-           //width:173px; }
+           width:95%; }
 </style>
 <body>
 <div id='general' >
@@ -29,40 +29,41 @@ input{  border: 0px;
 <form name='submit-to-google-sheet'>
 <table border=1 width=350>
 
-<tr><td width=150>Pension Ac No<td width=180><input name="pensionacno" type="text"  required>
-<tr><td>SR No<td><input name="srno" type="text"  required>
-<tr><td>Remittance Ref No<td><input name="remittancerefno" type="text"  required>
+<tr><td>Pension Ac No<br><input name="pensionacno" type="text"  required>
+<tr><td>SR No<br><input name="srno" type="text"  required>
+<tr><td>Remittance Ref No<br><input name="remittancerefno" type="text"  required>
 
-<tr><td>Name of Pensioner<td><input name="name" type="text"  required>
-<tr><td>Address line 1 <td><input name="add1" type="text"  required>
-<tr><td>Address line 2<td><input name="add2" type="text"  required>
-<tr><td>Address line 3<td><input name="add3" type="text"  required>
-<tr><td>Vill / Town / City<td><input name="add4" type="text"  required>
-<tr><td>District<td><input name="district" type="text"  required>
-<tr><td>State<td><input name="state" type="text"  required>
-<tr><td>PIN<td><input name="pin" type="text"  required>
-<tr><td>Mobile No 1<td><input name="mobileno1" type="text"  required>
-<tr><td>Mobile No 2<td><input name="mobile2" type="text"  required>
-<tr><td>Fixed Line<td><input name="fixedline" type="text"  required>
-<tr><td>Pension Branch<td><input name="pensionbranch" type="text"  required>
-
-
-<tr><td>Pension Type
-  <td ><input type="radio" id="ser" name="pensiontype" value="Service"  required>
-  <label for="ser">Service</label>
-  <input type="radio" id="fam" name="pensiontype" value="Family" >
-  <label for="fam">Family</label>
+<tr><td>Name of Pensioner<br><input name="name" type="text"  required>
+<tr><td>Address line 1 <br><input name="add1" type="text"  required>
+<tr><td>Address line 2<br><input name="add2" type="text"  required>
+<tr><td>Address line 3<br><input name="add3" type="text"  required>
+<tr><td>Vill / Town / City<br><input name="add4" type="text"  required>
+<tr><td>District<br><input name="district" type="text"  required>
+<tr><td>State<br><input name="state" type="text"  required>
+<tr><td>PIN<br><input name="pin" type="text"  required>
+<tr><td>Mobile No 1<br><input name="mobileno1" type="text"  required>
+<tr><td>Mobile No 2<br><input name="mobile2" type="text"  required>
+<tr><td>Fixed Line<br><input name="fixedline" type="text"  required>
+<tr><td>Pension Branch<br><input name="pensionbranch" type="text"  required>
 
 
-<tr><td>Spouse Name<td><input name="spousename" type="text"  required>
+<tr><td>Pension Type<br>
+  
+  <label for="ser">Service</label><input type="radio" id="ser" name="pensiontype" value="Service"  style='width:20px;' required>
+  
+  <label for="fam">Family</label><input type="radio" id="fam" name="pensiontype" value="Family"  style='width:20px;' >
+  
+
+
+<tr><td>Spouse Name<br><input name="spousename" type="text"  required>
 <tr><td>Retired from
-<td ><input type="radio" id="ib" name="retiredfrom" value="Indian Bank"  required>
+<br><input type="radio" id="ib" name="retiredfrom" value="Indian Bank"  style='width:20px;'required>
   <label for="ib">I B</label>
-  <input type="radio" id="eab" name="retiredfrom" value="e Allahabad Bank" >
+  <input type="radio" id="eab" name="retiredfrom" value="e Allahabad Bank" style='width:20px;' >
   <label for="fam">e A B</label>
 
 
-<tr><td>Email Address<td><input name="email" type="email"  required>
+<tr><td>Email Address<br><input name="email" type="email"  required>
 </table><br>
   <button type="submit">Send</button>
 </form>
