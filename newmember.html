@@ -16,7 +16,9 @@
             border: 1px soild black;
             }
 input{  border: 0px;
-            outline: 0; }
+            outline: 0;
+            background:pink; 
+           //width:173px; }
 </style>
 <body>
 <div id='general' >
@@ -25,9 +27,9 @@ input{  border: 0px;
 </div>
 <div id='dataform' style='display:none;'>
 <form name='submit-to-google-sheet'>
-<table border=1>
+<table border=1 width=350>
 
-<tr><td>Pension Ac No<td><input name="pensionacno" type="text"  required>
+<tr><td width=150>Pension Ac No<td width=180><input name="pensionacno" type="text"  required>
 <tr><td>SR No<td><input name="srno" type="text"  required>
 <tr><td>Remittance Ref No<td><input name="remittancerefno" type="text"  required>
 
@@ -46,7 +48,7 @@ input{  border: 0px;
 
 
 <tr><td>Pension Type
-  <td><input type="radio" id="ser" name="pensiontype" value="Service"  required>
+  <td ><input type="radio" id="ser" name="pensiontype" value="Service"  required>
   <label for="ser">Service</label>
   <input type="radio" id="fam" name="pensiontype" value="Family" >
   <label for="fam">Family</label>
@@ -54,13 +56,13 @@ input{  border: 0px;
 
 <tr><td>Spouse Name<td><input name="spousename" type="text"  required>
 <tr><td>Retired from
-<td><input type="radio" id="ib" name="retiredfrom" value="Indian Bank"  required>
+<td ><input type="radio" id="ib" name="retiredfrom" value="Indian Bank"  required>
   <label for="ib">I B</label>
   <input type="radio" id="eab" name="retiredfrom" value="e Allahabad Bank" >
   <label for="fam">e A B</label>
 
 
-<tr><td>Email Address<td><input name="email" type="text"  required>
+<tr><td>Email Address<td><input name="email" type="email"  required>
 </table><br>
   <button type="submit">Send</button>
 </form>
