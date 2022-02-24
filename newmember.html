@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IBRA-APTS-New Membership Form</title>
+</head>
+
+<style>
+    table {
+            /* Not required only for visualizing */
+            border-collapse: collapse;
+            ;
+            width: 95%;
+            margin-left: 5px;
+            margin-right: 1px;
+            border: 1px soild black;
+            }
+input{  border: 0px;
+            outline: 0; }
+</style>
+<body>
+<div id='general' >
+1. Membership is open only for Indian Bank or eAllahabad Bank Retirees. <br><br> 2. Pension Account Number provided herein will be verified in Indian Bank for credit of pension.<br> <br>3. On successfull verification the membership number will be allotted.<br><br>4. Remit the membership firts, get the remittance reference number and then only proceed to fill the form<br><br>5.If the applicant is from other than the intended bank, membership fee will be forefieted.<br> <br>
+<button onclick='contin()'>Agree and Continue</button>
+</div>
+<div id='dataform' style='display:none;'>
+<form name='submit-to-google-sheet'>
+<table border=1>
+
+<tr><td>Pension Ac No<td><input name="pensionacno" type="text" placeholder="Pension Ac No" required>
+<tr><td>SR No<td><input name="srno" type="text" placeholder="SR No" required>
+<tr><td>Remittance Ref No<td><input name="remittancerefno" type="text" placeholder="Remittance Ref No" required>
+
+<tr><td>Name of Pensioner<td><input name="name" type="text" placeholder="Name of the member" required>
+<tr><td>Address line 1 <td><input name="add1" type="text" placeholder="Address line 1" required>
+<tr><td>Address line 2<td><input name="add2" type="text" placeholder="Address line 2" required>
+<tr><td>Address line 3<td><input name="add3" type="text" placeholder="Address line 3" required>
+<tr><td>Vill / Town / City<td><input name="add4" type="text" placeholder="Vill/Town/City" required>
+<tr><td>District<td><input name="district" type="text" placeholder="District" required>
+<tr><td>State<td><input name="state" type="text" placeholder="State" required>
+<tr><td>PIN<td><input name="pin" type="text" placeholder="PIN" required>
+<tr><td>Mobile No 1<td><input name="mobileno1" type="text" placeholder="Mobile No1" required>
+<tr><td>Mobile No 2<td><input name="mobile2" type="text" placeholder="Mobile No2" required>
+<tr><td>Fixed Line<td><input name="fixedline" type="text" placeholder="Fixed Line" required>
+<tr><td>Pension Branch<td><input name="pensionbranch" type="text" placeholder="Pension Credit Branch" required>
+<tr><td>Pension Type<td><input name="pensiontype" type="text" placeholder="Pension Type Sevice/Family" required>
+<tr><td>Spouse Name<td><input name="spousename" type="text" placeholder="Name of the spouse" required>
+<tr><td>Retired from IB or EAB<td><input name="retiredfrom" type="text" placeholder="Retired from IB/eAB" required>
+<tr><td>Email Address<td><input name="email" type="text" placeholder="Email Address" required>
+</table><br>
+  <button type="submit">Send</button>
+</form>
+<div>
+<script>
+
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbz6Cczs67Bg9m38k9LvvvjBRmc_8S69TkjAhTH18SVc6zxkZqRu/exec'
+  const form = document.forms['submit-to-google-sheet']
+
+  form.addEventListener('submit', e => {
+    e.preventDefault()
+    fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+ //     .then(response => console.log('Success!', response))
+ //     .catch(error => console.error('Error!', error.message))
+
+//form.reset();
+  })
+  function contin(){
+  document.getElementById("general").style.display = "none";
+  document.getElementById("dataform").style.display = "block";
+  }
+  
+</script>
+</body>
+
+</html>
