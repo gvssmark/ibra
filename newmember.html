@@ -20,7 +20,7 @@ body{background:powderblue;}
 input{  outline: none; border:0;   ;       
            width:90vw; }
            label{font-size:small}
-           h4{color:red; text-align: center;}
+           h4{color:red; text-align: center; margin-top:0px; margin-bottom:0px;}
            
            
            textarea:focus, input:focus{
@@ -69,11 +69,11 @@ input[type=number] {
 <label>Email Address:</label><br><input name="email" type="email"  required>
 <label>Pension Type:</label>
     <input type="radio" id="ser" name="pensiontype" value="Service" style='width:10px;' required><label>Service</label>
-    <input type="radio" id="fam" name="pensiontype" value="Family"  style='width:10px;' ><label >Family</label><br><br>
+    <input type="radio" id="fam" name="pensiontype" value="Family"  style='width:10px;' ><label >Family</label><br>
  <label>Retired from:</label><input type="radio" id="ib" name="retiredfrom" style='width:10px;' value="Indian Bank" required>
   <label for="ib">I B</label>
   <input type="radio" id="eab" name="retiredfrom" value="e Allahabad Bank"  style='width:10px;'>
-  <label for="fam">e A B</label><br><br>
+  <label for="fam">e A B</label><br>
 <br>
 
   <button type="submit" >Submit Data</button>
@@ -94,7 +94,7 @@ input[type=number] {
  
  alert("Successfully Submitted")
  
-form.reset();
+//form.reset();
   })
   function contin(){
   document.getElementById("general").style.display = "none";
