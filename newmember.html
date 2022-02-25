@@ -7,7 +7,7 @@
 </head>
 
 <style>
-body{background:powderblue;}
+body{background:powderblue; font-size:small;}
     table {
             /* Not required only for visualizing */
             border-collapse: collapse;
@@ -18,7 +18,7 @@ body{background:powderblue;}
   //         
             }
 input{  outline: none; border:0;   ;       
-           width:90vw; }
+           width:300px; padding:0px; }
            label{font-size:small}
            h4{color:red; text-align: center; margin-top:0px; margin-bottom:0px;}
            
@@ -41,40 +41,42 @@ input[type=number] {
 <body>
 <div id='general' >
 <h4>Indian Bank Retirees' Association (AP & TS)</h4>
-1. Membership is open only for Indian Bank or eAllahabad Bank Retirees. <br><br> 2. Pension Account Number provided herein will be verified in Indian Bank for credit of pension.<br> <br>3. On successfull verification the membership number will be allotted.<br><br>4. Remit the membership firts, get the remittance reference number and then only proceed to fill the form<br><br>5.If the applicant is from other than the intended bank, membership fee will be forefieted.<br> <br>
+<ol>
+<li>Membership is open only for Indian Bank or eAllahabad Bank Retirees. </li><li>Pension Account Number provided herein will be verified in Indian Bank for credit of pension.</li><li>On successfull verification the membership number will be allotted.</li><li>Remit the membership firts, get the remittance reference number and then only proceed to fill the form.</li><li>If the applicant is from other than the intended bank, membership fee will be forefieted.</li></ol> <br>
 <button onclick='contin()'>Agree and Continue</button>
 </div>
 <div id='dataform' style='display:none;'>
 <form name='submit-to-google-sheet'>
 <h4>Indian Bank Retirees' Association (AP & TS)<br>Membership Form</h4>
 
+<table border=0 width=280><tr><td>
+Pension Account No:<br><input name="pensionacno" type="number"  style="width:140px;" min="100000001" max="99999999999"   required>
+<td>
+SR No:<br><input name="srno" type="number"   style="width:140px;"  min="1" max="999999"  required>
+<tr><td colspan=2>Remittance Ref No:</label><br><input name="remittancerefno" type="text"      required>
 
-<label>Pension Account No:</label><br><input name="pensionacno" type="number"   min="100000001" max="99999999999"   required>
-<label>SR No:</label><br><input name="srno" type="number"   min="1" max="999999"  required>
-<label>Remittance Ref No:</label><br><input name="remittancerefno" type="text"  required>
-
-<label>Name of the Pensioner:</label><br><input name="name" type="text"  required>
-<label>House No / Flat No / Plot No: </label><br><input name="add1" type="text"  required>
-<label>Area / Building Name:</label><br><input name="add2" type="text"  required>
-<label>Locality:</label><br><input name="add3" type="text"  required>
-<label>Vill / Town / City:</label><br><input name="add4" type="text"  required>
-<label>District:</label><br><input name="district" type="text"  required>
-<label>State:</label><br><input name="state" type="text"  required>
-<label>PIN:</label><br><input name="pin" type="tel" pattern="[1-8]{1}[0-9]{5}" >
-<label>Mobile No 1:</label><br><input name="mobileno1" type="tel"   pattern="[6-9]{1}[0-9]{9}"  required>
-<label>Mobile No 2:</label><br><input name="mobile2" type="tel"  pattern="[6-9]{1}[0-9]{9}"  >
-<label>Fixed Line: (STD Code +Number. 0 not required) </label><br><input name="fixedline" type="tel"  pattern="[1-8]{1}[0-9]{9}">
-<label>Pension Branch:</label><br><input name="pensionbranch" type="text"  required>
-<label>Spouse Name:</label><br><input name="spousename" type="text"  required>
-<label>Email Address:</label><br><input name="email" type="email"  required>
-<label>Pension Type:</label>
+<tr><td colspan=2>Name of the Pensioner:</label><br><input name="name" type="text"  required>
+<tr><td colspan=2>House No / Flat No / Plot No: </label><br><input name="add1" type="text"  required>
+<tr><td colspan=2>Area / Building Name:</label><br><input name="add2" type="text"  required>
+<tr><td colspan=2>Locality:</label><br><input name="add3" type="text"  required>
+<tr><td colspan=2>Vill / Town / City:</label><br><input name="add4" type="text"  required>
+<tr><td colspan=2>District:</label><br><input name="district" type="text"  required>
+<tr><td >State:</label><br><input name="state" type="text"  style="width:140px;" required>
+<td >PIN:</label><br><input name="pin" type="tel" style="width:140px;"  pattern="[1-8]{1}[0-9]{5}" >
+<tr><td>Mobile No 1:</label><br><input name="mobileno1" type="tel"   style="width:140px;"   pattern="[6-9]{1}[0-9]{9}"  required>
+<td>Mobile No 2:</label><br><input name="mobile2" type="tel"    style="width:140px;"  pattern="[6-9]{1}[0-9]{9}"  >
+<tr><td colspan=2>Fixed Line: (STD Code +Number. 0 not required) </label><br><input name="fixedline" type="tel"  pattern="[1-8]{1}[0-9]{9}">
+<tr><td colspan=2>Pension Branch:</label><br><input name="pensionbranch" type="text"  required>
+<tr><td colspan=2>Spouse Name:</label><br><input name="spousename" type="text"  required>
+<tr><td colspan=2>Email Address:</label><br><input name="email" type="email"  required>
+<tr><td>Pension Type:</label><br>
     <input type="radio" id="ser" name="pensiontype" value="Service" style='width:10px;' required><label>Service</label>
     <input type="radio" id="fam" name="pensiontype" value="Family"  style='width:10px;' ><label >Family</label><br>
- <label>Retired from:</label><input type="radio" id="ib" name="retiredfrom" style='width:10px;' value="Indian Bank" required>
+ <td>Retired from:</label><br><input type="radio" id="ib" name="retiredfrom" style='width:10px;' value="Indian Bank" required>
   <label for="ib">I B</label>
   <input type="radio" id="eab" name="retiredfrom" value="e Allahabad Bank"  style='width:10px;'>
   <label for="fam">e A B</label><br>
-<br>
+</table>
 
   <button type="submit" >Submit Data</button>
 </form>
