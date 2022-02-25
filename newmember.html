@@ -46,8 +46,8 @@ input[type=number] {
 </div>
 <div id='dataform' style='display:none;'>
 <form name='submit-to-google-sheet'>
-<h4>Indian Bank Retirees' Association (AP & TS)</h4>
-<h4>Membership Form</h4>
+<h4>Indian Bank Retirees' Association (AP & TS)<br>Membership Form</h4>
+
 
 <label>Pension Account No:</label><br><input name="pensionacno" type="number"   min="100000001" max="99999999999"   required>
 <label>SR No:</label><br><input name="srno" type="number"   min="1" max="999999"  required>
@@ -94,7 +94,7 @@ input[type=number] {
  
  alert("Successfully Submitted")
  
-//form.reset();
+form.reset();
   })
   function contin(){
   document.getElementById("general").style.display = "none";
