@@ -1,31 +1,15 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IBRA-APTS-New Membership Form</title>
-</head>
-
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <style>
-body{background:powderblue; font-size:small;}
-    table {
-            /* Not required only for visualizing */
-            border-collapse: collapse;
-            ;
-            ;
-            margin-left: 5px;
-            margin-right: 1px;
-  //         
-            }
-input{  outline: none; border:0;   ;       
-           width:300px; padding:0px; }
-           label{font-size:small}
-           h4{color:red; text-align: center; margin-top:0px; margin-bottom:0px;}
-           
-           
-           textarea:focus, input:focus{
-    outline: none; border:0; background:pink;
-}
+body{font-size:SMALL; BACKGROUND:POWDERBLUE}
+p{ text-align: center;}
+ h6{color:red; text-align: center; }
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -38,49 +22,114 @@ input[type=number] {
 }
 
 </style>
+</head>
 <body>
 <div id='general' >
-<h4>Indian Bank Retirees' Association (AP & TS)</h4>
+<h6>Indian Bank Retirees' Association (AP & TS)</h6>
 <ol>
 <li>1Membership is open only for Indian Bank or eAllahabad Bank Retirees. </li><li>Pension Account Number provided herein will be verified in Indian Bank for credit of pension.</li><li>On successfull verification the membership number will be allotted.</li><li>Remit the membership firts, get the remittance reference number and then only proceed to fill the form.</li><li>If the applicant is from other than the intended bank, membership fee will be forefieted.</li></ol> <br>
-<button onclick='contin()'>Agree and Continue</button>
+<button onclick='contin()' class="btn btn-primary">Agree and Continue</button>
 </div>
 <div id='dataform' style='display:none;'>
-<form name='submit-to-google-sheet'>
-<h4>Indian Bank Retirees' Association (AP & TS)<br>Membership Form</h4>
+<div class="container mt-3">
+  <h6>Indian Bank Retirees' Association (AP & TS)</h6>
+  <p >Membership Data Entry Form</p>
+  <form  name='submit-to-google-sheet'>
+    <div class="form-floating mb-3 mt-3">
+      <input type="number" class="form-control" name="pensionacno" placeholder="a" required>
+      <label for="pensionacno">Pension Account No.</label>
+    </div>
+    
+   <div class="form-floating mb-3 mt-3">
+      <input type="number" class="form-control" name="srno"  placeholder="a" required>
+      <label for="srno">SR No.</label>
+        </div>
+ <div class="form-floating mb-3 mt-3">
+      <input type="text" class="form-control" name="remittancerefno"  placeholder="a"  required>
+      <label for="remittancerefno">Remittance Ref No</label>
+        </div>
+ <div class="form-floating mb-3 mt-3">
+      <input type="text" class="form-control" name="name"  placeholder="a"  required>
+      <label for="name">Name of the Pensioner</label>
+        </div>
+ <div class="form-floating mb-3 mt-3">
+      <input type="text" class="form-control" name="add1"  placeholder="a"  required>
+      <label for="add1">House No / Flat No / Plot No:</label>
+        </div>
+ <div class="form-floating mb-3 mt-3">
+      <input type="text" class="form-control" name="add2"  placeholder="a"  required>
+      <label for="add2">Area / Building Name:</label>
+        </div>
+ <div class="form-floating mb-3 mt-3">
+      <input type="text" class="form-control" name="add3"   placeholder="a"  required>
+      <label for="add3">Locality:.</label>
+        </div>
+ <div class="form-floating mb-3 mt-3">
+      <input type="text" class="form-control" name="add4"  placeholder="a"  required>
+      <label for="add4">Vill / Town / City:</label>
+        </div>
+ <div class="form-floating mb-3 mt-3">
+      <input type="text" class="form-control" name="district"  placeholder="a"  required>
+      <label for="district">District</label>
+        </div>
+ <div class="form-floating mb-3 mt-3">
+      <input type="text" class="form-control" name="state"  placeholder="a"  required>
+      <label for="state">State</label>
+        </div>
+ <div class="form-floating mb-3 mt-3">
+      <input type="number" class="form-control" name="pin"  placeholder="a"  required>
+      <label for="pin">PIN Code</label>
+        </div>
+ <div class="form-floating mb-3 mt-3">
+      <input type="tel" class="form-control" name="mobileno1"  placeholder="a"  required>
+      <label for="mobileno1">Mobile 1</label>
+        </div>
+ <div class="form-floating mb-3 mt-3">
+      <input type="tel" class="form-control" name="mobile2"  placeholder="a">
+      <label for="mobile2">Mobile 2</label>
+        </div>
+ <div class="form-floating mb-3 mt-3">
+      <input type="tel" class="form-control" name="fixedline"  placeholder="a">
+      <label for="fixedline">Fixed Lined</label>
+        </div>
+ <div class="form-floating mb-3 mt-3">
+      <input type="text" class="form-control" name="pensionbranch"  placeholder="a"  required>
+      <label for="pensionbranch">Pension Branch</label>
+        </div>
+        
+ <div class="form-floating mb-3 mt-3">
+      <input type="text" class="form-control" name="spousename"  placeholder="a"  required>
+      <label for="spousename">Name of the Spouse</label>
+        </div>
+  <div class="form-floating mb-3 mt-3">
+      <input type="email" class="form-control" name="email"  placeholder="a"  required>
+      <label for="email">Email</label>
+  </div>
+ <div class="form-floating mb-3 mt-3">
+   <select class="form-select"  name="retiredfrom"  placeholder="a"  required>
+    <option>Indian Bank</option>
+    <option>Allahabad Bank</option>
+    </select>
+  <label for="retiredfrom" class="form-label">Retired from</label>
+          </div>
 
-<table border=1 ><tr><td>
-Pension Account No:<br><input name="pensionacno" type="number"  style="width:140px;" min="100000001" max="99999999999"   required>
-<td>
-SR No:<br><input name="srno" type="number"   style="width:140px;"  min="1" max="999999"  required>
-<tr><td colspan=2>Remittance Ref No:</label><br><input name="remittancerefno" type="text"      required>
+ <div class="form-floating mb-3 mt-3">
+   <select class="form-select"  name="pensiontype"   placeholder="a" required>
+    <option>Service</option>
+    <option>Family</option>
+    </select>
+  <label for="pensiontype" class="form-label">Pension Type</label>
+          </div>
 
-<tr><td colspan=2>Name of the Pensioner:</label><br><input name="name" type="text"  required>
-<tr><td colspan=2>House No / Flat No / Plot No: </label><br><input name="add1" type="text"  required>
-<tr><td colspan=2>Area / Building Name:</label><br><input name="add2" type="text"  required>
-<tr><td colspan=2>Locality:</label><br><input name="add3" type="text"  required>
-<tr><td colspan=2>Vill / Town / City:</label><br><input name="add4" type="text"  required>
-<tr><td colspan=2>District:</label><br><input name="district" type="text"  required>
-<tr><td >State:</label><br><input name="state" type="text"  style="width:140px;" required>
-<td >PIN:</label><br><input name="pin" type="tel" style="width:140px;"  pattern="[1-8]{1}[0-9]{5}" >
-<tr><td>Mobile No 1:</label><br><input name="mobileno1" type="tel"   style="width:140px;"   pattern="[6-9]{1}[0-9]{9}"  required>
-<td>Mobile No 2:</label><br><input name="mobile2" type="tel"    style="width:140px;"  pattern="[6-9]{1}[0-9]{9}"  >
-<tr><td colspan=2>Fixed Line: (STD Code +Number. 0 not required) </label><br><input name="fixedline" type="tel"  pattern="[1-8]{1}[0-9]{9}">
-<tr><td colspan=2>Pension Branch:</label><br><input name="pensionbranch" type="text"  required>
-<tr><td colspan=2>Spouse Name:</label><br><input name="spousename" type="text"  required>
-<tr><td colspan=2>Email Address:</label><br><input name="email" type="email"  required>
-<tr><td>Pension Type:</label><br>
-    <input type="radio" id="ser" name="pensiontype" value="Service" style='width:10px;' required><label>Service</label>
-    <input type="radio" id="fam" name="pensiontype" value="Family"  style='width:10px;' ><label >Family</label><br>
- <td>Retired from:</label><br><input type="radio" id="ib" name="retiredfrom" style='width:10px;' value="Indian Bank" required>
-  <label for="ib">I B</label>
-  <input type="radio" id="eab" name="retiredfrom" value="e Allahabad Bank"  style='width:10px;'>
-  <label for="fam">e A B</label><br>
-</table>
 
-  <button type="submit" >Submit Data</button>
-</form>
-<div>
+ 
+    
+    
+    
+    
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
 <script>
 
   const scriptURL = 'https://script.google.com/macros/s/AKfycbz6Cczs67Bg9m38k9LvvvjBRmc_8S69TkjAhTH18SVc6zxkZqRu/exec'
@@ -89,21 +138,16 @@ SR No:<br><input name="srno" type="number"   style="width:140px;"  min="1" max="
   form.addEventListener('submit', e => {
     e.preventDefault()
     fetch(scriptURL, { method: 'POST', body: new FormData(form)})
- //     .then(response => console.log('Success!', response))
- //     .catch(error => console.error('Error!', error.message))
-
- 
- 
  alert("Successfully Submitted")
  
 //form.reset();
   })
-  function contin(){
+ function contin(){
   document.getElementById("general").style.display = "none";
   document.getElementById("dataform").style.display = "block";
   }
  
+
 </script>
 </body>
-
 </html>
