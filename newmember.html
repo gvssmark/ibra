@@ -36,21 +36,21 @@ input[type=number] {
   <p >Membership Data Entry Form</p>
   <form  name='submit-to-google-sheet'>
     <div class="form-floating mb-3 mt-3">
-      <input type="number" class="form-control" name="pensionacno" placeholder="a" required>
-      <label for="pensionacno">Pension Account No.</label>
+      <input type="number" class="form-control" name="pensionacno"  min="100000001" max="99999999999"   placeholder="a" required>
+      <label for="pensionacno">Pension Account No:</label>
     </div>
     
    <div class="form-floating mb-3 mt-3">
-      <input type="number" class="form-control" name="srno"  placeholder="a" required>
-      <label for="srno">SR No.</label>
+      <input type="number" class="form-control" name="srno"   min="1" max="999999"  placeholder="a" required>
+      <label for="srno">SR No:</label>
         </div>
  <div class="form-floating mb-3 mt-3">
       <input type="text" class="form-control" name="remittancerefno"  placeholder="a"  required>
-      <label for="remittancerefno">Remittance Ref No</label>
+      <label for="remittancerefno">Remittance Ref No:</label>
         </div>
  <div class="form-floating mb-3 mt-3">
       <input type="text" class="form-control" name="name"  placeholder="a"  required>
-      <label for="name">Name of the Pensioner</label>
+      <label for="name">Name of the Pensioner:</label>
         </div>
  <div class="form-floating mb-3 mt-3">
       <input type="text" class="form-control" name="add1"  placeholder="a"  required>
@@ -58,11 +58,11 @@ input[type=number] {
         </div>
  <div class="form-floating mb-3 mt-3">
       <input type="text" class="form-control" name="add2"  placeholder="a"  required>
-      <label for="add2">Area / Building Name:</label>
+      <label for="add2">Area / Apartment / Building Name:</label>
         </div>
  <div class="form-floating mb-3 mt-3">
       <input type="text" class="form-control" name="add3"   placeholder="a"  required>
-      <label for="add3">Locality:.</label>
+      <label for="add3">Locality:</label>
         </div>
  <div class="form-floating mb-3 mt-3">
       <input type="text" class="form-control" name="add4"  placeholder="a"  required>
@@ -70,47 +70,47 @@ input[type=number] {
         </div>
  <div class="form-floating mb-3 mt-3">
       <input type="text" class="form-control" name="district"  placeholder="a"  required>
-      <label for="district">District</label>
+      <label for="district">District:</label>
         </div>
  <div class="form-floating mb-3 mt-3">
       <input type="text" class="form-control" name="state"  placeholder="a"  required>
-      <label for="state">State</label>
+      <label for="state">State:</label>
         </div>
  <div class="form-floating mb-3 mt-3">
-      <input type="number" class="form-control" name="pin"  placeholder="a"  required>
-      <label for="pin">PIN Code</label>
+      <input type="number" class="form-control" name="pin"   pattern="[1-8]{1}[0-9]{5}" placeholder="a"  required>
+      <label for="pin">PIN Code:</label>
         </div>
  <div class="form-floating mb-3 mt-3">
-      <input type="tel" class="form-control" name="mobileno1"  placeholder="a"  required>
-      <label for="mobileno1">Mobile 1</label>
+      <input type="tel" class="form-control" name="mobileno1"  pattern="[6-9]{1}[0-9]{9}"  placeholder="a"  required>
+      <label for="mobileno1">Mobile 1:</label>
         </div>
  <div class="form-floating mb-3 mt-3">
-      <input type="tel" class="form-control" name="mobile2"  placeholder="a">
-      <label for="mobile2">Mobile 2</label>
+      <input type="tel" class="form-control" name="mobile2"  pattern="[6-9]{1}[0-9]{9}" placeholder="a">
+      <label for="mobile2">Mobile 2:</label>
         </div>
  <div class="form-floating mb-3 mt-3">
-      <input type="tel" class="form-control" name="fixedline"  placeholder="a">
-      <label for="fixedline">Fixed Lined</label>
+      <input type="tel" class="form-control" name="fixedline"    pattern="[1-8]{1}[0-9]{9}" placeholder="a">
+      <label for="fixedline">Fixed Line. (STD Code +Number. 0 not required)</label>
         </div>
  <div class="form-floating mb-3 mt-3">
       <input type="text" class="form-control" name="pensionbranch"  placeholder="a"  required>
-      <label for="pensionbranch">Pension Branch</label>
+      <label for="pensionbranch">Pension Branch:</label>
         </div>
         
  <div class="form-floating mb-3 mt-3">
       <input type="text" class="form-control" name="spousename"  placeholder="a"  required>
-      <label for="spousename">Name of the Spouse</label>
+      <label for="spousename">Name of the Spouse:</label>
         </div>
   <div class="form-floating mb-3 mt-3">
       <input type="email" class="form-control" name="email"  placeholder="a"  required>
-      <label for="email">Email</label>
+      <label for="email">Email:</label>
   </div>
  <div class="form-floating mb-3 mt-3">
    <select class="form-select"  name="retiredfrom"  placeholder="a"  required>
     <option>Indian Bank</option>
     <option>Allahabad Bank</option>
     </select>
-  <label for="retiredfrom" class="form-label">Retired from</label>
+  <label for="retiredfrom" class="form-label">Retired from:</label>
           </div>
 
  <div class="form-floating mb-3 mt-3">
@@ -118,7 +118,7 @@ input[type=number] {
     <option>Service</option>
     <option>Family</option>
     </select>
-  <label for="pensiontype" class="form-label">Pension Type</label>
+  <label for="pensiontype" class="form-label">Pension Type:</label>
           </div>
 
 
