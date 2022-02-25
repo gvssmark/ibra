@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,7 +26,16 @@ input{  outline: none; border:0;   ;
            textarea:focus, input:focus{
     outline: none; border:0; background:pink;
 }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
 
 </style>
 <body>
@@ -39,8 +49,8 @@ input{  outline: none; border:0;   ;
 <h4>Indian Bank Retirees' Association (AP & TS)</h4>
 <h4>Membership Form</h4>
 
-<label>Pension Account No:</label><br><input name="pensionacno" type="text"  required>
-<label>SR No:</label><br><input name="srno" type="text"  required>
+<label>Pension Account No:</label><br><input name="pensionacno" type="number"   min="100000001" max="99999999999"   required>
+<label>SR No:</label><br><input name="srno" type="number"   min="1" max="999999"  required>
 <label>Remittance Ref No:</label><br><input name="remittancerefno" type="text"  required>
 
 <label>Name of the Pensioner:</label><br><input name="name" type="text"  required>
@@ -50,10 +60,10 @@ input{  outline: none; border:0;   ;
 <label>Vill / Town / City:</label><br><input name="add4" type="text"  required>
 <label>District:</label><br><input name="district" type="text"  required>
 <label>State:</label><br><input name="state" type="text"  required>
-<label>PIN:</label><br><input name="pin" type="text"  required>
-<label>Mobile No 1:</label><br><input name="mobileno1" type="text"  required>
-<label>Mobile No 2:</label><br><input name="mobile2" type="text"  >
-<label>Fixed Line:</label><br><input name="fixedline" type="text"  >
+<label>PIN:</label><br><input name="pin" type="tel" pattern="[1-8]{1}[0-9]{5}" >
+<label>Mobile No 1:</label><br><input name="mobileno1" type="tel"   pattern="[6-9]{1}[0-9]{9}"  required>
+<label>Mobile No 2:</label><br><input name="mobile2" type="tel"  pattern="[6-9]{1}[0-9]{9}"  >
+<label>Fixed Line:</label><br><input name="fixedline" type="tel"  pattern="[0]{1}[1-8]{1}[0-9]{9}">
 <label>Pension Branch:</label><br><input name="pensionbranch" type="text"  required>
 <label>Spouse Name:</label><br><input name="spousename" type="text"  required>
 <label>Email Address:</label><br><input name="email" type="email"  required>
@@ -79,8 +89,12 @@ input{  outline: none; border:0;   ;
     fetch(scriptURL, { method: 'POST', body: new FormData(form)})
  //     .then(response => console.log('Success!', response))
  //     .catch(error => console.error('Error!', error.message))
+
+ 
+ 
  alert("Successfully Submitted")
-form.reset();
+ 
+//form.reset();
   })
   function contin(){
   document.getElementById("general").style.display = "none";
