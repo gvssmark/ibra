@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,7 +37,7 @@ input[type=number] {
   <p >Membership Data Entry Form</p>
   <form  name='submit-to-google-sheet'>
     <div class="form-floating mb-3 mt-3">
-      <input type="number" class="form-control" name="pensionacno"  min="100000001" max="99999999999"   placeholder="a" required>
+      <input type="number" class="form-control" onfocusout="myFunction()" name="pensionacno"  min="100000001" max="99999999999"  id='pensionacno'  placeholder="a" required>
       <label for="pensionacno">Pension Account No:</label>
     </div>
     
@@ -146,7 +147,47 @@ input[type=number] {
   document.getElementById("general").style.display = "none";
   document.getElementById("dataform").style.display = "block";
   }
- 
+
+function myFunction(){
+acno=document.getElementById('pensionacno').value
+if (isvalidAcno(acno) == false){
+document.getElementById('pensionacno').style.color='red'
+document.getElementById('pensionacno').focus()
+}
+else{document.getElementById('pensionacno').style.color='black'}
+
+}
+
+function cbsc(acno){
+  myval=0;
+  acno =acno.toString()
+  l=acno.toString().length
+  for (j=1; j<=l; j++)   {
+  dval     =acno.substr(l-j,1)*1;    // digit value
+  dpos    =j;                               // digit position                  
+  digival  = DvDp(dval,dpos);    // pass the above values to DvDp function to get value for the above
+  myval=myval+digival ;           // cumulate the values and arrive check digit 
+    }
+  return ( myval %10 ); 
+}
+
+
+function DvDp(dv, dp) // Pass Digit Value and Digit positon to this function.
+{
+for (i=1; i<dp; i++) {
+  dv = dv*2
+  if (dv>11) {     dv= dv-11  }
+}  
+return dv;
+} 
+
+
+function isvalidAcno(a){
+compCD = cbsc(a.toString().slice(0,a.toString().length-1))
+givencd = a.toString().substr(-1)
+return compCD == givencd
+}
+
 
 </script>
 </body>
