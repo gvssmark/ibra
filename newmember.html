@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,12 +22,20 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
-
+h1 {
+  color: white;
+  text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+}
 </style>
 </head>
 <body>
+<div id='main' style="display:none; font-size:large; text-align:center; border:5px; width:95vw; margin:auto; margin-top:50px; ">
+<h1>You have Successfully submitted the data.<br><br><br> Membership Number will be communicated to you!</h1>
+</div>
+
 <div id='general' >
 <h6>Indian Bank Retirees' Association (AP & TS)</h6>
+
 <ol>
 <li>1Membership is open only for Indian Bank or eAllahabad Bank Retirees. </li><li>Pension Account Number provided herein will be verified in Indian Bank for credit of pension.</li><li>On successfull verification the membership number will be allotted.</li><li>Remit the membership firts, get the remittance reference number and then only proceed to fill the form.</li><li>If the applicant is from other than the intended bank, membership fee will be forefieted.</li></ol> <br>
 <button onclick='contin()' class="btn btn-primary">Agree and Continue</button>
@@ -139,13 +148,16 @@ input[type=number] {
   form.addEventListener('submit', e => {
     e.preventDefault()
     fetch(scriptURL, { method: 'POST', body: new FormData(form)})
- alert("Successfully Submitted")
+ //alert("Successfully Submitted")
  
-//form.reset();
+form.reset();
+document.getElementById("main").style.display = "block";
+ document.getElementById("dataform").style.display = "none";  
   })
  function contin(){
   document.getElementById("general").style.display = "none";
   document.getElementById("dataform").style.display = "block";
+  
   }
 
 function myFunction(){
