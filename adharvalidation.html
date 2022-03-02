@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html>
+</html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Aadhar Card Verify</title>
@@ -7,54 +6,54 @@
 </head>
 <body>
 
-<div style="width: 100%; display: table;">
-    <div style="display: table-row">
-        <div style="width: 50vw; display: table-cell;">
-        D Table
-         <table border=1>
+<div class="container">
+		<div class="col-md-6" style="margin-top: 50px;">
+		  	<div class="form-group">
+        
 
-	    <tr><td>0<td> 1<td> 2<td> 3<td> 4<td> 5<td> 6<td> 7<td> 8<td> 9
-	    <tr><td>1<td> 2<td> 3<td> 4<td> 0<td> 6<td> 7<td> 8<td> 9<td> 5
-	    <tr><td>2<td> 3<td> 4<td> 0<td> 1<td> 7<td> 8<td> 9<td> 5<td> 6
-	    <tr><td>3<td> 4<td> 0<td> 1<td> 2<td> 8<td> 9<td> 5<td> 6<td> 7
-	    <tr><td>4<td> 0<td> 1<td> 2<td> 3<td> 9<td> 5<td> 6<td> 7<td> 8
-	    <tr><td>5<td> 9<td> 8<td> 7<td> 6<td> 0<td> 4<td> 3<td> 2<td> 1
-	    <tr><td>6<td> 5<td> 9<td> 8<td> 7<td> 1<td> 0<td> 4<td> 3<td> 2
-	    <tr><td>7<td> 6<td> 5<td> 9<td> 8<td> 2<td> 1<td> 0<td> 4<td> 3
-	    <tr><td>8<td> 7<td> 6<td> 5<td> 9<td> 3<td> 2<td> 1<td> 0<td> 4
-	    <tr><td>9<td> 8<td> 7<td> 6<td> 5<td> 4<td> 3<td> 2<td> 1<td> 0</table> </div>
+		    	<label for="exampleInputAadharCard">Aadhar Card No.</label>
+		    	<button type="button" class="btn btn-primary" onclick="verify()">Verify</button><input type="text" class="form-control" id="exampleInputAadharCard" placeholder="Enter Your Aadhar Card No." name="exampleInputAadharCard" autocomplete="off">
+		    	<small id="message" class="form-text text-muted"></small>
+		  	</div>
+		  	
+		</div>
+	</div><div style="width: 79%;display: table;margin-left: 10px;margin-top: 10px;">
+    <div style="display: table-row">
+        <div style="/* width: 50vw; */display: table-cell;">
+        D Table
+         <table border="1">
+
+	    <tbody><tr><td>0</td><td> 1</td><td> 2</td><td> 3</td><td> 4</td><td> 5</td><td> 6</td><td> 7</td><td> 8</td><td> 9
+	    </td></tr><tr><td>1</td><td> 2</td><td> 3</td><td> 4</td><td> 0</td><td> 6</td><td> 7</td><td> 8</td><td> 9</td><td> 5
+	    </td></tr><tr><td>2</td><td> 3</td><td> 4</td><td> 0</td><td> 1</td><td> 7</td><td> 8</td><td> 9</td><td> 5</td><td> 6
+	    </td></tr><tr><td>3</td><td> 4</td><td> 0</td><td> 1</td><td> 2</td><td> 8</td><td> 9</td><td> 5</td><td> 6</td><td> 7
+	    </td></tr><tr><td>4</td><td> 0</td><td> 1</td><td> 2</td><td> 3</td><td> 9</td><td> 5</td><td> 6</td><td> 7</td><td> 8
+	    </td></tr><tr><td>5</td><td> 9</td><td> 8</td><td> 7</td><td> 6</td><td> 0</td><td> 4</td><td> 3</td><td> 2</td><td> 1
+	    </td></tr><tr><td>6</td><td> 5</td><td> 9</td><td> 8</td><td> 7</td><td> 1</td><td> 0</td><td> 4</td><td> 3</td><td> 2
+	    </td></tr><tr><td>7</td><td> 6</td><td> 5</td><td> 9</td><td> 8</td><td> 2</td><td> 1</td><td> 0</td><td> 4</td><td> 3
+	    </td></tr><tr><td>8</td><td> 7</td><td> 6</td><td> 5</td><td> 9</td><td> 3</td><td> 2</td><td> 1</td><td> 0</td><td> 4
+	    </td></tr><tr><td>9</td><td> 8</td><td> 7</td><td> 6</td><td> 5</td><td> 4</td><td> 3</td><td> 2</td><td> 1</td><td> 0</td></tr></tbody></table> </div>
         
         
         <div style="display: table-cell;">
         
         
        P Table
-<table border=1>
-    <tr><td>0<td> 1<td> 2<td> 3<td> 4<td> 5<td> 6<td> 7<td> 8<td> 9
-	    <tr><td>1<td> 5<td> 7<td> 6<td> 2<td> 8<td> 3<td> 0<td> 9<td> 4
-	    <tr><td>5<td> 8<td> 0<td> 3<td> 7<td> 9<td> 6<td> 1<td> 4<td> 2
-	    <tr><td>8<td> 9<td> 1<td> 6<td> 0<td> 4<td> 3<td> 5<td> 2<td> 7
-	    <tr><td>9<td> 4<td> 5<td> 3<td> 1<td> 2<td> 6<td> 8<td> 7<td> 0
-	    <tr><td>4<td> 2<td> 8<td> 6<td> 5<td> 7<td> 3<td> 9<td> 0<td> 1
-	    <tr><td>2<td> 7<td> 9<td> 3<td> 8<td> 0<td> 6<td> 4<td> 1<td> 5
-	    <tr><td>7<td> 0<td> 4<td> 6<td> 9<td> 1<td> 3<td> 2<td> 5<td> 8]
-</table> </div>
+<table border="1">
+    <tbody><tr><td>0</td><td> 1</td><td> 2</td><td> 3</td><td> 4</td><td> 5</td><td> 6</td><td> 7</td><td> 8</td><td> 9
+	    </td></tr><tr><td>1</td><td> 5</td><td> 7</td><td> 6</td><td> 2</td><td> 8</td><td> 3</td><td> 0</td><td> 9</td><td> 4
+	    </td></tr><tr><td>5</td><td> 8</td><td> 0</td><td> 3</td><td> 7</td><td> 9</td><td> 6</td><td> 1</td><td> 4</td><td> 2
+	    </td></tr><tr><td>8</td><td> 9</td><td> 1</td><td> 6</td><td> 0</td><td> 4</td><td> 3</td><td> 5</td><td> 2</td><td> 7
+	    </td></tr><tr><td>9</td><td> 4</td><td> 5</td><td> 3</td><td> 1</td><td> 2</td><td> 6</td><td> 8</td><td> 7</td><td> 0
+	    </td></tr><tr><td>4</td><td> 2</td><td> 8</td><td> 6</td><td> 5</td><td> 7</td><td> 3</td><td> 9</td><td> 0</td><td> 1
+	    </td></tr><tr><td>2</td><td> 7</td><td> 9</td><td> 3</td><td> 8</td><td> 0</td><td> 6</td><td> 4</td><td> 1</td><td> 5
+	    </td></tr><tr><td>7</td><td> 0</td><td> 4</td><td> 6</td><td> 9</td><td> 1</td><td> 3</td><td> 2</td><td> 5</td><td> 8]
+</td></tr></tbody></table> </div>
     </div>
 </div>
         
         
-	<div class="container">
-		<div class="col-md-6" style="margin-top: 50px;">
-		  	<div class="form-group">
-        
-
-		    	<label for="exampleInputAadharCard">Aadhar Card No.</label>
-		    	<input type="text" class="form-control" id="exampleInputAadharCard" placeholder="Enter Your Aadhar Card No." name="exampleInputAadharCard">
-		    	<small id="message" class="form-text text-muted"></small>
-		  	</div>
-		  	<button type="button" class="btn btn-primary" onclick="verify()">Verify</button>
-		</div>
-	</div>
+	
 	<script type="text/javascript">
 	// multiplication table
 	const d = [
@@ -113,5 +112,7 @@ tabledata +="</table>"
 		}
 	}
 	</script>
+
+
 </body>
 </html>
