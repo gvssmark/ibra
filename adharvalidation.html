@@ -1,8 +1,12 @@
+
 </html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Aadhar Card Verify</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+    table{border:0px solid black;}
+    </style>
 </head>
 <body>
 
@@ -17,11 +21,9 @@
 		  	</div>
 		  	
 		</div>
-	</div><div style="width: 79%;display: table;margin-left: 10px;margin-top: 10px;">
-    <div style="display: table-row">
-        <div style="/* width: 50vw; */display: table-cell;">
+	        <table border=0><tr><td>
         D Table
-         <table border="1">
+         <table border=0>
 
 	    <tbody>
         <tr bgcolor=cyan><td></td><td>0</td><td> 1</td><td> 2</td><td> 3</td><td> 4</td><td> 5</td><td> 6</td><td> 7</td><td> 8</td><td> 9 </td></tr>
@@ -38,11 +40,10 @@
         </tbody></table> </div>
         
         
-        <div style="display: table-cell;">
         
-        
+        <td>&nbsp; &nbsp; <td style=" vertical-align:top">
        P Table
-<table border="1">
+<table border=0>
     <tbody>
     <tr bgcolor=cyan ><td bgcolor=cyan></td><td>0</td><td> 1</td><td> 2</td><td> 3</td><td> 4</td><td> 5</td><td> 6</td><td> 7</td><td> 8</td><td> 9</td></tr>
     <tr><td bgcolor=cyan>0</td><td>0</td><td> 1</td><td> 2</td><td> 3</td><td> 4</td><td> 5</td><td> 6</td><td> 7</td><td> 8</td><td> 9</td></tr>
@@ -53,10 +54,9 @@
     <tr><td bgcolor=cyan>5</td><td>4</td><td> 2</td><td> 8</td><td> 6</td><td> 5</td><td> 7</td><td> 3</td><td> 9</td><td> 0</td><td> 1</td></tr>
     <tr><td bgcolor=cyan>6</td><td>2</td><td> 7</td><td> 9</td><td> 3</td><td> 8</td><td> 0</td><td> 6</td><td> 4</td><td> 1</td><td> 5</td></tr>
     <tr><td bgcolor=cyan>7</td><td>7</td><td> 0</td><td> 4</td><td> 6</td><td> 9</td><td> 1</td><td> 3</td><td> 2</td><td> 5</td><td> 8</td></tr>
-    </tbody></table></div>
-    </div>
-</div>
-        <br><br> 
+    </tbody></table>
+    </table>
+            <br><br> 
         
 	
 	<script type="text/javascript">
@@ -87,15 +87,16 @@
 	]
 
  tabledata=""
-tabledata = "<table border=1><tr><td>Digit Position<td>Mod Digit Position 8<td>Digit Value<td>P Table value <td>Computed C"
+tabledata = "<table border=1><tr style='font-size: x-small; '><td>Digit Position<td>Mod Digit Position 8<td>Digit Value<td>P Table row,col <td>D Table row,col "
 	// validates Aadhar number received as string
 	function validate(aadharNumber) {
 	    let c = 0
 	    let invertedArray = aadharNumber.split('').map(Number).reverse()
 
 	    invertedArray.forEach((val, i) => {
-	        c = d[c][p[(i % 8)][val]]
-           tabledata +="<tr><td>" + i + "<td>" + i%8 +"<td>" + val + "<td>" + (p[(i % 8)][val]) + "<td>" +c
+	       tabledata +="<tr><td>" + i + "<td>" + i%8 +"<td>" + val + "<td>" + i%8 +","+ val+"="+ (p[(i % 8)][val]) + "<td>" +c+"," + (p[(i % 8)][val]) +"=" + d[c][p[(i % 8)][val]] 
+          c = d[c][p[(i % 8)][val]]
+          
             	    })
 tabledata +="</table>"
 //console.log(tabledata)
@@ -107,12 +108,12 @@ tabledata +="</table>"
 		var message = document.getElementById("message");
 		var aadharNo = document.getElementById("exampleInputAadharCard").value;
 		if(validate(aadharNo)) {
-			message.innerHTML = 'Your aadhar card no. valid' +tabledata
-            tabledata = "<table border=1><tr><td>Digit Position<td>Mod Digit Position 8<td>Digit Value<td>P Table value <td>Computed C"
+			message.innerHTML = 'Valid' +tabledata
+tabledata = "<table border=1><tr style='font-size: x-small; '><td>Digit Position<td>Mod Digit Position 8<td>Digit Value<td>P Table row,col <td>D Table row,col "
 
 		} else {
-			message.innerHTML = 'Your aadhar card no.<b> not valid </b>'+tabledata
-              tabledata = "<table border=1><tr><td>Digit Position<td>Mod Digit Position 8<td>Digit Value<td>P Table value <td>Computed C"
+			message.innerHTML = '<b> Not Valid </b>'+tabledata
+tabledata = "<table border=1><tr style='font-size: x-small; '><td>Digit Position<td>Mod Digit Position 8<td>Digit Value<td>P Table row,col <td>D Table row,col "
    
 		}
 	}
