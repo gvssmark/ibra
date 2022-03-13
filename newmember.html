@@ -1,7 +1,3 @@
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -75,7 +71,8 @@ h1 {
 <body>
        <div id="modal" class="modal">
             <div class="modal-content">
-                <p id="modalData">Duplicate Entry !<br><br> <button onclick='modalButtonClick()' >Close</button></p>
+                <p id="modalData">Duplicate Entry !<br><br></p>
+                <p><button onclick='modalButtonClick()' >Close</button></p>
             </div>
         </div>
      
@@ -257,8 +254,13 @@ givencd = a.toString().substr(-1)
 return compCD == givencd
 }
 
-
-
+   url1 = 'https://script.google.com/macros/s/AKfycbzI9SDFOzYLYKRKJTlse0XpsEiF8XfbyxwUUH22evlGkEPDIt2V/exec'
+            async function getMyData1() {
+                response = await fetch(url1)
+                data1 = await response.json()
+                activeMembers = data1["user"]
+ }
+getMyData1()
 
     url = 'https://script.google.com/macros/s/AKfycbwTKTuIlLyeXdr1nAgB81SgKAyVLDb_uL-Qgmu0CJnEne5BOBm-/exec'
             async function getMyData() {
@@ -273,11 +275,23 @@ tempacno =document.getElementById('pensionacno').value
 tempsrno = document.getElementById('srno').value
 acnofilter= tempData.filter( a => a.pensionacno === tempacno*1)
 srnofilter= tempData.filter( a => a.srno === tempsrno*1)
+actmemb = activeMembers.filter(a => a.srno ===tempsrno*1)
 //alert((acnofilter.length || srnofilter.length)>0?"duplicate":"")
-dup=(acnofilter.length || srnofilter.length)
-dup>0? document.getElementById('modal').style.display = "block":""
+msg1="Data already entered for New Membership<br>Please wait for membership Number"
+msg2="You are already a member "
+dup=(acnofilter.length || srnofilter.length  )
+if(dup>0){ 
+document.getElementById('modalData').innerHTML=msg1
+document.getElementById('modal').style.display = "block"}
 
+if(actmemb.length>0){
+document.getElementById('modalData').innerHTML=msg2
+document.getElementById('modal').style.display = "block"}
 }
+
+
+
+
 
        
       function modalButtonClick(){
