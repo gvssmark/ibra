@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -110,7 +111,8 @@ h1 {
       <input type="text" class="form-control" name="remittancerefno"  placeholder="a"  required>
       <label for="remittancerefno">Remittance Ref No:</label>
         </div>
- <div class="form-floating mb-3 mt-3">
+<div id="showonsuccess" style="display:none">
+<div class="form-floating mb-3 mt-3">
       <input type="text" class="form-control" name="name"  placeholder="a"  required>
       <label for="name">Name of the Pensioner:</label>
         </div>
@@ -191,7 +193,8 @@ h1 {
     <br>
     <button  style="width:50vw; margin-left:25vw" type="submit" class="btn btn-primary">Submit</button>
     <br>
-  </form>
+</div>
+</form>
 </div>
 <script>
 
@@ -204,6 +207,7 @@ h1 {
  //alert("Successfully Submitted")
  
 form.reset();
+
 document.getElementById("main").style.display = "block";
  document.getElementById("dataform").style.display = "none";  
   })
@@ -211,6 +215,7 @@ document.getElementById("main").style.display = "block";
 function contin(){
   document.getElementById("general").style.display = "none";
   document.getElementById("dataform").style.display = "block";
+  showonsuccess.style.display="none"
   
   }
 
@@ -273,20 +278,25 @@ getMyData()
 function checkMultipleEntry(){
 tempacno =document.getElementById('pensionacno').value
 tempsrno = document.getElementById('srno').value
-acnofilter= tempData.filter( a => a.pensionacno === tempacno*1)
-srnofilter= tempData.filter( a => a.srno === tempsrno*1)
-actmemb = activeMembers.filter(a => a.srno ===tempsrno*1)
+acnofilter= tempData.filter( a => a.pensionacno === tempacno*1 || a.srno === tempsrno*1)
+//srnofilter= tempData.filter( a => a.srno === tempsrno*1)
+//actmemb = activeMembers.filter(a => a.srno ===tempsrno*1)
+actmemb = activeMembers.filter(a => a.sbac ===tempacno*1 || a.srno===tempsrno*1)
+
 //alert((acnofilter.length || srnofilter.length)>0?"duplicate":"")
 msg1="Data already entered for New Membership<br>Please wait for membership Number"
 msg2="You are already a member "
-dup=(acnofilter.length || srnofilter.length  )
-if(dup>0){ 
+//dup=(acnofilter.length || srnofilter.length  )
+if(acnofilter.length >0){ 
 document.getElementById('modalData').innerHTML=msg1
 document.getElementById('modal').style.display = "block"}
 
 if(actmemb.length>0){
 document.getElementById('modalData').innerHTML=msg2
 document.getElementById('modal').style.display = "block"}
+
+else{showonsuccess.style.display="block"}
+
 }
 
 
