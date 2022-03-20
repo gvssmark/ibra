@@ -59,7 +59,6 @@ input[type=number] {
         }
 
 .bank{font-size:large}
-div{width:100%}
 
 h1 {
   color: white;
@@ -67,6 +66,7 @@ h1 {
   padding:20px;
  box-shadow: 20px 20px 50px grey
 }
+div{width:100%}
 </style>
 </head>
 <body>
@@ -100,6 +100,7 @@ h1 {
   <h6>Indian Bank Retirees' Association (AP & TS)</h6>
   <p >Membership Data Entry Form</p>
   <form  name='submit-to-google-sheet'>
+       <div style="display:flex"> 
     <div class="form-floating mb-3 mt-3">
       <input type="number" onfocusout='checkMultipleEntry(); myFunction()' class="form-control" onfocusout="myFunction()" name="pensionacno"  min="100000001" max="99999999999"  id='pensionacno'  placeholder="a" required>
       <label for="pensionacno">Pension Account No:</label>
@@ -109,7 +110,8 @@ h1 {
       <input type="number" onfocusout='checkMultipleEntry()' class="form-control" name="srno"   min="1" max="999999"  id='srno' placeholder="a" required>
       <label for="srno">SR No:</label>
         </div>
- <div class="form-floating mb-3 mt-3">
+</div>
+<div class="form-floating mb-3 mt-3">
       <input type="text" class="form-control" name="remittancerefno"  placeholder="a"  required>
       <label for="remittancerefno">Remittance Ref No:</label>
         </div>
@@ -138,14 +140,19 @@ h1 {
       <input type="text" class="form-control" name="district"  placeholder="a"  required>
       <label for="district">District:</label>
         </div>
+      <div style="display:flex"> 
+
  <div class="form-floating mb-3 mt-3">
       <input type="text" class="form-control" name="state"  placeholder="a"  required>
       <label for="state">State:</label>
         </div>
  <div class="form-floating mb-3 mt-3">
-      <input type="text" class="form-control" name="pin"   pattern="[1-8]{1}[0-9]{5}" placeholder="a"  required>
+      <input type="number" class="form-control" name="pin"   pattern="[1-8]{1}[0-9]{5}" placeholder="a"  required>
       <label for="pin">PIN Code:</label>
         </div>
+</div>
+<div style="display:flex"> 
+
  <div class="form-floating mb-3 mt-3">
       <input type="tel" class="form-control" name="mobileno1"  pattern="[6-9]{1}[0-9]{9}"  placeholder="a"  required>
       <label for="mobileno1">Mobile 1:</label>
@@ -154,17 +161,17 @@ h1 {
       <input type="tel" class="form-control" name="mobile2"  pattern="[6-9]{1}[0-9]{9}" placeholder="a">
       <label for="mobile2">Mobile 2:</label>
         </div>
-       <div style="display:flex; width:100%"> 
+</div>
+<div style="display:flex"> 
  <div class="form-floating mb-3 mt-3">
-      <input type="number"  class="form-control" name="stdcode" id="stdcode"     placeholder="a">
+      <input type="number" class="form-control" name="stdcode" id="stdcode"     placeholder="a">
       <label for="stdcode">STD Code </label>
         </div>
 <div class="form-floating mb-3 mt-3">
-      <input type="number"   class="form-control" name="fixedline" id="fixedline"  onfocusout="checkFixedLine()"   placeholder="a">
+      <input type="number" class="form-control" name="fixedline" id="fixedline"  onfocusout="checkFixedLine()"   placeholder="a">
       <label for="fixedline">Fixed Line Number</label>
         </div>
 </div>
-
  <div class="form-floating mb-3 mt-3">
       <input type="text" class="form-control" name="pensionbranch"  placeholder="a"  required>
       <label for="pensionbranch">Pension Branch:</label>
@@ -178,7 +185,9 @@ h1 {
       <input type="email" class="form-control" name="email"  placeholder="a"  required>
       <label for="email">Email:</label>
   </div>
- <div class="form-floating mb-3 mt-3">
+     <div style="display:flex"> 
+
+<div class="form-floating mb-3 mt-3">
    <select class="form-select"  name="retiredfrom"  placeholder="a"  required>
     <option value="">Select the Bank</option>
    <option value="Indian Bank">Indian Bank</option>
@@ -195,7 +204,7 @@ h1 {
     </select>
   <label for="pensiontype" class="form-label">Pension Type:</label>
           </div>
-
+</div>
 
  
     
