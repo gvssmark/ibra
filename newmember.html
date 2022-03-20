@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -60,7 +58,7 @@ input[type=number] {
             margin-top: 53px;
         }
 
-
+.bank{font-size:large}
 
 h1 {
   color: white;
@@ -87,9 +85,11 @@ h1 {
 <h6>Indian Bank Retirees' Association (AP & TS)</h6>
 
 <ol>
-<li>Membership is open only for <b>Indian Bank and  eAllahabad Bank Retirees</b>. </li><li>Pension Account Number provided data entry screen will be verified in Indian Bank for credit of pension.</li><li>On successfull verification only, the membership number will be allotted.</li><li>Remit the membership first, get the remittance reference number and then only proceed to fill the form.</li><li>If the applicant is from other than the intended banks, membership fee will be forefieted.</li>
+<li>Membership is open only for <b class="bank">Indian Bank </b>and <b class="bank"> eAllahabad Bank </b> retirees. </li><li>Pension Account Number provided data entry screen will be verified in Indian Bank for credit of pension amd the applicant's name .</li>
+<li>Remitt the membership fee of Rs.1000 to Indian Bank Retirees' Association account No <b class="bank">465693063</b> with Indian Bank, Himayatnagar Branch (IFSC IDIB000H008)
+<li>Only on successfull verification of Remittance and Pension Account Number, the membership number will be allotted.</li><li>Remit the membership fee first, get the remittance reference number and then only proceed to fill the form.</li><li>If the applicant is from other than the Indian Bank or Allahaba Bank, membership fee will be forefieted and Membership Number will not be allotted.</li>
 <li style="color:red"><b>Do not submit the form multiple times.</b></li>
-<li>Please allow at least one week for verification of the account number and allottment of Membership Number</li>
+<li>Please allow at least one week for verification of the account number and reference number for  allottment of Membership Number</li>
 
 </ol> <br>
 <button style="width:50vw; margin-left:25vw" onclick='contin()' class="btn btn-primary">Agree and Continue</button>
@@ -153,10 +153,17 @@ h1 {
       <input type="tel" class="form-control" name="mobile2"  pattern="[6-9]{1}[0-9]{9}" placeholder="a">
       <label for="mobile2">Mobile 2:</label>
         </div>
+       <div style="display:flex"> 
  <div class="form-floating mb-3 mt-3">
-      <input type="tel" class="form-control" name="fixedline"    pattern="[1-8]{1}[0-9]{9}" placeholder="a">
-      <label for="fixedline">Fixed Line. (STD Code +Number. 0 not required)</label>
+      <input type="number" class="form-control" name="stdcode" id="stdcode"     placeholder="a">
+      <label for="stdcode">STD Code </label>
         </div>
+<div class="form-floating mb-3 mt-3">
+      <input type="number" class="form-control" name="fixedline" id="fixedline"  onfocusout="checkFixedLine()"   placeholder="a">
+      <label for="fixedline">Fixed Line Number</label>
+        </div>
+</div>
+
  <div class="form-floating mb-3 mt-3">
       <input type="text" class="form-control" name="pensionbranch"  placeholder="a"  required>
       <label for="pensionbranch">Pension Branch:</label>
@@ -172,16 +179,18 @@ h1 {
   </div>
  <div class="form-floating mb-3 mt-3">
    <select class="form-select"  name="retiredfrom"  placeholder="a"  required>
-    <option>Indian Bank</option>
-    <option>Allahabad Bank</option>
+    <option value="">Select the Bank</option>
+   <option value="Indian Bank">Indian Bank</option>
+    <option value="Allahabad Bank">Allahabad Bank</option>
     </select>
   <label for="retiredfrom" class="form-label">Retired from:</label>
           </div>
 
  <div class="form-floating mb-3 mt-3">
    <select class="form-select"  name="pensiontype"   placeholder="a" required>
-    <option>Service</option>
-    <option>Family</option>
+<option value="">Pension Type</option>
+<option value="Service">Service</option>
+    <option value="Family">Family</option>
     </select>
   <label for="pensiontype" class="form-label">Pension Type:</label>
           </div>
@@ -198,6 +207,18 @@ h1 {
 </form>
 </div>
 <script>
+
+function checkFixedLine(){
+std = stdcode.value*1
+fixd = fixedline.value*1
+fullnumber = std.toString().length + fixd.toString().length
+if (fullnumber !=10){
+stdcode.value=""
+fixedline.value=""
+//fixedline.focus()
+}
+}
+
 
   const scriptURL = 'https://script.google.com/macros/s/AKfycbz6Cczs67Bg9m38k9LvvvjBRmc_8S69TkjAhTH18SVc6zxkZqRu/exec'
   const form = document.forms['submit-to-google-sheet']
