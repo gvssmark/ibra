@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -288,22 +289,30 @@ msg1="Data already entered for New Membership<br>Please wait for membership Numb
 msg2="You are already a member "
 //dup=(acnofilter.length || srnofilter.length  )
 if(acnofilter.length >0){ 
-document.getElementById('modalData').innerHTML=msg1
+msg=
+`<br>SR No:${acnofilter[0].srno} <br> 
+Name: ${acnofilter[0].name}<br>
+Membership No:To be allotted <br>
+Mobile No: ${acnofilter[0].mobileno1}<br> `
+
+document.getElementById('modalData').innerHTML=msg1+msg
 document.getElementById('modal').style.display = "block"}
 
 if(actmemb.length>0){
-document.getElementById('modalData').innerHTML=msg2
+msg=
+`<br>SR No:${actmemb[0].srno} <br> 
+Name: ${actmemb[0].name}<br>
+Membership No:${actmemb[0].id} <br>
+Mobile No: ${actmemb[0].mobile1}<br> `
+
+document.getElementById('modalData').innerHTML=msg2+msg
+
 document.getElementById('modal').style.display = "block"}
 
 else{showonsuccess.style.display="block"}
 
 }
-
-
-
-
-
-       
+      
       function modalButtonClick(){
      //       alert("Go to Main Screen")
      document.getElementById("general").style.display = "block";
