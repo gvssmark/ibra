@@ -99,7 +99,7 @@ h1 {
   <p >Membership Data Entry Form</p>
   <form  name='submit-to-google-sheet'>
     <div class="form-floating mb-3 mt-3">
-      <input type="number" class="form-control" onfocusout="myFunction()" name="pensionacno"  min="100000001" max="99999999999"  id='pensionacno'  placeholder="a" required>
+      <input type="number" onfocusout='checkMultipleEntry()' class="form-control" onfocusout="myFunction()" name="pensionacno"  min="100000001" max="99999999999"  id='pensionacno'  placeholder="a" required>
       <label for="pensionacno">Pension Account No:</label>
     </div>
     
