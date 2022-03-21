@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,6 +62,13 @@ input[type=number] {
 
 .bank{font-size:large}
 
+.mytable tr td {
+border:1px solid black ;
+font-size:small;
+text-align:left; 
+width:100%;
+}
+
 h1 {
   color: white;
     text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
@@ -74,6 +82,7 @@ div{width:100%}
        <div id="modal" class="modal">
             <div class="modal-content">
                 <p id="modalData">Duplicate Entry !<br><br></p>
+                <p id="sdatatext" style="font-size:small; background:white; color:blue "></p>
                 <p><button onclick='modalButtonClick()' >Close</button></p>
             </div>
         </div>
@@ -96,6 +105,8 @@ div{width:100%}
 </ol> <br>
 <button style="width:50vw; margin-left:25vw" onclick='contin()' class="btn btn-primary">Agree and Continue</button>
 </div>
+
+
 <div id='dataform' style='display:none;'>
 <div class="container mt-3">
   <h6>Indian Bank Retirees' Association (AP & TS)</h6>
@@ -329,12 +340,34 @@ msg2="You are already a member "
 //dup=(acnofilter.length || srnofilter.length  )
 if(acnofilter.length >0){ 
 msg=
-`<br>SR No:${acnofilter[0].srno} <br> 
-Name: ${acnofilter[0].name}<br>
-Membership No:To be allotted <br>
-Mobile No: ${acnofilter[0].mobileno1}<br> `
+``
+submittedData = `<table border=1 class='mytable'>
+<tr><td>Pension Account No<td>${acnofilter[0].pensionacno}
+<tr><td>SR No<td>${acnofilter[0].srno}
+<tr><td>Remittance Ref No<td>${acnofilter[0].remittancerefno}
+<tr><td>Name<td>${acnofilter[0].name}
+<tr><td colspan='2'>Address:<br>${acnofilter[0].add1},
+${acnofilter[0].add2},
+${acnofilter[0].add3},
+${acnofilter[0].add4},
+${acnofilter[0].district} District, 
+${acnofilter[0].state}- ${acnofilter[0].pin}
+<tr><td>Mobile 1<td>${acnofilter[0].mobileno1}
+<tr><td>Mobile 2<td>${acnofilter[0].mobile2}
+<tr><td>STD Code<td>${acnofilter[0].stdcode} -${acnofilter[0].fixedline}
+<tr><td>Fixed Line<td>${acnofilter[0].fixedline}
+<tr><td>Email<td>${acnofilter[0].email}
+<tr><td>Pension Branch<td>${acnofilter[0].pensionbranch}
+<tr><td>Pension Type<td>${acnofilter[0].pensiontype}
+<tr><td>Spouse Name<td>${acnofilter[0].spousename}
+<tr><td>Retired from<td>${acnofilter[0].retiredfrom}
+</table>
+`
+
 
 document.getElementById('modalData').innerHTML=msg1+msg
+document.getElementById('sdatatext').innerHTML=submittedData
+
 document.getElementById('modal').style.display = "block"}
 
 if(actmemb.length>0){
@@ -358,6 +391,9 @@ document.getElementById('modal').style.display = "block"}
   document.getElementById('modal').style.display = "none"
   form.reset();
     }
+
+
+
 
 </script>
 </body>
