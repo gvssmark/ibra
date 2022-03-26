@@ -1,3 +1,4 @@
+
 12th general body
 
 
@@ -89,28 +90,56 @@ div{width:100%}
           required disabled>
         <label for="name">Name</label>
       </div>         
+      <br>
+      <div class="form-floating mb-1 mt-1">
+        <input name="file" id="uploadfile" type="file" capture="user" accept="image/*" >
+    
+      </div>
 		</form>
+        <br>
  <button style="width:50%; margin-left:25%" class="btn btn-primary" onclick="submitData()">Submit</buttion>
   </div>
 
 	<script type="text/javascript">
+    //------------------------------------------
   function submitData(){
-const scriptURL = 'https://script.google.com/macros/s/AKfycby_xRXHJioTzOHzm-FZQpAxUmQoquzrXOUTKYIezBP8d6Bh2oyz/exec'
-  const form = document.forms['submit-to-google-sheet']
-  form.addEventListener('submit', e => {
+const form = document.getElementById('dataform');
 
+form.addEventListener('submit', e => {
+console.log(form)
+e.preventDefault();
  document.getElementById("srno").disabled=false;
 document.getElementById("name").disabled=false;
 
-e.preventDefault()
-    fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-form.reset();	  
+  const file = form.file.files[0];
+  const fr = new FileReader();
+  fr.readAsArrayBuffer(file);
+  fr.onload = f => {
+    
+    const url = "https://script.google.com/macros/s/AKfycbypevmEHgAg5BP8XoJNGNBJK49S_rhxmHvvhxpPL4kYkTJk_xNq/exec"; // Please set the URL of Web Apps.
+console.log(url)    
+    const qs = new URLSearchParams({filename: form.srno.value || file.name, mimeType: file.type});
+    fetch(`${url}?${qs}`, {method: "POST", body: JSON.stringify([...new Int8Array(f.target.result)])})
+    .then(res => res.json())
+    .then(e => console.log(e))  // <--- You can retrieve the returned value here.
+    .catch(err => console.log(err));
+form.reset(); 
+formsubmitted.style.display="block";
+form.style.display="none"
+}
+const scriptURL = 'https://script.google.com/macros/s/AKfycby_xRXHJioTzOHzm-FZQpAxUmQoquzrXOUTKYIezBP8d6Bh2oyz/exec'
+
+//console.log(scriptURL);
+   fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+}
+);
 generaldiv.innerHTML="<h1>Data Submitted<br>Visit Again to view the Data</h1>"
  dataform.style.display="none"
  generaldiv.style.display="block"
-  })
-}
 
+
+}
+//----------------------------------
 attendurl ='https://script.google.com/macros/s/AKfycby9UegJW5PL26K-e4joVa2CbxAfJYmM15X9dxmt4tbChsNCQirt/exec'
         async function getMyAttendanceData() {
             response = await fetch(attendurl)
