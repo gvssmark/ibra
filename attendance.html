@@ -1,0 +1,163 @@
+12th general body
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>IBRA Insurance Form</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    body {
+      font-size: SMALL;
+      BACKGROUND: powderblue;
+    }
+
+    p {
+      text-align: center;
+    }
+
+    h6 {
+      color: red;
+      text-align: center;
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    /* Firefox */
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+div{width:100%}
+    #modalData{
+    margin-top: 98px;
+    margin-left:8px;
+    margin-right:8px;
+ }
+    h1 {
+      color: white;
+      text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+      padding: 20px;
+      box-shadow: 20px 20px 50px grey;
+      text-align: center;
+	  }
+  </style>
+</head>
+
+<body>
+
+  <div id="myModal" style="display:none;">
+            <p id="modalData">modal data </p>
+    </div>
+<div style="top:0; position:fixed; background:red; text-align:center; color:white;   z-index: 1;">
+ <h4 style="">Indian Bank Retirees' Association (AP&TS)-12th Generalbody</h6>
+</div>
+<br><br><br>
+     <div id='generaldiv' class="form-floating mb-1 mt-1">
+<br>
+<ol>
+<li>Invitatition is only for Indian Bank and E Allabad Bank Retirees only
+<li>You should be a member of IBRA APTS
+<li>Input Your SR No to know the status of your membership
+</ol>
+        <input style="width:50%; margin-left:25%;" type="number" class="form-control"  min="1" max="9999999"
+          id='srno1' name='srno1' placeholder="a" required ><br>
+      <button style="width:50%; margin-left:25%; display:none " onclick="checkMemb()"  class="btn btn-primary" id='btnmemb'  >Check Membership</button>
+<p id='msg'></p>
+      </div>
+</div>
+<form  id='dataform'  style = "display:none" name='submit-to-google-sheet'>
+    <div class="container mt-3">
+        <div name='data' id='data' >
+          <h4>Arrival Details</h4>
+                    <div class="form-floating mb-1 mt-1">
+            <input type="text" class="form-control" name="date" id="date" placeholder="a" required style="display:none">
+            <label for="refno">Date</label>
+          </div>
+  <div class="form-floating mb-1 mt-1">
+        <input type="number" class="form-control" name="srno" min="1" max="9999999"
+          id='srno' placeholder="a" required disabled>
+        <label for="srno">SR No</label>
+      </div> 
+    <div class="form-floating mb-1 mt-1">
+        <input type="text" class="form-control" name="name" id='name' placeholder="a"
+          required disabled>
+        <label for="name">Name</label>
+      </div>         
+		</form>
+ <button style="width:50%; margin-left:25%" class="btn btn-primary" onclick="submitData()">Submit</buttion>
+  </div>
+
+	<script type="text/javascript">
+  function submitData(){
+const scriptURL = 'https://script.google.com/macros/s/AKfycby_xRXHJioTzOHzm-FZQpAxUmQoquzrXOUTKYIezBP8d6Bh2oyz/exec'
+  const form = document.forms['submit-to-google-sheet']
+  form.addEventListener('submit', e => {
+
+ document.getElementById("srno").disabled=false;
+document.getElementById("name").disabled=false;
+
+e.preventDefault()
+    fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+form.reset();	  
+generaldiv.innerHTML="<h1>Data Submitted<br>Visit Again to view the Data</h1>"
+ dataform.style.display="none"
+ generaldiv.style.display="block"
+  })
+}
+
+attendurl ='https://script.google.com/macros/s/AKfycby9UegJW5PL26K-e4joVa2CbxAfJYmM15X9dxmt4tbChsNCQirt/exec'
+        async function getMyAttendanceData() {
+            response = await fetch(attendurl)
+            attendanceData = await response.json()
+            attenData = attendanceData["user"]
+            }
+getMyAttendanceData()
+
+   memburl = 'https://script.google.com/macros/s/AKfycbzI9SDFOzYLYKRKJTlse0XpsEiF8XfbyxwUUH22evlGkEPDIt2V/exec'
+        async function getMyData() {
+            response = await fetch(memburl)
+            MembershipData = await response.json()
+            tempData1 = MembershipData["user"]
+            activeMembers = tempData1.filter(a => a.name !== "")
+ if (activeMembers.length>0){document.getElementById('btnmemb').style.display="block";
+ }
+}
+   getMyData()          
+
+function checkMemb(){
+inputsrno = srno1.value*1
+member = (activeMembers.filter(a => a.srno === inputsrno));
+attenmemb = (attenData.filter( a => a.srno === inputsrno*1));
+
+if (member.length ===0){
+modalData.innerHTML= "<br><h1>You are not a member</h1>"
+document.getElementById('dataform').style.display="none"
+document.getElementById('generaldiv').style.display="none"
+myModal.style.display="block"
+}
+
+if (member.length >0){
+generaldiv.style.display="none"
+document.getElementById('dataform').style.display="block"
+srno.value=inputsrno
+document.getElementById('name').value= member[0].name
+document.getElementById('date').value= Date()
+}
+
+if (attenmemb.length >0){
+document.getElementById('dataform').style.display="none"
+modalData.innerHTML= "<h1>You have already submitted Data </h1>"
+myModal.style.display="block"
+}
+}
+
+	</script>
+</body>
+</html>
+
