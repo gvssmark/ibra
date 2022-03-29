@@ -116,6 +116,10 @@ div{width:100%}
           required disabled>
         <label for="name">Name</label>
       </div>        
+       <div class="form-floating mb-1 mt-1">
+            <input type="tel" class="form-control" name="mobile" id="mobile" pattern="[6-9]{1}[0-9]{9}" placeholder="a"  required>
+            <label for="mobileno">Mobile Number:</label>
+          </div>
       <input type="text" name="entryBy" id="entryBy"  class="form-control" disabled style="display:none">
       <br>
      <input type="text" name="memb" id="memb"  class="form-control" disabled style="display:none">
@@ -144,19 +148,19 @@ attendurl ='https://script.google.com/macros/s/AKfycby9UegJW5PL26K-e4joVa2CbxAfJ
             attendanceData = await response.json()
             attenData = attendanceData["user"]
 getMyAttendanceData()
-membcount = attenData.filter(a => a.col5 ==="Member").length
-nonmembcount = attenData.filter(a => a.col5 ==="Non Member").length
+membcount = attenData.filter(a => a.memb ==="Member").length
+nonmembcount = attenData.filter(a => a.memb ==="Non Member").length
 msg.innerHTML =`Members ${membcount} <br>  Non Members ${nonmembcount} `
 setTimeout(blk(), 3000)
  }
 function blk(){
 document.getElementById('btnmemb').style.display='block'
-trtd="<table>"
+trtd="<table><tr><td>SrNo<td>Name<td>Mobile"
 
 attenData.filter(a => a.srno >0).sort(function(a, b) {
   return a.srno  - b.srno;
 }).forEach(function(item){
- trtd +=`<tr><td> ${item.srno}<td> ${item.name} `;
+ trtd +=`<tr><td> ${item.srno}<td> ${item.name} <td> ${item.mobile} `;
 })
 
 trtd += "</table>"
@@ -193,6 +197,8 @@ document.getElementById('date').value= Date()
 document.getElementById("membname").focus()
 document.getElementById("membname").value="No Name"
 document.getElementById("entryBy").value=userName;
+document.getElementById('mobile').value=9999999999
+
 memb.value="Non Member"
 }
 
@@ -205,6 +211,8 @@ generaldiv.style.display="none"
 document.getElementById('dataform').style.display="block"
 srno.value=inputsrno
 document.getElementById('membname').value= member[0].name
+document.getElementById('mobile').value=member[0].mobile1
+
 document.getElementById('date').value= Date()
 memb.value="Member"
 }
@@ -212,7 +220,7 @@ memb.value="Member"
 if (attenmemb.length >0){
 document.getElementById('dataform').style.display="none"
 duplicatesubmitteddiv.style.display="block"
-pAlready.innerHTML = `Data Entered by: ${attenmemb[0].col4}   <br>
+pAlready.innerHTML = `Data Entered by: ${attenmemb[0].entry}   <br>
 Entry time ${attenmemb[0].dt.substr(16,5)}
 `
 }
