@@ -13,7 +13,11 @@
       font-size: large;
       BACKGROUND: powderblue;
     }
-
+.mytable tr td {
+border:1px solid black ;
+font-size:small;
+text-align:left; 
+}
     p {
       text-align: center;
     }
@@ -64,6 +68,9 @@ div{width:100%}
        
 
 <button style="width:50%; margin-left:25%" class="btn btn-primary" onclick="userNameStore(); ">Submit</buttion>
+</div>
+<div id='reportsdiv' style="display:none" class="form-floating mb-1 mt-1">
+<p id="reportsp"></p>
 </div>
 
 
@@ -155,7 +162,7 @@ setTimeout(blk(), 3000)
  }
 function blk(){
 document.getElementById('btnmemb').style.display='block'
-trtd="<table><tr><td>SrNo<td>Name<td>Mobile"
+trtd="<table class='mytable'><tr><td>SrNo<td>Name<td>Mobile"
 
 attenData.filter(a => a.srno >0).sort(function(a, b) {
   return a.srno  - b.srno;
@@ -163,10 +170,7 @@ attenData.filter(a => a.srno >0).sort(function(a, b) {
  trtd +=`<tr><td> ${item.srno}<td> ${item.name} <td> ${item.mobile} `;
 })
 
-trtd += "</table>"
-
-
-
+reportsp.innerHTML = trtd += "</table>"
 }
 
 getMyAttendanceData()
