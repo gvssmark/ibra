@@ -1,3 +1,4 @@
+
 <html lang="en">
 <head>
   <title>IBRA Attendance</title>
@@ -52,6 +53,18 @@ div{width:100%}
  <h4 style="">Indian Bank Retirees' Association (AP&TS)-12th Generalbody</h6>
 </div>
 
+<div id='usediv' style="display:block" class="form-floating mb-1 mt-1">
+<br><br><br><br><br><br>
+                <div class="form-floating mb-1 mt-1">
+        <input  class="form-control"   type="text"    id='user' name='user' placeholder="a" required >
+           <label for="user">User Name</label>
+ </div>
+       
+
+<button style="width:50%; margin-left:25%" class="btn btn-primary" onclick="userNameStore(); ">Submit</buttion>
+</div>
+
+
 <div id='submitteddiv' style="display:none" class="form-floating mb-1 mt-1">
 <br><br><br>
 <h1>Data Submitted</h1>
@@ -61,15 +74,16 @@ div{width:100%}
 <div id='duplicatesubmitteddiv' style="display:none" class="form-floating mb-1 mt-1">
 <br><br><br>
 <h1>Data Alreday Submitted</h1>
- <button style="width:50%; margin-left:25%" class="btn btn-primary" onclick="shtData(); ">Go Back</buttion>
+<p id="pAlready"></p>
+<button style="width:50%; margin-left:25%" class="btn btn-primary" onclick="shtData(); ">Go Back</buttion>
 </div>
 <div id='membcount' style="display:none"class="form-floating mb-1 mt-1">
 <br><br><br>
 <h6>Membership Count</h6>
 </div>
 
-  <div id='generaldiv' class="form-floating mb-1 mt-1">
-<br><br><br>
+  <div id='generaldiv' style="display:none; "class="form-floating mb-1 mt-1">
+<br><br><br><br><br><br>
 <ol>
 <li>Invitatition is only for Indian Bank and E Allabad Bank Retirees only
 <li>You should be a member of IBRA APTS
@@ -99,14 +113,28 @@ div{width:100%}
         <input type="text"   onClick="this.select();" class="form-control" name="name" id='membname' placeholder="a"
           required disabled>
         <label for="name">Name</label>
-      </div>         
+      </div>        
+      <input type="text" name="entryBy" id="entryBy"  class="form-control" disabled style="display:none">
       <br>
-  		</form>
+
+
+</form>
         <br>
  <button style="width:50%; margin-left:25%" class="btn btn-primary" onclick="submitData(); ">Submit</buttion>
   </div>      
       
       <script>
+      userName=""
+      function userNameStore(){
+    userName=document.getElementById('user').value
+if (userName ===""){document.getElementById('user').focus()}
+if (userName !==""){
+usediv.style.display="none"
+generaldiv.style.display="block"
+}
+      }
+      
+
 attendurl ='https://script.google.com/macros/s/AKfycby9UegJW5PL26K-e4joVa2CbxAfJYmM15X9dxmt4tbChsNCQirt/exec'
         async function getMyAttendanceData() {
             response = await fetch(attendurl)
@@ -138,7 +166,8 @@ member = (activeMembers.filter(a => a.srno*1 === inputsrno));
 attenmemb = (attenData.filter( a => a.srno*1 === inputsrno*1));
 
 if (member.length === 0){
-ismemb.innerHTML="Non Member"
+ismemb.innerHTML="<h1>Non Member</h1>"
+ismemb.style.backgroundColor="pink"
 srno.value=inputsrno
 //document.getElementById("membname").disabled=false;
 document.getElementById('dataform').style.display="block"
@@ -146,10 +175,15 @@ document.getElementById('generaldiv').style.display="none"
 document.getElementById('date').value= Date()
 document.getElementById("membname").focus()
 document.getElementById("membname").value="No Name"
+document.getElementById("entryBy").value=userName;
 
 }
 
 if (member.length >0){
+ismemb.innerHTML="<h1>Member</h1>"
+ismemb.style.backgroundColor="green"
+document.getElementById("entryBy").value=userName;
+
 generaldiv.style.display="none"
 document.getElementById('dataform').style.display="block"
 srno.value=inputsrno
@@ -161,6 +195,9 @@ document.getElementById('date').value= Date()
 if (attenmemb.length >0){
 document.getElementById('dataform').style.display="none"
 duplicatesubmitteddiv.style.display="block"
+pAlready.innerHTML = `Data Entered by: ${attenmemb[0].col4}   <br>
+Entry time ${attenmemb[0].dt.substr(16,5)}
+`
 }
 }
 
@@ -173,10 +210,15 @@ form.addEventListener('submit', e => {
 e.preventDefault();
  document.getElementById("srno").disabled=false;
 document.getElementById("membname").disabled=false;
+
+document.getElementById("entryBy").disabled=false;
+//document.getElementById("entryBy").value=userName;
+
 //if(document.getElementById("membname").value=''){name.focus()}
    fetch(scriptURL, { method: 'POST', body: new FormData(form)})
 //getMyAttendanceData()
 form.reset(); 
+//alert(document.getElementById("entryBy").value)
 //formsubmitted.style.display="block";
 form.style.display="none"
 document.getElementById('btnmemb').style.display="none"
