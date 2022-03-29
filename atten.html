@@ -1,6 +1,7 @@
 
 
 
+
 <html lang="en">
 <head>
   <title>IBRA Attendance</title>
@@ -18,6 +19,11 @@ border:1px solid black ;
 font-size:small;
 text-align:left; 
 }
+.mytable {
+margin:5px;
+width:95%;
+}
+
     p {
       text-align: center;
     }
@@ -124,7 +130,7 @@ div{width:100%}
         <label for="name">Name</label>
       </div>        
        <div class="form-floating mb-1 mt-1">
-            <input type="tel" class="form-control" name="mobile" id="mobile" pattern="[6-9]{1}[0-9]{9}" placeholder="a"  required>
+            <input type="tel" onClick="this.select();" class="form-control" name="mobile" id="mobile" pattern="[6-9]{1}[0-9]{9}" placeholder="a"  required>
             <label for="mobileno">Mobile Number:</label>
           </div>
       <input type="text" name="entryBy" id="entryBy"  class="form-control" disabled style="display:none">
@@ -202,6 +208,8 @@ document.getElementById("membname").focus()
 document.getElementById("membname").value="No Name"
 document.getElementById("entryBy").value=userName;
 document.getElementById('mobile').value=9999999999
+ document.getElementById("srno").disabled=true;
+
 
 memb.value="Non Member"
 }
@@ -216,6 +224,8 @@ document.getElementById('dataform').style.display="block"
 srno.value=inputsrno
 document.getElementById('membname').value= member[0].name
 document.getElementById('mobile').value=member[0].mobile1
+ document.getElementById("srno").disabled=true;
+document.getElementById("membname").disabled=true;
 
 document.getElementById('date').value= Date()
 memb.value="Member"
