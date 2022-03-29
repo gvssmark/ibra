@@ -1,4 +1,5 @@
 
+
 <html lang="en">
 <head>
   <title>IBRA Attendance</title>
@@ -8,7 +9,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
   <style>
     body {
-      font-size: SMALL;
+      font-size: large;
       BACKGROUND: powderblue;
     }
 
@@ -54,10 +55,10 @@ div{width:100%}
 </div>
 
 <div id='usediv' style="display:block" class="form-floating mb-1 mt-1">
-<br><br><br><br><br><br>
+<br><br><br>
                 <div class="form-floating mb-1 mt-1">
-        <input  class="form-control"   type="text"    id='user' name='user' placeholder="a" required >
-           <label for="user">User Name</label>
+        <input  class="form-control"   style="width:70%; margin-left:15%" type="text"    id='user' name='user' placeholder="a" required >
+           <label style="width:70%; margin-left:15%"  for="user">User Name</label>
  </div>
        
 
@@ -83,7 +84,7 @@ div{width:100%}
 </div>
 
   <div id='generaldiv' style="display:none; "class="form-floating mb-1 mt-1">
-<br><br><br><br><br><br>
+<br><br><br>
 <ol>
 <li>Invitatition is only for Indian Bank and E Allabad Bank Retirees only
 <li>You should be a member of IBRA APTS
@@ -116,7 +117,8 @@ div{width:100%}
       </div>        
       <input type="text" name="entryBy" id="entryBy"  class="form-control" disabled style="display:none">
       <br>
-
+     <input type="text" name="memb" id="memb"  class="form-control" disabled style="display:none">
+ 
 
 </form>
         <br>
@@ -140,13 +142,14 @@ attendurl ='https://script.google.com/macros/s/AKfycby9UegJW5PL26K-e4joVa2CbxAfJ
             response = await fetch(attendurl)
             attendanceData = await response.json()
             attenData = attendanceData["user"]
- if (attenData.length>0){document.getElementById('btnmemb').style.display="block";
-msg.innerHTML ="Attendance Sofar " + (attenData.length -1)
- 
+getMyAttendanceData()
+membcount = attenData.filter(a => a.col5 ==="Member").length
+nonmembcount = attenData.filter(a => a.col5 ==="Non Member").length
+msg.innerHTML =`Members ${membcount} <br>  Non Members ${nonmembcount} `
+setTimeout(document.getElementById('btnmemb').style.display="block",3000)
  }
 
 
- }
 getMyAttendanceData()
 
    memburl = 'https://script.google.com/macros/s/AKfycbzI9SDFOzYLYKRKJTlse0XpsEiF8XfbyxwUUH22evlGkEPDIt2V/exec'
@@ -155,8 +158,7 @@ getMyAttendanceData()
             MembershipData = await response.json()
             tempData1 = MembershipData["user"]
             activeMembers = tempData1.filter(a => a.name !== "")
- if (activeMembers.length>0){document.getElementById('btnmemb').style.display="block";
- }
+ 
 }
    getMyData()  
 
@@ -176,7 +178,7 @@ document.getElementById('date').value= Date()
 document.getElementById("membname").focus()
 document.getElementById("membname").value="No Name"
 document.getElementById("entryBy").value=userName;
-
+memb.value="Non Member"
 }
 
 if (member.length >0){
@@ -189,7 +191,7 @@ document.getElementById('dataform').style.display="block"
 srno.value=inputsrno
 document.getElementById('membname').value= member[0].name
 document.getElementById('date').value= Date()
-
+memb.value="Member"
 }
 
 if (attenmemb.length >0){
@@ -210,7 +212,7 @@ form.addEventListener('submit', e => {
 e.preventDefault();
  document.getElementById("srno").disabled=false;
 document.getElementById("membname").disabled=false;
-
+memb.disabled = false
 document.getElementById("entryBy").disabled=false;
 //document.getElementById("entryBy").value=userName;
 
@@ -223,6 +225,10 @@ form.reset();
 form.style.display="none"
 document.getElementById('btnmemb').style.display="none"
 getMyAttendanceData()
+
+
+
+
 }
 
 
