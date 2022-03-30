@@ -2,6 +2,7 @@
 
 
 
+
 <html lang="en">
 <head>
   <title>IBRA Attendance</title>
@@ -82,7 +83,7 @@ div{width:100%}
 
 <div id='submitteddiv' style="display:none" class="form-floating mb-1 mt-1">
 <br><br><br>
-<h1>Data Submitted</h1>
+<h1 id="dtsubmit">Data Submitted</h1>
 <button style="width:50%; margin-left:25%" class="btn btn-primary" onclick="shtData(); ">New Attendance</buttion>
 </div>
 
@@ -140,10 +141,22 @@ div{width:100%}
 
 </form>
         <br>
- <button style="width:50%; margin-left:25%" class="btn btn-primary" onclick="submitData(); ">Submit</buttion>
-  </div>      
+       <div style="display:flex; width:100%;  align-items: center; "class="form-floating mb-1 mt-1">
+<button style="width:30%; margin-left:20%; " class="btn btn-primary" onclick="cleardata(); ">Cancel</buttion>
+<button style="width:30%; margin-left:3%;" class="btn btn-primary" onclick="submitData(); ">Submit</buttion>
+
+</div>
+</div>      
       
       <script>
+      
+      function cleardata(){
+      document.getElementById('dataform').reset()
+      //generaldiv.style,display="block"
+      submitData();
+      dtsubmit.innerHTML="Data Not Submitted"
+      }
+      
       userName=""
       function userNameStore(){
     userName=document.getElementById('user').value
@@ -209,6 +222,7 @@ document.getElementById("membname").value="No Name"
 document.getElementById("entryBy").value=userName;
 document.getElementById('mobile').value=9999999999
  document.getElementById("srno").disabled=true;
+ document.getElementById("membname").disabled=false;
 
 
 memb.value="Non Member"
@@ -262,7 +276,7 @@ form.reset();
 form.style.display="none"
 document.getElementById('btnmemb').style.display="none"
 getMyAttendanceData()
-
+dtsubmit.innerHTML="Data Submitted"
 
 
 
