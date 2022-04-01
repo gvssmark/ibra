@@ -104,18 +104,25 @@ div{width:100%}
                       <div class="form-floating mb-1 mt-1">
   <input style="width:50%; margin-left:25%;" type="number" class="form-control"  min="1" max="9999999"
           id='srno1' name='srno1' placeholder="a" required ><br>
-            <label style="width:50%; margin-left:25%;"  for="srno1">SR No</label>
+            <label style="width:50%; margin-left:25%;"  for="srno1">SR No of retiree</label>
           </div>
       <button style="width:50%; margin-left:25%; display:none " onclick="checkMemb()"  class="btn btn-primary" id='btnmemb'  >Check Membership</button>
 <p id='msg'>where is is this message </p>
-<input type="checkbox" name="check1" value="checkbox"   onchange="showMe('reportsdiv')" /> Show Report
+<div >
+<table align=center><tr><td>
+<label><input type="checkbox" name="check1" value="checkbox"    onchange="showMe('reportsdiv')" /> Show Report</label>
+</table>
+</div>
+
 </div>
 
 
 <div id='reportsdiv'    style = "display:none; align-items: center;"  class="form-floating mb-1 mt-1">
+<br>
+<table align=center><tr><td>
+<input type="text"  style="border:none; outline:none; background:yellow; border-radius:15px; " onkeyup="mobileTablemyFunction();"  id='myInputData'  placeholder="Search for any value...">
+</table>
 
-
-<input type="text"  onkeyup="mobileTablemyFunction();"  id='myInputData'  placeholder="Search for any value...">
 <p id="reportsp" ></p>
 </div>
 
@@ -133,7 +140,7 @@ div{width:100%}
   <div class="form-floating mb-1 mt-1">
         <input type="number" class="form-control" name="srno" min="1" max="9999999"
           id='srno' placeholder="a" required disabled>
-        <label for="srno">SR No</label>
+        <label for="srno">SR No of Retiree</label>
       </div> 
     <div class="form-floating mb-1 mt-1">
         <input type="text"   onClick="this.select();" class="form-control" name="name" id='membname' placeholder="a"
