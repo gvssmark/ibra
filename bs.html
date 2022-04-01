@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body{font-size:small}
+body{font-size:small;  }
 .aleft{ text-align:right }
 
 table   {border: 1px solid black;  border-collapse: collapse;}
@@ -22,7 +21,7 @@ table   {border: 1px solid black;  border-collapse: collapse;}
 </div>
 <br>
 
-<div id='2019' style="display:none">
+<div class="bs" id='2019' style="display:none">
 <table width=100% border=1 >
 <tr bgcolor='yellow'><td colspan=3 align=center>Balance Sheet as on 30.06.2019
 <tr class='bw'><td>AC<td>	LIABILITIES<td>	AMOUNT
@@ -63,9 +62,10 @@ table   {border: 1px solid black;  border-collapse: collapse;}
 <tr><td>3-09	<td>Income Tax Paid	<td class='aleft'>0
 <tr class='bred'><td><td>TOTAL	<td class='aleft'>155619
 </table>
+<img src='https://github.com/gvssmark/ibra/blob/main/images/ibrastamp.PNG?raw=true' style="width:50px;height:50px; float: right;">
 </div>
 
-<div id='2020' style="display:none">
+<div class="bs"  id='2020' style="display:none">
 <table width=100% border=1 >
 <tr bgcolor='yellow'><td colspan=3 align=center>Balance Sheet as on 30.06.2020
 
@@ -109,9 +109,10 @@ table   {border: 1px solid black;  border-collapse: collapse;}
 <tr><td>3-09<td>	Income Tax Paid	<td class='aleft'>0
 <tr class='bred'><td><td>	TOTAL	<td class='aleft'>80058
 </table>
+<img src='https://github.com/gvssmark/ibra/blob/main/images/ibrastamp.PNG?raw=true' style="width:50px;height:50px; float: right;">
 </div>
 
-<div id='2021' style="display:none">
+<div class="bs"  id='2021' style="display:none">
 <table width=100% border=1 >
 <tr bgcolor='yellow'><td colspan=3 align=center>Balance Sheet as on 30.06.2021
 <tr class='bw'><td>AC<td>	LIABILITIES	<td>AMOUNT
@@ -156,12 +157,12 @@ table   {border: 1px solid black;  border-collapse: collapse;}
 <tr><td><td>	Excess of Income over Expenditure<td class='aleft'>	49906
 <tr class='bred'><td><td>	TOTAL	<td class='aleft'>49906
 </table>
+<img src='https://github.com/gvssmark/ibra/blob/main/images/ibrastamp.PNG?raw=true' style="width:50px;height:50px; float: right;">
 </div>
 <script>
 function sh(d){
-document.getElementById(2019).style.display="none"
-document.getElementById(2020).style.display="none"
-document.getElementById(2021).style.display="none"
+
+document.querySelectorAll(".bs").forEach(function(item){item.style.display="none"})
 
 document.getElementById(d).style.display="block"
 
