@@ -1,8 +1,3 @@
-
-
-
-
-
 <html lang="en">
 <head>
   <title>IBRA Attendance</title>
@@ -12,7 +7,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
   <style>
     body {
-      font-size: large;
+      font-size: small;
       BACKGROUND: powderblue;
     }
 .mytable tr td {
@@ -23,6 +18,12 @@ text-align:left;
 .mytable {
 margin:5px;
 width:95%;
+}
+.center {
+  margin: auto;
+ 
+  border: 3px solid #73AD21;
+  padding: 10px;
 }
 
     p {
@@ -75,9 +76,9 @@ div{width:100%}
        
 
 <button style="width:50%; margin-left:25%" class="btn btn-primary" onclick="userNameStore(); ">Submit</buttion>
-</div>
-<div id='reportsdiv' style="display:none" class="form-floating mb-1 mt-1">
-<p id="reportsp"></p>
+
+
+
 </div>
 
 
@@ -99,17 +100,26 @@ div{width:100%}
 </div>
 
   <div id='generaldiv' style="display:none; "class="form-floating mb-1 mt-1">
-<br><br><br>
-<ol>
-<li>Invitatition is only for Indian Bank and E Allabad Bank Retirees only
-<li>You should be a member of IBRA APTS
-<li>Input Your SR No to know the status of your membership
-</ol>
-        <input style="width:50%; margin-left:25%;" type="number" class="form-control"  min="1" max="9999999"
+<br><br><br><br>
+                      <div class="form-floating mb-1 mt-1">
+  <input style="width:50%; margin-left:25%;" type="number" class="form-control"  min="1" max="9999999"
           id='srno1' name='srno1' placeholder="a" required ><br>
+            <label style="width:50%; margin-left:25%;"  for="srno1">SR No</label>
+          </div>
       <button style="width:50%; margin-left:25%; display:none " onclick="checkMemb()"  class="btn btn-primary" id='btnmemb'  >Check Membership</button>
 <p id='msg'>where is is this message </p>
-      </div>
+<input type="checkbox" name="check1" value="checkbox"   onchange="showMe('reportsdiv')" /> Show Report
+</div>
+
+
+<div id='reportsdiv'    style = "display:none; align-items: center;"  class="form-floating mb-1 mt-1">
+
+
+<input type="text"  onkeyup="mobileTablemyFunction();"  id='myInputData'  placeholder="Search for any value...">
+<p id="reportsp" ></p>
+</div>
+
+
 <form  id='dataform'  style = "display:none" name='submit-to-google-sheet'>
     <div class="container mt-3">
         <div name='data' id='data' >
@@ -149,7 +159,7 @@ div{width:100%}
 </div>      
       
       <script>
-      
+     
       function cleardata(){
       document.getElementById('dataform').reset()
       //generaldiv.style,display="block"
@@ -159,11 +169,14 @@ div{width:100%}
       
       userName=""
       function userNameStore(){
-    userName=document.getElementById('user').value
+//reportsdiv.style.display="none"
+//repbtn.style.display="none"
+userName=document.getElementById('user').value
 if (userName ===""){document.getElementById('user').focus()}
 if (userName !==""){
 usediv.style.display="none"
 generaldiv.style.display="block"
+//reportsdiv.style.display="block"
 }
       }
       
@@ -177,20 +190,36 @@ getMyAttendanceData()
 membcount = attenData.filter(a => a.memb ==="Member").length
 nonmembcount = attenData.filter(a => a.memb ==="Non Member").length
 msg.innerHTML =`Members ${membcount} <br>  Non Members ${nonmembcount} `
-setTimeout(blk(), 3000)
- }
-function blk(){
+//setTimeout(blk(), 3000)
+//rep()
 document.getElementById('btnmemb').style.display='block'
-trtd="<table class='mytable'><tr><td>SrNo<td>Name<td>Mobile"
+}
+
+
+function rep(){
+trtd="<table class='mytable' id='mytable' border=1 align=center><thead ><th  >SR<th  >Name<th >Mobile<th>Member</thead>"
 
 attenData.filter(a => a.srno >0).sort(function(a, b) {
   return a.srno  - b.srno;
 }).forEach(function(item){
- trtd +=`<tr><td> ${item.srno}<td> ${item.name} <td> ${item.mobile} `;
+ trtd +=`<tr><td> ${item.srno}<td> ${item.name} <td> ${item.mobile} <td> ${item.memb === 'Member' ?"Memb":"Non"}`;
 })
-
+ 
 reportsp.innerHTML = trtd += "</table>"
 }
+
+function mobileTablemyFunction() {
+            const input = document.getElementById("myInputData");
+            const inputStr = input.value.toUpperCase();
+            document.querySelectorAll('#mytable tr:not(.header)').forEach((tr) => {
+                const anyMatch = [...tr.children]
+                    .some(td => td.textContent.toUpperCase().includes(inputStr));
+                if (anyMatch) tr.style.removeProperty('display');
+                else tr.style.display = 'none';
+            });
+        }
+
+
 
 getMyAttendanceData()
 
@@ -205,6 +234,7 @@ getMyAttendanceData()
    getMyData()  
 
 function checkMemb(){
+reportsdiv.style.display="none"
 inputsrno = srno1.value*1
 member = (activeMembers.filter(a => a.srno*1 === inputsrno));
 attenmemb = (attenData.filter( a => a.srno*1 === inputsrno*1));
@@ -298,6 +328,18 @@ generaldiv.style.display="block"
 document.getElementById("srno1").value="";
 document.getElementById("srno1").focus()
 submitteddiv.style.display="none"
+}
+
+
+  function showMe (box) {
+ rep()
+ var chboxs = document.getElementById("reportsdiv").style.display;
+    var vis = "none";
+        if(chboxs=="none"){
+         vis = "block"; }
+        if(chboxs=="block"){
+         vis = "none"; }
+    document.getElementById(box).style.display = vis;
 }
 
 </script>
