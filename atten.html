@@ -145,11 +145,11 @@ div{width:100%}
       </div> 
     <div class="form-floating mb-1 mt-1">
         <input type="text"    class="form-control" name="name" id='membname' placeholder="a"
-          required disabled>
+          required disabled autocomplete="off">
         <label for="name">Name</label>
       </div>        
        <div class="form-floating mb-1 mt-1">
-            <input type="tel" onkeyup="mobnot();" class="form-control" name="mobile" id="mobile" pattern="[6-9]{1}[0-9]{9}" placeholder="a"  required>
+            <input type="tel" onkeyup="mobnot();" class="form-control" name="mobile" id="mobile" pattern="[6-9]{1}[0-9]{9}" placeholder="a"  required autocomplete="off">
             <label id="moblabel" for="mobileno">Mobile Number:</label>
           </div>
       <input type="text" name="entryBy" id="entryBy"  class="form-control" disabled style="display:none">
