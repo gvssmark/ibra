@@ -1,3 +1,4 @@
+
 <html lang="en">
 <head>
   <title>IBRA Attendance</title>
@@ -143,13 +144,13 @@ div{width:100%}
         <label for="srno">SR No of Retiree</label>
       </div> 
     <div class="form-floating mb-1 mt-1">
-        <input type="text"   onClick="this.select();" class="form-control" name="name" id='membname' placeholder="a"
+        <input type="text"    class="form-control" name="name" id='membname' placeholder="a"
           required disabled>
         <label for="name">Name</label>
       </div>        
        <div class="form-floating mb-1 mt-1">
-            <input type="tel" onClick="this.select();" class="form-control" name="mobile" id="mobile" pattern="[6-9]{1}[0-9]{9}" placeholder="a"  required>
-            <label for="mobileno">Mobile Number:</label>
+            <input type="tel" onkeyup="mobnot();" class="form-control" name="mobile" id="mobile" pattern="[6-9]{1}[0-9]{9}" placeholder="a"  required>
+            <label id="moblabel" for="mobileno">Mobile Number:</label>
           </div>
       <input type="text" name="entryBy" id="entryBy"  class="form-control" disabled style="display:none">
       <br>
@@ -257,7 +258,7 @@ document.getElementById('date').value= Date()
 document.getElementById("membname").focus()
 document.getElementById("membname").value="No Name"
 document.getElementById("entryBy").value=userName;
-document.getElementById('mobile').value=9999999999
+document.getElementById('mobile').value=9
  document.getElementById("srno").disabled=true;
  document.getElementById("membname").disabled=false;
 
@@ -348,6 +349,18 @@ submitteddiv.style.display="none"
          vis = "none"; }
     document.getElementById(box).style.display = vis;
 }
+
+function mobnot(){
+if(mobile.value.length===10){
+mobile.style.backgroundColor="green";
+moblabel.style.color="white"
+mobile.style.color="white"}
+    else{mobile.style.backgroundColor="red"
+    mobile.style.color="white"
+    moblabel.style.color="white"
+}
+}
+
 
 </script>
 </body>
