@@ -1,4 +1,5 @@
 
+
 <html lang="en">
 <head>
   <title>IBRA Attendance</title>
@@ -161,7 +162,7 @@ div{width:100%}
         <br>
        <div style="display:flex; width:100%;  align-items: center; "class="form-floating mb-1 mt-1">
 <button style="width:30%; margin-left:20%; " class="btn btn-primary" onclick="cleardata(); ">Cancel</buttion>
-<button style="width:30%; margin-left:3%;" class="btn btn-primary" onclick="submitData(); ">Submit</buttion>
+<button id="sbutton" style="width:30%; margin-left:3%;" class="btn btn-primary" onclick="submitData()" disabled>Submit</buttion>
 
 </div>
 </div>      
@@ -248,6 +249,8 @@ member = (activeMembers.filter(a => a.srno*1 === inputsrno));
 attenmemb = (attenData.filter( a => a.srno*1 === inputsrno*1));
 
 if (member.length === 0){
+document.getElementById("sbutton").disabled=true
+
 ismemb.innerHTML="<h1>Non Member</h1>"
 ismemb.style.backgroundColor="pink"
 srno.value=inputsrno
@@ -267,6 +270,8 @@ memb.value="Non Member"
 }
 
 if (member.length >0){
+document.getElementById("sbutton").disabled=true
+
 ismemb.innerHTML="<h1>Member</h1>"
 ismemb.style.backgroundColor="green"
 document.getElementById("entryBy").value=userName;
@@ -351,13 +356,19 @@ submitteddiv.style.display="none"
 }
 
 function mobnot(){
-if(mobile.value.length===10){
+if(mobile.value.length === 10){
 mobile.style.backgroundColor="green";
 moblabel.style.color="white"
-mobile.style.color="white"}
+mobile.style.color="white"
+document.getElementById("membname").focus();
+//name.focus()
+document.getElementById("sbutton").disabled=false
+}
     else{mobile.style.backgroundColor="red"
     mobile.style.color="white"
     moblabel.style.color="white"
+document.getElementById("sbutton").disabled=true
+
 }
 }
 
