@@ -1,5 +1,6 @@
 
 
+
 <html lang="en">
 <head>
   <title>IBRA Attendance</title>
@@ -243,6 +244,10 @@ getMyAttendanceData()
    getMyData()  
 
 function checkMemb(){
+mobile.style.backgroundColor="red"
+    mobile.style.color="white"
+    moblabel.style.color="white"
+
 reportsdiv.style.display="none"
 inputsrno = srno1.value*1
 member = (activeMembers.filter(a => a.srno*1 === inputsrno));
@@ -280,7 +285,7 @@ generaldiv.style.display="none"
 document.getElementById('dataform').style.display="block"
 srno.value=inputsrno
 document.getElementById('membname').value= member[0].name
-document.getElementById('mobile').value=member[0].mobile1
+document.getElementById('mobile').value=member[0].mobile1.toString().substr(0,8)
  document.getElementById("srno").disabled=true;
 document.getElementById("membname").disabled=true;
 
