@@ -1,224 +1,163 @@
-
-
-
 <html lang="en">
 <head>
-  <title>IBRA Attendance</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-  <style>
-    body {
-      font-size: small;
-      BACKGROUND: powderblue;
-    }
-.mytable tr td {
-border:1px solid black ;
-font-size:small;
-text-align:left; 
-}
-.mytable {
-margin:5px;
-width:95%;
-}
-.center {
-  margin: auto;
- 
-  border: 3px solid #73AD21;
-  padding: 10px;
-}
-
-    p {
-      text-align: center;
-    }
-
-    h6 {
-      color: red;
-      text-align: center;
-    }
-
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-    /* Firefox */
-    input[type=number] {
-      -moz-appearance: textfield;
-    }
-div{width:100%}
-    #modalData{
-    margin-top: 98px;
-    margin-left:8px;
-    margin-right:8px;
- }
-    h1 {
-      color: white;
-      text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
-      padding: 20px;
-      box-shadow: 20px 20px 50px grey;
-      text-align: center;
-	  }
-  </style>
+    <title>IBRA Attendance</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {font-size: small;BACKGROUND: powderblue;}
+        .mytable tr td {border: 1px solid black; font-size: small; text-align: left }
+        .mytable {margin: 5px; width: 95%; }
+        .center { margin: auto; border: 3px solid #73AD21; padding: 10px; }
+        p { text-align: center; }
+        h6 { color: red; text-align: center; }
+        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        /* Firefox */
+        input[type=number] { -moz-appearance: textfield; }
+        div { width: 100% }
+        #modalData {margin-top: 98px; margin-left: 8px; margin-right: 8px; }
+        h1 { color: white; text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;padding: 20px;box-shadow: 20px 20px 50px grey; text-align: center; }
+    </style>
 </head>
-
 <body>
-
-
-<div style="top:0; position:fixed; background:red; text-align:center; color:white;   z-index: 1;">
- <h4 style="">Indian Bank Retirees' Association (AP&TS)-12th Generalbody</h6>
-</div>
-
-<div id='usediv' style="display:block" class="form-floating mb-1 mt-1">
-<br><br><br>
-                <div class="form-floating mb-1 mt-1">
-        <input  class="form-control"   style="width:70%; margin-left:15%" type="text"    id='user' name='user' placeholder="a" required >
-           <label style="width:70%; margin-left:15%"  for="user">Receptionist Name</label>
- </div>
-       
-
-<button style="width:50%; margin-left:25%" class="btn btn-primary" onclick="userNameStore(); ">Submit</buttion>
-
-
-
-</div>
-
-
-<div id='submitteddiv' style="display:none" class="form-floating mb-1 mt-1">
-<br><br><br>
-<h1 id="dtsubmit">Data Submitted</h1>
-<button style="width:50%; margin-left:25%" class="btn btn-primary" onclick="shtData(); ">New Attendance</buttion>
-</div>
-
-<div id='duplicatesubmitteddiv' style="display:none" class="form-floating mb-1 mt-1">
-<br><br><br>
-<h1>Data Alreday Submitted</h1>
-<p id="pAlready"></p>
-<button style="width:50%; margin-left:25%" class="btn btn-primary" onclick="shtData(); ">Go Back</buttion>
-</div>
-<div id='membcount' style="display:none"class="form-floating mb-1 mt-1">
-<br><br><br>
-<h6>Membership Count</h6>
-</div>
-
-  <div id='generaldiv' style="display:none; "class="form-floating mb-1 mt-1">
-<br><br><br><br>
-                      <div class="form-floating mb-1 mt-1">
-  <input style="width:50%; margin-left:25%;" type="number" class="form-control"  min="1" max="9999999"
-          id='srno1' name='srno1' placeholder="a" required ><br>
-            <label style="width:50%; margin-left:25%;"  for="srno1">SR No of retiree</label>
-          </div>
-      <button style="width:50%; margin-left:25%; display:none " onclick="checkMemb()"  class="btn btn-primary" id='btnmemb'  >Check Membership</button>
-<p id='msg'>where is is this message </p>
-<div >
-<table align=center><tr><td>
-<label><input type="checkbox" name="check1" value="checkbox"    onchange="showMe('reportsdiv')" /> Show Report</label>
-</table>
-</div>
-
-</div>
-
-
-<div id='reportsdiv'    style = "display:none; align-items: center;"  class="form-floating mb-1 mt-1">
-<br>
-<table align=center><tr><td>
-<input type="text"  style="border:none; outline:none; background:yellow; border-radius:15px; " onkeyup="mobileTablemyFunction();"  id='myInputData'  placeholder="Search for any value...">
-</table>
-
-<p id="reportsp" ></p>
-</div>
-
-
-<form  id='dataform'  style = "display:none" name='submit-to-google-sheet'>
-    <div class="container mt-3">
-        <div name='data' id='data' >
-<br><br><br>
-<h6 id="ismemb">Non Member</h6>
-      <h4>Attendee Details</h4>
-                    <div class="form-floating mb-1 mt-1">
-            <input type="text" class="form-control" name="date" id="date" placeholder="a" required style="display:none">
-            <label for="refno">Date</label>
-          </div>
-  <div class="form-floating mb-1 mt-1">
-        <input type="number" class="form-control" name="srno" min="1" max="9999999"
-          id='srno' placeholder="a" required disabled>
-        <label for="srno">SR No of Retiree</label>
-      </div> 
-    <div class="form-floating mb-1 mt-1">
-        <input type="text"    class="form-control" name="name" id='membname' placeholder="a"
-          required disabled autocomplete="off">
-        <label for="name">Name</label>
-      </div>        
-       <div class="form-floating mb-1 mt-1">
-            <input type="tel" onkeyup="mobnot();" class="form-control" name="mobile" id="mobile" pattern="[6-9]{1}[0-9]{9}" placeholder="a"  required autocomplete="off">
-            <label id="moblabel" for="mobileno">Mobile Number:</label>
-          </div>
-      <input type="text" name="entryBy" id="entryBy"  class="form-control" disabled style="display:none">
-      <br>
-     <input type="text" name="memb" id="memb"  class="form-control" disabled style="display:none">
- 
-
-</form>
+    <div style="top:0; position:fixed; background:red; text-align:center; color:white;   z-index: 1;">
+        <h4 style="">Indian Bank Retirees' Association (AP&TS)-12th Generalbody</h6>
+    </div>
+    <div id='usediv' style="display:block" class="form-floating mb-1 mt-1">
+        <br><br><br>
+        <div class="form-floating mb-1 mt-1">
+            <input class="form-control" style="width:70%; margin-left:15%" type="text" id='user' name='user'
+                placeholder="a" required>
+            <label style="width:70%; margin-left:15%" for="user">Receptionist Name</label>
+        </div>
+        <button style="width:50%; margin-left:25%" class="btn btn-primary" onclick="userNameStore(); ">Submit</buttion>
+    </div>
+    <div id='submitteddiv' style="display:none" class="form-floating mb-1 mt-1">
+        <br><br><br>
+        <h1 id="dtsubmit">Data Submitted</h1>
+        <button style="width:50%; margin-left:25%" class="btn btn-primary" onclick="shtData(); ">New Attendance
+            </buttion>
+    </div>
+    <div id='duplicatesubmitteddiv' style="display:none" class="form-floating mb-1 mt-1">
+        <br><br><br>
+        <h1>Data Alreday Submitted</h1>
+        <p id="pAlready"></p>
+        <button style="width:50%; margin-left:25%" class="btn btn-primary" onclick="shtData(); ">Go Back</buttion>
+    </div>
+    <div id='membcount' style="display:none" class="form-floating mb-1 mt-1">
+        <br><br><br>
+        <h6>Membership Count</h6>
+    </div>
+    <div id='generaldiv' style="display:none; " class="form-floating mb-1 mt-1">
+        <br><br><br><br>
+        <div class="form-floating mb-1 mt-1">
+            <input style="width:50%; margin-left:25%;" type="number" class="form-control" min="1" max="9999999"
+                id='srno1' name='srno1' placeholder="a" required><br>
+            <label style="width:50%; margin-left:25%;" for="srno1">SR No of retiree</label>
+        </div>
+        <button style="width:50%; margin-left:25%; display:none " onclick="checkMemb()" class="btn btn-primary"
+            id='btnmemb'>Check Membership</button>
+        <p id='msg'>where is is this message </p>
+        <div>
+            <table align=center>
+                <tr>
+                    <td>
+                        <label><input type="checkbox" name="check1" value="checkbox" onchange="showMe('reportsdiv')" />
+                            Show Report</label>
+            </table>
+        </div>
+    </div>
+    <div id='reportsdiv' style="display:none; align-items: center;" class="form-floating mb-1 mt-1">
         <br>
-       <div style="display:flex; width:100%;  align-items: center; "class="form-floating mb-1 mt-1">
-<button style="width:30%; margin-left:20%; " class="btn btn-primary" onclick="cleardata(); ">Cancel</buttion>
-<button id="sbutton" style="width:30%; margin-left:3%;" class="btn btn-primary" onclick="submitData()" disabled>Submit</buttion>
+        <table align=center>
+            <tr>
+                <td>
+                    <input type="text" style="border:none; outline:none; background:yellow; border-radius:15px; "
+                        onkeyup="mobileTablemyFunction();" id='myInputData' placeholder="Search for any value...">
+        </table>
+        <p id="reportsp"></p>
+    </div>
+    <form id='dataform' style="display:none" name='submit-to-google-sheet'>
+        <div class="container mt-3">
+            <div name='data' id='data'>
+                <br><br><br>
+                <h6 id="ismemb">Non Member</h6>
+                <h4>Attendee Details</h4>
+                <div class="form-floating mb-1 mt-1">
+                    <input type="text" class="form-control" name="date" id="date" placeholder="a" required
+                        style="display:none">
+                    <label for="refno">Date</label>
+                </div>
+                <div class="form-floating mb-1 mt-1">
+                    <input type="number" class="form-control" name="srno" min="1" max="9999999" id='srno'
+                        placeholder="a" required disabled>
+                    <label for="srno">SR No of Retiree</label>
+                </div>
+                <div class="form-floating mb-1 mt-1">
+                    <input type="tel" onkeyup="mobnot();" class="form-control" name="mobile" id="mobile"
+                        pattern="[6-9]{1}[0-9]{9}" placeholder="a" required autocomplete="off">
+                    <label id="moblabel" for="mobileno">Mobile Number:</label>
+                </div>
+                <div class="form-floating mb-1 mt-1">
+                    <input type="text" class="form-control" name="name" id='membname' placeholder="a" required disabled
+                        autocomplete="off">
+                    <label for="name">Name</label>
+                </div>
 
-</div>
-</div>      
-      
-      <script>
-     
-      function cleardata(){
-      document.getElementById('dataform').reset()
-      //generaldiv.style,display="block"
-      submitData();
-      dtsubmit.innerHTML="Data Not Submitted"
-      }
-      
-      userName=""
-      function userNameStore(){
-//reportsdiv.style.display="none"
-//repbtn.style.display="none"
-userName=document.getElementById('user').value
-if (userName ===""){document.getElementById('user').focus()}
-if (userName !==""){
-usediv.style.display="none"
-generaldiv.style.display="block"
-//reportsdiv.style.display="block"
-}
-      }
-      
-
-attendurl ='https://script.google.com/macros/s/AKfycby9UegJW5PL26K-e4joVa2CbxAfJYmM15X9dxmt4tbChsNCQirt/exec'
+                <input type="text" name="entryBy" id="entryBy" class="form-control" disabled style="display:none">
+                <br>
+                <input type="text" name="memb" id="memb" class="form-control" disabled style="display:none">
+    </form>
+    <br>
+    <div style="display:flex; width:100%;  align-items: center; " class="form-floating mb-1 mt-1">
+        <button style="width:30%; margin-left:20%; " class="btn btn-primary" onclick="cleardata(); ">Cancel</buttion>
+            <button id="sbutton" style="width:30%; margin-left:3%;" class="btn btn-primary" onclick="submitData()"
+                disabled>Submit</buttion>
+    </div>
+    </div>
+    <script>
+        function cleardata() {
+            document.getElementById('dataform').reset()
+            //generaldiv.style,display="block"
+            submitData();
+            dtsubmit.innerHTML = "Data Not Submitted"
+        }
+        userName = ""
+        function userNameStore() {
+            //reportsdiv.style.display="none"
+            //repbtn.style.display="none"
+            userName = document.getElementById('user').value
+            if (userName === "") { document.getElementById('user').focus() }
+            if (userName !== "") {
+                usediv.style.display = "none"
+                generaldiv.style.display = "block"
+                //reportsdiv.style.display="block"
+            }
+        }
+        attendurl = 'https://script.google.com/macros/s/AKfycby9UegJW5PL26K-e4joVa2CbxAfJYmM15X9dxmt4tbChsNCQirt/exec'
         async function getMyAttendanceData() {
             response = await fetch(attendurl)
             attendanceData = await response.json()
             attenData = attendanceData["user"]
-getMyAttendanceData()
-membcount = attenData.filter(a => a.memb ==="Member").length
-nonmembcount = attenData.filter(a => a.memb ==="Non Member").length
-msg.innerHTML =`Members ${membcount} <br>  Non Members ${nonmembcount} `
-//setTimeout(blk(), 3000)
-//rep()
-document.getElementById('btnmemb').style.display='block'
-}
-
-
-function rep(){
-trtd="<table class='mytable' id='mytable' border=1 align=center><thead ><th  >SR<th  >Name<th >Mobile<th>Member</thead>"
-
-attenData.filter(a => a.srno >0).sort(function(a, b) {
-  return a.srno  - b.srno;
-}).forEach(function(item){
- trtd +=`<tr><td> ${item.srno}<td> ${item.name} <td> ${item.mobile} <td> ${item.memb === 'Member' ?"Memb":"Non"}`;
-})
- 
-reportsp.innerHTML = trtd += "</table>"
-}
-
-function mobileTablemyFunction() {
+            getMyAttendanceData()
+            membcount = attenData.filter(a => a.memb === "Member").length
+            nonmembcount = attenData.filter(a => a.memb === "Non Member").length
+            msg.innerHTML = `Members ${membcount} <br>  Non Members ${nonmembcount} `
+            //setTimeout(blk(), 3000)
+            //rep()
+            document.getElementById('btnmemb').style.display = 'block'
+        }
+        function rep() {
+            trtd = "<table class='mytable' id='mytable' border=1 align=center><thead ><th  >SR<th  >Name<th >Mobile<th>Member</thead>"
+            attenData.filter(a => a.srno > 0).sort(function (a, b) {
+                return a.srno - b.srno;
+            }).forEach(function (item) {
+                trtd += `<tr><td> ${item.srno}<td> ${item.name} <td> ${item.mobile} <td> ${item.memb === 'Member' ? "Memb" : "Non"}`;
+            })
+            reportsp.innerHTML = trtd += "</table>"
+        }
+        function mobileTablemyFunction() {
             const input = document.getElementById("myInputData");
             const inputStr = input.value.toUpperCase();
             document.querySelectorAll('#mytable tr:not(.header)').forEach((tr) => {
@@ -228,156 +167,127 @@ function mobileTablemyFunction() {
                 else tr.style.display = 'none';
             });
         }
-
-
-
-getMyAttendanceData()
-
-   memburl = 'https://script.google.com/macros/s/AKfycbzI9SDFOzYLYKRKJTlse0XpsEiF8XfbyxwUUH22evlGkEPDIt2V/exec'
+        getMyAttendanceData()
+        memburl = 'https://script.google.com/macros/s/AKfycbzI9SDFOzYLYKRKJTlse0XpsEiF8XfbyxwUUH22evlGkEPDIt2V/exec'
         async function getMyData() {
             response = await fetch(memburl)
             MembershipData = await response.json()
             tempData1 = MembershipData["user"]
             activeMembers = tempData1.filter(a => a.name !== "")
- 
-}
-   getMyData()  
-
-function checkMemb(){
-mobile.style.backgroundColor="red"
-    mobile.style.color="white"
-    moblabel.style.color="white"
-
-reportsdiv.style.display="none"
-inputsrno = srno1.value*1
-member = (activeMembers.filter(a => a.srno*1 === inputsrno));
-attenmemb = (attenData.filter( a => a.srno*1 === inputsrno*1));
-
-if (member.length === 0){
-document.getElementById("sbutton").disabled=true
-
-ismemb.innerHTML="<h1>Non Member</h1>"
-ismemb.style.backgroundColor="pink"
-srno.value=inputsrno
-//document.getElementById("membname").disabled=false;
-document.getElementById('dataform').style.display="block"
-document.getElementById('generaldiv').style.display="none"
-document.getElementById('date').value= Date()
-document.getElementById("membname").focus()
-document.getElementById("membname").value="No Name"
-document.getElementById("entryBy").value=userName;
-document.getElementById('mobile').value=9
- document.getElementById("srno").disabled=true;
- document.getElementById("membname").disabled=false;
-
-
-memb.value="Non Member"
-}
-
-if (member.length >0){
-document.getElementById("sbutton").disabled=true
-
-ismemb.innerHTML="<h1>Member</h1>"
-ismemb.style.backgroundColor="green"
-document.getElementById("entryBy").value=userName;
-
-generaldiv.style.display="none"
-document.getElementById('dataform').style.display="block"
-srno.value=inputsrno
-document.getElementById('membname').value= member[0].name
-document.getElementById('mobile').value=member[0].mobile1.toString().substr(0,8)
- document.getElementById("srno").disabled=true;
-document.getElementById("membname").disabled=true;
-
-document.getElementById('date').value= Date()
-memb.value="Member"
-}
-
-if (attenmemb.length >0){
-document.getElementById('dataform').style.display="none"
-duplicatesubmitteddiv.style.display="block"
-pAlready.innerHTML = `Data Entered by: ${attenmemb[0].entry}   <br>
-Entry time ${attenmemb[0].dt.substr(16,5)}
+        }
+        getMyData()
+        function checkMemb() {
+            mobile.style.backgroundColor = "red"
+            mobile.style.color = "white"
+            moblabel.style.color = "white"
+            reportsdiv.style.display = "none"
+            inputsrno = srno1.value * 1
+            member = (activeMembers.filter(a => a.srno * 1 === inputsrno));
+            attenmemb = (attenData.filter(a => a.srno * 1 === inputsrno * 1));
+            if (member.length === 0) {
+                document.getElementById("sbutton").disabled = true
+                ismemb.innerHTML = "<h1>Non Member</h1>"
+                ismemb.style.backgroundColor = "pink"
+                srno.value = inputsrno
+                //document.getElementById("membname").disabled=false;
+                document.getElementById('dataform').style.display = "block"
+                document.getElementById('generaldiv').style.display = "none"
+                document.getElementById('date').value = Date()
+                document.getElementById("membname").focus()
+                document.getElementById("membname").value = "No Name"
+                document.getElementById("entryBy").value = userName;
+                document.getElementById('mobile').value = 9
+                document.getElementById("srno").disabled = true;
+                document.getElementById("membname").disabled = false;
+                memb.value = "Non Member"
+            }
+            if (member.length > 0) {
+                document.getElementById("sbutton").disabled = true
+                ismemb.innerHTML = "<h1>Member</h1>"
+                ismemb.style.backgroundColor = "green"
+                document.getElementById("entryBy").value = userName;
+                generaldiv.style.display = "none"
+                document.getElementById('dataform').style.display = "block"
+                srno.value = inputsrno
+                document.getElementById('membname').value = member[0].name
+                document.getElementById('mobile').value = member[0].mobile1.toString().substr(0, 8)
+                document.getElementById("srno").disabled = true;
+                document.getElementById("membname").disabled = true;
+                document.getElementById('date').value = Date()
+                memb.value = "Member"
+            }
+            if (attenmemb.length > 0) {
+                document.getElementById('dataform').style.display = "none"
+                duplicatesubmitteddiv.style.display = "block"
+                pAlready.innerHTML = `Data Entered by: ${attenmemb[0].entry}   <br>
+Entry time ${attenmemb[0].dt.substr(16, 5)}
 `
-}
-}
+            }
+        }
 
- function submitData(){
-const scriptURL = 'https://script.google.com/macros/s/AKfycby_xRXHJioTzOHzm-FZQpAxUmQoquzrXOUTKYIezBP8d6Bh2oyz/exec'
-
-const form = document.getElementById('dataform');
-
-form.addEventListener('submit', e => {
-e.preventDefault();
- document.getElementById("srno").disabled=false;
-document.getElementById("membname").disabled=false;
-memb.disabled = false
-document.getElementById("entryBy").disabled=false;
-//document.getElementById("entryBy").value=userName;
-
-//if(document.getElementById("membname").value=''){name.focus()}
-   fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-//getMyAttendanceData()
-form.reset(); 
-//alert(document.getElementById("entryBy").value)
-//formsubmitted.style.display="block";
-form.style.display="none"
-document.getElementById('btnmemb').style.display="none"
-getMyAttendanceData()
-dtsubmit.innerHTML="Data Submitted"
-
-
-
-}
-
-
-)
- dataform.style.display="none"
- submitteddiv.style.display="block"
-document.getElementById("srno1").value="";
-//atteata.push({srno:srno.value, name:membname.value})
-msg.innerHTML ="Attendance Sofar " + (attenData.length -1)
- }
- 
- 
- function shtData(){
-duplicatesubmitteddiv.style.display="none"
-generaldiv.style.display="block"
-document.getElementById("srno1").value="";
-document.getElementById("srno1").focus()
-submitteddiv.style.display="none"
-}
-
-
-  function showMe (box) {
- rep()
- var chboxs = document.getElementById("reportsdiv").style.display;
-    var vis = "none";
-        if(chboxs=="none"){
-         vis = "block"; }
-        if(chboxs=="block"){
-         vis = "none"; }
-    document.getElementById(box).style.display = vis;
-}
-
-function mobnot(){
-if(mobile.value.length === 10){
-mobile.style.backgroundColor="green";
-moblabel.style.color="white"
-mobile.style.color="white"
-document.getElementById("membname").focus();
-//name.focus()
-document.getElementById("sbutton").disabled=false
-}
-    else{mobile.style.backgroundColor="red"
-    mobile.style.color="white"
-    moblabel.style.color="white"
-document.getElementById("sbutton").disabled=true
-
-}
-}
-
-
-</script>
+        function submitData() {
+            const scriptURL = 'https://script.google.com/macros/s/AKfycby_xRXHJioTzOHzm-FZQpAxUmQoquzrXOUTKYIezBP8d6Bh2oyz/exec'
+            const form = document.getElementById('dataform');
+            form.addEventListener('submit', e => {
+                e.preventDefault();
+                document.getElementById("srno").disabled = false;
+                document.getElementById("membname").disabled = false;
+                memb.disabled = false
+                document.getElementById("entryBy").disabled = false;
+                //document.getElementById("entryBy").value=userName;
+                //if(document.getElementById("membname").value=''){name.focus()}
+                fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+                //getMyAttendanceData()
+                form.reset();
+                //alert(document.getElementById("entryBy").value)
+                //formsubmitted.style.display="block";
+                form.style.display = "none"
+                document.getElementById('btnmemb').style.display = "none"
+                getMyAttendanceData()
+                dtsubmit.innerHTML = "Data Submitted"
+            }
+            )
+            dataform.style.display = "none"
+            submitteddiv.style.display = "block"
+            document.getElementById("srno1").value = "";
+            //atteata.push({srno:srno.value, name:membname.value})
+            msg.innerHTML = "Attendance Sofar " + (attenData.length - 1)
+        }
+        function shtData() {
+            duplicatesubmitteddiv.style.display = "none"
+            generaldiv.style.display = "block"
+            document.getElementById("srno1").value = "";
+            document.getElementById("srno1").focus()
+            submitteddiv.style.display = "none"
+        }
+        function showMe(box) {
+            rep()
+            var chboxs = document.getElementById("reportsdiv").style.display;
+            var vis = "none";
+            if (chboxs == "none") {
+                vis = "block";
+            }
+            if (chboxs == "block") {
+                vis = "none";
+            }
+            document.getElementById(box).style.display = vis;
+        }
+        function mobnot() {
+            if (mobile.value.length === 10) {
+                mobile.style.backgroundColor = "green";
+                moblabel.style.color = "white"
+                mobile.style.color = "white"
+                document.getElementById("membname").focus();
+                //name.focus()
+                document.getElementById("sbutton").disabled = false
+            }
+            else {
+                mobile.style.backgroundColor = "red"
+                mobile.style.color = "white"
+                moblabel.style.color = "white"
+                document.getElementById("sbutton").disabled = true
+            }
+        }
+    </script>
 </body>
 </html>
