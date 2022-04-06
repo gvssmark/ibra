@@ -200,6 +200,8 @@
                 document.getElementById("srno").disabled = true;
                 document.getElementById("membname").disabled = false;
                 memb.value = "Non Member"
+                                document.getElementById("mobile").focus()
+
             }
             if (member.length > 0) {
                 document.getElementById("sbutton").disabled = true
@@ -215,6 +217,8 @@
                 document.getElementById("membname").disabled = true;
                 document.getElementById('date').value = Date()
                 memb.value = "Member"
+                document.getElementById("mobile").focus()
+
             }
             if (attenmemb.length > 0) {
                 document.getElementById('dataform').style.display = "none"
