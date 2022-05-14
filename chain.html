@@ -1,4 +1,5 @@
 
+
 <html lang="en">
 <head>
     <title>IBRA Attendance</title>
@@ -136,7 +137,7 @@
             response = await fetch(attendurl)
             attendanceData = await response.json()
             attenData = attendanceData["user"]
-            getMyAttendanceData()
+            //getMyAttendanceData()
             membcount = attenData.filter(a => a.memb === "Member").length
             nonmembcount = attenData.filter(a => a.memb === "Non Member").length
             msg.innerHTML = `Members ${membcount} <br>  Non Members ${nonmembcount} `
@@ -243,7 +244,7 @@ Entry time: ${attenmemb[0].dt.substr(4, 17)}
                 //formsubmitted.style.display="block";
                 form.style.display = "none"
                 document.getElementById('btnmemb').style.display = "none"
-                getMyAttendanceData()
+              //  getMyAttendanceData()
                 dtsubmit.innerHTML = "Data Submitted"
             }
             )
