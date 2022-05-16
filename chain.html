@@ -1,5 +1,6 @@
 
 
+
 <html lang="en">
 <head>
     <title>IBRA Human Chain Attendance</title>
@@ -140,8 +141,9 @@
             //getMyAttendanceData()
             membcount = attenData.filter(a => a.memb === "Member").length
             nonmembcount = attenData.filter(a => a.memb === "Non Member").length
-            msg.innerHTML = `Members ${membcount} <br>  Non Members ${nonmembcount} `
-            //setTimeout(blk(), 3000)
+             othnonmembcount = attenData.filter(a => a.memb === "OTH").length
+
+            msg.innerHTML = `Members ${membcount} <br>  Non Members ${nonmembcount} <BR> Other Banks: ${othnonmembcount} `            //setTimeout(blk(), 3000)
             //rep()
             document.getElementById('btnmemb').style.display = 'block'
         }
@@ -150,7 +152,7 @@
             attenData.filter(a => a.srno > 0).sort(function (a, b) {
                 return a.srno - b.srno;
             }).forEach(function (item) {
-                trtd += `<tr><td> ${item.srno}<td> ${item.name} <td> ${item.mobile} <td> ${item.memb === 'Member' ? "Memb" : "Non"}`;
+                trtd += `<tr><td> ${item.srno}<td> ${item.name} <td> ${item.mobile} <td> ${item.memb }`;
             })
             reportsp.innerHTML = trtd += "</table>"
         }
