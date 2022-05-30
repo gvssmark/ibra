@@ -96,7 +96,7 @@ body {
     width: 10px;
     height: 10px;    
     line-height: 10px;
-    font-size: small;
+    font-size: x-small;
     font-weight: lighter !important;
     color: green !important;
     text-align: center;
@@ -113,7 +113,7 @@ body {
     width: 25px;
     height: 25px;    
     line-height: 25px;
-    font-size: small;
+    font-size: x-small;
     font-weight: lighter !important;
     color: white !important;
     text-align: center;
@@ -570,17 +570,17 @@ LivingIn = unq(activeMembers.filter(a => a.place !== "").map(a => a.place.toUppe
             document.getElementById('pdivplacesTable').innerHTML = placesTemp
             penbrTemp = "<table  border=1 id='penBr'>" + penbrs + "</table>"
             document.getElementById('ppenbrs').innerHTML = penbrTemp;
-          vsp = activeMembers.filter(a => a.area.substr(0,3) === "VSP").map(a => ({ id: a.id, name: a.name, fampen:a.fampen,ibeab: a.IBorEAB, insured: a.insured    }));
-          vij = activeMembers.filter(a => a.area.substr(0,3) === "VIJ").map(a => ({ id: a.id, name: a.name, fampen:a.fampen, ibeab: a.IBorEAB, insured: a.insured  }));
-          god = activeMembers.filter(a => a.area.substr(0,3) === "GOD").map(a => ({ id: a.id, name: a.name, fampen:a.fampen , ibeab: a.IBorEAB , insured: a.insured   }));
-          seema = activeMembers.filter(a => a.area.substr(0,5) === "SEEMA").map(a => ({ id: a.id, name: a.name , fampen:a.fampen , ibeab: a.IBorEAB , insured: a.insured  }));
-          hyd = activeMembers.filter(a => a.area.substr(0,3) === "HYD").map(a => ({ id: a.id, name: a.name, fampen:a.fampen , ibeab: a.IBorEAB , insured: a.insured   }));
-          oth = activeMembers.filter(a => a.area.substr(0,3) === "OTH").map(a => ({ id: a.id, name: a.name , fampen:a.fampen, ibeab: a.IBorEAB , insured: a.insured   }));
-eab = activeMembers.filter(a => a.area.substr(-3).toUpperCase() === "EAB").map(a => ({ id: a.id, name: a.name , fampen:a.fampen, ibeab: a.IBorEAB , insured: a.insured   }));
+          vsp = activeMembers.filter(a => a.area.substr(0,3) === "VSP").map(a => ({ id: a.id, name: a.name, fampen:a.fampen,ibeab: a.IBorEAB, insured: a.insured, mobile: a.mobile1    }));
+          vij = activeMembers.filter(a => a.area.substr(0,3) === "VIJ").map(a => ({ id: a.id, name: a.name, fampen:a.fampen, ibeab: a.IBorEAB, insured: a.insured , mobile: a.mobile1  }));
+          god = activeMembers.filter(a => a.area.substr(0,3) === "GOD").map(a => ({ id: a.id, name: a.name, fampen:a.fampen , ibeab: a.IBorEAB , insured: a.insured , mobile: a.mobile1   }));
+          seema = activeMembers.filter(a => a.area.substr(0,5) === "SEEMA").map(a => ({ id: a.id, name: a.name , fampen:a.fampen , ibeab: a.IBorEAB , insured: a.insured, mobile: a.mobile1   }));
+          hyd = activeMembers.filter(a => a.area.substr(0,3) === "HYD").map(a => ({ id: a.id, name: a.name, fampen:a.fampen , ibeab: a.IBorEAB , insured: a.insured , mobile: a.mobile1   }));
+          oth = activeMembers.filter(a => a.area.substr(0,3) === "OTH").map(a => ({ id: a.id, name: a.name , fampen:a.fampen, ibeab: a.IBorEAB , insured: a.insured , mobile: a.mobile1   }));
+         eab = activeMembers.filter(a => a.area.substr(-3).toUpperCase() === "EAB").map(a => ({ id: a.id, name: a.name , fampen:a.fampen, ibeab: a.IBorEAB , insured: a.insured , mobile: a.mobile1   }));
          
           blank = activeMembers.filter(a => a.area === "BLANK").map(a => ({ id: a.id, name: a.name, fampen:a.fampen , ibeab: a.IBorEAB , insured: a.insured   }));
-          allMembNoWise=activeMembers.map(a => ({ id: a.id, name: a.name, fampen:a.fampen, ibeab: a.IBorEAB  , insured: a.insured    })).sort(function(a,b){return a.id - b.id})
-allmemb = activeMembers.map(a => ({ id: a.id, name: a.name , fampen:a.fampen, ibeab: a.IBorEAB  , insured: a.insured   }));
+          allMembNoWise=activeMembers.map(a => ({ id: a.id, name: a.name, fampen:a.fampen, ibeab: a.IBorEAB  , insured: a.insured , mobile: a.mobile1    })).sort(function(a,b){return a.id - b.id})
+allmemb = activeMembers.map(a => ({ id: a.id, name: a.name , fampen:a.fampen, ibeab: a.IBorEAB  , insured: a.insured, mobile: a.mobile1  }));
 selectedRegion(allmemb,0)
         }
         penbrTemp = ""
@@ -777,7 +777,7 @@ insured = membData[0].insured ===1 ? "Yes" : "No"
 regions=["All", "Visakhapatnam", "Godavari", "Vijayawada", "Seema", "Hyderabad", "Other States","e Allahabad","Membershipwise"]
 document.getElementById('regionHeading').innerHTML="Memebers in "+ regions[n]+ " Region<span class='badge'>"+array.length+"</span><span class='badge1'>" +famPensionersCount+"</span> <span class='eabbadge'>" +eabcount+"</span><span class='insurancebigbadge'>"+ insuredcount +"</span>"
 inThisRegion="<table id='regionTable'  border=1>"
-array.forEach(function (a) { inThisRegion += "<tr ><td class='"+ (a.fampen.length>0 ? "fam" : "ser") +"'><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + (a.insured ===1 ? "&nbsp;&nbsp<span class='insurancebadge'>"+ a.insured +"</span>" : "")+  (a.fampen.length>0 ? " -- <mark>"+a.fampen+"</mark>" : "")+ "<td class='"+ (a.ibeab === 'EAB' ? "ibeab" : "")+"'>" + a.id + "</span></td></tr>" })
+array.forEach(function (a) { inThisRegion += "<tr ><td class='"+ (a.fampen.length>0 ? "fam" : "ser") +"'><span onClick='nameclick(this.id)' id=" + a.id + ">" + a.name + (a.insured ===1 ? "&nbsp;&nbsp<span class='insurancebadge'>"+ a.insured +"</span>" : "")+  (a.fampen.length>0 ? " -- <mark>"+a.fampen+"</mark>" : " ") +  a.mobile +"<td class='"+ (a.ibeab === 'EAB' ? "ibeab" : "")+"'>" + a.id +"</span></td></tr>" })
        inThisRegion +="</table><br><br><br>" 
 document.getElementById('paraInThisRegion').innerHTML=inThisRegion
 }
@@ -843,4 +843,3 @@ isInsured = (srno) => insdata.filter(a => a.SRNO === srno).length;
 </body>
 
 </html>
-
