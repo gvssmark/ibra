@@ -664,7 +664,7 @@ var insdata =[
 [438618,'Pitamber Lal',300000,400000,'Family',0,'e-Allhabad Bank',8791171085,'MORADABAD'],
 [561730,'Ananda Rao Merugu',200000,0,'Family',0,'e-Allhabad Bank',7989633301,'KAKINADA'],
 [618595,'Kusuma Sri Karlapati',400000,500000,'Family',0,'e Andhra Bank',9441830178,'Hydarabaad'],
-[1933404,'Mullapudi Venkataramana',400000,0,'Family',0,'e-Allhabad Bank',9629666100,'Hyderabad'],
+[19334,'Mullapudi Venkataramana',400000,0,'Family',0,'e-Allhabad Bank',9629666100,'Hyderabad'],
 [3731881,'Girish Pandey',400000,0,'Family',0,'e-Allhabad Bank',9415696510,'Varanasi'],
 [3734597,'Tara Ram',400000,500000,'Family',1021,'e-Allhabad Bank',8126139167,'Dehradun'],
 [3738574,'Braj Pal',400000,0,'Single',0,'e-Allhabad Bank',9450548905,'Lucknow'],
