@@ -139,6 +139,8 @@ insuredSRNO = insdata[i].SRNO
 xx= activeMembers.filter( a => a.srno === insuredSRNO)
 mstatus= xx.length>0 ?     "Member" : "not member"
 insdata[i].member= mstatus
+      
+      xx.length>0 ? insdata[i].MemNo= xx[0].id : insdata[i].MemNo
 }
 }
                 </script>
