@@ -151,7 +151,7 @@ insdata[i].member= mstatus
     <script src="https://drive.google.com/uc?id=1EeiSTfOD-0UA4hz1bwKwW2T7KM1XnndGx"></script>  
 <script>
 insdata.sort(function (a, b) { return a.Name.localeCompare(b.Name) })
- ib=insdata.filter(a => a.Bank ==="Indian Bank").sort(function (a, b) {return a.MemNo - b.MemNo;})
+ ib=insdata.filter(a => a.Bank ==="Indian Bank")
  eab=insdata.filter(a => a.Bank ==="e-Allhabad Bank")
  oth=insdata.filter(a => (a.Bank !=="Indian Bank" && a.Bank  !== "e-Allhabad Bank"))
 function selectBank(bankArray){ 
