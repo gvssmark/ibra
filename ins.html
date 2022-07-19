@@ -159,7 +159,7 @@ function selectBank(bankArray){
  document.documentElement.scrollTop = 0;
 document.getElementById("inputbox").style.display = "block";
 inThisRegion="<table id='regionTable'  border=1>"
-bankArray.forEach(function (a) { inThisRegion += "<tr id='"+a.SRNO+"' onclick='showSrno(this.id)' ><td>" + a.SRNO + "<td>" + a.Name + (a.member === "Member" ? "&nbsp<span class='insurancebadge'>0</span>": "")
+bankArray.forEach(function (a) { inThisRegion += "<tr id='"+a.SRNO+"' onclick='showSrno(this.id)' ><td>" + a.SRNO + "<td>" + a.Name + (a.member === "Member" ? "&nbsp<span class='insurancebadge'>0</span>": "")+a MemNo
   })
  inThisRegion +="</table><br><br><br>"
 document.getElementById('insmemb').innerHTML=inThisRegion
