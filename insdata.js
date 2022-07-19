@@ -109,7 +109,7 @@ var insdata =[
 [7269,'Kaza Srirajya Lakshmi',300000,400000,'Family',126,'Indian Bank',9849287321,'Visakhapatnam'],
 [7327,'Kothapalle Prabhakara Reddy',400000,500000,'Family',0,'Indian Bank',9581079058,'Hyderabad'],
 [7329,'Putrevu Seshagiri Rao',400000,0,'Family',0,'Indian Bank',7013659379,'Vijayawada'],
-[7377,'S N Vasantha R¿O',300000,400000,'Family',0,'Indian Bank',9481035662,'Bangalore'],
+[7377,'S N Vasantha R�O',300000,400000,'Family',0,'Indian Bank',9481035662,'Bangalore'],
 [7476,'Chevuri Nageswara Rao',400000,500000,'Family',312,'Indian Bank',9700437788,'Vijayawada'],
 [7477,'B Sreenivasa Rao',300000,400000,'Family',0,'Indian Bank',9686258849,'Bangalore'],
 [7504,'Ravi Shankar S',300000,400000,'Family',0,'Indian Bank',9845454886,'Bangalore'],
@@ -404,7 +404,7 @@ var insdata =[
 [38461,'Atul Bharati',200000,0,'Family',1028,'e-Allhabad Bank',9831865651,'Lucknow'],
 [38497,'Gadadhar Naik',400000,500000,'Family',0,'e-Allhabad Bank',8280474436,'Bhubaneshwar'],
 [38603,'Basanta Kumar Mallick',300000,400000,'Family',0,'Indian Bank',7250542652,'Kolkata'],
-[38752,'Lattupally Ranjit Kumar Reddy',400000,500000,'Family',0,'Indian Bank',9849809711,'Hyderabad'],
+[38752,'Lattupally Ranjit Kumar Reddy',400000,500000,'Family',0,'e-Allhabad Bank',9849809711,'Hyderabad'],
 [38801,'Narendra Pal Singh',200000,0,'Family',1007,'e-Allhabad Bank',9452152900,'Lucknow'],
 [39479,'K V Shashi Shekar',400000,0,'Family',0,'Indian Bank',9477474266,'Bangalore'],
 [40733,'Potla Mallaiah',200000,200000,'Family',0,'Indian Bank',9676010733,'Mahabubnagar'],
@@ -664,7 +664,7 @@ var insdata =[
 [438618,'Pitamber Lal',300000,400000,'Family',0,'e-Allhabad Bank',8791171085,'MORADABAD'],
 [561730,'Ananda Rao Merugu',200000,0,'Family',0,'e-Allhabad Bank',7989633301,'KAKINADA'],
 [618595,'Kusuma Sri Karlapati',400000,500000,'Family',0,'e Andhra Bank',9441830178,'Hydarabaad'],
-[19334,'Mullapudi Venkataramana',400000,0,'Family',0,'e-Allhabad Bank',9629666100,'Hyderabad'],
+[19334,'Mullapudi Venkataramana',400000,0,'Family',0,'Indian Bank',9629666100,'Hyderabad'],
 [3731881,'Girish Pandey',400000,0,'Family',0,'e-Allhabad Bank',9415696510,'Varanasi'],
 [3734597,'Tara Ram',400000,500000,'Family',1021,'e-Allhabad Bank',8126139167,'Dehradun'],
 [3738574,'Braj Pal',400000,0,'Single',0,'e-Allhabad Bank',9450548905,'Lucknow'],
@@ -680,5 +680,3 @@ var insdata =[
 
 
 insdata = insdata.map(([SRNO, Name, Base, STP, SorF, MemNo, Bank, Mobile, Place])=> ({SRNO, Name, Base, STP, SorF, MemNo, Bank, Mobile, Place}))
-
-
