@@ -153,23 +153,35 @@ insdata[i].member= mstatus
 insdata.sort(function (a, b) { return a.Name.localeCompare(b.Name) })
  ib=insdata.filter(a => a.Bank ==="Indian Bank")
 //ib = ib.sort(function (a,b) {return a.MemNo*1 - b.MemNo*1})
-
-ib= ib.sort((a, b) => {
-    return a.MemNo*1 - b.MemNo*1;
-});
+//ibx=iib.sort((a, b)=> {return a.MemNo - b.MemNo})
 
 eab=insdata.filter(a => a.Bank ==="e-Allhabad Bank")
  oth=insdata.filter(a => (a.Bank !=="Indian Bank" && a.Bank  !== "e-Allhabad Bank"))
+
 function selectBank(bankArray){ 
       document.getElementById("myInput").value=""
  document.documentElement.scrollTop = 0;
 document.getElementById("inputbox").style.display = "block";
-inThisRegion="<table id='regionTable'  border=1>"
-bankArray.forEach(function (a) { inThisRegion += "<tr id='"+a.SRNO+"' onclick='showSrno(this.id)' ><td>" + a.SRNO + "<td>" + a.Name + (a.member === "Member" ? "&nbsp<span class='insurancebadge'>0</span>": "")+a.MemNo
+inThisRegion="<br><table id='regionTable'  border=1><tr><td>SRNO<td>Name<TD>MNo"
+
+nm=bankArray.filter(a=> a.MemNo>0)
+
+mm=bankArray.filter(a=> a.MemNo===0)
+
+inThisRegion +="<tr bgcolor=yellow><td align=center colspan=3>Members"
+
+nm.forEach(function (a) { inThisRegion += "<tr id='"+a.SRNO+"' onclick='showSrno(this.id)' ><td>" + a.SRNO + "<td>" + a.Name + (a.member === "Member" ? "&nbsp<span class='insurancebadge'>0</span>": "")+"<td>"+a.MemNo})
+
+inThisRegion +="<tr bgcolor=red><td align=center colspan=3>Non Members"
+
+mm.forEach(function (a) { inThisRegion += "<tr id='"+a.SRNO+"' onclick='showSrno(this.id)' ><td>" + a.SRNO + "<td>" + a.Name + (a.member === "Member" ? "&nbsp<span class='insurancebadge'>0</span>": "")+"<td>"+a.MemNo
+
   })
  inThisRegion +="</table><br><br><br>"
 document.getElementById('insmemb').innerHTML=inThisRegion
 }
+
+
 allbanks = unq(oth.filter(a => a.Bank !== "").map(a =>a.Bank))
 
       function alltab(){
