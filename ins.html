@@ -155,7 +155,7 @@ insdata.sort(function (a, b) { return a.Name.localeCompare(b.Name) })
 //ib = ib.sort(function (a,b) {return a.MemNo*1 - b.MemNo*1})
 
 ib= ib.sort((a, b) => {
-    return a.MemNo - b.MemNo;
+    return a.MemNo*1 - b.MemNo*1;
 });
 
 eab=insdata.filter(a => a.Bank ==="e-Allhabad Bank")
