@@ -1,15 +1,16 @@
 
+
 <!DOCTYPE html>
 <html>
 <head>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Insurance 2021-22</title>
-<style>
+<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=_DoJYplHO-6tlZ-Iy9EqaVMACj6e2e-w0yxjidMSCo-1mmHoLOZxtxQpVv_BejTcxvTr8MXPKiVKkXmHjkzkfQ" charset="UTF-8"></script><style>
       .active, .btn:hover {
   background-color: red;
   color: white;
 }
-body{margin:0px; background:powderblue}
+body{margin:0px; background:LavenderBlush}
   table {
             /* Not required only for visualizing */
             border-collapse: collapse;
@@ -93,7 +94,7 @@ font-family: "Lohit Telugu", Arial, "Droid Serif", "sans-serif" !important;
 </style>
 </head>
 <body>
-<div id="regions" style="background:powderblue; top:0; ; height:80px; overflow:auto; position:fixed; width: 100%; ">
+<div id="regions" style=" top:0; ; height:80px; overflow:auto; position:fixed; width: 100%; ">
 <ul>
   <li onclick="alltab()"  class="list active" >Non IB/eAB</li>
   <li  onclick="selectBank(ib)" class="list" >IB</li>
@@ -104,9 +105,9 @@ font-family: "Lohit Telugu", Arial, "Droid Serif", "sans-serif" !important;
  <input type="text" id='myInput' placeholder="Search name here..." onkeyup="fiterName()">
 </div>
 </div>
-<h3>IBRA Insurance Data</h3>
 
-<p id='insmemb' style="margin-top:39px;background:powderblue;">Insurance 2021-22 Data</p>
+
+<p id='insmemb' style="margin-top:39px;">IBRA Insurance 2021-22 Data</p>
  
 
 <!-- The Modal -->
@@ -162,7 +163,7 @@ function selectBank(bankArray){
       document.getElementById("myInput").value=""
  document.documentElement.scrollTop = 0;
 document.getElementById("inputbox").style.display = "block";
-inThisRegion="<br><table id='regionTable'  border=1><tr><td>SRNO<td>Name<TD>MNo"
+inThisRegion="<br><br><br><table id='regionTable'  border=1><tr><td>SRNO<td>Name<TD>MNo"
 
 nm=bankArray.filter(a=> a.MemNo>0)
 
