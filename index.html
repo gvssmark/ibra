@@ -545,8 +545,10 @@ srnonil.innerHTML=noSrno.length
  //           LivingIn = unq(allplaces).sort();
   //          LivingIn = unq(LivingIn.map(function (e) {     return e.toUpperCase()}));
 LivingIn = unq(activeMembers.filter(a => a.place !== "").map(a => a.place.toUpperCase()).sort());
+            
             placesTable = ""
-             LivingIn.forEach(function (val,index) { placesTable += "<tr><td><span onClick='funCityPerson(this.id)'  id='"+index+"'>" + val +"</span>" })
+//             LivingIn.forEach(function (val,index) { placesTable += "<tr><td><span onClick='funCityPerson(this.id)'  id='"+index+"'>" + val +"</span>" })
+LivingIn = [...new Set(activeMembers.map(a =>a.place.toUpperCase().trim()))].sort();
 
            // allPenBranches = activeMembers.filter(a => a.pensionbr !== "").map(a => a.pensionbr);
             PensionDrawingBranch = unq(activeMembers.filter(a => a.pensionbr !== "").map(a => a.pensionbr.toUpperCase())).sort();
@@ -589,8 +591,10 @@ selectedRegion(allmemb,0)
 function funCityPerson(a){
 town=LivingIn[a]
 
-inThisPlace=activeMembers.filter(a => a.place.toUpperCase() === town)
-numberInThisPlace=inThisPlace.length;
+//inThisPlace=activeMembers.filter(a => a.place.toUpperCase() === town)
+inThisPlace=activeMembers.filter(a => a.place.toUpperCase().trim() === town)
+
+    numberInThisPlace=inThisPlace.length;
     unqPinCodes = unq(inThisPlace.map(a => a.pincode).sort())
 
 personsHere=""
