@@ -544,11 +544,11 @@ penbrno.innerHTML=noPensionBr.length
 srnonil.innerHTML=noSrno.length    
  //           LivingIn = unq(allplaces).sort();
   //          LivingIn = unq(LivingIn.map(function (e) {     return e.toUpperCase()}));
-LivingIn = unq(activeMembers.filter(a => a.place !== "").map(a => a.place.toUpperCase()).sort());
-            
+//LivingIn = unq(activeMembers.filter(a => a.place !== "").map(a => a.place.toUpperCase()).sort());
+  LivingIn = [...new Set(activeMembers.map(a =>a.place.toUpperCase().trim()))].sort();
+          
             placesTable = ""
-//             LivingIn.forEach(function (val,index) { placesTable += "<tr><td><span onClick='funCityPerson(this.id)'  id='"+index+"'>" + val +"</span>" })
-LivingIn = [...new Set(activeMembers.map(a =>a.place.toUpperCase().trim()))].sort();
+             LivingIn.forEach(function (val,index) { placesTable += "<tr><td><span onClick='funCityPerson(this.id)'  id='"+index+"'>" + val +"</span>" })
 
            // allPenBranches = activeMembers.filter(a => a.pensionbr !== "").map(a => a.pensionbr);
             PensionDrawingBranch = unq(activeMembers.filter(a => a.pensionbr !== "").map(a => a.pensionbr.toUpperCase())).sort();
