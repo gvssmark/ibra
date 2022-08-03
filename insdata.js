@@ -425,7 +425,7 @@ var insdata =[
 [57069,'T Lakshmi Narayana',300000,400000,'Family',410,'Indian Bank',9963083225,'Secunderabad'],
 [59961,'Keshava Rao Talasila',400000,0,'Family',1031,'e-Allhabad Bank',9831146136,'Visakhapatnam'],
 [60356,'Rk Vishwanath',400000,0,'Family',0,'Canara Bank',9980055890,'Bangalore'],
-[60586,'Asoke Sarkar',400000,0,'Family',0,'e-Allahabad Bank',9051955122,'Hooghly'],
+[60586,'Asoke Sarkar',400000,0,'Family',0,'e-Allhabad Bank',9051955122,'Hooghly'],
 [67566,'Kamleshwer Tripathi',300000,400000,'Family',0,'Punjab National Bank',945320503,'Varanasi'],
 [83130,'BagavathiAmmal E. T',300000,0,'Family',0,'Indian Bank',8939926183,'Chennai'],
 [84470,'Thakursingh Mansingh Verma',300000,0,'Family',0,'Indian Bank',9819232448,'DOMBIVLI'],
