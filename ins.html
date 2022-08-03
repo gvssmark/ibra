@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -181,7 +182,9 @@ nm=bankArray.filter(a=> a.MemNo>0)
 mm=bankArray.filter(a=> a.MemNo===0)
 inThisRegion +="<tr bgcolor=red><td align=center colspan=3>Non Members - " + mm.length
 
-mm.forEach(function (a) { inThisRegion += "<tr id='"+a.SRNO+"' onclick='showSrno(this.id)' ><td>" + a.SRNO + "<td>" + a.Name + (a.member === "Member" ? "&nbsp<span class='insurancebadge'>0</span>": "")+"<td>"+a.MemNo
+mm.forEach(function (a) { inThisRegion += "<tr id='"+a.SRNO+"' onclick='showSrno(this.id)' ><td>" + a.SRNO + "<td>" + a.Name + (a.member === "Member" ? "&nbsp<span class='insurancebadge'>0</span>": "")+"<br>" + a.Place +"-" + a.Mobile +
+
+"<td>"+a.MemNo
 
   })
 
