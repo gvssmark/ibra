@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IBRA-APTS</title>
+<style>
+
+body{width:360px; margin:auto;  background:powderblue; }
+.regions{width:300px;}
+.regions tr{; font-size:x-large; text-align:center; color:yellow; text-shadow: 2px 2px 4px #000000;}
+.regions td{height:40px;  border-radius:25px;  vertical-align: center;}
+.red{background:red;}
+.green {background:green}
+table{margin:auto; width:350px;}
+#regionTable {border-collapse:collapse}
+.smalleabbadge {display: inline-block; padding: 0; width: 10px; height: 10px; line-height: 10px; font-size: small; font-weight: lighter !important; color: green !important; text-align: center;  white-space: nowrap; vertical-align: baseline; background-color: pink; border-radius: 50px; top: -3px;}
+.smallbadge { display: inline-block; padding: 0; width: 10px; height: 10px; line-height: 10px;  font-size: small; font-weight: lighter !important; color: green !important; text-align: center; white-space: nowrap; vertical-align: baseline; background-color: yellow; border-radius: 50px; top: -3px; }
+.areaSpan{font-size:small; color:white; ;text-shadow: none; margin-top:0px }
+     /* The Modal (background) */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            padding-top: 1px;
+            /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #99ffcc;
+            margin: auto;
+            padding: 2px;
+            padding-bottom: 2px;
+            border: 1px solid #888;
+            width: 95%;
+            border-radius: 15px;
+            margin-top: 53px;
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+   table {
+            /* Not required only for visualizing */
+            border-collapse: collapse;
+            ;
+            width: 100%;
+            margin-left: 1px;
+            margin-right: 1px;
+            border: 1px soild black;
+            font-size: small
+        }
+
+</style>
+</head>
+<body>
+   <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h4 align=center id="nameHeader"></h4>
+                <p id="modalData"> </p>
+            </div>
+        </div>
+
+<br>
+<div id='regions'>
+
+<table  class='regions'>
+<tr><td class='red' onclick="clk('ALL')">Full List of Members
+<tr><td class='green' onclick="clk('VSP')">Visakhapatnam
+<tr><td class='red' onclick="clk('GOD')">Godavari
+<tr><td class='green'  onclick="clk('VIJ')">Vijayawada
+<tr><td class='red'  onclick="clk('SEE')">Rayala Seema
+<tr><td class='green'  onclick="clk('HYD')">Telangana
+<tr><td class='red'  onclick="clk('OTH')">Other States
+<tr><td class='green'  onclick="clk('EAB')" >e Allahabad Bank
+<tr><td class='red'  onclick="clk('FAM')">Family Pensioners
+<tr><td class='green'  onclick="clk*('**FAM')">Retirees' Welfare Schemes
+
+</table>
+</div>
+<div id='ShowRegions'  style="text-align:center; top:0; position:sticky; ; font-size:large; display:none; background:red; color:white; text-align:center; " onclick="showregions()">
+Indian Bank Retirees' Association<br><span style='background:black'>Back to Regions</span>
+
+</div>
+<div style=" position:fixed;  margin: 10px 0px; width:360px;   " ><input id='inputdiv'  type='text'  placeholder='Search For'  style="width:75% ;  height:30px;    margin:0 auto ; display:none  ;  border:none; background:cyan   " ></div>
+<p id='ShowData'></p>
+
+<script>
+
+    url = 'https://script.google.com/macros/s/AKfycbzI9SDFOzYLYKRKJTlse0XpsEiF8XfbyxwUUH22evlGkEPDIt2V/exec'
+            async function getMyData() {
+                response = await fetch(url)
+                data = await response.json()
+                tempData = data["user"]
+                activeMembers = tempData.filter(a => a.name !== "")
+                    .sort(function (a, b) { return a.name.localeCompare(b.name) });
+                    activeMembers.forEach(function (element) { element.IBorEAB = (element.area.substr(-3).toUpperCase() === 'EAB' ? "EAB" : "IB"), element.pentype = (element.fampen.length > 0 ? "fam" : "ser") })
+}
+getMyData()
+function clk(ar){
+ar === 'ALL' ? array = activeMembers.map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno })) : array = activeMembers.filter(a => a.area.includes(ar) ).map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno }))
+
+if (ar==='FAM') {
+array = activeMembers.filter(a => a.pentype ==='fam' ).map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno }))
+}
+
+inThisRegion = "<br><br><table  id='regionTable'  border=1><tr style='background:black; color:white; '><th  >Name<th >SRNo"
+array.forEach(function (a) { inThisRegion += "<tr onClick='nameclick(this.id)' id=" + a.id + "><td class='" + (a.fampen.length > 0 ? "fam" : "ser") + "'>" + a.name + (a.fampen.length > 0 ? " <span class='smallbadge'> &nbsp;</span> " + a.fampen : " ") + (a.ibeab === 'EAB' ? "<span class='smalleabbadge'>&nbsp;" : "") + "</span>" + "<td align=right >" + a.srno + "</td></tr>" })
+inThisRegion += "</table>"
+document.getElementById('ShowData').innerHTML = inThisRegion
+document.getElementById('regions').style.display = "none";
+document.getElementById('ShowRegions').style.display = "block";
+document.getElementById('inputdiv').style.display = "block";
+}
+
+function showregions(){
+document.getElementById('regions').style.display = "block";
+document.getElementById('ShowData').innerHTML = ""
+document.getElementById('ShowRegions').style.display = "none";
+document.getElementById('inputdiv').style.display = "none";
+}
+inputdiv.addEventListener("keyup",function(){
+    var keyword = this.value;
+    keyword = keyword.toUpperCase();
+    var table_3 = document.getElementById("regionTable");
+    var all_tr = table_3.getElementsByTagName("tr");
+    for(var i=0; i<all_tr.length; i++){
+            var all_columns = all_tr[i].getElementsByTagName("td");
+            for(j=0;j<all_columns.length; j++){
+                if(all_columns[j]){
+                    var column_value = all_columns[j].textContent || all_columns[j].innerText;
+                    column_value = column_value.toUpperCase();
+                    if(column_value.indexOf(keyword) > -1){
+                        all_tr[i].style.display = ""; // show
+                        break;
+                    }else{
+                        all_tr[i].style.display = "none"; // hide
+                    }
+                }
+            }
+        }
+})    
+
+var modal = document.getElementById("myModal");
+            var span = document.getElementsByClassName("close")[0];
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+
+function nameclick(membershipNo) {
+                //     document.documentElement.scrollTop = 0;
+                toDisplay = "<table border=1><tr>"
+        //        document.getElementById("myInput").value = ""
+                membno = membershipNo * 1 - 1;
+                membData = tempData.filter(a => a.id === membershipNo * 1)
+                toDisplay += "<tr><td colspan=2><b>Membership No</b> " + membData[0].id
+                toDisplay += "<tr><td colspan='2'><b>Address: </b><br>" + membData[0].add1 + "<br>"
+                if (membData[0].add2.length > 0) { toDisplay += membData[0].add2 + "<br>" }
+                if (membData[0].add3.length > 0) { toDisplay += membData[0].add3 + "<br>" }
+                if (membData[0].place.length > 0) { toDisplay += membData[0].place + "  " + membData[0].pincode + "<br>" }
+                if (membData[0].district.length > 0) { toDisplay += membData[0].district + " District <br>" }
+                toDisplay += "<tr><td colspan=2><b>Phones: </b>"
+                if (membData[0].fixed.length > 0) { toDisplay += membData[0].fixed + " / " }
+
+                if (membData[0].mobile1 > 0) { toDisplay += "<a href=tel:" + membData[0].mobile1 + "><mark style='background:red; color:white'>" + membData[0].mobile1 + "</mark></a>" }
+
+                //  if (membData[0].mobile1 > 0) { toDisplay += membData[0].mobile1 }
+
+                if (membData[0].mobile2 > 0) { toDisplay += " / " + membData[0].mobile2 }
+                toDisplay += "<tr><td colspan=2><b>Email: </b>" + membData[0].email
+                toDisplay += "<tr><td colspan=2><b>S R No: </b>" + membData[0].srno
+                toDisplay += "<tr><td colspan=2><b>Application Scanned:</b>" + membData[0].scanned
+                toDisplay += "<tr><td colspan=2><b>Pension Br:</b>" + membData[0].pensionbr
+                if (membData[0].fampen != "") {
+                    toDisplay += "<tr bgcolor=yellow><td colspan=2><b>Family Pension of :</b>" + membData[0].fampen
+                }
+                toDisplay += "<tr><td colspan=2><b>Pension Acc: </b> " + membData[0].sbac
+                whichBank = membData[0].IBorEAB === 'IB' ? "Indian Bank" : "e Allahabad Bank"
+                toDisplay += "<tr><td colspan=2><b>Retired from : </b> " + whichBank
+                toDisplay += "<tr><td colspan=2><b>Region : </b> " + membData[0].area.substr(0, 3)
+
+
+                //.toString()
+                //.replace(/\b[\dX][-. \dX]+(\d{4})\b/g, '******** $1') + "<br>"
+                // document.getElementById("buttonsDiv").style.display = "none";
+                document.getElementById("modalData").innerHTML = toDisplay + "<table>"
+                document.getElementById("nameHeader").innerHTML = membData[0].name
+
+
+                modal.style.display = "block";
+            }
+
+</script>
+
+
+</body>
+</html>
+
+
