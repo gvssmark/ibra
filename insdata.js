@@ -675,7 +675,7 @@ var insdata =[
 [3888245,'Shashidhar',400000,0,'Family',0,'e-Allhabad Bank',9969533490,'Lucknow'],
 [5986452,'Banshidhar Mishra',200000,0,'Family',0,'e-Allhabad Bank',9026287040,'Varanasi'],
 [5999062,'Kamlesh Kishore Arya',400000,500000,'Family',0,'e-Allhabad Bank',9340962747,'Lucknow'],
-[6044943,'Ashok Kumar Singh',300000,400000,'Family',0,'e-Allhabad Bank',7754839092,'Gaya']]
+[60449,'Ashok Kumar Singh',300000,400000,'Family',0,'e-Allhabad Bank',7754839092,'Gaya']]
 
 
 
