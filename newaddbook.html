@@ -142,7 +142,7 @@ document.getElementById('inputdiv').style.display = "none";
 }
 inputdiv.addEventListener("keyup",function(){
     var keyword = this.value;
-    keyword = keyword.toUpperCase();
+    keyword = keyword.toUpperCase().replaceAll(" ","");
     var table_3 = document.getElementById("regionTable");
     var all_tr = table_3.getElementsByTagName("tr");
     for(var i=0; i<all_tr.length; i++){
@@ -150,7 +150,7 @@ inputdiv.addEventListener("keyup",function(){
             for(j=0;j<all_columns.length; j++){
                 if(all_columns[j]){
                     var column_value = all_columns[j].textContent || all_columns[j].innerText;
-                    column_value = column_value.toUpperCase();
+                    column_value = column_value.toUpperCase().replaceAll(" ","");
                     if(column_value.indexOf(keyword) > -1){
                         all_tr[i].style.display = ""; // show
                         break;
