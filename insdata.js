@@ -403,7 +403,7 @@ var insdata =[
 [38450,'Rajwant Sheikher Bhat',400000,0,'Family',0,'Indian Bank',8897782496,'KANPUR'],
 [38461,'Atul Bharati',200000,0,'Family',1028,'e-Allhabad Bank',9831865651,'Lucknow'],
 [38497,'Gadadhar Naik',400000,500000,'Family',0,'e-Allhabad Bank',8280474436,'Bhubaneshwar'],
-[38603,'Basanta Kumar Mallick',300000,400000,'Family',0,'Indian Bank',7250542652,'Kolkata'],
+[38603,'Basanta Kumar Mallick',300000,400000,'Family',0,'e-Allhabad Bank',7250542652,'Kolkata'],
 [38752,'Lattupally Ranjit Kumar Reddy',400000,500000,'Family',0,'e-Allhabad Bank',9849809711,'Hyderabad'],
 [38801,'Narendra Pal Singh',200000,0,'Family',1007,'e-Allhabad Bank',9452152900,'Lucknow'],
 [39479,'K V Shashi Shekar',400000,0,'Family',0,'Indian Bank',9477474266,'Bangalore'],
