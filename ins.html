@@ -1,6 +1,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -103,23 +104,52 @@ body {
     min-height: 100%;
     margin: 0;
 }
+
+.pulsing-2 {
+  width:100px;
+  height:100px;
+  border-radius: 50%;
+  background:red;
+  box-shadow: 0 0 0 0 #0004;
+  animation:pl2 1.5s infinite linear;
+  position: relative;
+}
+.pulsing-2:before,
+.pulsing-2:after {
+  content:"";
+  position: absolute;
+  inset:0;
+  border-radius: inherit;
+  box-shadow: 0 0 0 0 #0004;
+  animation: inherit;
+  animation-delay: -0.5s;
+}
+.pulsing-2:after {
+  animation-delay: -1s;
+}
+@keyframes pl2 {
+    100% {box-shadow: 0 0 0 40px #0000}
+}
 </style>
 </head>
 <body>
-<div id="regions" style=" top:0; ; height:80px; overflow:auto; position:fixed; width: 100%; ">
+<div id="regions" style=" display:none; top:0; ; height:80px; overflow:auto; position:fixed; width: 100%; ">
 <ul>
   <li onclick="alltab()"  class="list active" >Non IB/eAB</li>
   <li  onclick="selectBank(ib)" class="list" >IB</li>
   <li  onclick="selectBank(eab)" class="list" >e AB</li>
   <li  onclick="albk()" class="list" >Summary</li>  
 </ul>
+
 <div id='inputbox' style="display : none";>
  <input type="text" id='myInput' placeholder="Search name here..." onkeyup="fiterName()">
 </div>
 </div>
 
-
-<p id='insmemb' style="margin-top:39px;">IBRA Insurance 2021-22 Data</p>
+<div id='ld' style='margin: 100px 100px'>
+<div class="pulsing-2"  id='loader' style='display: block'></div>
+</div>
+<p id='insmemb' style="margin-top:39px;"></p>
  
 
 <!-- The Modal -->
@@ -154,6 +184,9 @@ mstatus= xx.length>0 ?     "Member" : "not member"
 insdata[i].member= mstatus
       
       xx.length>0 ? insdata[i].MemNo= xx[0].id : insdata[i].MemNo=0
+document.getElementById("regions").style.display = "block";
+document.getElementById("ld").style.display = "none";
+      
 }
 }
                 </script>
