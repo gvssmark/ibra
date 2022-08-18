@@ -1914,3 +1914,5 @@ data = s1.map(([sbac, name, branch, zone, srno, membno, mobile]) =>({sbac, name,
 data.shift()
 s1=[]
 
+penbr = [...new Set(data.map(a =>a.branch.toUpperCase().trim()))].sort();
+data=data.sort(function (a, b) { return a.name.localeCompare(b.name) });
