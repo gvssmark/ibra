@@ -1909,3 +1909,8 @@ a= s[i].toString().split("#")
 s1.push(a)
 }
 s=[]
+
+data = s1.map(([sbac, name, branch, zone, srno, membno, mobile]) =>({sbac, name, branch, zone, srno, membno, mobile})) 
+data.shift()
+s1=[]
+
