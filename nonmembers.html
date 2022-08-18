@@ -11,7 +11,7 @@ body {background: powderblue;font-size: small; margin:0 auto; width:360px;      
 .header {width: inherit; background:red; color:white; top:0; position:fixed; }
 table {border-collapse: collapse;width: 360px; margin-left: 1px;margin-right: 1px;border: 1px soild black;font-size: small}
 
-.pulsing-2 { display:block;  width:100px;  height:100px;  border-radius: 50%;  background:red;  box-shadow: 0 0 0 0 #0004; margin:100px auto;  animation:pl2 1.5s infinite linear;  position: relative;}
+.pulsing-2 { display:block;  width:100px;  height:100px;  border-radius: 50%;  background:red;  box-shadow: 0 0 0 0 #0004; margin:120px auto;  animation:pl2 1.5s infinite linear;  position: relative;}
 .pulsing-2:before,.pulsing-2:after {  content:"";  position: absolute;  inset:0;  border-radius: inherit;  box-shadow: 0 0 0 0 #0004;  animation: inherit;  animation-delay: -0.5s;}
 .pulsing-2:after {  animation-delay: -1s;}
 @keyframes pl2 {    100% {box-shadow: 0 0 0 40px #0000}}
@@ -59,13 +59,19 @@ tbody=""
 for( i=0; i<penbr.length; i++){
 br= penbr[i]
 b = nonmembers.filter(a => a.branch === br)
-b.length>0 ? tbody +="<tr><th align=center bgcolor=yellow>" + br + "  ("+b.length+") </th></tr>" :""
-b.forEach( function(a) {tbody +="<tr><td>" + a.name})
+b.length>0 ? tbody +="<tr><th align=center bgcolor=yellow>" + br + "  ("+b.length+")' </th></tr>" :""
+b.forEach( function(a) {tbody +="<tr  onclick='membdata("+a.sbac+")'><td>" + a.name})
 }
 fullTable = theader + tbody + "</table>"
 document.getElementById('dispdata').innerHTML = fullTable
 loader = document.getElementById('pulsing')
 loader.style.display='none'  
+}
+
+function membdata(a){
+mdata = nonmembers.filter(x => x.sbac == a)
+alert(mdata[0].mobile)
+// show this data on modal window
 }
 </script>
 </body>
