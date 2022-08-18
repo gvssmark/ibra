@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,17 +6,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="https://gvssmark.github.io/ibra/pensionerslist.js"></script>
 <style>
-body {background: powderblue;font-size: small; margin-left: 0px;margin-right:5px; width:360px;        }
+body {background: powderblue;font-size: small; margin:0 auto; width:360px;        }
  table {border-collapse: collapse;width: 360px; margin-left: 1px;margin-right: 1px;border: 1px soild black;font-size: small}
 
 .pulsing-2 { display:block;  width:100px;  height:100px;  border-radius: 50%;  background:red;  box-shadow: 0 0 0 0 #0004; margin:100px auto;  animation:pl2 1.5s infinite linear;  position: relative;}
 .pulsing-2:before,.pulsing-2:after {  content:"";  position: absolute;  inset:0;  border-radius: inherit;  box-shadow: 0 0 0 0 #0004;  animation: inherit;  animation-delay: -0.5s;}
 .pulsing-2:after {  animation-delay: -1s;}
 @keyframes pl2 {    100% {box-shadow: 0 0 0 40px #0000}}
+th{position:sticky; top:0 }
 </style>
 </head>
 <body>
-
 
 <div id='pulsing' class='pulsing-2'></div>
 <div id='dispdata'></div>
@@ -42,29 +43,22 @@ mOrN = alphasorted.filter( a => a.srno == datasrno*1)
 mOrN.length > 0 ? data[i].membno = mOrN[0].id : data[i].membno = 0 
 }
 nonmembers = data.filter(a => a.membno ==0)
-brwise = nonmembers.sort((a, b) => a.branch.localeCompare(b.branch))
 }
-
 
 function nonmemb(){
-theader = "<table border=1><tr><td>Name<td onclick='theadclick()'>Branch"
-tablebody=''
-brwisetable =""
-nonmembers.forEach( function(a) {tablebody +="<tr><td>" + a.name+ "<td>" + a.branch})
-brwise.forEach( function(a) {brwisetable +="<tr><td>" + a.name+ "<td>" + a.branch})
-namewise = theader + tablebody + '</table>'
-brs = theader + brwisetable + '</table>'
-document.getElementById('dispdata').innerHTML = namewise
+theader = "<table border=1><tr><td>Name"
+tbody=""
+for( i=0; i<penbr.length; i++){
+br= penbr[i]
+tbody +="<tr><th align=center bgcolor=yellow>" + br +"</th></tr>"
+b = data.filter(a => a.branch === br)
+b.forEach( function(a) {tbody +="<tr><td>" + a.name})
+}
+fullTable = theader + tbody + "</table>"
+document.getElementById('dispdata').innerHTML = fullTable
 loader = document.getElementById('pulsing')
 loader.style.display='none'  
-
 }
-
-function theadclick(){
-document.getElementById('dispdata').innerHTML = brs
-
-}
-
 </script>
 </body>
 </html>
