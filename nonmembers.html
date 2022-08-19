@@ -8,18 +8,19 @@
 <script src="https://gvssmark.github.io/ibra/pensionerslist.js"></script>
 <style>
 body {background: powderblue;font-size: small; margin:0 auto; width:360px;        }
-.header {width: inherit; background:red; color:white; top:0; position:fixed; }
-table {border-collapse: collapse;width: 360px; margin-left: 1px;margin-right: 1px;border: 1px soild black;font-size: small}
+.header {width: inherit; background:powderblue; color:red; top:0; position:fixed; }
+table {border-collapse: collapse;width: 360px; margin-left: 0px;margin-right: 0px;border: 0px soild black; border-right:0; border-left:0;  font-size: small}
 
 .pulsing-2 { display:block;  width:100px;  height:100px;  border-radius: 50%;  background:red;  box-shadow: 0 0 0 0 #0004; margin:120px auto;  animation:pl2 1.5s infinite linear;  position: relative;}
 .pulsing-2:before,.pulsing-2:after {  content:"";  position: absolute;  inset:0;  border-radius: inherit;  box-shadow: 0 0 0 0 #0004;  animation: inherit;  animation-delay: -0.5s;}
 .pulsing-2:after {  animation-delay: -1s;}
 @keyframes pl2 {    100% {box-shadow: 0 0 0 40px #0000}}
-th{position:sticky; top:95px; }
+th1{position:sticky; top:80px; }
+#dispdata {margin-top:88px}
 </style>
 </head>
 <body>
-<div class="header"><h1 align=center>Draing Pension in AP & TS<br>Not Members of IBRA<h3></div>
+<div class="header"><h2 align=center>Draing Pension in AP & TS<br>Not Members of IBRA<h3></div>
 <div></div>
 
 <div id='pulsing' class='pulsing-2'>
@@ -54,7 +55,7 @@ nonmembers = data.filter(a => a.membno ==0)
 }
 
 function nonmemb(){
-theader = "<table border=1><tr><td>Name"
+theader = "<table border=1>"
 tbody=""
 for( i=0; i<penbr.length; i++){
 br= penbr[i]
