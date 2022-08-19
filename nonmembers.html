@@ -63,7 +63,7 @@ tbody=""
 for( i=0; i<penbr.length; i++){
 br= penbr[i]
 b = nonmembers.filter(a => a.branch === br)
-b.length>0 ? tbody +="<tr><th align=center bgcolor=yellow>" + br + "  ("+b.length+")' </th></tr>" :""
+b.length>0 ? tbody +="<tr><th align=center bgcolor=yellow>" + br + "  ("+b.length+") </th></tr>" :""
 b.forEach( function(a) {tbody +="<tr  onclick='membdata("+a.sbac+")'><td>" + a.name})
 }
 fullTable = theader + tbody + "</table>"
