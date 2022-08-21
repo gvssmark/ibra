@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,6 +6,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="https://gvssmark.github.io/ibra/pensionerslist.js"></script>
 <style>
+     #myInput {
+            margin-top: 0px;
+            width: 50%;
+            margin-left: 25%;
+            height: 30px;
+            border-radius: 15px;
+            background-color: cyan;
+            border: 0px;
+            outline: 0;
+            display: block;
+        }
 body {background: powderblue;font-size: small; margin:0 auto; width:360px;        }
 .header {width: inherit; background:powderblue; color:red; top:0; position:fixed; }
 table {border-collapse: collapse;width: 360px; margin-left: 0px;margin-right: 0px;border: 0px soild black; border-right:0; border-left:0;  font-size: small}
@@ -13,7 +25,7 @@ table {border-collapse: collapse;width: 360px; margin-left: 0px;margin-right: 0p
 .pulsing-2:after {  animation-delay: -1s;}
 @keyframes pl2 {    100% {box-shadow: 0 0 0 40px #0000}}
 th1{position:sticky; top:80px; }
-#dispdata {margin-top:88px}
+#dispdata {margin-top:122px}
 .modal {display: none;position: fixed;z-index: 1;padding-top: 1px;left: 0;top: 0;width: 100%;height: 100%;overflow: auto;background-color: rgb(0, 0, 0);background-color: rgba(0, 0, 0, 0.4);}
 .modal-content {background-color: #99ffcc;margin: auto;padding: 2px;padding-bottom: 2px;border: 1px solid #888;width: 95%;border-radius: 15px;margin-top: 53px;}
 .close {color: #aaaaaa;float: right;font-size: 28px;font-weight: bold;}
@@ -28,7 +40,7 @@ td:hover {background:orange}
                 <p id="modalData"> </p>
             </div>
         </div>
-<div class="header"><h2 align=center>Drawing Pension in AP & TS<br>Not Members of IBRA<h3></div>
+<div class="header"><h2 align=center>Drawing Pension in AP & TS<br>Not Members of IBRA<h3><input type="text" id='myInput' placeholder="Search here..." onkeyup="fiterName()"></div>
 <div></div>
 <div id='pulsing' class='pulsing-2'>
 </div>
@@ -59,13 +71,16 @@ nonmembers = data.filter(a => a.membno ==0)
 }
 
 function nonmemb(){
-theader = "<table border=1>"
+theader = "<table border=1 id='nonmemtable'>"
 tbody=""
+nonmembbody=''
 for( i=0; i<penbr.length; i++){
 br= penbr[i]
 b = nonmembers.filter(a => a.branch === br)
 b.length>0 ? tbody +="<tr><th align=center bgcolor=yellow>" + br + "  ("+b.length+") </th></tr>" :""
 b.forEach( function(a) {tbody +="<tr  onclick='membdata("+a.sbac+")'><td>" + a.name})
+b.forEach( function(a) {nonmembbody +="<tr  onclick='membdata("+a.sbac+")'><td>" + a.name})
+
 }
 fullTable = theader + tbody + "</table>"
 document.getElementById('dispdata').innerHTML = fullTable
@@ -90,6 +105,31 @@ document.getElementById('myModal').style.display='block'
             span.onclick = function () {
                 modal.style.display = "none";
             }
+
+          function fiterName() {
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("myInput").value;
+                console.log(input)
+input.length ===0 ?(
+document.getElementById('dispdata').innerHTML = fullTable) : (ntable = theader + nonmembbody + "</table>", document.getElementById('dispdata').innerHTML =  ntable)
+
+
+filter = input.value.toUpperCase().replaceAll(" ","");
+                table = document.getElementById("nonmemtable");
+                tr = table.getElementsByTagName("tr");
+                for (i = 0; i < tr.length; i++) {
+                    td = tr[i].getElementsByTagName("td")[0];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().replaceAll(" ","").indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                }
+            }
+
 </script>
 </body>
 </html>
