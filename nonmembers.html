@@ -76,12 +76,12 @@ theader = "<table border=1 id='nonmemtable'>"
 ntheader = "<table border=1 id='nonmemtable1'>"
 tbody=""
 nonmembbody=''
-for( i=0; i<penbr.length; i++){
+nonmembers.sort((a, b) => a.name.localeCompare(b.name)).forEach( function(a) {nonmembbody +="<tr  
+     for( i=0; i<penbr.length; i++){
 br= penbr[i]
 b = nonmembers.filter(a => a.branch === br)
 b.length>0 ? tbody +="<tr><th align=center bgcolor=yellow>" + br + "  ("+b.length+") </th></tr>" :""
 b.forEach( function(a) {tbody +="<tr  onclick='membdata("+a.sbac+")'><td>" + a.name})
-b.forEach( function(a) {nonmembbody +="<tr  onclick='membdata("+a.sbac+")'><td>" + a.name})
 
 }
 fullTable = theader + tbody + "</table>"
