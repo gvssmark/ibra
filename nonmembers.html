@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -72,6 +73,7 @@ nonmembers = data.filter(a => a.membno ==0)
 
 function nonmemb(){
 theader = "<table border=1 id='nonmemtable'>"
+ntheader = "<table border=1 id='nonmemtable1'>"
 tbody=""
 nonmembbody=''
 for( i=0; i<penbr.length; i++){
@@ -84,6 +86,8 @@ b.forEach( function(a) {nonmembbody +="<tr  onclick='membdata("+a.sbac+")'><td>"
 }
 fullTable = theader + tbody + "</table>"
 document.getElementById('dispdata').innerHTML = fullTable
+ntable = ntheader + nonmembbody + "</table>"
+
 loader = document.getElementById('pulsing')
 loader.style.display='none'  
 }
@@ -110,12 +114,10 @@ document.getElementById('myModal').style.display='block'
                 var input, filter, table, tr, td, i, txtValue;
                 input = document.getElementById("myInput").value;
                 console.log(input)
-input.length ===0 ?(
-document.getElementById('dispdata').innerHTML = fullTable) : (ntable = theader + nonmembbody + "</table>", document.getElementById('dispdata').innerHTML =  ntable)
+input.length >0 ? document.getElementById('dispdata').innerHTML = ntable :document.getElementById('dispdata').innerHTML = fullTable
 
-
-filter = input.value.toUpperCase().replaceAll(" ","");
-                table = document.getElementById("nonmemtable");
+filter = input.toUpperCase().replaceAll(" ","");
+                table = document.getElementById("nonmemtable1");
                 tr = table.getElementsByTagName("tr");
                 for (i = 0; i < tr.length; i++) {
                     td = tr[i].getElementsByTagName("td")[0];
