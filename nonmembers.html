@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -76,7 +77,9 @@ theader = "<table border=1 id='nonmemtable'>"
 ntheader = "<table border=1 id='nonmemtable1'>"
 tbody=""
 nonmembbody=''
-nonmembers.sort((a, b) => a.name.localeCompare(b.name)).forEach( function(a) {nonmembbody +="<tr  
+nmb = nonmembers.sort((a, b) => a.name.localeCompare(b.name))
+nmb.forEach( function(a) {nonmembbody +="<tr  onclick='membdata("+a.sbac+")'><td>" + a.name})
+
      for( i=0; i<penbr.length; i++){
 br= penbr[i]
 b = nonmembers.filter(a => a.branch === br)
