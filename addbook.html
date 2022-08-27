@@ -1,3 +1,4 @@
+
 <html>
 
 <head>
@@ -17,8 +18,9 @@
         body {
             background: powderblue;
             font-size: small;
-            margin-left: 0px;
-            margin-right:5px;
+            margin: 0px auto;
+        width:360px;
+        box-sizing: border-box;
         }
 
         .active,
@@ -27,6 +29,10 @@
             color: white;
         }
 
+td:hover {
+            background-color: red;
+            color: white;}
+            
         ul {
             list-style-type: none;
             margin: 0;
@@ -37,6 +43,7 @@
 
         li {
             float: left;
+            font-size:small; 
         }
 
         .list {
@@ -60,15 +67,16 @@
         }
 
         #myInput {
-            margin-top: 0px;
-            width: 50%;
-            margin-left: 25%;
+            //margin-top: 0px;
+            width: 300px;;
+            margin-left:30px;
             height: 30px;
             border-radius: 15px;
             background-color: cyan;
             border: 0px;
             outline: 0;
             display: none;
+            
         }
 
         /* The Modal (background) */
@@ -128,7 +136,7 @@
             width: 25px;
             height: 25px;
             line-height: 25px;
-            font-size: small;
+            font-size: x-small;
             font-weight: lighter !important;
             color: #fff !important;
             text-align: center;
@@ -260,7 +268,7 @@
   
   <div id="regions" style="display:none; ">
 
-        <div style="background:powderblue; top:0; ; height:83px; overflow:auto; position:fixed; width: 100%;  ">
+        <div style="background:powderblue; top:0; ; height:83px; overflow:auto; position:fixed; width: 360px;  ">
             <ul>
                 <li onclick="selectedRegion(allmemb,0)" class="list active">All</li>
                 <li onclick="selectedRegion(vsp,1)" class="list">VSP</li>
@@ -279,7 +287,7 @@
             <input type="text" id='myInput' placeholder="Search here..." onkeyup="fiterName()">
         </div>
 
-        <p id='paraInThisRegion' style="margin-top:85px; margin-left:5px;">
+        <p id='paraInThisRegion' style="margin-top:85px; margin-left:1px; width:360px;">
 </p>
   
         <div id="myModal" class="modal">
