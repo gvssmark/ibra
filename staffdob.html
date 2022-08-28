@@ -33,7 +33,7 @@ if (filter.length<=4){document.getElementById("getnames").innerHTML="" }
 //if (filter.length<=4){document.getElementById("table").innerHTML="" }
 
 if (filter.length>=3){
-toTable = staffdob.filter(a => a.name.toLowerCase().includes(filter.toLowerCase()))
+toTable = staffdob.filter(a => a.name.toLowerCase()replaceAll(" ",'').includes(filter.toLowerCase().replaceAll(" ",'')))
 toTable.forEach(function(a){tablebody+="<tr><td>"+ a.name.replaceAll("#","<td>")})
 
 document.getElementById("getnames").innerHTML=tablebody +"</table>"
