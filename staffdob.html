@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Staff DOB</title>
+<script src="https://gvssmark.github.io/ibra/staffdob.js"></script>
+</head>
+<body>
+
+<h1>Staff DOB</h1>
+
+<input type=text  style=" width: 80%; margin-left:10%; text-color:red; background-color: cyan; border: 1px solid cyan;  border-radius:15px;  height:35px; outline:none; " id='myInput' onkeyup="dispdata()" placeholder="Search here... Minimum 4 Characters"><br>
+<p id='getnames'  style="margin-left:1px; font-size:small " ></p>
+<script>
+
+
+
+staffdob = staffdob.map(([name]) => ({ name }))
+function dispdata(){
+
+tablebody=""
+//toTable = tempData.filter(a => a.name !== '')
+let filter = document.getElementById("myInput").value.toLowerCase()
+if (filter.length<=4){document.getElementById("getnames").innerHTML="" }
+//if (filter.length<=4){document.getElementById("table").innerHTML="" }
+
+if (filter.length>=3){
+toTable = staffdob.filter(a => a.name.toLowerCase().includes(filter.toLowerCase()))
+toTable.forEach(function(a){tablebody+= a.name+"<br>"})
+
+document.getElementById("getnames").innerHTML=tablebody
+//document.getElementById("getnames").innerHTML="<table border=0>"+tablebody+"</table>"
+}
+}
+</script>
+
+</body>
+</html>
