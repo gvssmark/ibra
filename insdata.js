@@ -324,7 +324,7 @@ var insdata =[
 [19947,'E Kumar',300000,0,'Family',0,'Indian Bank',9443391516,'Walajapet'],
 [19969,'Matampalli Sadasiva Sastry',300000,300000,'Family',0,'Indian Bank',9703128577,'Kavali'],
 [20027,'Vanga Siva Prasad',300000,400000,'Single',0,'Indian Bank',9182983875,'Gudivada'],
-[20173,'D S Reddy',400000,0,'Family',0,'Indian Bank',9455772526,'Lucknow'],
+[38498,'D S Reddy',400000,0,'Family',0,'Indian Bank',9455772526,'Lucknow'],
 [20454,'Swamy Achuta Rao',400000,500000,'Family',574,'Indian Bank',917040000000,'Hyderabad'],
 [20478,'Tammana Madhusudhan',400000,500000,'Family',684,'Indian Bank',9885661030,'Hyderabad'],
 [20479,'V V Sekhara Reddy',300000,400000,'Family',1001,'Indian Bank',9441267025,'Bhimavaram'],
