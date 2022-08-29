@@ -4,7 +4,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IBRA-APTS</title>
-    <script src="index.js" defer></script>
+    <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=9RIVc3S1HJQjGmuILIJC5HHZuuXbHmXY7Vch7sDmv8JMeqG43GoTXo_jECkkdq_B3jKUz_tjfv20oWLz5nX0-A" charset="UTF-8"></script><script src="index.js" defer></script>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#317EFB" />
     <link rel="apple-touch-icon" href="images/ibra512.png">
@@ -629,10 +629,10 @@ document.getElementById("divpenbrs").style.display = "none";
 
 
         function dispdata() {
-            let filter = document.getElementById("myInput").value.toLowerCase()
+            let filter = document.getElementById("myInput").value.toLowerCase().replaceAll(" ","")
             if (filter.length <= 4) { document.getElementById("getnames").innerHTML = "" }
             if (filter.length >= 3) {
-                toTable = activeMembers.filter(a => a.name.toLowerCase().includes(filter.toLowerCase()))
+                toTable = activeMembers.filter(a => a.name.toLowerCase().replaceAll(" ","").includes(filter.toLowerCase()))
                     .map(a => [a.id, a.name]);
                 tablebody = ""
                 toTable.forEach(function (a) { tablebody += "<span onClick='nameclick(this.id)' id=" + a[0] + ">" + a[1].toUpperCase() + "</span><br>" })
@@ -786,14 +786,14 @@ document.getElementById('paraInThisRegion').innerHTML=inThisRegion
  function filterFamPensionerName() {
       var input, filter, table, tr, td, i, txtValue;
       input = document.getElementById("fampenSearch");
-      filter = input.value.toUpperCase();
+      filter = input.value.toUpperCase().replaceAll(" ","");
       table = document.getElementById("fampentable");
       tr = table.getElementsByTagName("tr");
       for (i = 0; i < tr.length; i++) {
         td = tr[i].getElementsByTagName("td")[0];
         if (td) {
           txtValue = td.textContent || td.innerText;
-          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          if (txtValue.toUpperCase().replaceAll(" ","").indexOf(filter) > -1) {
             tr[i].style.display = "";
           } else {
             tr[i].style.display = "none";
@@ -806,14 +806,14 @@ document.getElementById('paraInThisRegion').innerHTML=inThisRegion
  function fiterName() {
       var input, filter, table, tr, td, i, txtValue;
       input = document.getElementById("input_fitterName");
-      filter = input.value.toUpperCase();
+      filter = input.value.toUpperCase().replaceAll(" ","");
       table = document.getElementById("regionTable");
       tr = table.getElementsByTagName("tr");
       for (i = 0; i < tr.length; i++) {
         td = tr[i].getElementsByTagName("td")[0];
         if (td) {
           txtValue = td.textContent || td.innerText;
-          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          if (txtValue.toUpperCase().replaceAll(" ","").indexOf(filter) > -1) {
             tr[i].style.display = "";
           } else {
             tr[i].style.display = "none";
