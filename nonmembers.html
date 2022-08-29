@@ -56,7 +56,7 @@ td:hover {background:orange}
             response = await fetch(url)
             data1 = await response.json()
             tempData = data1["user"].sort((a, b) => a.srno - b.srno);
-            alphasorted = tempData.sort((a, b) => a.name.localeCompare(b.name)).filter(a => a.name !="")
+            alphasorted = tempData.sort((a, b) => a.name.localeCompare(b.name))
             updateMembNo()
             nonmemb()
              }
