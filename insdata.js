@@ -435,7 +435,7 @@ var insdata =[
 [117120,'Gopalan K S',300000,400000,'Family',0,'Bank Of India',9840856021,'Chennai'],
 [155193,'C S V Lakshmi Narayana',300000,400000,'Family',0,'Bank Of India',9492528828,'Hyderabad'],
 [181549,'SHRIDHARA K',300000,0,'Family',0,'e Syndicate Bank',9481987115,'KOTA'],
-[197411,'Purihella Madhavi',400000,0,'Family',0,'Indian Bank',9849313613,'Akividu'],
+[19741,'Purihella Madhavi',400000,0,'Family',0,'Indian Bank',9849313613,'Akividu'],
 [217550,'Gollamandala Raja Lakshmi',300000,300000,'Family',0,'Indian Bank',9640801457,'RAJAHMUNDRY'],
 [253318,'R Phani Raju',300000,300000,'Family',0,'e Syndicate Bank',6301559623,'Madakasira'],
 [268374,'N Vijayalakshmi',200000,0,'Family',0,'Union Bank of India',917210000000,'Hyderabad'],
