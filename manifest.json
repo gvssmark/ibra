@@ -15,7 +15,7 @@
       }
 
     ],
-    "start_url": "index.html",
+    "start_url": "addbook.html",
     "background_color": "#ccff99",
       "theme_color": "#3367D6",
     "display": "standalone",
