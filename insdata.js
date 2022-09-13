@@ -406,7 +406,7 @@ var insdata =[
 [38603,'Basanta Kumar Mallick',300000,400000,'Family',0,'e-Allhabad Bank',7250542652,'Kolkata'],
 [38752,'Lattupally Ranjit Kumar Reddy',400000,500000,'Family',0,'e-Allhabad Bank',9849809711,'Hyderabad'],
 [38801,'Narendra Pal Singh',200000,0,'Family',1007,'e-Allhabad Bank',9452152900,'Lucknow'],
-[39479,'K V Shashi Shekar',400000,0,'Family',0,'Indian Bank',9477474266,'Bangalore'],
+[39479,'K V Shashi Shekar',400000,0,'Family',0,'e-Allhabad Bank',9477474266,'Bangalore'],
 [40733,'Potla Mallaiah',200000,200000,'Family',0,'Indian Bank',9676010733,'Mahabubnagar'],
 [51034,'Chander Shekhar',300000,400000,'Family',0,'Canara Bank',8437858369,'Ludhina'],
 [51319,'S Narasimharao',300000,0,'Family',253,'Indian Bank',9885056683,'Vijayawada'],
