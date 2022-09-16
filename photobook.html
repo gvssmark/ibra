@@ -428,6 +428,8 @@ ph= "<img  src='https://drive.google.com/uc?export=view&id=" + phid +"' width='1
 document.getElementById("photo").innerHTML =ph
 phid.length >5 ? document.getElementById("photo").style.display='block' :document.getElementById("photo").style.display='none'
                 modal.style.display = "block";
+                
+                setTimeout(()=> {modal.style.display = "none";},10000)
             }
 
             function fiterName() {
