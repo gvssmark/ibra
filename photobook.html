@@ -342,6 +342,17 @@ function shregions(){
 }
 //family pension badge:
 function fp(test){test==='fam' ?  t="<span class='smallbadge'> &nbsp;</span> " :t=""; return t;}
+function shphoto(x){
+pharray = activeMembers.filter(a=> a.id===x.substring(1)*1)
+ph= `<img  src='https://drive.google.com/uc?export=view&id=${pharray[0].photo}' width='200' height='200'>`
+document.getElementById("modalData").innerHTML =ph
+document.getElementById("photo").style.display ='none'
+modal.style.display = "block";
+   // document.getElementById("modalData").style.width='200px'
+
+setTimeout(()=> {modal.style.display = "none";},5000)
+
+}
 
 //eab badge:
 function eabbadge(test){test==='EAB' ?  t="<span class='smalleabbadge'>&nbsp;</span>" :t="";return t;}
