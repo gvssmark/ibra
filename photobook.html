@@ -2,6 +2,7 @@
 
 
 
+
 <html>
 
 <head>
@@ -19,7 +20,7 @@
     margin-right: 5px;
 }
         body {
-            background: 1powderblue;
+            background: powderblue;
             font-size: small;
             margin: 0px auto;
         width:360px;
@@ -273,7 +274,7 @@ h2{padding-bottom:0;}
   
   <div id="regions" style="display:none; ">
 
-        <div style="background:1powderblue; top:0; ; height:83px; overflow:auto; position:fixed; width: 360px;  ">
+        <div style="background:powderblue; top:0; ; height:83px; overflow:auto; position:fixed; width: 360px;  ">
             <ul>
                 <li onclick="selectedRegion(allmemb,0)" class="list active">All</li>
                 <li onclick="selectedRegion(vsp,1)" class="list">VSP</li>
@@ -292,7 +293,7 @@ h2{padding-bottom:0;}
             <input type="text" id='myInput' placeholder="Search here..." onkeyup="fiterName()">
         </div>
 
-        <p id='paraInThisRegion' style="margin-top:85px; margin-left:1px; width:360px;">
+        <p id='paraInThisRegion' style="margin-top:85px; margin-left:0px; width:359px;">
 </p>
   
         <div id="myModal" class="modal">
@@ -313,19 +314,19 @@ h2{padding-bottom:0;}
                 activeMembers = tempData.filter(a => a.name !== "")
                     .sort(function (a, b) { return a.name.localeCompare(b.name) });
                 activeMembers.forEach(function (element) { element.IBorEAB = (element.area.substr(-3).toUpperCase() === 'EAB' ? "EAB" : "IB"), element.pentype = (element.fampen.length > 0 ? "fam" : "ser") })
-                familyPensioners = activeMembers.filter(a => a.fampen !== "").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, pen: a.pentype }));
-                              familyPensioners = activeMembers.filter(a => a.fampen !== "").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, pen: a.pentype  }));
-                vsp = activeMembers.filter(a => a.area.substr(0, 3) === "VSP").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1, pen: a.pentype  }));
-                vij = activeMembers.filter(a => a.area.substr(0, 3) === "VIJ").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1 , pen: a.pentype  }));
-                god = activeMembers.filter(a => a.area.substr(0, 3) === "GOD").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1 , pen: a.pentype  }));
-                seema = activeMembers.filter(a => a.area.substr(0, 5) === "SEEMA").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno , mobile: a.mobile1, pen: a.pentype  }));
-                hyd = activeMembers.filter(a => a.area.substr(0, 3) === "HYD").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno , mobile: a.mobile1, pen: a.pentype  }));
-                oth = activeMembers.filter(a => a.area.substr(0, 3) === "OTH").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1, pen: a.pentype   }));
-                eab = activeMembers.filter(a => a.area.substr(-3).toUpperCase() === "EAB").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno , mobile: a.mobile1 , pen: a.pentype }));
+                familyPensioners = activeMembers.filter(a => a.fampen !== "").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, pen: a.pentype, photo: a.photo }));
+                familyPensioners = activeMembers.filter(a => a.fampen !== "").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, pen: a.pentype, photo: a.photo  }));
+                vsp = activeMembers.filter(a => a.area.substr(0, 3) === "VSP").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1, pen: a.pentype, photo: a.photo  }));
+                vij = activeMembers.filter(a => a.area.substr(0, 3) === "VIJ").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1 , pen: a.pentype, photo: a.photo  }));
+                god = activeMembers.filter(a => a.area.substr(0, 3) === "GOD").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1 , pen: a.pentype, photo: a.photo  }));
+                seema = activeMembers.filter(a => a.area.substr(0, 5) === "SEEMA").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno , mobile: a.mobile1, pen: a.pentype, photo: a.photo  }));
+                hyd = activeMembers.filter(a => a.area.substr(0, 3) === "HYD").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno , mobile: a.mobile1, pen: a.pentype, photo: a.photo  }));
+                oth = activeMembers.filter(a => a.area.substr(0, 3) === "OTH").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1, pen: a.pentype, photo: a.photo   }));
+                eab = activeMembers.filter(a => a.area.substr(-3).toUpperCase() === "EAB").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno , mobile: a.mobile1 , pen: a.pentype, photo: a.photo }));
 
-                blank = activeMembers.filter(a => a.area === "BLANK").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1, pen: a.pentype   }));
-                allMembNoWise = activeMembers.map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1 , pen: a.pentype  })).sort(function (a, b) { return a.srno - b.srno })
-                allmemb = activeMembers.map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1 , pen: a.pentype }));
+                blank = activeMembers.filter(a => a.area === "BLANK").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1, pen: a.pentype, photo: a.photo   }));
+                allMembNoWise = activeMembers.map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1 , pen: a.pentype, photo: a.photo  })).sort(function (a, b) { return a.srno - b.srno })
+                allmemb = activeMembers.map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1 , pen: a.pentype, photo: a.photo }));
  
                 
                 
@@ -358,7 +359,7 @@ function eabbadge(test){test==='EAB' ?  t="<span class='smalleabbadge'>&nbsp;</s
                 inThisRegion = "<table id='regionTable' border=0 >"
                 
                 
-                array.forEach(function (a) { inThisRegion += `<tr align=center  ><td > <span style='font-size:x-large;' onClick='nameclick(this.id)' id='${a.id}' > ${a.name} ${fp(a.pen)} ${eabbadge(a.ibeab)} </span> ${a.fampen.length>0 ? '<br>' + a.fampen:""} <br> Mobile: ${a.mobile}   <br>SR No: ${ a.srno } </td></tr> ` })
+                array.forEach(function (a) { inThisRegion += `<tr align=center  ><td > <span style='font-size:x-large;' onClick='nameclick(this.id)' id='${a.id}' > ${a.name} ${fp(a.pen)} ${eabbadge(a.ibeab)} </span> ${a.fampen.length>0 ? '<br>' + a.fampen:""} <br> Mobile: ${a.mobile}   <br>SR No: ${ a.srno }  ${a.photo.length > 5 ? `<span onclick='shphoto(this.id)' id=p${a.id} > / Photo</span>`  : ""}  </td></tr> ` })
                 
                 
    //           array.forEach(function (a) { inThisRegion += "<tr onClick='nameclick(this.id)' id=" + a.id + "><td class='" + (a.fampen.length > 0 ? "fam" : "ser") + "'>" + a.name + (a.fampen.length > 0 ? " <span class='smallbadge'> &nbsp;</span> " + a.fampen : " ") + (a.ibeab === 'EAB' ? "<span class='smalleabbadge'>&nbsp;" : "") + "</span>" + "<td align=right >" + a.srno + "</td></tr>" })
@@ -429,7 +430,7 @@ document.getElementById("photo").innerHTML =ph
 phid.length >5 ? document.getElementById("photo").style.display='block' :document.getElementById("photo").style.display='none'
                 modal.style.display = "block";
                 
-                setTimeout(()=> {modal.style.display = "none";},10000)
+                setTimeout(()=> {modal.style.display = "none";},5000)
             }
 
             function fiterName() {
