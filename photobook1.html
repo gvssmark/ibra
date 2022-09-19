@@ -1,0 +1,534 @@
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IBRA</title>
+    <script src="index.js" defer></script>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#317EFB" />
+    <link rel="apple-touch-icon" href="images/ibra512.png">
+    <style>
+    
+    element.style {
+    display: block;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+        body {
+            background: powderblue;
+            font-size: small;
+            margin: 0px auto;
+        width:360px;
+        box-sizing: border-box;
+        }
+h2{padding-bottom:0;}
+        .active,
+        .btn:hover {
+            background-color: red;
+            color: white;
+        }
+
+#regionTable tr {border-bottom:1px solid black;
+            background-color: hsla(0, 100%, 70%, 0.3);
+            
+            //color: white;}
+            
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        li {
+            float: left;
+            font-size:small; 
+        }
+
+        .list {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 2px 6px;
+            text-decoration: none;
+
+        }
+
+        table {
+            /* Not required only for visualizing */
+            border-collapse: collapse;
+            ;
+            width: 100%;
+            margin-left: 1px;
+            margin-right: 1px;
+            border: 1px soild black;
+            font-size: small
+        }
+
+        #myInput {
+            //margin-top: 0px;
+            width: 300px;;
+            margin-left:30px;
+            height: 30px;
+            border-radius: 15px;
+            background-color: cyan;
+            border: 0px;
+            outline: 0;
+            display: none;
+            
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            padding-top: 1px;
+            /* Location of the box */
+            left: inherit;
+            top: 0;
+            width: 360px;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+        //display:none;
+            background-color: #99ffcc;
+            margin: auto;
+            padding: 2px;
+            padding-bottom: 2px;
+            border: 1px solid #888;
+            width: 95%;
+            border-radius: 15px;
+            margin-top: 53px;
+            height:100px;
+        }
+
+        /* The Close Button */
+        .close {
+            color: red;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+#disptable tr td{border:0px;}
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0;
+            width: 25px;
+            height: 25px;
+            line-height: 25px;
+            font-size: x-small;
+            font-weight: lighter !important;
+            color: #fff !important;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            background-color: #d73d33;
+            border-radius: 50px;
+
+            top: -3px;
+        }
+        img{border-radius:50px;}
+
+        .badge1 {
+            display: inline-block;
+            padding: 0;
+            width: 25px;
+            height: 25px;
+            line-height: 25px;
+            font-size: small;
+            font-weight: lighter !important;
+            color: black !important;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            background-color: yellow;
+            border-radius: 50px;
+
+            top: -3px;
+        }
+
+
+
+        .eabbadge {
+            display: inline-block;
+            padding: 0;
+            width: 25px;
+            height: 25px;
+            line-height: 25px;
+            font-size: small;
+            font-weight: lighter !important;
+            color: black !important;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            background-color: pink;
+            border-radius: 50px;
+
+            top: -3px;
+        }
+
+        .smallbadge {
+            display: inline-block;
+            padding: 0;
+            width: 10px;
+            height: 10px;
+            line-height: 10px;
+            font-size: small;
+            font-weight: lighter !important;
+            color: green !important;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            background-color: yellow;
+            border-radius: 50px;
+
+            top: -3px;
+        }
+
+        .smalleabbadge {
+            display: inline-block;
+            padding: 0;
+            width: 10px;
+            height: 10px;
+            line-height: 10px;
+            font-size: small;
+            font-weight: lighter !important;
+            color: green !important;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            background-color: pink;
+            border-radius: 50px;
+
+            top: -3px;
+        }
+
+        .ibeab {
+            background: pink;
+        }
+        
+        
+        
+.scene {
+  display: inline-block;
+  width: 300px;
+  height: 300px;
+/*   border: 1px solid #CCC; */
+  margin: 0 30px;
+  perspective: 600px;
+}
+
+.card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transform-origin: center right;
+  transition: transform 1s;
+}
+
+.card.is-flipped {
+  transform: translateX(-100%) rotateY(-180deg);
+}
+
+.card__face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  line-height: 260px;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  font-size: 40px;
+  backface-visibility: hidden;
+}
+
+.card__face--front {
+  background: yellow;
+font-size:large
+
+margin:5px;
+}
+
+.card__face--back {
+  //background: slateblue;
+  transform: rotateY(180deg);
+}
+
+#disptable {width:300px; border:none;  font-size:small;}
+        
+    </style>
+</head>
+
+<body>
+  <div id='page1' >      
+  <h3 align=center>Indian Bank Retirees' Association</h3>
+        <h4 align=center>Members Address Book</h4>
+
+        <table border=1>
+            <tr>
+                <td>Region
+                <td>State / Districts
+            <tr>
+                <td>VSP
+                <td>Srikakulam, Vizianagaram and Visakhapatnam
+            <tr>
+                <td>GOD
+                <td>East and West Godavaris
+            <tr>
+                <td>VIJ
+                <td>Krishna, Guntur and Prakasam
+            <tr>
+                <td>SEEMA
+                <td>Entire Rayalaseema Area and Nellore
+            <tr>
+                <td>HYD
+                <td>All Districts of Telangana State
+            <tr>
+                <td>OTH
+                <td>All States other than AP & TS
+            <tr>
+                <td>eAB
+                <td>List Earstwhile Allahabad Bank Retiress. These members are grouped in respsective regions
+        </table>
+        <span class='smallbadge'>&nbsp;</span> &nbsp;indicates a Family Pensioner<br>
+        <span class='smalleabbadge'>&nbsp;</span> &nbsp;indicates an eAB Retiree<br><br>
+        Members are requested to verify the correctness of their address and suggest changes if any.<br>
+<button onclick='shregions()'>Show Address Book</button>
+        </div>
+
+  
+  <div id="regions" style="display:none; ">
+
+        <div style="background:powderblue; top:0; ; height:83px; overflow:auto; position:fixed; width: 360px;  ">
+            <ul style='display:none'>
+                <li onclick="selectedRegion(allmemb,0)" class="list active">All</li>
+                <li onclick="selectedRegion(vsp,1)" class="list">VSP</li>
+                <li onclick="selectedRegion(god,2)" class="list">GOD</li>
+                <li onclick="selectedRegion(vij,3)" class="list">VIJ</li>
+                <li onclick="selectedRegion(seema,4)" class="list">SEEMA</li>
+                <li onclick="selectedRegion(hyd,5)" class="list">HYD</li>
+                <li onclick="selectedRegion(oth,6)" class="list">OTH</li>
+                <li onclick="selectedRegion(eab,7)" class="list">eAB</li>
+
+                <li onclick="selectedRegion(allMembNoWise,8)" class="list">SR No</li>
+
+
+            </ul>
+            <h4 id='regionHeading' align=center style="margin-top:3px;margin-top: 0px;margin-bottom: 0px;"></h4>
+            <input type="text" id='myInput' placeholder="Search here..." onkeyup="fiterName()">
+        </div>
+
+        <p id='paraInThisRegion' style="margin-top:85px; margin-left:0px; width:359px;">
+</p>
+  
+        <div id="myModal" class="modal">
+<!--            <div class="modal-content"> -->
+                <span class="close">&times;</span>
+                           <h4 align=center id="nameHeader"></h4>
+
+                
+                <div class="scene scene--card">
+  <div class="card">
+    <div id='bio' class="card__face card__face--front">front</div>
+    <div id='biophoto' class="card__face card__face--back">back</div>
+  </div>
+</div>
+
+                     <div id='photo'  style='width:100px; height:100px; background:#99ffcc; top:230px;  margin-left:240px; z-index:1; position: absolute; display:none ;
+'>this is test</div>
+                <div id="modalData"> </div>
+<!--            </div> -->
+        </div>
+        <script>
+            url = 'https://script.google.com/macros/s/AKfycbzI9SDFOzYLYKRKJTlse0XpsEiF8XfbyxwUUH22evlGkEPDIt2V/exec'
+            async function getMyData() {
+                response = await fetch(url)
+                data = await response.json()
+                tempData = data["user"]
+                activeMembers = tempData.filter(a => a.name !== "")
+                    .sort(function (a, b) { return a.name.localeCompare(b.name) });
+                activeMembers.forEach(function (element) { element.IBorEAB = (element.area.substr(-3).toUpperCase() === 'EAB' ? "EAB" : "IB"), element.pentype = (element.fampen.length > 0 ? "fam" : "ser") })
+                familyPensioners = activeMembers.filter(a => a.fampen !== "").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, pen: a.pentype, photo: a.photo }));
+                familyPensioners = activeMembers.filter(a => a.fampen !== "").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, pen: a.pentype, photo: a.photo  }));
+                vsp = activeMembers.filter(a => a.area.substr(0, 3) === "VSP").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1, pen: a.pentype, photo: a.photo  }));
+                vij = activeMembers.filter(a => a.area.substr(0, 3) === "VIJ").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1 , pen: a.pentype, photo: a.photo  }));
+                god = activeMembers.filter(a => a.area.substr(0, 3) === "GOD").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1 , pen: a.pentype, photo: a.photo  }));
+                seema = activeMembers.filter(a => a.area.substr(0, 5) === "SEEMA").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno , mobile: a.mobile1, pen: a.pentype, photo: a.photo  }));
+                hyd = activeMembers.filter(a => a.area.substr(0, 3) === "HYD").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno , mobile: a.mobile1, pen: a.pentype, photo: a.photo  }));
+                oth = activeMembers.filter(a => a.area.substr(0, 3) === "OTH").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1, pen: a.pentype, photo: a.photo   }));
+                eab = activeMembers.filter(a => a.area.substr(-3).toUpperCase() === "EAB").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno , mobile: a.mobile1 , pen: a.pentype, photo: a.photo }));
+
+                blank = activeMembers.filter(a => a.area === "BLANK").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1, pen: a.pentype, photo: a.photo   }));
+                allMembNoWise = activeMembers.map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1 , pen: a.pentype, photo: a.photo  })).sort(function (a, b) { return a.srno - b.srno })
+                allmemb = activeMembers.map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1 , pen: a.pentype, photo: a.photo }));
+ 
+                
+                
+                selectedRegion(allmemb,0)
+            }
+            penbrTemp = ""
+            getMyData()
+function shregions(){
+ document.getElementById("regions").style.display = "block"
+ document.getElementById("page1").style.display = "none"
+ 
+
+}
+//family pension badge:
+function fp(test){test==='fam' ?  t="<span class='smallbadge'> &nbsp;</span> " :t=""; return t;}
+function shphoto1(x){
+pharray = activeMembers.filter(a=> a.id===x.substring(1)*1)
+ph= `<img  src='https://drive.google.com/uc?export=view&id=${pharray[0].photo}' width='200' height='200'>`
+document.getElementById("modalData").innerHTML =ph
+document.getElementById("photo").style.display ='none'
+modal.style.display = "block";
+   // document.getElementById("modalData").style.width='200px'
+document.getElementById("nameHeader").innerHTML = pharray[0].name
+setTimeout(()=> {modal.style.display = "none";},5000)
+
+}
+
+//eab badge:
+function eabbadge(test){test==='EAB' ?  t="<span class='smalleabbadge'>&nbsp;</span>" :t="";return t;}
+
+            function selectedRegion(array, n) {
+                document.getElementById("myInput").value = "";
+                document.getElementById("myInput").style.display = "block"
+
+                document.documentElement.scrollTop = 0;
+                famPensionersCount = array.filter(a => a.fampen.length > 0).length
+                eabcount = array.filter(a => a.ibeab === 'EAB').length
+
+                regions = ["All Members", "Visakhapatnam Area", "Godavari Area", "Vijayawada Area", "Seema Area", "Hyderabad Area", "Other States", "e Allahabad", "SR No Sorted"]
+                document.getElementById('regionHeading').innerHTML = "Memebers in " + regions[n] + " <span class='badge'>" + array.length + "</span><span class='badge1'>" + famPensionersCount + "</span> <span class='eabbadge'>" + eabcount + "</span>"
+                inThisRegion = "<table id='regionTable' border=0 >"
+                
+                
+                array.forEach(function (a) { inThisRegion += `<tr align=center  ><td > <span style='font-size:x-large;' onClick='nameclick(this.id)' id='${a.id}' > ${a.name} ${fp(a.pen)} ${eabbadge(a.ibeab)} </span> ${a.fampen.length>0 ? '<br>' + a.fampen:""} <br> Mobile: ${a.mobile}   <br>SR No: ${ a.srno }  ${a.photo.length > 5 ? `<span onclick='shphoto(this.id)' id=p${a.id} > / Photo</span>`  : ""}  </td></tr> ` })
+                
+                
+   //           array.forEach(function (a) { inThisRegion += "<tr onClick='nameclick(this.id)' id=" + a.id + "><td class='" + (a.fampen.length > 0 ? "fam" : "ser") + "'>" + a.name + (a.fampen.length > 0 ? " <span class='smallbadge'> &nbsp;</span> " + a.fampen : " ") + (a.ibeab === 'EAB' ? "<span class='smalleabbadge'>&nbsp;" : "") + "</span>" + "<td align=right >" + a.srno + "</td></tr>" })
+                inThisRegion += "</table><br><br><br>"
+                document.getElementById('paraInThisRegion').innerHTML = ""
+                document.getElementById('paraInThisRegion').innerHTML = inThisRegion
+                window.scrollTo(0, 0);
+            }
+
+            isInsured = (srno) => insdata.filter(a => a.SRNO === srno).length;
+
+            myVar = ""
+
+            var modal = document.getElementById("myModal");
+            var span = document.getElementsByClassName("close")[0];
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+function nameclick(membershipNo) {
+                document.getElementById("myInput").value = ""
+                membno = membershipNo * 1 - 1;
+                membData = tempData.filter(a => a.id === membershipNo * 1)
+		fpof = membData[0].fampen != "" ? `<tr bgcolor=yellow><td colspan=2><b>Family Pension of :</b>${membData[0].fampen}` : ""
+		whichbank = membData[0].IBorEAB === 'IB' ? "Indian Bank" : "e Allahabad Bank"
+                toDisplay =`<table id='disptable' border=1><tr>
+                <tr><td colspan=2><b>Membership No</b> ${membData[0].id}
+                <tr><td colspan='2'><b>Address: </b><br>${membData[0].add1}
+                ${membData[0].add2}<br>
+                ${membData[0].add3}<br>
+                ${membData[0].place}-${membData[0].pincode}<br>
+                ${membData[0].district} District
+                <tr><td colspan=2><b>Phones: </b>
+                ${membData[0].fixed}<br>
+                <a href=tel:"${membData[0].mobile1}><mark style='background:red; color:white'>${membData[0].mobile1}</mark></a><br>
+		${membData[0].mobile2}
+                <tr><td colspan=2><b>Email: </b>${membData[0].email}
+                <tr><td colspan=2><b>S R No: </b>${membData[0].srno}
+                <tr><td colspan=2><b>Application Scanned:</b>${membData[0].scanned}
+                <tr><td colspan=2><b>Pension Br:</b>${membData[0].pensionbr}
+                ${fpof}   
+                <tr><td colspan=2><b>Pension Acc: </b>${membData[0].sbac}<br>
+                <b>Retired from : </b>${whichbank}
+                <tr><td colspan=2><b>Region : </b>${membData[0].area.substr(0, 3)} <table>`
+                document.getElementById("bio").innerHTML = toDisplay
+                document.getElementById("nameHeader").innerHTML = membData[0].name
+		phid= membData[0].photo.length >5 ? membData[0].photo :"1QX-GUIL2g6tf2QqMG3_gRZIaUeCTRR0X"
+		ph= "<img  src='https://drive.google.com/uc?export=view&id=" + phid +"' width='300' height='300'>"
+		document.getElementById("biophoto").innerHTML =ph
+		phid.length >5 ? document.getElementById("photo").style.display='none' :document.getElementById("photo").style.display='none'
+                modal.style.display = "block";
+        //        setTimeout(()=> {modal.style.display = "none";},5000)
+            }
+
+            function fiterName() {
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("myInput");
+                filter = input.value.toUpperCase().replaceAll(" ","");
+                table = document.getElementById("regionTable");
+                tr = table.getElementsByTagName("tr");
+                for (i = 0; i < tr.length; i++) {
+                    td = tr[i].getElementsByTagName("td")[0];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().replaceAll(" ","").indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                }
+            }
+
+
+            var btnContainer = document.getElementById("regions");
+            var btns = btnContainer.getElementsByClassName("list");
+            for (var i = 0; i < btns.length; i++) {
+                btns[i].addEventListener("click", function () {
+                    var current = document.getElementsByClassName("active");
+                    current[0].className = current[0].className.replace(" active", "");
+                    this.className += " active";
+                });
+            }
+
+
+
+
+var cards = document.querySelectorAll('.card');
+
+[...cards].forEach((card)=>{
+  card.addEventListener( 'click', function() {
+    card.classList.toggle('is-flipped');
+  });
+});
+
+        </script>
+</body>
+
+</html>
