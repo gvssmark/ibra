@@ -90,7 +90,7 @@ h2{padding-bottom:0;}
             padding-top: 1px;
             /* Location of the box */
             left: inherit;
-            top: 0;
+            top: 0px;
             width: 360px;
             /* Full width */
             height: 100%;
@@ -99,21 +99,21 @@ h2{padding-bottom:0;}
             /* Enable scroll if needed */
             background-color: rgb(0, 0, 0);
             /* Fallback color */
-            background-color: rgba(0, 0, 0, 0.4);
+            background-color: yellow;
             /* Black w/ opacity */
         }
 
         /* Modal Content */
         .modal-content {
         //display:none;
-            background-color: #99ffcc;
+            background-color: cyan;
             margin: auto;
             padding: 2px;
             padding-bottom: 2px;
             border: 1px solid #888;
             width: 95%;
             border-radius: 15px;
-            margin-top: 53px;
+            margin-top: 153px;
             height:100px;
         }
 
@@ -235,7 +235,7 @@ h2{padding-bottom:0;}
   display: inline-block;
   width: 300px;
   height: 300px;
-/*   border: 1px solid #CCC; */
+  border: 1px solid black; 
   margin: 0 30px;
   perspective: 600px;
 }
@@ -262,7 +262,7 @@ h2{padding-bottom:0;}
   color: white;
   text-align: center;
   font-weight: bold;
-  font-size: 40px;
+  font-size: 400px;
   backface-visibility: hidden;
 }
 
@@ -324,7 +324,7 @@ margin:5px;
   <div id="regions" style="display:none; ">
 
         <div style="background:powderblue; top:0; ; height:83px; overflow:auto; position:fixed; width: 360px;  ">
-            <ul style='display:none'>
+            <ul style='display:block'>
                 <li onclick="selectedRegion(allmemb,0)" class="list active">All</li>
                 <li onclick="selectedRegion(vsp,1)" class="list">VSP</li>
                 <li onclick="selectedRegion(god,2)" class="list">GOD</li>
@@ -347,14 +347,13 @@ margin:5px;
   
         <div id="myModal" class="modal">
 <!--            <div class="modal-content"> -->
-                
+                <span class="close">&times;</span>
+                           <h4 align=center id="nameHeader"></h4>
+
                 
                 <div class="scene scene--card">
   <div class="card">
-<span class="close">&times;</span>
-                           <h4 align=center id="nameHeader"></h4>
-
-    <div id='bio' class="card__face card__face--front">front</div>
+    <div id='bio' class="card__face card__face--front"><p id='front' style='margin:5px; font-size:x-large;background:0; '> </p></div>
     <div id='biophoto' class="card__face card__face--back">back</div>
   </div>
 </div>
@@ -478,7 +477,7 @@ function nameclick(membershipNo) {
                 <tr><td colspan=2><b>Pension Acc: </b>${membData[0].sbac}<br>
                 <b>Retired from : </b>${whichbank}
                 <tr><td colspan=2><b>Region : </b>${membData[0].area.substr(0, 3)} <table>`
-                document.getElementById("bio").innerHTML = toDisplay
+                document.getElementById("front").innerHTML = toDisplay
                 document.getElementById("nameHeader").innerHTML = membData[0].name
 		phid= membData[0].photo.length >5 ? membData[0].photo :"1QX-GUIL2g6tf2QqMG3_gRZIaUeCTRR0X"
 		ph= "<img  src='https://drive.google.com/uc?export=view&id=" + phid +"' width='300' height='300'>"
