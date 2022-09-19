@@ -1,3 +1,5 @@
+
+
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +9,7 @@
     <meta name="theme-color" content="#317EFB" />
     <link rel="apple-touch-icon" href="images/ibra512.png">
     <style>
-    
+    *{box-sizing: border-box;}
     element.style {
     display: block;
     margin-left: 5px;
@@ -18,7 +20,7 @@
             font-size: small;
             margin: 0px auto;
         width:360px;
-        box-sizing: border-box;
+        
         }
 h2{padding-bottom:0;}
         .active,
@@ -28,7 +30,7 @@ h2{padding-bottom:0;}
         }
 
 #regionTable tr {border-bottom:1px solid black;
-            background-color: hsla(0, 100%, 70%, 0.3);
+            background-color:  #d9ffcc;
             
             //color: white;}
             
@@ -89,7 +91,7 @@ h2{padding-bottom:0;}
             padding-top: 1px;
             /* Location of the box */
             left: inherit;
-            top: 0;
+            top: 0px;
             width: 360px;
             /* Full width */
             height: 100%;
@@ -98,28 +100,32 @@ h2{padding-bottom:0;}
             /* Enable scroll if needed */
             background-color: rgb(0, 0, 0);
             /* Fallback color */
-            background-color: rgba(0, 0, 0, 0.4);
+            background-color:  rgb(230, 204, 255,.4);
             /* Black w/ opacity */
         }
 
         /* Modal Content */
         .modal-content {
-            background-color: #99ffcc;
+        //display:none;
+            background-color: cyan;
             margin: auto;
             padding: 2px;
             padding-bottom: 2px;
             border: 1px solid #888;
             width: 95%;
             border-radius: 15px;
-            margin-top: 53px;
+            margin-top: 153px;
+            height:100px;
         }
 
         /* The Close Button */
         .close {
-            color: #aaaaaa;
+            color: red;
             float: right;
             font-size: 28px;
             font-weight: bold;
+            margin-top:55px;
+            margin-right:30px;
         }
 #disptable tr td{border:0px;}
         .close:hover,
@@ -146,7 +152,7 @@ h2{padding-bottom:0;}
 
             top: -3px;
         }
-        img{border-radius:50px;}
+        img{border-radius:10px;}
 
         .badge1 {
             display: inline-block;
@@ -225,6 +231,62 @@ h2{padding-bottom:0;}
         .ibeab {
             background: pink;
         }
+        
+        
+        
+.scene {
+  display: inline-block;
+  width: 300px;
+  height: 300px;
+  border: 0px solid black; 
+  margin: 0 30px;
+  perspective: 600px;
+  margin-top:-65px;
+}
+
+.card {
+margin-top:-45px;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transform-origin: center right;
+  transition: transform 1s;
+}
+
+.card.is-flipped {
+  transform: translateX(-100%) rotateY(-180deg);
+}
+
+.card__face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  line-height: 260px;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  font-size: 400px;
+  backface-visibility: hidden;
+}
+
+.card__face--front {
+  background:  #ccddff;
+font-size:large;
+color:black;
+margin:0px;
+margin-top:45px;
+}
+
+.card__face--back {
+  //background: slateblue;
+  transform: rotateY(180deg);
+  margin-top:45px;
+}
+
+#disptable {width:300px; border:none;  font-size:small;}
+#nameHeader{ background: #ccddff; width:300px; margin:65px auto; padding-bottom:10px; }        
     </style>
 </head>
 
@@ -269,7 +331,7 @@ h2{padding-bottom:0;}
   <div id="regions" style="display:none; ">
 
         <div style="background:powderblue; top:0; ; height:83px; overflow:auto; position:fixed; width: 360px;  ">
-            <ul>
+            <ul style='display:block'>
                 <li onclick="selectedRegion(allmemb,0)" class="list active">All</li>
                 <li onclick="selectedRegion(vsp,1)" class="list">VSP</li>
                 <li onclick="selectedRegion(god,2)" class="list">GOD</li>
@@ -291,13 +353,22 @@ h2{padding-bottom:0;}
 </p>
   
         <div id="myModal" class="modal">
-            <div class="modal-content">
+<!--            <div class="modal-content"> -->
                 <span class="close">&times;</span>
-                <h4 align=center id="nameHeader"></h4>
-                <div id='photo'  style='width:100px; height:100px; background:#99ffcc; top:230px;  margin-left:240px; z-index:1; position: absolute; ;
+                           <h4 align=center id="nameHeader"></h4>
+
+                
+                <div class="scene scene--card">
+  <div class="card">
+    <div id='bio' class="card__face card__face--front"><p id='front' style='margin-left:5px; '> </p></div>
+    <div id='biophoto' class="card__face card__face--back">back</div>
+  </div>
+</div>
+
+                     <div id='photo'  style='width:100px; height:100px; background:#99ffcc; top:230px;  margin-left:240px; z-index:1; position: absolute; display:none ;
 '>this is test</div>
-                <p id="modalData"> </p>
-            </div>
+                <div id="modalData"> </div>
+<!--            </div> -->
         </div>
         <script>
             url = 'https://script.google.com/macros/s/AKfycbzI9SDFOzYLYKRKJTlse0XpsEiF8XfbyxwUUH22evlGkEPDIt2V/exec'
@@ -336,7 +407,7 @@ function shregions(){
 }
 //family pension badge:
 function fp(test){test==='fam' ?  t="<span class='smallbadge'> &nbsp;</span> " :t=""; return t;}
-function shphoto(x){
+function shphoto1(x){
 pharray = activeMembers.filter(a=> a.id===x.substring(1)*1)
 ph= `<img  src='https://drive.google.com/uc?export=view&id=${pharray[0].photo}' width='200' height='200'>`
 document.getElementById("modalData").innerHTML =ph
@@ -364,7 +435,7 @@ function eabbadge(test){test==='EAB' ?  t="<span class='smalleabbadge'>&nbsp;</s
                 inThisRegion = "<table id='regionTable' border=0 >"
                 
                 
-                array.forEach(function (a) { inThisRegion += `<tr align=center  ><td > <span style='font-size:x-large;' onClick='nameclick(this.id)' id='${a.id}' > ${a.name} ${fp(a.pen)} ${eabbadge(a.ibeab)} </span> ${a.fampen.length>0 ? '<br>' + a.fampen:""} <br> Mobile: ${a.mobile}   <br>SR No: ${ a.srno }  ${a.photo.length > 5 ? `<span onclick='shphoto(this.id)' id=p${a.id} > / Photo</span>`  : ""}  </td></tr> ` })
+                array.forEach(function (a) { inThisRegion += `<tr onClick='nameclick(this.id)' id='${a.id}'  align=center  ><td > <span style='font-size:x-large;'  > ${a.name} ${fp(a.pen)} ${eabbadge(a.ibeab)} </span> ${a.fampen.length>0 ? '<br>' + a.fampen:""} <br> Mobile: ${a.mobile}   <br>SR No: ${ a.srno }  ${a.photo.length > 5 ? `<span onclick='shphoto(this.id)' id=p${a.id} > / Photo</span>`  : ""}  </td></tr> ` })
                 
                 
    //           array.forEach(function (a) { inThisRegion += "<tr onClick='nameclick(this.id)' id=" + a.id + "><td class='" + (a.fampen.length > 0 ? "fam" : "ser") + "'>" + a.name + (a.fampen.length > 0 ? " <span class='smallbadge'> &nbsp;</span> " + a.fampen : " ") + (a.ibeab === 'EAB' ? "<span class='smalleabbadge'>&nbsp;" : "") + "</span>" + "<td align=right >" + a.srno + "</td></tr>" })
@@ -382,7 +453,7 @@ function eabbadge(test){test==='EAB' ?  t="<span class='smalleabbadge'>&nbsp;</s
             var span = document.getElementsByClassName("close")[0];
             window.onclick = function (event) {
                 if (event.target == modal) {
-                    //modal.style.display = "none";
+                    modal.style.display = "none";
                 }
             }
             span.onclick = function () {
@@ -413,14 +484,14 @@ function nameclick(membershipNo) {
                 <tr><td colspan=2><b>Pension Acc: </b>${membData[0].sbac}<br>
                 <b>Retired from : </b>${whichbank}
                 <tr><td colspan=2><b>Region : </b>${membData[0].area.substr(0, 3)} <table>`
-                document.getElementById("modalData").innerHTML = toDisplay
+                document.getElementById("front").innerHTML = toDisplay
                 document.getElementById("nameHeader").innerHTML = membData[0].name
 		phid= membData[0].photo.length >5 ? membData[0].photo :"1QX-GUIL2g6tf2QqMG3_gRZIaUeCTRR0X"
-		ph= "<img  src='https://drive.google.com/uc?export=view&id=" + phid +"' width='100' height='100'>"
-		document.getElementById("photo").innerHTML =ph
-		phid.length >5 ? document.getElementById("photo").style.display='block' :document.getElementById("photo").style.display='none'
+		ph= "<img  src='https://drive.google.com/uc?export=view&id=" + phid +"' width='300' height='300'>"
+		document.getElementById("biophoto").innerHTML =ph
+		phid.length >5 ? document.getElementById("photo").style.display='none' :document.getElementById("photo").style.display='none'
                 modal.style.display = "block";
-                setTimeout(()=> {modal.style.display = "none";},5000)
+        //        setTimeout(()=> {modal.style.display = "none";},5000)
             }
 
             function fiterName() {
@@ -453,6 +524,16 @@ function nameclick(membershipNo) {
                 });
             }
 
+
+
+
+var cards = document.querySelectorAll('.card');
+
+[...cards].forEach((card)=>{
+  card.addEventListener( 'click', function() {
+    card.classList.toggle('is-flipped');
+  });
+});
 
         </script>
 </body>
