@@ -1,6 +1,7 @@
 
 
 
+
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -153,7 +154,7 @@ h2{padding-bottom:0;}
 
             top: -3px;
         }
-        img{border-radius:10px;}
+        img{border-radius:0 0 15px 15px;}
 
         .badge1 {
             display: inline-block;
@@ -237,12 +238,13 @@ h2{padding-bottom:0;}
         
 .scene {
   display: inline-block;
-  width: 300px;
+  width: 330px;
   height: 300px;
   border: 0px solid black; 
-  margin: 0 30px;
+  margin: 0 15px;
   perspective: 600px;
   margin-top: 0px;
+  border-radius:15px;
 
 }
 
@@ -272,15 +274,16 @@ margin-top:0px;
   font-weight: bold;
   font-size: 400px;
   backface-visibility: hidden;
-
+border-radius:0 0 15px 15px;
 }
 
 .card__face--front {
-  background:  #ccddff;
+  background:  teal;
 font-size:large;
-color:black;
+color:white;
 margin:0px;
 margin-top:45px;
+//border-radius-bottom:50px;
 
 }
 
@@ -290,19 +293,19 @@ margin-top:45px;
   margin-top:45px;
 }
 
-.card__face--front {margin-top:-17px;
+.card__face--front {margin-top:-25px;
 }
 
 .card__face--back {
-  margin-top:-17px;
+  margin-top:-25px;
 }
         .close {
             margin-top:90px;
             margin-right:30px;
         }
 
-#disptable {width:300px; border:none;  font-size:small;}
-#nameHeader{ background: yellow; width:300px; margin-top:90px ; margin-left:30px; padding-top:10px; }        
+#disptable {width:300px; border:none; color:white; font-size:small; font-family:arial;}
+#nameHeader{ background: yellow; width:330px; margin-top:90px ; margin-left:15px; padding-top:0px; background: teal; color: white; border-radius:  15px 15px 0p 0; font-size:large }        
     </style>
 </head>
 
