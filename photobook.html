@@ -2,6 +2,7 @@
 
 
 
+
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -126,7 +127,7 @@ h2{padding-bottom:0;}
             float: right;
             font-size: 28px;
             font-weight: bold;
-            margin-top:55px;
+            margin-top:50px;
             margin-right:30px;
         }
 #disptable tr td{border:0px;}
@@ -300,12 +301,13 @@ margin-top:45px;
   margin-top:-25px;
 }
         .close {
-            margin-top:90px;
+            margin-top:76px;
             margin-right:30px;
         }
 
 #disptable {width:300px; border:none; color:white; font-size:small; font-family:arial;}
-#nameHeader{ background: yellow; width:330px; margin-top:90px ; margin-left:15px; padding-top:0px; background: teal; color: white; border-radius:  15px 15px 0p 0; font-size:large }        
+#nameHeader{ background: yellow; width:330px; margin-top:80px ; margin-left:15px; padding-top:0px; background: teal; color: white; border-radius:  15px 15px 0 0; font-size:large }  
+
     </style>
 </head>
 
@@ -487,16 +489,16 @@ function nameclick(membershipNo) {
 		whichbank = membData[0].IBorEAB === 'IB' ? "Indian Bank" : "e Allahabad Bank"
                 toDisplay =`<table id='disptable' border=1><tr>
                 <tr><td colspan=2><b>Membership No</b> ${membData[0].id}
-                <tr><td colspan='2'><b>Address: </b><br>${membData[0].add1}
-                ${membData[0].add2}<br>
-                ${membData[0].add3}<br>
+                <tr><td colspan='2'><b>Address: </b><br>${membData[0].add1}<br>
+                ${membData[0].add2.length>0 ? `${membData[0].add2}<br>` :""}
+                ${membData[0].add3.length>0 ? `${membData[0].add3}<br>` : ""}
                 ${membData[0].place}-${membData[0].pincode}<br>
                 ${membData[0].district} District
                 <tr><td colspan=2><b>Phones: </b>
                 ${membData[0].fixed} 
                 ${membData[0].mobile1}
 		${membData[0].mobile2}
-                <tr><td colspan=2><b>Email: </b>${membData[0].email}
+                ${membData[0].email.length>0 ? `<tr><td colspan=2><b>Email: </b>${membData[0].email}` :""}
                 <tr><td colspan=2><b>S R No: </b>${membData[0].srno}
                 <tr><td colspan=2><b>Application Scanned:</b>${membData[0].scanned}
                 <tr><td colspan=2><b>Pension Br:</b>${membData[0].pensionbr}
