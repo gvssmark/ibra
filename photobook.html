@@ -3,15 +3,26 @@
 
 
 
+
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+
     <title>IBRA</title>
     <script src="index.js" defer></script>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#317EFB" />
     <link rel="apple-touch-icon" href="images/ibra512.png">
     <style>
+    
+    .pname {
+    font-family: "Sofia", sans-serif;
+text-shadow: 3px 3px 3px #ababab;
+  font-size:25px;
+}
+
+    
     *{box-sizing: border-box;}
     element.style {
     display: block;
@@ -457,7 +468,7 @@ function eabbadge(test){test==='EAB' ?  t="<span class='smalleabbadge'>&nbsp;</s
                 inThisRegion = "<table id='regionTable' border=0 >"
                 
                 
-                array.forEach(function (a) { inThisRegion += `<tr onClick='nameclick(this.id)' id='${a.id}'  align=center  ><td > <span style='font-size:x-large;'  > ${a.name} ${fp(a.pen)} ${eabbadge(a.ibeab)} </span> ${a.fampen.length>0 ? '<br>' + a.fampen:""} <br> Mobile: ${a.mobile}   <br>SR No: ${ a.srno }  ${a.photo.length > 5 ? `<span onclick='shphoto(this.id)' id=p${a.id} > / Photo</span>`  : ""}  </td></tr> ` })
+                array.forEach(function (a) { inThisRegion += `<tr onClick='nameclick(this.id)' id='${a.id}'  align=center  ><td > <span  class='pname'  > ${a.name} ${fp(a.pen)} ${eabbadge(a.ibeab)} </span> ${a.fampen.length>0 ? '<br>' + a.fampen:""} <br> Mobile: ${a.mobile}   <br>SR No: ${ a.srno }  ${a.photo.length > 5 ? `<span onclick='shphoto(this.id)' id=p${a.id} > / Photo</span>`  : ""}  </td></tr> ` })
                 
                 
    //           array.forEach(function (a) { inThisRegion += "<tr onClick='nameclick(this.id)' id=" + a.id + "><td class='" + (a.fampen.length > 0 ? "fam" : "ser") + "'>" + a.name + (a.fampen.length > 0 ? " <span class='smallbadge'> &nbsp;</span> " + a.fampen : " ") + (a.ibeab === 'EAB' ? "<span class='smalleabbadge'>&nbsp;" : "") + "</span>" + "<td align=right >" + a.srno + "</td></tr>" })
