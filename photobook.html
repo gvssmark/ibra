@@ -468,7 +468,7 @@ function eabbadge(test){test==='EAB' ?  t="<span class='smalleabbadge'>&nbsp;</s
                 inThisRegion = "<table id='regionTable' border=0 >"
                 
                 
-                array.forEach(function (a) { inThisRegion += `<tr onClick='nameclick(this.id)' id='${a.id}'  align=center  ><td > <span  class='pname font-effect-outline'  > ${a.name} ${fp(a.pen)} ${eabbadge(a.ibeab)} </span> ${a.fampen.length>0 ? '<br>' + a.fampen:""} <br> Mobile: ${a.mobile}   <br>SR No: ${ a.srno }  ${a.photo.length > 5 ? `<span onclick='shphoto(this.id)' id=p${a.id} > / Photo</span>`  : ""}  </td></tr> ` })
+                array.forEach(function (a) { inThisRegion += `<tr onClick='nameclick(this.id)' id='${a.id}'  align=center  ><td > <span  class='pname '  > ${a.name} ${fp(a.pen)} ${eabbadge(a.ibeab)} </span> ${a.fampen.length>0 ? '<br>' + a.fampen:""} <br> Mobile: ${a.mobile}   <br>SR No: ${ a.srno }  ${a.photo.length > 5 ? `<span onclick='shphoto(this.id)' id=p${a.id} > / Photo</span>`  : ""}  </td></tr> ` })
                 
                 
    //           array.forEach(function (a) { inThisRegion += "<tr onClick='nameclick(this.id)' id=" + a.id + "><td class='" + (a.fampen.length > 0 ? "fam" : "ser") + "'>" + a.name + (a.fampen.length > 0 ? " <span class='smallbadge'> &nbsp;</span> " + a.fampen : " ") + (a.ibeab === 'EAB' ? "<span class='smalleabbadge'>&nbsp;" : "") + "</span>" + "<td align=right >" + a.srno + "</td></tr>" })
