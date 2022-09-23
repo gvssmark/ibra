@@ -1,9 +1,12 @@
 
 
+
 <html>
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins&effect=neon|outline|emboss|shadow-multiple">
+
     <title>IBRA</title>
     <script src="index.js" defer></script>
     <link rel="manifest" href="manifest.json">
@@ -11,7 +14,12 @@
     <link rel="apple-touch-icon" href="images/ibra512.png">
     <style>
     
-    element.style {
+    .pname {
+    font-family: "Poppins", sans-serif;
+text-shadow: 3px 3px 3px #ababab;
+  font-size:25px;
+}
+element.style {
     display: block;
     margin-left: 5px;
     margin-right: 5px;
@@ -345,8 +353,8 @@ function shregions(){
 
                 regions = ["All Members", "Visakhapatnam Area", "Godavari Area", "Vijayawada Area", "Seema Area", "Hyderabad Area", "Other States", "e Allahabad", "SR No Sorted"]
                 document.getElementById('regionHeading').innerHTML = "Memebers in " + regions[n] + " <span class='badge'>" + array.length + "</span><span class='badge1'>" + famPensionersCount + "</span> <span class='eabbadge'>" + eabcount + "</span>"
-                inThisRegion = "<table id='regionTable'  border=1><tr><td>Name<td>SR No"
-                array.forEach(function (a) { inThisRegion += "<tr onClick='nameclick(this.id)' id=" + a.id + "><td class='" + (a.fampen.length > 0 ? "fam" : "ser") + "'>" + a.name + (a.fampen.length > 0 ? " <span class='smallbadge'> &nbsp;</span> " + a.fampen : " ") + (a.ibeab === 'EAB' ? "<span class='smalleabbadge'>&nbsp;" : "") + "</span>" +a.mobile +"<td align=right >" + a.srno + "</td></tr>" })
+                inThisRegion = "<table id='regionTable'  border=1><tr><td>Name / Mobile / SR No / Memb No "
+                array.forEach(function (a) { inThisRegion += "<tr align=center onClick='nameclick(this.id)' id=" + a.id + "><td class='" + (a.fampen.length > 0 ? "fam" : "ser") + "'>" +"<span class='pname'>"+ a.name +"</span>"+ (a.fampen.length > 0 ? " <span class='smallbadge'> &nbsp;</span><br>Family Pension of:  " + a.fampen : " ") + (a.ibeab === 'EAB' ? "<span class='smalleabbadge'>&nbsp;" : "") + "</span> <br> Mobile: " +a.mobile +" / SR No: " + a.srno +" / Memb No: " +a.id+ "</td></tr>" })
                 inThisRegion += "</table><br><br><br>"
                 document.getElementById('paraInThisRegion').innerHTML = ""
                 document.getElementById('paraInThisRegion').innerHTML = inThisRegion
