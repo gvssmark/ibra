@@ -1,9 +1,3 @@
-
-
-
-
-
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -458,20 +452,13 @@ function eabbadge(test){test==='EAB' ?  t="<span class='smalleabbadge'>&nbsp;</s
             function selectedRegion(array, n) {
                 document.getElementById("myInput").value = "";
                 document.getElementById("myInput").style.display = "block"
-
                 document.documentElement.scrollTop = 0;
                 famPensionersCount = array.filter(a => a.fampen.length > 0).length
                 eabcount = array.filter(a => a.ibeab === 'EAB').length
-
                 regions = ["All Members", "Visakhapatnam Area", "Godavari Area", "Vijayawada Area", "Seema Area", "Hyderabad Area", "Other States", "e Allahabad", "SR No Sorted"]
                 document.getElementById('regionHeading').innerHTML = "Memebers in " + regions[n] + " <span class='badge'>" + array.length + "</span><span class='badge1'>" + famPensionersCount + "</span> <span class='eabbadge'>" + eabcount + "</span>"
                 inThisRegion = "<table id='regionTable' border=0 >"
-                
-                
-                array.forEach(function (a) { inThisRegion += `<tr onClick='nameclick(this.id)' id='${a.id}'  align=center  ><td > <span  class='pname '  > ${a.name} ${fp(a.pen)} ${eabbadge(a.ibeab)} </span> ${a.fampen.length>0 ? '<br>' + a.fampen:""} <br> Mobile: ${a.mobile}   <br>SR No: ${ a.srno }  ${a.photo.length > 5 ? `<span onclick='shphoto(this.id)' id=p${a.id} > / Photo</span>`  : ""}  </td></tr> ` })
-                
-                
-   //           array.forEach(function (a) { inThisRegion += "<tr onClick='nameclick(this.id)' id=" + a.id + "><td class='" + (a.fampen.length > 0 ? "fam" : "ser") + "'>" + a.name + (a.fampen.length > 0 ? " <span class='smallbadge'> &nbsp;</span> " + a.fampen : " ") + (a.ibeab === 'EAB' ? "<span class='smalleabbadge'>&nbsp;" : "") + "</span>" + "<td align=right >" + a.srno + "</td></tr>" })
+		array.forEach(function (a) { inThisRegion += `<tr onClick='nameclick(this.id)' id='${a.id}'  align=center  ><td > <span  class='pname '  > ${a.name} ${fp(a.pen)} ${eabbadge(a.ibeab)} </span> ${a.fampen.length>0 ? '<br>' + a.fampen:""} <br> Mobile: ${a.mobile}   / SR No: ${ a.srno } / Mem No: ${a.id} ${a.photo.length > 5 ? `<span onclick='shphoto(this.id)' id=p${a.id} > / Photo</span>`  : ""}  </td></tr> ` })                
                 inThisRegion += "</table><br><br><br>"
                 document.getElementById('paraInThisRegion').innerHTML = ""
                 document.getElementById('paraInThisRegion').innerHTML = inThisRegion
