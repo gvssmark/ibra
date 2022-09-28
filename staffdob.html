@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,40 +11,65 @@
 
 <style>
 body {width:360px; margin:auto;  box-sizing: border-box;
-background:powderblue; }
+background:powderblue; border: 1px solid black}
 tr:hover{background:red; color:white;  font-size:large;}
 table{border-collapse:collapse; border:1px solid black; margin:1px auto; }
+button {width:100px; }
+td {padding: 0 5px;}
 </style>
 
 
 </head>
 <body>
+<br>
+<button onclick='btn(dob, 1)' style='margin-left: 30px;'>DOB Data</button>
+<button onclick='btn(lcd, 2)' >LC Data</button>
+<button onclick='btn(iba, 3)' >IBA Ins Data</button>
 
-<h1 align=center>Staff DOB</h1>
+<h1 id='heading' align=center>Data Search</h1>
 
 <input type=text  style=" width: 80%; margin-left:10%; text-color:red; background-color: cyan; border: 1px solid cyan;  border-radius:15px;  height:35px; outline:none; " id='myInput' onkeyup="dispdata()" placeholder="Search here... Minimum 4 Characters"><br>
 <p id='getnames'  style="margin-left:1px; font-size:small " ></p>
 <script>
-
-
+harray=["","Searching DOB Data", "Searching LC Data", "Searching IBA 20-21 data"]
 
 staffdob = staffdob.map(([name]) => ({ name }))
+
+
+iba = iba2021.map(([srno,name,x]) => ({ srno,name, data:srno +"#" + name }))
+
+lcd= lcdata.map(([srno,name,x]) => ({ srno,name, data:srno +"#" + name }))
+
+dob = staffdob.map(a=> ({data: a.name}))
+
+
+
+
 function dispdata(){
 
-tablebody="<table border=1><tr><td>SRNo<td>Name<td>DOB"
+tablebody="<table border=1>"
 //toTable = tempData.filter(a => a.name !== '')
 let filter = document.getElementById("myInput").value.toLowerCase()
 if (filter.length<=4){document.getElementById("getnames").innerHTML="" }
 //if (filter.length<=4){document.getElementById("table").innerHTML="" }
 
 if (filter.length>=3){
-toTable = staffdob.filter(a => a.name.toLowerCase().replaceAll(" ",'').includes(filter.toLowerCase().replaceAll(" ",'')))
-toTable.forEach(function(a){tablebody+="<tr><td>"+ a.name.replaceAll("#","<td>")})
+toTable = myarr.filter(a => a.data.toLowerCase().replaceAll(" ",'').includes(filter.toLowerCase().replaceAll(" ",'')))
+toTable.forEach(function(a){tablebody+="<tr><td>"+ a.data.replaceAll("#","<td>")})
 
 document.getElementById("getnames").innerHTML=tablebody +"</table>"
 //document.getElementById("getnames").innerHTML="<table border=0>"+tablebody+"</table>"
 }
 }
+
+myarr=[]
+function btn(arg, arg1){
+myarr=arg
+//alert(arg1)
+
+document.getElementById("heading").innerHTML=harray[arg1]
+}
+
 </script>
 
 </body>
