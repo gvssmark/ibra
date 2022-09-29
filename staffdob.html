@@ -42,6 +42,10 @@ lcd= lcdata.map(([srno,name,x]) => ({ srno,name,  data:srno +"#" + name +"#"+'lc
 all=[...dob, ...lcd, ...iba]
 all=all.sort(function (a,b) {return a.srno - b.srno})
 
+dob=""
+lcd=""
+iba=""
+
 function dispdata(){
 
 tablebody="<table border=1>"
