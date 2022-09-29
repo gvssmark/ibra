@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,29 +22,25 @@ td {padding: 0 5px;}
 
 </head>
 <body>
-<br>
-<button onclick='btn(dob, 1)' style='margin-left: 30px;'>DOB Data</button>
-<button onclick='btn(lcd, 2)' >LC Data</button>
-<button onclick='btn(iba, 3)' >IBA Ins Data</button>
 
 <h1 id='heading' align=center>Data Search</h1>
 
 <input type=text  style=" width: 80%; margin-left:10%; text-color:red; background-color: cyan; border: 1px solid cyan;  border-radius:15px;  height:35px; outline:none; " id='myInput' onkeyup="dispdata()" placeholder="Search here... Minimum 4 Characters"><br>
 <p id='getnames'  style="margin-left:1px; font-size:small " ></p>
+
 <script>
 harray=["","Searching DOB Data", "Searching LC Data", "Searching IBA 20-21 data"]
 
-staffdob = staffdob.map(([name]) => ({ name }))
+
+dob = staffdob.map(([srno,name,x]) => ({ srno,name, data:srno +"#" + name +"#"+'dob'}))
+
+iba = iba2021.map(([srno,name,x]) => ({ srno,name,  data:srno +"#" + name +"#"+'iba'}))
+
+lcd= lcdata.map(([srno,name,x]) => ({ srno,name,  data:srno +"#" + name +"#"+'lcd' }))
 
 
-iba = iba2021.map(([srno,name,x]) => ({ srno,name, data:srno +"#" + name }))
-
-lcd= lcdata.map(([srno,name,x]) => ({ srno,name, data:srno +"#" + name }))
-
-dob = staffdob.map(a=> ({data: a.name}))
-
-
-
+all=[...dob, ...lcd, ...iba]
+all=all.sort(function (a,b) {return a.srno - b.srno})
 
 function dispdata(){
 
@@ -54,7 +51,7 @@ if (filter.length<=4){document.getElementById("getnames").innerHTML="" }
 //if (filter.length<=4){document.getElementById("table").innerHTML="" }
 
 if (filter.length>=3){
-toTable = myarr.filter(a => a.data.toLowerCase().replaceAll(" ",'').includes(filter.toLowerCase().replaceAll(" ",'')))
+toTable = all.filter(a => a.data.toLowerCase().replaceAll(" ",'').includes(filter.toLowerCase().replaceAll(" ",'')))
 toTable.forEach(function(a){tablebody+="<tr><td>"+ a.data.replaceAll("#","<td>")})
 
 document.getElementById("getnames").innerHTML=tablebody +"</table>"
@@ -62,13 +59,6 @@ document.getElementById("getnames").innerHTML=tablebody +"</table>"
 }
 }
 
-myarr=[]
-function btn(arg, arg1){
-myarr=arg
-//alert(arg1)
-
-document.getElementById("heading").innerHTML=harray[arg1]
-}
 
 </script>
 
