@@ -26,10 +26,8 @@ td {padding: 0 5px;}
 <p id='getnames'  style="margin-left:1px; font-size:small " ></p>
 
 <script>
-newall = [...all0, ...all1, ...all2]
-newall1 = newall.map(([srno,name,x]) => ({ srno,name, data:srno +"#" + name }))
+newall = [...all0, ...all1, ...all2].map(([srno,name,x]) => ({ srno,name, data:srno +"#" + name })).sort(function (a,b) {return a.srno - b.srno})
 
-all=all.sort(function (a,b) {return a.srno - b.srno})
 
 all0=''
 all1=''
@@ -43,7 +41,7 @@ let filter = document.getElementById("myInput").value.toLowerCase()
 if (filter.length<=4){document.getElementById("getnames").innerHTML="" }
 
 if (filter.length>=3){
-toTable = newall1.filter(a => a.data.toLowerCase().replaceAll(" ",'').includes(filter.toLowerCase().replaceAll(" ",'')))
+toTable = newall.filter(a => a.data.toLowerCase().replaceAll(" ",'').includes(filter.toLowerCase().replaceAll(" ",'')))
 toTable.forEach(function(a){tablebody+="<tr><td>"+ a.data.replaceAll("#","<td>")})
 
 document.getElementById("getnames").innerHTML=tablebody +"</table>"
