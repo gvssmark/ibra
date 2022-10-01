@@ -1,4 +1,4 @@
-var all1=[
+var all2=[
 [426095,'ASHA RANI'],
 [426102,'PANCHAMI GHOSH'],
 [426112,'VEER VIKRAM  .'],
