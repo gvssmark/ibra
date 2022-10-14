@@ -1,6 +1,7 @@
 
 
 
+
 <html>
 
 <head>
@@ -276,7 +277,7 @@ button {background:yellow; border:0; width:170px; padding:5px; border-radius:15p
         <span class='smallbadge'>&nbsp;</span> &nbsp;indicates a Family Pensioner<br>
         <span class='smalleabbadge'>&nbsp;</span> &nbsp;indicates an eAB Retiree<br><br>
         Members are requested to verify the correctness of their address and suggest changes if any.<br><br>
-<button onclick='shregions()'>Show Address Book</button>         <button > <a href="https://gvssmark.github.io/ibra/welfare.html" target="_blank">Welfare Schemes</a></button>
+<table><tr><td><button style='display:none' id='addbtn' onclick='shregions()'>Show Address Book</button>        <td> <button > <a href="https://gvssmark.github.io/ibra/welfare.html" target="_blank">Welfare Schemes</a></button></table>
         </div>
 
   
@@ -333,9 +334,13 @@ button {background:yellow; border:0; width:170px; padding:5px; border-radius:15p
                 allMembNoWise = activeMembers.map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1  })).sort(function (a, b) { return a.srno - b.srno })
                 allmemb = activeMembers.map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1  }));
                 selectedRegion(allmemb,0)
+                
+                if(activeMembers.length>0){document.getElementById("addbtn").style.display = "block"}
             }
             penbrTemp = ""
-            getMyData()
+
+
+getMyData()
 function shregions(){
  document.getElementById("regions").style.display = "block"
  document.getElementById("page1").style.display = "none"
