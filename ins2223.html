@@ -48,9 +48,13 @@ document.getElementById('tdata').innerHTML =`<table border=1 ><tr><td>SR No <td>
 
 
 function rowclick(id){
-window.scrollTo(0,0)
+//window.scrollTo(0,0)
 //alert(typeof(id))
-rowdat = tempData.filter(a=> a.srno.toString() === id)
+rowdat = tempData.filter(a=> a.srno === id)
+rowdat.length>1 ? (spname = rowdat[1].name, spdob=rowdat[1].dob) : (spname='', spdob='')
+
+
+
 x=rowdat[0].name
 //alert(x)
 document.getElementById('inddata').style.display='block'
@@ -92,8 +96,8 @@ inddata =`<table BORDER=1><tr><td>Name<td>${rowdat[0].name}
 <tr><td>Amount<td>${rowdat[0].handicap}
 <tr><td>Reconciliation Status<td>${rowdat[0].reconstatus}
 
-<tr><td>Spouse Name<td>${rowdat[1].name}
-<tr><td>Spouse DOB<td>${rowdat[1].dob}
+<tr><td>Spouse Name<td>${spname}
+<tr><td>Spouse DOB<td>${spname}
 `
 
 document.getElementById('inddata').innerHTML=inddata +"</table><br><br><button onclick='clbtn()'>Close</button><br><br>"
