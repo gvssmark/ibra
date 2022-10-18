@@ -1,10 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
- 
-   <style>
+<head><style>
 
 body{width:360px; margin:auto;}
 
@@ -51,6 +48,7 @@ document.getElementById('tdata').innerHTML =`<table border=1 ><tr><td>SR No <td>
 
 
 function rowclick(id){
+window.scrollTo(0,0)
 //alert(typeof(id))
 rowdat = tempData.filter(a=> a.srno.toString() === id)
 x=rowdat[0].name
@@ -99,6 +97,8 @@ inddata =`<table BORDER=1><tr><td>Name<td>${rowdat[0].name}
 `
 
 document.getElementById('inddata').innerHTML=inddata +"</table><br><br><button onclick='clbtn()'>Close</button><br><br>"
+            
+
 
 }
 
