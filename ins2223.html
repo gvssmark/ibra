@@ -1,20 +1,15 @@
+
 <!DOCTYPE html>
 <html>
 
 <head><style>
 
 body{width:360px; margin:auto;}
-
-   table {
-            /* Not required only for visualizing */
-            border-collapse: collapse;
-            ;
-            width: 100%;
-            margin-left: 1px;
-            margin-right: 1px;
-            border: 1px soild black;
-            font-size: small;
-        }
+.modal {display: none;position: fixed;z-index: 10;padding-top: 1px;left: inherit;top: 0;width: 360px;height: 100%;overflow: auto;background-color: rgb(0, 0, 0);background-color: rgba(0, 0, 0, 0.4);}
+.modal-content {background-color: #ffe7c0;margin: auto;padding: 2px;padding-bottom: 2px;border: 1px solid #888;width: 95%;border-radius: 15px; height:75%; overflow-y: scroll;}
+.close {color: #fd0b20;float: right;font-size: 28px;font-weight: bold;}
+#modalData{padding:0px;}
+table {border-collapse: collapse;width: 100%;margin-left: 1px;margin-right: 1px;border: 1px soild black;font-size: small;}
         
 #inddata {display:none; width:360px; nargin-top:50px;     position: fixed; z-index: 1; margin-left:1px; background:powderblue; height:400px; overflow: scroll;}        
 h2{text-align:center; }
@@ -30,6 +25,12 @@ h2{text-align:center; }
 
 </div>
 
+  <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p id="modalData"></p>
+        </div>
+    </div>
 
 <script>
  url = 'https://script.google.com/macros/s/AKfycbzM6Jn5s6SL_BeEU5Q28do25iNl988xOdIrZIrorxwlhzpdgXMajRrSowPenhzLOvyk/exec'
@@ -47,24 +48,57 @@ document.getElementById('tdata').innerHTML =`<table border=1 ><tr><td>SR No <td>
   getMyData()              
 
 
+premiumArray = [
+[0,'Not Filled',0,0],
+[35913,	"Family",	300000,	0],
+[43281,	"Family", 300000,	300000],
+[44754,	"Family",	300000,	400000],
+[46173,	"Family",	400000,	0],
+[53541,	"Family",	400000,	300000],
+[55014,	"Family",	400000,	400000],
+[58452,	"Family",	400000,	500000],
+[27376,	"Self",	300000,	0],
+[32326,	"Self",	300000,	300000],
+[33316,	"Self",	300000,	400000],
+[38940,	"Self",	400000,	0],
+[43890,	"Self",	400000,	300000],
+[44880,	"Self",	400000,	400000],
+[47191,	"Self",	400000,	500000]]
+
+paobject = premiumArray.map(([premium, type, base, supertop]) => ({ premium, type, base, supertop }))
+
+
+
 function rowclick(id){
 //window.scrollTo(0,0)
 //alert(typeof(id))
 rowdat = tempData.filter(a=> a.srno === id)
 rowdat.length>1 ? (spname = rowdat[1].name, spdob=rowdat[1].dob) : (spname='', spdob='')
 
+pamt = rowdat[0].premuimamt ==="" ? 0 : rowdat[0].premuimamt
+
+ptable =  paobject.filter(a => a.premium === pamt)
+
 
 
 x=rowdat[0].name
 //alert(x)
-document.getElementById('inddata').style.display='block'
+//document.getElementById('inddata').style.display='block'
 //document.getElementById('inddata').innerHTML=x
 inddata =`<table BORDER=1><tr><td>Name<td>${rowdat[0].name}
-<tr><td>Bank Name<td>${rowdat[0].bankname}
+<tr><td>Premium<td>${rowdat[0].premuimamt}
+
+<tr><td>Policy Type<td>${ptable[0].type}
+<tr><td>Base<td>${ptable[0].base}
+<tr><td>S Topup<td>${ptable[0].supertop}
 <tr><td>SR No<td>${rowdat[0].srno}
 <tr><td>Date of Birth<td>${rowdat[0].dob}
-<tr><td>Relation<td>${rowdat[0].relation}
 <tr><td>Gender<td>${rowdat[0].gender}
+
+<tr><td>Spouse Name<td>${spname}
+<tr><td>Spouse DOB<td>${spdob}
+
+<tr><td>Bank Name<td>${rowdat[0].bankname}
 <tr><td>Mobile No<td>${rowdat[0].mobile}
 <tr><td>Email<td>${rowdat[0].email}
 <tr><td>Adhar<td>${rowdat[0].adhar}
@@ -72,7 +106,6 @@ inddata =`<table BORDER=1><tr><td>Name<td>${rowdat[0].name}
 <tr><td>Address<td>${rowdat[0].address}
 <tr><td>City<td>${rowdat[0].city}
 <tr><td>PIN Code<td>${rowdat[0].pin}
-<tr><td>Premium<td>${rowdat[0].premuimamt}
 <tr><td>Premium Payment Type<td>${rowdat[0].premtype}
 <tr><td>Online Payment Mode<td>${rowdat[0].modeofpayment}
 
@@ -92,15 +125,13 @@ inddata =`<table BORDER=1><tr><td>Name<td>${rowdat[0].name}
 
 <tr><td>Transaction Date<td>${rowdat[0].trandate}
 
-<tr><td>Transaction Status<td>${rowdat[0].trstatus}
-<tr><td>Amount<td>${rowdat[0].handicap}
 <tr><td>Reconciliation Status<td>${rowdat[0].reconstatus}
 
-<tr><td>Spouse Name<td>${spname}
-<tr><td>Spouse DOB<td>${spname}
 `
+            document.getElementById("myModal").style.display = "block"
 
-document.getElementById('inddata').innerHTML=inddata +"</table><br><br><button onclick='clbtn()'>Close</button><br><br>"
+
+document.getElementById("modalData").innerHTML=inddata +"</table>"
             
 
 
@@ -112,13 +143,18 @@ document.getElementById('inddata').style.display='none'
 
 }
 
-
-xx= `<tr><td>Base Policy<td>${rowdat[0].base}
-<tr><td>Super Topup<td>${rowdat[0].stp}
-<tr><td>Base Premium<td>${rowdat[0].basepre}
-<tr><td>STP Premium<td>${rowdat[0].stppre}
-
-<tr><td>Handicap Premium<td>${rowdat[0].handicap}`
+      var modal = document.getElementById("myModal");
+        var span = document.getElementsByClassName("close")[0];
+        
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+        
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
 
 
 </script>
