@@ -1,4 +1,122 @@
+<!DOCTYPE html>
+<html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<head><style>
 
-<h1>Data not yet received </h1>
+body{width:360px; margin:auto;}
+
+   table {
+            /* Not required only for visualizing */
+            border-collapse: collapse;
+            ;
+            width: 100%;
+            margin-left: 1px;
+            margin-right: 1px;
+            border: 1px soild black;
+            font-size: small;
+        }
+        
+#inddata {display:none; width:360px; nargin-top:50px;     position: fixed; z-index: 1; margin-left:1px; background:powderblue; height:400px; overflow: scroll;}        
+h2{text-align:center; }
+</style></head>
+<body>
+
+<h2>IBRA - INSURANCE 2022-23</h1>
+<Div id='inddata'>This is test data</div>
+<div id='alldata'>
+
+
+<p id='tdata'></p>
+
+</div>
+
+
+<script>
+ url = 'https://script.google.com/macros/s/AKfycbzM6Jn5s6SL_BeEU5Q28do25iNl988xOdIrZIrorxwlhzpdgXMajRrSowPenhzLOvyk/exec'
+            async function getMyData() {
+                response = await fetch(url)
+                data = await response.json()
+                tempData = data["user"]
+                
+ tabdata=''               
+                srnos = tempData.filter(a=> a.relation === "1Self").sort(function (a, b) { return a.srno - b.srno }) 
+srnos.forEach(function(a) { tabdata += `<tr onclick='rowclick(this.id)' id='${a.srno}'><td>${a.srno}<td>${a.name}`})                 
+document.getElementById('tdata').innerHTML =`<table border=1 ><tr><td>SR No <td>Name ${tabdata}  </table>`              
+                }
+                
+  getMyData()              
+
+
+function rowclick(id){
+//alert(typeof(id))
+rowdat = tempData.filter(a=> a.srno.toString() === id)
+x=rowdat[0].name
+//alert(x)
+document.getElementById('inddata').style.display='block'
+//document.getElementById('inddata').innerHTML=x
+inddata =`<table BORDER=1><tr><td>Name<td>${rowdat[0].name}
+<tr><td>Bank Name<td>${rowdat[0].bankname}
+<tr><td>SR No<td>${rowdat[0].srno}
+<tr><td>Date of Birth<td>${rowdat[0].dob}
+<tr><td>Relation<td>${rowdat[0].relation}
+<tr><td>Gender<td>${rowdat[0].gender}
+<tr><td>Mobile No<td>${rowdat[0].mobile}
+<tr><td>Email<td>${rowdat[0].email}
+<tr><td>Adhar<td>${rowdat[0].adhar}
+<tr><td>PAN<td>${rowdat[0].pan}
+<tr><td>Address<td>${rowdat[0].address}
+<tr><td>City<td>${rowdat[0].city}
+<tr><td>PIN Code<td>${rowdat[0].pin}
+<tr><td>Premium<td>${rowdat[0].premuimamt}
+<tr><td>Premium Payment Type<td>${rowdat[0].premtype}
+<tr><td>Online Payment Mode<td>${rowdat[0].modeofpayment}
+
+<tr><td>Cheque Date/NEFT Date<td>${rowdat[0].chqdate}
+<tr><td>Cheque/UTR No<td>${rowdat[0].chqno}
+<tr><td>Offline Payment Mode<td>${rowdat[0].offlinemode}
+<tr><td>Nominee Name<td>${rowdat[0].nomname}
+<tr><td>Nominee Gender<td>${rowdat[0].nomgender}
+<tr><td>Nominee DOB<td>${rowdat[0].nomdob}
+
+<tr><td>Nominee Relation<td>${rowdat[0].nomrelation}
+
+<tr><td>Status of Form Registration<td>${rowdat[0].formstatus}
+<tr><td>Easebuzz ID<td>${rowdat[0].ezbuzzid}
+<tr><td>Matched With<td>${rowdat[0].machedwith}
+
+
+<tr><td>Transaction Date<td>${rowdat[0].trandate}
+
+<tr><td>Transaction Status<td>${rowdat[0].trstatus}
+<tr><td>Amount<td>${rowdat[0].handicap}
+<tr><td>Reconciliation Status<td>${rowdat[0].reconstatus}
+
+<tr><td>Spouse Name<td>${rowdat[1].name}
+<tr><td>Spouse DOB<td>${rowdat[1].dob}
+`
+
+document.getElementById('inddata').innerHTML=inddata +"</table><br><br><button onclick='clbtn()'>Close</button><br><br>"
+
+}
+
+function clbtn(){
+document.getElementById('inddata').innerHTML=''
+document.getElementById('inddata').style.display='none'
+
+}
+
+
+xx= `<tr><td>Base Policy<td>${rowdat[0].base}
+<tr><td>Super Topup<td>${rowdat[0].stp}
+<tr><td>Base Premium<td>${rowdat[0].basepre}
+<tr><td>STP Premium<td>${rowdat[0].stppre}
+
+<tr><td>Handicap Premium<td>${rowdat[0].handicap}`
+
+
+</script>
+
+</body>
+</html>
+
