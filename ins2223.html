@@ -86,7 +86,7 @@ paobject = premiumArray.map(([premium, type, base, supertop]) => ({ premium, typ
 function rowclick(id){
 //window.scrollTo(0,0)
 //alert(typeof(id))
-rowdat = tempData.filter(a=> a.srno === id)
+rowdat = tempData.filter(a=> a.srno === id*1)
 rowdat.length>1 ? (spname = rowdat[1].name, spdob=rowdat[1].dob) : (spname='', spdob='')
 
 pamt = rowdat[0].premuimamt ==="" ? 0 : rowdat[0].premuimamt
