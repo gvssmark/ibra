@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html>
 
@@ -13,25 +14,39 @@ body{width:360px; margin:auto;}
 .modal-content {background-color: #ffe7c0;margin: auto;padding: 2px;padding-bottom: 2px;border: 1px solid #888;width: 95%;border-radius: 15px; height:75%; overflow-y: scroll;}
 .close {color: #fd0b20;float: right;font-size: 28px;font-weight: bold;}
 #modalData{padding:0px;}
-table {border-collapse: collapse;width: 100%;margin-left: 1px;margin-right: 1px;border: 1px soild black;font-size: large;}
-        
-#inddata {display:none; width:360px; nargin-top:50px;     position: fixed; z-index: 1; margin-left:1px; background:powderblue; height:400px; overflow: scroll;}        
-h2, h4{text-align:center; }
-</style></head>
+#regionTable {border-collapse: collapse;width: 100%;margin-left: 1px;margin-right: 1px;border: 1px soild black;font-size: large; border-right:none; border-left:none;}
+h2, h4{text-align:center; padding:0; top:0}
+#top{position:fixed; background:powderblue; top:0; width:360px;}
+#myInput {
+            margin-top: -10px;
+            width: 300px;;
+            margin-left:30px;
+            height: 30px;
+            border-radius: 15px;
+            background-color: cyan;
+            border: 0px;
+            outline: 0;
+            display: block;
+            
+        }
+
+</style>
+</head>
 <body>
-
+<div id='top'>
 <h2>IBRA - INSURANCE 2022-23</h1>
-<h4>Data sorted on SR Number</h6>
-<h4>Number of Applications: <span id='appno'></span></h6>
-<h4>Number of Applications Reconciled: <span id='recno'></span></h6>
-Data Date:19.10.2022 6.00 PM
-
-<Div id='inddata'>This is test data</div>
-<div id='alldata'>
+<p>Data sorted on SR Number<br>
+Number of Applications: <span id='appno'></span><br>
+<span style='background:#ccffcc'>Number of Applications Reconciled: <span id='recno'></span></span><br>
+Data Date:19.10.2022 6.00 PM<br>
 
 
+</p>
+<input type='text' id='myInput' onkeyup="fiterName()" placeholder="Search here..."></input>
+<br>
+</div>
+<div id='alldata' style='margin-top:200px; '>
 <p id='tdata'></p>
-
 </div>
 
   <div id="myModal" class="modal">
@@ -52,8 +67,8 @@ Data Date:19.10.2022 6.00 PM
                 
 srnos = tempData.filter(a=> a.relation.toLowerCase() === "1self").sort(function (a, b) { return a.srno - b.srno }) 
 
-srnos.forEach(function(a) { tabdata += `<tr onclick='rowclick(this.id)' id='${a.srno}'  ><td> SR No ${a.srno}<span style='font-size:small'> ${a.trstatus === "success" ? "Reconciled" : "Not Reconciled"}</span> <br>${a.name}  `})                
-document.getElementById('tdata').innerHTML =`<table class='pname' border=1 ><tr><td> SR No  and Name ${tabdata}  </table>`              
+srnos.forEach(function(a) { tabdata += `<tr ${clr(a.trstatus)} onclick='rowclick(this.id)' id='${a.srno}' ><td> SR No ${a.srno}<br>${a.name}  `})                
+document.getElementById('tdata').innerHTML =`<table id='regionTable' class='pname' border=1 ><tr><td> SR No  and Name ${tabdata}  </table>`              
 document.getElementById('appno').innerHTML = srnos.length                
 document.getElementById('recno').innerHTML = tempData.filter(a=> a.trstatus ==="success").length
                 
@@ -80,6 +95,12 @@ premiumArray = [
 [47191,	"Self",	400000,	500000]]
 
 paobject = premiumArray.map(([premium, type, base, supertop]) => ({ premium, type, base, supertop }))
+
+function clr(c){
+c ==='success' ? clv= "bgcolor='#ccffcc'" : clv="bgcolor='#f9e6ff'"
+return clv
+    
+}
 
 
 
@@ -173,6 +194,26 @@ document.getElementById('inddata').style.display='none'
                 modal.style.display = "none";
             }
         }
+
+
+ function fiterName() {
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("myInput");
+                filter = input.value.toUpperCase().replaceAll(" ","");
+                table = document.getElementById("regionTable");
+                tr = table.getElementsByTagName("tr");
+                for (i = 0; i < tr.length; i++) {
+                    td = tr[i].getElementsByTagName("td")[0];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().replaceAll(" ","").indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                }
+            }
 
 
 </script>
