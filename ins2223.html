@@ -1,7 +1,4 @@
 
-
-
-
 <!DOCTYPE html>
 <html>
 
@@ -40,7 +37,7 @@ h2, h4{text-align:center; padding:0; margin-top:0; box-shadow: 0 4px 8px 0 rgba(
 <p>Data sorted on SR Number<br>
 Number of Applications: <span id='appno'></span><br>
 <span style='background:#ccffcc'>Number of Applications Reconciled: <span id='recno'></span></span><br>
-Data Date:21.10.2022 5.00 PM<br>Reconciliation going on full swing
+Data Date:22.10.2022 5.00 PM<br>Reconciliation going on full swing
 
 
 </p>
@@ -59,7 +56,7 @@ Data Date:21.10.2022 5.00 PM<br>Reconciliation going on full swing
     </div>
 
 <script>
- url = 'https://script.google.com/macros/s/AKfycbzM6Jn5s6SL_BeEU5Q28do25iNl988xOdIrZIrorxwlhzpdgXMajRrSowPenhzLOvyk/exec'
+ url = 'https://script.google.com/macros/s/AKfycbw64cwe7j_ZU1UpxDUi3zt_WlsDd19aSVXhQ_LPu6jwCWXv_xbshRVFvnFb3YBI1pdr/exec'
             async function getMyData() {
                 response = await fetch(url)
                 data = await response.json()
@@ -112,7 +109,7 @@ function rowclick(id){
 rowdat = tempData.filter(a=> a.srno === id*1)
 rowdat.length>1 ? (spname = rowdat[1].name, spdob=rowdat[1].dob) : (spname='', spdob='')
 
-pamt = rowdat[0].premuimamt ==="" ? 0 : rowdat[0].premuimamt
+pamt = rowdat[0].amt ==="" ? 0 : rowdat[0].amt
 
 ptable =  paobject.filter(a => a.premium === pamt)
 
@@ -127,7 +124,7 @@ x=rowdat[0].name
 //document.getElementById('inddata').style.display='block'
 //document.getElementById('inddata').innerHTML=x
 inddata =`<table BORDER=1><tr><td>Name<td>${rowdat[0].name}
-<tr><td>Premium<td>${rowdat[0].premuimamt}
+<tr><td>Premium<td>${rowdat[0].amt}
 
 <tr><td>Policy Type<td>${ptable[0].type}
 <tr><td>Base<td>${ptable[0].base}
