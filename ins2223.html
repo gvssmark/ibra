@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html>
 
@@ -66,7 +67,7 @@ Data Date:25.10.2022 12.00 PM<br>Bank Statement upto 25.10.2022 09:32 AM<br>Reco
                 
 srnos = tempData.filter(a=> a.relation.toLowerCase() === "1self").sort(function (a, b) { return a.srno - b.srno }) 
 
-srnos.forEach(function(a) { tabdata += `<tr ${clr(a.trstatus)} onclick='rowclick(this.id)' id='${a.srno}' ><td> SR No ${a.srno}<br>${a.name}  `})                
+srnos.forEach(function(a) { tabdata += `<tr bgcolor=${clr(a.trstatus)} onclick='rowclick(this.id)' id='${a.srno}' ><td> SR No ${a.srno}<br>${a.name}  `})                
 document.getElementById('tdata').innerHTML =`<table id='regionTable' class='pname' border=1 ><tr><td> SR No  and Name ${tabdata}  </table>`              
 document.getElementById('appno').innerHTML = srnos.length                
 document.getElementById('recno').innerHTML = tempData.filter(a=> a.trstatus ==="success").length
@@ -95,8 +96,10 @@ premiumArray = [
 
 paobject = premiumArray.map(([premium, type, base, supertop]) => ({ premium, type, base, supertop }))
 
+clv=''
+
 function clr(c){
-c ==='success' ? clv= "bgcolor='#ccffcc'" : clv="bgcolor='#f9e6ff'"
+c ==='success' ? clv= '#ccffcc' : clv='#f9e6ff'
 return clv
     
 }
@@ -168,6 +171,9 @@ inddata =`<table BORDER=1><tr><td>Name<td>${rowdat[0].name}
 `
             document.getElementById("myModal").style.display = "block"
 
+
+            document.getElementById("modalData").style.backgroundColor  = clr(rowdat[0].trstatus)
+         //   alert(clr(rowdat[0].trstatus))
 
 document.getElementById("modalData").innerHTML=inddata +"</table>"
                         
