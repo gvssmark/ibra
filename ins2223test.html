@@ -1,0 +1,238 @@
+
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins&effect=neon|outline|emboss|shadow-multiple">
+         <title>IBRA Ins 2223</title>
+        <style>
+.pname {font-family: "Poppins", sans-serif; text-shadow: 3px 3px 3px #ababab;   font-size:18px; }
+body{width:360px; margin:auto;}
+.modal {display: none;position: fixed;z-index: 10;padding-top: 1px;left: inherit;top: 0;width: 360px;height: 100%;overflow: auto;background-color: rgb(0, 0, 0);background-color: rgba(0, 0, 0, 0.4);}
+.modal-content {background-color: #ffe7c0;margin: auto;padding: 2px;padding-bottom: 2px;border: 1px solid #888;width: 95%;border-radius: 15px; height:75%; overflow-y: scroll;}
+.close {color: #fd0b20;float: right;font-size: 28px;font-weight: bold;}
+#modalData{padding:0px;}
+#regionTable {border-collapse: collapse;width: 100%;margin-left: 1px;margin-right: 1px;border: 1px soild black;font-size: large; border-right:none; border-left:none;}
+h2, h4{text-align:center; padding:0; margin-top:0; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); background:yellow;}
+#top{position:fixed; background:powderblue; top:0; width:360px;}
+#myInput {
+            margin-top: -10px;
+            width: 300px;;
+            margin-left:30px;
+            height: 30px;
+            border-radius: 15px;
+            background-color: cyan;
+            border: 0px;
+            outline: 0;
+            display: block;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            
+        }
+.dtab {border:1px solid black; border-collapse:collapse;}
+
+</style>
+</head>
+<body>
+<div id='top'>
+<h2>IBRA - INSURANCE 2022-23</h1>
+<p>Data sorted on SR Number<br>
+Number of Applications: <span id='appno'></span><br>
+<span style='background:#ccffcc'>Number of Applications Reconciled: <span id='recno'></span></span><br>
+Data Date:25.10.2022 12.00 PM<br>Bank Statement upto 25.10.2022 09:32 AM<br>Reconciliation going on full swing
+
+
+</p>
+<input type='text' id='myInput' onkeyup="fiterName()" placeholder="Search here..."></input>
+<br>
+</div>
+<div id='alldata' style='margin-top:230px; '>
+<p id='tdata'></p>
+</div>
+
+  <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p id="modalData"></p>
+        </div>
+    </div>
+
+<script>
+
+//live url
+//url = 'https://script.google.com/macros/s/AKfycbw64cwe7j_ZU1UpxDUi3zt_WlsDd19aSVXhQ_LPu6jwCWXv_xbshRVFvnFb3YBI1pdr/exec'
+
+//testing url
+
+testurl = 'https://script.google.com/macros/s/AKfycbw64cwe7j_ZU1UpxDUi3zt_WlsDd19aSVXhQ_LPu6jwCWXv_xbshRVFvnFb3YBI1pdr/exec'
+
+async function getMyData() {
+                response = await fetch(testurl)
+                data = await response.json()
+                tempData = data["user"]
+                
+ tabdata=''               
+                
+srnos = tempData.filter(a=> a.relation.toLowerCase() === "1self").sort(function (a, b) { return a.srno - b.srno }) 
+
+srnos.forEach(function(a) { tabdata += `<tr bgcolor=${clr(a.trstatus)} onclick='rowclick(this.id)' id='${a.srno}' ><td> SR No ${a.srno}<br>${a.name}  `})                
+document.getElementById('tdata').innerHTML =`<table id='regionTable' class='pname' border=1 ><tr><td> SR No  and Name ${tabdata}  </table>`              
+document.getElementById('appno').innerHTML = srnos.length                
+document.getElementById('recno').innerHTML = tempData.filter(a=> a.trstatus ==="success").length
+                
+                }
+               
+  getMyData()              
+
+
+premiumArray = [
+[0,'Not Filled',0,0],
+[35913,	"Family",	300000,	0],
+[43281,	"Family", 300000,	300000],
+[44754,	"Family",	300000,	400000],
+[46173,	"Family",	400000,	0],
+[53541,	"Family",	400000,	300000],
+[55014,	"Family",	400000,	400000],
+[58452,	"Family",	400000,	500000],
+[27376,	"Self",	300000,	0],
+[32326,	"Self",	300000,	300000],
+[33316,	"Self",	300000,	400000],
+[38940,	"Self",	400000,	0],
+[43890,	"Self",	400000,	300000],
+[44880,	"Self",	400000,	400000],
+[47191,	"Self",	400000,	500000]]
+
+paobject = premiumArray.map(([premium, type, base, supertop]) => ({ premium, type, base, supertop }))
+
+clv=''
+
+function clr(c){
+c ==='success' ? clv= '#ccffcc' : clv='#f9e6ff'
+return clv
+    
+}
+
+
+
+function rowclick(id){
+//window.scrollTo(0,0)
+//alert(typeof(id))
+rowdat = tempData.filter(a=> a.srno === id*1)
+rowdat.length>1 ? (spname = rowdat[1].name, spdob=rowdat[1].dob) : (spname='', spdob='')
+
+pamt = rowdat[0].amt ==="" ? 0 : rowdat[0].amt
+
+ptable =  paobject.filter(a => a.premium === pamt)
+
+
+
+x=rowdat[0].name
+//alert(x)
+//document.getElementById('inddata').style.display='block'
+//document.getElementById('inddata').innerHTML=x
+x=rowdat[0].name
+//alert(x)
+//document.getElementById('inddata').style.display='block'
+//document.getElementById('inddata').innerHTML=x
+inddata =`<table class='dtab' BORDER=1><tr><td>Name<td>${rowdat[0].name}
+<tr><td>Premium<td>${rowdat[0].amt}
+
+<tr><td>Policy Type<td>${ptable[0].type}
+<tr><td>Base<td>${ptable[0].base}
+<tr><td>S Topup<td>${ptable[0].supertop}
+<tr><td>SR No<td>${rowdat[0].srno}
+<tr><td>Date of Birth<td>${rowdat[0].dob}
+<tr><td>Gender<td>${rowdat[0].gender}
+
+<tr><td>Spouse Name<td>${spname}
+<tr><td>Spouse DOB<td>${spdob}
+
+<tr><td>Bank Name<td>${rowdat[0].bankname}
+<tr><td>Mobile No<td>${rowdat[0].mobile}
+<tr><td>Email<td>${rowdat[0].email}
+<tr><td>Adhar<td>${rowdat[0].adhar}
+<tr><td>PAN<td>${rowdat[0].pan}
+<tr><td>Address<td>${rowdat[0].address}
+<tr><td>City<td>${rowdat[0].city}
+<tr><td>PIN Code<td>${rowdat[0].pin}
+<tr><td>Premium Payment Type<td>${rowdat[0].premtype}
+<tr><td>Online Payment Mode<td>${rowdat[0].modeofpayment}
+
+<tr><td>Cheque Date/NEFT Date<td>${rowdat[0].chqdate}
+<tr><td>Cheque/UTR No<td>${rowdat[0].chqno}
+<tr><td>Offline Payment Mode<td>${rowdat[0].offlinemode}
+<tr><td>Nominee Name<td>${rowdat[0].nomname}
+<tr><td>Nominee Gender<td>${rowdat[0].nomgender}
+<tr><td>Nominee DOB<td>${rowdat[0].nomdob}
+
+<tr><td>Nominee Relation<td>${rowdat[0].nomrelation}
+
+<tr><td>Status of Form Registration<td>${rowdat[0].formstatus}
+<tr><td>Easebuzz ID<td>${rowdat[0].ezbuzzid}
+<tr><td>Matched With<td>${rowdat[0].machedwith}
+
+
+<tr><td>Transaction Date<td>${rowdat[0].trandate}
+
+<tr><td>Reconciliation Status<td>${rowdat[0].reconstatus}
+
+`
+            document.getElementById("myModal").style.display = "block"
+
+
+            document.getElementById("modalData").style.backgroundColor  = clr(rowdat[0].trstatus)
+         //   alert(clr(rowdat[0].trstatus))
+
+document.getElementById("modalData").innerHTML=inddata +"</table>"
+                        
+
+
+}
+
+function clbtn(){
+document.getElementById('inddata').innerHTML=''
+document.getElementById('inddata').style.display='none'
+
+}
+
+      var modal = document.getElementById("myModal");
+        var span = document.getElementsByClassName("close")[0];
+        
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+        
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+
+ function fiterName() {
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("myInput");
+                filter = input.value.toUpperCase().replaceAll(" ","");
+                table = document.getElementById("regionTable");
+                tr = table.getElementsByTagName("tr");
+                for (i = 0; i < tr.length; i++) {
+                    td = tr[i].getElementsByTagName("td")[0];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().replaceAll(" ","").indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                }
+            }
+
+
+</script>
+
+</body>
+</html>
+
