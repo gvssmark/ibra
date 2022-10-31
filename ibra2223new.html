@@ -1,6 +1,8 @@
 
 
 
+
+
 <!DOCTYPE html>
 <html>
 
@@ -12,7 +14,7 @@
 .pname {font-family: "Poppins", sans-serif; text-shadow: 3px 3px 3px #ababab;   font-size:18px; }
 body{width:360px; margin:auto;}
 .modal {display: none;position: fixed;z-index: 10;padding-top: 1px;left: inherit;top: 0;width: 360px;height: 100%;overflow: auto;background-color: rgb(0, 0, 0);background-color: rgba(0, 0, 0, 0.4);}
-.modal-content {background-color: #ffe7c0;margin: auto;padding: 2px;padding-bottom: 2px;border: 1px solid #888;width: 95%;border-radius: 15px; height:75%; overflow-y: scroll;}
+.modal-content {background-color: #ffe7c0;margin: auto;padding: 2px;padding-bottom: 2px;border: 1px solid #888;width: 95%;border-radius: 15px; height:auto; overflow-y: scroll;}
 .close {color: #fd0b20;float: right;font-size: 28px;font-weight: bold;}
 #modalData{padding:0px;}
 #regionTable {border-collapse: collapse;width: 100%;margin-left: 1px;margin-right: 1px;border: 1px soild black;font-size: large; border-right:none; border-left:none;}
@@ -31,7 +33,7 @@ h2, h4{text-align:center; padding:0; margin-top:0; box-shadow: 0 4px 8px 0 rgba(
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             
         }
-
+b{color:1red; margin-left:5px; background:1cyan;}
 </style>
 </head>
 <body>
@@ -40,7 +42,7 @@ h2, h4{text-align:center; padding:0; margin-top:0; box-shadow: 0 4px 8px 0 rgba(
 <p>Data sorted on SR Number<br>
 Number of Applications: <span id='appno'></span><br>
 <span style='background:#ccffcc'>Number of Applications Reconciled: <span id='recno'></span></span><br>
-Data Date:30.10.2022 09.00 AM<br>Bank Statement upto 30.10.2022 09:30 AM<br>Reconciliation going on full swing
+Data Date:30.10.2022 09.00 AM<br>Bank Statement upto 28-10-2022 20:31 AM<br>Reconciliation going on full swing
 
 
 </p>
@@ -128,33 +130,33 @@ x=rowdat[0].name
 //alert(x)
 //document.getElementById('inddata').style.display='block'
 //document.getElementById('inddata').innerHTML=x
-inddata =`<table BORDER=1><tr><td>Name<td>${rowdat[0].name}
-<tr><td>Premium<td>${rowdat[0].premium}
 
-<tr><td>Policy Type<td>${ptable[0].type}
-<tr><td>Base<td>${ptable[0].base}
-<tr><td>S Topup<td>${ptable[0].supertop}
-<tr><td>SR No<td>${rowdat[0].srno}
-<tr><td>Date of Birth<td>${rowdat[0].dob}
-<tr><td>Gender<td>${rowdat[0].gender}
 
-<tr><td>Spouse Name<td>${rowdat[0].spname}
-<tr><td>Spouse Gender<td>${rowdat[0].spgender}
+inddata =`<br><b>Name: </b>${rowdat[0].name} <br>
+<b>Premium:</b> ${rowdat[0].premium}<br>
+<b>Policy Type:</b> ${ptable[0].type}<br>
+<b>Base:</b> ${ptable[0].base}<br>
+<b>Super Topup: </b>${ptable[0].supertop}<br>
+<b>SR No:</b> ${rowdat[0].srno}<br>
+<b>Date of Birth:</b> ${rowdat[0].dob}<br>
+<b>Gender:</b> ${rowdat[0].gender}<br>
+<b>Spouse Name:</b> ${rowdat[0].spname}<br>
+<b>Spouse Gender:</b> ${rowdat[0].spgender}<br>
+<b>Spouse DOB:</b> ${rowdat[0].spdob}<br>
+<b>Bank Name:</b> ${rowdat[0].bank}<br>
+<b>Mobile No:</b> ${rowdat[0].mobile}<br>
+<b>Email:</b> ${rowdat[0].email}<br>
+<b>Adhar:</b> ${rowdat[0].adhar}<br>
+<b>PAN:</b> ${rowdat[0].pan}<br><br>
+<b>Address:</b> ${rowdat[0].add}, ${rowdat[0].city} - ${rowdat[0].pin} <br><br>
+<b>Nominee Name:</b> ${rowdat[0].nom}<br>
+<b>Nominee Gender:</b> ${rowdat[0].nomgender}<br>
+<b>Nominee DOB:</b> ${rowdat[0].nomdob}<br>
+<b>Nominee Relation:</b> ${rowdat[0].nomrelation}<br>`
 
-<tr><td>Spouse DOB<td>${rowdat[0].spdob}
 
-<tr><td>Bank Name<td>${rowdat[0].bank}
-<tr><td>Mobile No<td>${rowdat[0].mobile}
-<tr><td>Email<td>${rowdat[0].email}
-<tr><td>Adhar<td>${rowdat[0].adhar}
-<tr><td>PAN<td>${rowdat[0].pan}
-<tr><td>Address<td>${rowdat[0].add}, ${rowdat[0].city} - ${rowdat[0].pin} 
 
-<tr><td>Nominee Name<td>${rowdat[0].nom}
-<tr><td>Nominee Gender<td>${rowdat[0].nomgender}
-<tr><td>Nominee DOB<td>${rowdat[0].nomdob}
 
-<tr><td>Nominee Relation<td>${rowdat[0].nomrelation}`
 document.getElementById("myModal").style.display = "block"
 
 
