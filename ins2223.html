@@ -1,5 +1,7 @@
 
 
+
+
 <!DOCTYPE html>
 <html>
 
@@ -39,7 +41,7 @@ h2, h4{text-align:center; padding:0; margin-top:0; box-shadow: 0 4px 8px 0 rgba(
 <p>Data sorted on SR Number<br>
 Number of Applications: <span id='appno'></span><br>
 <span style='background:#ccffcc'>Number of Applications Reconciled: <span id='recno'></span></span><br>
-Data Date:28.10.2022 09.00 AM<br>Bank Statement upto 28.10.2022 09:30 AM<br>Reconciliation going on full swing
+Data Date:30.10.2022 09.00 AM<br>Bank Statement upto 30.10.2022 09:30 AM<br>Reconciliation going on full swing
 
 
 </p>
@@ -58,20 +60,21 @@ Data Date:28.10.2022 09.00 AM<br>Bank Statement upto 28.10.2022 09:30 AM<br>Reco
     </div>
 
 <script>
- url = 'https://script.google.com/macros/s/AKfycbxXtzMMD9dEjQ09yqlpQXbuJMq4fz2aJ7EG-5ExOvTcKlMtudydOCbIbmO7Sn5ZuOxf/exec'
+ url = 'https://script.google.com/macros/s/AKfycbw-Gcf4rjgSpXcJyqxrndyIdKTeqc_Y99bz8dztzMsSALbtE3Ep69gmWq5bsJnHQCoVHw/exec'
             async function getMyData() {
                 response = await fetch(url)
                 data = await response.json()
                 tempData = data["user"]
                 
+srnos = tempData.sort(function (a, b) { return a.srno - b.srno })                
  tabdata=''               
                 
-srnos = tempData.filter(a=> a.relation.toLowerCase() === "1self").sort(function (a, b) { return a.srno - b.srno }) 
+//srnos = tempData.filter(a=> a.relation.toLowerCase() === "1self").sort(function (a, b) { return a.srno - b.srno }) 
 
-srnos.forEach(function(a) { tabdata += `<tr bgcolor=${clr(a.trstatus)} onclick='rowclick(this.id)' id='${a.srno}' ><td> SR No ${a.srno}<br>${a.name}  `})                
+srnos.forEach(function(a) { tabdata += `<tr bgcolor=${clr(a.premium*1)} onclick='rowclick(this.id)' id='${a.srno}' ><td> SR No ${a.srno}<br>${a.name}  `})                
 document.getElementById('tdata').innerHTML =`<table id='regionTable' class='pname' border=1 ><tr><td> SR No  and Name ${tabdata}  </table>`              
 document.getElementById('appno').innerHTML = srnos.length                
-document.getElementById('recno').innerHTML = tempData.filter(a=> a.trstatus ==="success").length
+document.getElementById('recno').innerHTML = tempData.filter(a=> a.premium >0).length
                 
                 }
                
@@ -100,7 +103,7 @@ paobject = premiumArray.map(([premium, type, base, supertop]) => ({ premium, typ
 clv=''
 
 function clr(c){
-c ==='success' ? clv= '#ccffcc' : clv='#f9e6ff'
+c >0 ? clv= '#ccffcc' : clv='#f9e6ff'
 return clv
     
 }
@@ -111,9 +114,8 @@ function rowclick(id){
 //window.scrollTo(0,0)
 //alert(typeof(id))
 rowdat = tempData.filter(a=> a.srno === id*1)
-rowdat.length>1 ? (spname = rowdat[1].name, spdob=rowdat[1].dob) : (spname='', spdob='')
 
-pamt = rowdat[0].amt ==="" ? 0 : rowdat[0].amt
+pamt = rowdat[0].premium ==="" ? 0 : rowdat[0].premium
 
 ptable =  paobject.filter(a => a.premium === pamt)
 
@@ -128,7 +130,7 @@ x=rowdat[0].name
 //document.getElementById('inddata').style.display='block'
 //document.getElementById('inddata').innerHTML=x
 inddata =`<table BORDER=1><tr><td>Name<td>${rowdat[0].name}
-<tr><td>Premium<td>${rowdat[0].amt}
+<tr><td>Premium<td>${rowdat[0].premium}
 
 <tr><td>Policy Type<td>${ptable[0].type}
 <tr><td>Base<td>${ptable[0].base}
@@ -137,43 +139,27 @@ inddata =`<table BORDER=1><tr><td>Name<td>${rowdat[0].name}
 <tr><td>Date of Birth<td>${rowdat[0].dob}
 <tr><td>Gender<td>${rowdat[0].gender}
 
-<tr><td>Spouse Name<td>${spname}
-<tr><td>Spouse DOB<td>${spdob}
+<tr><td>Spouse Name<td>${rowdat[0].spname}
+<tr><td>Spouse Gender<td>${rowdat[0].spgender}
 
-<tr><td>Bank Name<td>${rowdat[0].bankname}
+<tr><td>Spouse DOB<td>${rowdat[0].spdob}
+
+<tr><td>Bank Name<td>${rowdat[0].bank}
 <tr><td>Mobile No<td>${rowdat[0].mobile}
 <tr><td>Email<td>${rowdat[0].email}
 <tr><td>Adhar<td>${rowdat[0].adhar}
 <tr><td>PAN<td>${rowdat[0].pan}
-<tr><td>Address<td>${rowdat[0].address}
-<tr><td>City<td>${rowdat[0].city}
-<tr><td>PIN Code<td>${rowdat[0].pin}
-<tr><td>Premium Payment Type<td>${rowdat[0].premtype}
-<tr><td>Online Payment Mode<td>${rowdat[0].modeofpayment}
+<tr><td>Address<td>${rowdat[0].add}, ${rowdat[0].city} - ${rowdat[0].pin} 
 
-<tr><td>Cheque Date/NEFT Date<td>${rowdat[0].chqdate}
-<tr><td>Cheque/UTR No<td>${rowdat[0].chqno}
-<tr><td>Offline Payment Mode<td>${rowdat[0].offlinemode}
-<tr><td>Nominee Name<td>${rowdat[0].nomname}
+<tr><td>Nominee Name<td>${rowdat[0].nom}
 <tr><td>Nominee Gender<td>${rowdat[0].nomgender}
 <tr><td>Nominee DOB<td>${rowdat[0].nomdob}
 
-<tr><td>Nominee Relation<td>${rowdat[0].nomrelation}
-
-<tr><td>Status of Form Registration<td>${rowdat[0].formstatus}
-<tr><td>Easebuzz ID<td>${rowdat[0].ezbuzzid}
-<tr><td>Matched With<td>${rowdat[0].machedwith}
+<tr><td>Nominee Relation<td>${rowdat[0].nomrelation}`
+document.getElementById("myModal").style.display = "block"
 
 
-<tr><td>Transaction Date<td>${rowdat[0].trandate}
-
-<tr><td>Reconciliation Status<td>${rowdat[0].reconstatus}
-
-`
-            document.getElementById("myModal").style.display = "block"
-
-
-            document.getElementById("modalData").style.backgroundColor  = clr(rowdat[0].trstatus)
+            document.getElementById("modalData").style.backgroundColor  = clr(rowdat[0].premium*1)
          //   alert(clr(rowdat[0].trstatus))
 
 document.getElementById("modalData").innerHTML=inddata +"</table>"
