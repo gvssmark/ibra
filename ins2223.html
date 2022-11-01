@@ -2,6 +2,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html>
 
@@ -10,7 +11,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins&effect=neon|outline|emboss|shadow-multiple">
          <title>IBRA Ins 2223</title>
         <style>
-.pname {font-family: "Poppins", sans-serif; text-shadow: 3px 3px 3px #ababab;   font-size:18px; }
+.pname {font-family: "Poppins", sans-serif; text-shadow: 3px 3px 3px #ababab;   font-size:15px; }
 body{width:360px; margin:auto;}
 .modal {display: none;position: fixed;z-index: 10;padding-top: 1px;left: inherit;top: 0;width: 360px;height: 100%;overflow: auto;background-color: rgb(0, 0, 0);background-color: rgba(0, 0, 0, 0.4);}
 .modal-content {background-color: #ffe7c0;margin: auto;padding: 2px;padding-bottom: 2px;border: 1px solid #888;width: 95%;border-radius: 15px; height:75%; overflow-y: scroll;}
@@ -60,7 +61,7 @@ Data Date:30.10.2022 09.00 AM<br>Bank Statement upto 28-10-2022 20:31 AM<br>Reco
     </div>
 
 <script>
- url = 'https://script.google.com/macros/s/AKfycby5wff8I-Rv5AkISx8eBtIzZfVmGZUH-AbRKY_Z8BDTDhO2YG2A9r0iU-N9a1MlZYsbYA/exec'
+ url = 'https://script.google.com/macros/s/AKfycbxkaYSUygwStIhq9PIXSujYZemAj4lF9FElPYIBwbLeZy-PRAPhsQKisTp8f3JrrlrW6Q/exec'
             async function getMyData() {
                 response = await fetch(url)
                 data = await response.json()
@@ -71,8 +72,8 @@ srnos = tempData.sort(function (a, b) { return a.srno - b.srno })
                 
 //srnos = tempData.filter(a=> a.relation.toLowerCase() === "1self").sort(function (a, b) { return a.srno - b.srno }) 
 
-srnos.forEach(function(a) { tabdata += `<tr bgcolor=${clr(a.premium*1)} onclick='rowclick(this.id)' id='${a.srno}' ><td> SR No ${a.srno}<br>${a.name}  `})                
-document.getElementById('tdata').innerHTML =`<table id='regionTable' class='pname' border=1 ><tr><td> SR No  and Name ${tabdata}  </table>`              
+srnos.forEach(function(a) { tabdata += `<tr bgcolor=${clr(a.premium*1)} onclick='rowclick(this.id)' id='${a.srno}' ><td> SR No ${a.srno}<br>${a.name}-(${a.membno})  `})                
+document.getElementById('tdata').innerHTML =`<table id='regionTable' class='pname' border=1 ><tr><td> SR No  and Name-(Memb No) ${tabdata}  </table>`              
 document.getElementById('appno').innerHTML = srnos.length                
 document.getElementById('recno').innerHTML = tempData.filter(a=> a.premium >0).length
                 
