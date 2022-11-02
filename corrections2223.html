@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<style>
+
+body {width:360px; margin:auto;}
+table {border-collapse: collapse; width: 360px; margin-left: 1px;margin-right: 1px; border: 5px soild black;font-size: large; border-right:none; border-left:none;}
+.clr {color:red}
+h2 {text-align:center;}
+</style>
+
+
+</head>
+<body>
+
+<h1>IBRA INSURANCE 22-23</h1>
+<h2>CORRECTIONS TO DATA</h1>
+
+<p id='report'></p>
+
+
+<script>
+
+url = 'https://script.google.com/macros/s/AKfycbxUDQRu-NlYI9bcDP72iyoyaaDUMIae1q2zqEth-zktyYppABl6iM8uPJ3ZstRggAj8/exec'
+            async function getMyData() {
+                response = await fetch(url)
+                data = await response.json()
+                tempData = data["user"]
+                
+//document.getElementById('report').innerHTML= totable(tempData)
+totable()
+} 
+
+
+getMyData()
+
+
+function totable(){
+tabdata=''
+tempData.forEach(function(a) { tabdata += `<tr><td><b>SR No  ${a.col1} </b><br> Name: ${a.col2}<br> Field: ${a.col3}<br><SPAN class='clr'> Correction: ${a.col4} </span> `})                
+document.getElementById('report').innerHTML =`<table border=1 ><tr><td> SR No / Name / To be corrected / New Data ${tabdata}  </table>`              
+
+
+}
+
+
+
+
+
+</script>
+
+
+</body>
+</html>
+
