@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,7 +38,7 @@ h2 {text-align:center;}
 
 <h2>IBRA INSURANCE 22-23</h1>
 <h2>CORRECTIONS TO DATA</h1>
-<input type='text' id='myInput' onkeyup="fiterName()" placeholder="Search here..."></input>
+<input type='number' id='myInput' onkeyup="fiterName()" placeholder="Search SR Number here..."></input>
 
 
 </div>
@@ -71,10 +72,12 @@ document.getElementById('report').innerHTML =`<table id='regionTable' border=1 >
 
 
 
+
+
  function fiterName() {
                 var input, filter, table, tr, td, i, txtValue;
-                input = document.getElementById("myInput");
-                filter = input.value.toUpperCase().replaceAll(" ","");
+                input ="SR No "+ document.getElementById("myInput").value;
+                filter = input.toUpperCase().replaceAll(" ","");
                 table = document.getElementById("regionTable");
                 tr = table.getElementsByTagName("tr");
                 for (i = 0; i < tr.length; i++) {
