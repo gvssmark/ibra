@@ -1,6 +1,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -63,7 +64,7 @@ getMyData()
 function totable(){
 tabdata=''
 tempData.forEach(function(a) { tabdata += `<tr><td><b>SR No  ${a.col1} </b><br> Name: ${a.col2}<br> Field: ${a.col3}<br><SPAN class='clr'> Correction: ${a.col4} </span><br>
-Status: ${a.col5}
+Status: ${a.col5}<br>Present Status ${a.col6}<br>As per orginal data:${a.col7}
 
 `})                
 document.getElementById('report').innerHTML =`<table id='regionTable' border=1 ><tr><td> SR No / Name / To be corrected / New Data ${tabdata}  </table>`              
