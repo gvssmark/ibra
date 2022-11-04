@@ -4,6 +4,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html>
 
@@ -15,7 +16,7 @@
 .pname {font-family: "Poppins", sans-serif; text-shadow: 3px 3px 3px #ababab;   font-size:15px; }
 body{width:360px; margin:auto;}
 .modal {display: none;position: fixed;z-index: 10;padding-top: 1px;left: inherit;top: 0;width: 360px;height: 100%;overflow: auto;background-color: rgb(0, 0, 0);background-color: rgba(0, 0, 0, 0.4);}
-.modal-content {background-color: #ffe7c0;margin: auto;padding: 2px;padding-bottom: 2px;border: 1px solid #888;width: 95%;border-radius: 15px; height:auto; overflow-y: scroll;}
+.modal-content {background-color: #ffe7c0;margin: auto;padding: 2px;padding-bottom: 2px;border: 1px solid #888;width: 95%;border-radius: 15px; height:auto; overflow-y: scroll;  font-family: Arial, Helvetica, sans-serif;}
 .close {color: #fd0b20;float: right;font-size: 28px;font-weight: bold;}
 #modalData{padding:0px;}
 #regionTable {border-collapse: collapse;width: 100%;margin-left: 1px;margin-right: 1px;border: 1px soild black;font-size: large; border-right:none; border-left:none;}
@@ -142,17 +143,18 @@ inddata =`<table class='mod' BORDER=1><tr><td>Name:${rowdat[0].name}
 <tr><td>Date of Birth:${rowdat[0].dob}
 <tr><td>Gender:${rowdat[0].gender}
 
-<tr><td>Spouse Name:${rowdat[0].spname}
-<tr><td>Spouse Gender:${rowdat[0].spgender}
-
-<tr><td>Spouse DOB:${rowdat[0].spdob}
-
 <tr><td>Bank Name:${rowdat[0].bank}
 <tr><td>Mobile No:${rowdat[0].mobile}
 <tr><td>Email:${rowdat[0].email}
 <tr><td>Adhar:${rowdat[0].adhar}
 <tr><td>PAN:${rowdat[0].pan}
 <tr><td>Address:${rowdat[0].add}, ${rowdat[0].city} - ${rowdat[0].pin} 
+
+
+
+<tr><td>Spouse Name:${rowdat[0].spname}
+<tr><td>Spouse Gender:${rowdat[0].spgender}
+<tr><td>Spouse DOB:${rowdat[0].spdob}
 
 <tr><td>Nominee Name:${rowdat[0].nom}
 <tr><td>Nominee Gender:${rowdat[0].nomgender}
