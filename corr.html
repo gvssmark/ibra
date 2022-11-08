@@ -1,0 +1,227 @@
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins&effect=neon|outline|emboss|shadow-multiple">
+         <title>IBRA Ins 2223</title>
+        <style>
+.pname {font-family: "Poppins", sans-serif; text-shadow: 3px 3px 3px #ababab;   font-size:15px; }
+body{width:360px; margin:auto;}
+.modal {display: none;position: fixed;z-index: 10;padding-top: 1px;left: inherit;top: 0;width: 360px;height: 100%;overflow: auto;background-color: rgb(0, 0, 0);background-color: rgba(0, 0, 0, 0.4);}
+.modal-content {background-color: #ffe7c0;margin: auto;padding: 2px;padding-bottom: 2px;border: 1px solid #888;width: 95%;border-radius: 15px; height:auto; overflow-y: scroll;  font-family: Arial, Helvetica, sans-serif;}
+.close {color: #fd0b20;float: right;font-size: 28px;font-weight: bold;}
+#modalData{padding:0px;}
+#regionTable {border-collapse: collapse;width: 100%;margin-left: 1px;margin-right: 1px;border: 1px soild black;font-size: large; border-right:none; border-left:none;}
+h2, h4{text-align:center; padding:0; margin-top:0; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); background:yellow;}
+#top{position:fixed; background:powderblue; top:0; width:360px;}
+#myInput {
+            margin-top: -10px;
+            width: 300px;;
+            margin-left:30px;
+            height: 30px;
+            border-radius: 15px;
+            background-color: cyan;
+            border: 0px;
+            outline: 0;
+            display: block;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            
+        }
+        .mod{border:1px solid black; border-collapse: collapse; border-left:none; border-right:none;}
+input {width:95%;}
+</style>
+</head>
+<body>
+<div id='top'>
+<h2>IBRA - INSURANCE 2022-23<br>CORRECTIONS PENDING</h1>
+<p>Data sorted on SR Number<br>
+Number of Applications: <span id='appno'></span><br>
+<span style='background:#ccffcc'>Number of Applications Reconciled: <span id='recno'></span></span><br>
+Data Date:05.11.2022 <br>Bank Statement upto 05-11-2022<br>Corrections Still Pending
+
+
+</p>
+<input type='text' id='myInput' onkeyup="fiterName()" placeholder="Search here..."></input>
+<br>
+</div>
+<div id='alldata' style='margin-top:230px; '>
+<p id='tdata'></p>
+</div>
+
+  <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p id="modalData"></p>
+        </div>
+    </div>
+
+<script>
+ url = 'https://script.google.com/macros/s/AKfycbxkaYSUygwStIhq9PIXSujYZemAj4lF9FElPYIBwbLeZy-PRAPhsQKisTp8f3JrrlrW6Q/exec'
+            async function getMyData() {
+                response = await fetch(url)
+                data = await response.json()
+                tempData = data["user"]
+                
+srnos = tempData.sort(function (a, b) { return a.srno - b.srno })                
+ tabdata=''               
+                
+//srnos = tempData.filter(a=> a.relation.toLowerCase() === "1self").sort(function (a, b) { return a.srno - b.srno }) 
+
+srnos.forEach(function(a) { tabdata += `<tr bgcolor=${clr(a.premium*1)} onclick='rowclick(this.id)' id='${a.srno}' ><td> SR No ${a.srno}<br>${a.name}-(${a.membno})  `})                
+document.getElementById('tdata').innerHTML =`<table id='regionTable' class='pname' border=1 ><tr><td> SR No  and Name-(Memb No) ${tabdata}  </table>`              
+document.getElementById('appno').innerHTML = srnos.length                
+document.getElementById('recno').innerHTML = tempData.filter(a=> a.premium >0).length
+                
+                }
+               
+  getMyData()              
+
+
+premiumArray = [
+[0,'Not Filled',0,0],
+[35913,	"Family",	300000,	0],
+[43281,	"Family", 300000,	300000],
+[44754,	"Family",	300000,	400000],
+[46173,	"Family",	400000,	0],
+[53541,	"Family",	400000,	300000],
+[55014,	"Family",	400000,	400000],
+[58452,	"Family",	400000,	500000],
+[27376,	"Self",	300000,	0],
+[32326,	"Self",	300000,	300000],
+[33316,	"Self",	300000,	400000],
+[38940,	"Self",	400000,	0],
+[43890,	"Self",	400000,	300000],
+[44880,	"Self",	400000,	400000],
+[47191,	"Self",	400000,	500000]]
+
+paobject = premiumArray.map(([premium, type, base, supertop]) => ({ premium, type, base, supertop }))
+
+clv=''
+
+function clr(c){
+c >0 ? clv= '#ccffcc' : clv='#f9e6ff'
+return clv
+    
+}
+
+
+
+function rowclick(id){
+//window.scrollTo(0,0)
+//alert(typeof(id))
+rowdat = tempData.filter(a=> a.srno === id*1)
+
+pamt = rowdat[0].premium ==="" ? 0 : rowdat[0].premium
+
+ptable =  paobject.filter(a => a.premium === pamt)
+
+
+
+x=rowdat[0].name
+//alert(x)
+//document.getElementById('inddata').style.display='block'
+//document.getElementById('inddata').innerHTML=x
+x=rowdat[0].name
+//alert(x)
+//document.getElementById('inddata').style.display='block'
+//document.getElementById('inddata').innerHTML=x
+inddata =`<table class='mod' BORDER=1><tr><td>Name:${rowdat[0].name}
+<tr><td>SR No:${rowdat[0].srno}
+<tr><td>Date of Birth:${rowdat[0].dob}<br><input class='cor' name='selfdob' type='number' >
+<tr><td>Gender:${rowdat[0].gender}<br><input class='cor' name='selfgend' type='text' >
+<tr><td>Mobile No:${rowdat[0].mobile}<br><input class='cor' name='mobile'  type='number' >
+<tr><td>Email:${rowdat[0].email}<br><input class='cor' name='email' type='email' >
+<tr><td>Adhar:${rowdat[0].adhar}<br><input class='cor' name='adhar'  type='number' >
+<tr><td>PAN:${rowdat[0].pan}<br><input class='cor' name='pan'  type='text' >
+<tr><td>Address:${rowdat[0].add}, ${rowdat[0].city} - ${rowdat[0].pin} <br><input class='cor' name='address'  type='text' >
+
+
+
+<tr><td>Spouse Name:${rowdat[0].spname}<br><input class='cor' name='spname'  type='text' >
+<tr><td>Spouse Gender:${rowdat[0].spgender}<br><input class='cor' name='spgend' type='text' >
+<tr><td>Spouse DOB:${rowdat[0].spdob}<br><input class='cor' name='spdob' type='text' >
+
+<tr><td>Nominee Name:${rowdat[0].nom}<br><input class='cor' name='nomname' type='text' >
+<tr><td>Nominee Gender:${rowdat[0].nomgender}<br><input class='cor' name='nomgend'  type='text' >
+<tr><td>Nominee DOB:${rowdat[0].nomdob}<br><input class='cor' name='nomdob' type='text' >
+
+<tr><td>Nominee Relation:${rowdat[0].nomrelation}<br><input class='cor' name='nomrelat'  type='text' >`
+document.getElementById("myModal").style.display = "block"
+
+
+            document.getElementById("modalData").style.backgroundColor  = clr(rowdat[0].premium*1)
+         //   alert(clr(rowdat[0].trstatus))
+
+document.getElementById("modalData").innerHTML=inddata +"<button onclick='inputs()' >submit</button></table>"
+                        
+
+
+}
+
+function inputs(){
+allinputstext= rowdat[0].srno +"#"
+allinputs = document.querySelectorAll(".cor");
+for (i=0; i<allinputs.length; i++){
+allinputstext += `#${allinputs[i].value}-`
+}
+//allinputstext.select();
+//allinputstext.setSelectionRange(0, 99999);
+navigator.clipboard.writeText(allinputstext);
+modal.style.display = "none";
+}
+
+
+function clbtn(){
+document.getElementById('inddata').innerHTML=''
+document.getElementById('inddata').style.display='none'
+
+}
+
+      var modal = document.getElementById("myModal");
+        var span = document.getElementsByClassName("close")[0];
+        
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+        
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+
+ function fiterName() {
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("myInput");
+                filter = input.value.toUpperCase().replaceAll(" ","");
+                table = document.getElementById("regionTable");
+                tr = table.getElementsByTagName("tr");
+                for (i = 0; i < tr.length; i++) {
+                    td = tr[i].getElementsByTagName("td")[0];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().replaceAll(" ","").indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                }
+            }
+
+
+</script>
+
+</body>
+</html>
+
