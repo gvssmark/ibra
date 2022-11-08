@@ -64,6 +64,14 @@ Data Date:05.11.2022 <br>Bank Statement upto 05-11-2022<br>Corrections Still Pen
             <p id="modalData"></p>
         </div>
     </div>
+<div id='submitted' style='width=360px; margin-top:0; height:100vh; background:black; color:white; display:none ' >
+<br><br><br><br>
+<h1 align=center>Data Copied - Open WhatsApp and Paste</h2>
+<br><br><br>
+<p id='copieddata'></p>
+
+</div>
+
 
 <script>
  url = 'https://script.google.com/macros/s/AKfycbxkaYSUygwStIhq9PIXSujYZemAj4lF9FElPYIBwbLeZy-PRAPhsQKisTp8f3JrrlrW6Q/exec'
@@ -174,6 +182,11 @@ allinputstext += `#${allinputs[i].value}`
 //allinputstext.setSelectionRange(0, 99999);
 navigator.clipboard.writeText(allinputstext);
 modal.style.display = "none";
+document.getElementById("submitted").style.display = "block"
+document.getElementById("top").style.display = "none"
+document.getElementById("alldata").style.display = "none"
+document.getElementById("copieddata").innerHTML = allinputstext
+
 }
 
 
