@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 
@@ -127,23 +128,23 @@ x=rowdat[0].name
 //alert(x)
 //document.getElementById('inddata').style.display='block'
 //document.getElementById('inddata').innerHTML=x
-inddata =`<table class='mod' BORDER=1><tr><td>Name:${rowdat[0].name}
+inddata =`<table class='mod' BORDER=0><tr><td>Name:${rowdat[0].name}
 <tr><td>SR No:${rowdat[0].srno}
-<tr><td>Date of Birth:${rowdat[0].dob}<br><input class='cor' name='selfdob' type='number' >
-<tr><td>Gender:${rowdat[0].gender}<br><input class='cor' name='selfgend' type='text' >
-<tr><td>Mobile No:${rowdat[0].mobile}<br><input class='cor' name='mobile'  type='number' >
-<tr><td>Email:${rowdat[0].email}<br><input class='cor' name='email' type='email' >
-<tr><td>Adhar:${rowdat[0].adhar}<br><input class='cor' name='adhar'  type='number' >
-<tr><td>PAN:${rowdat[0].pan}<br><input class='cor' name='pan'  type='text' >
-<tr><td>Spouse Name:${rowdat[0].spname}<br><input class='cor' name='spname'  type='text' >
-<tr><td>Spouse Gender:${rowdat[0].spgender}<br><input class='cor' name='spgend' type='text' >
-<tr><td>Spouse DOB:${rowdat[0].spdob}<br><input class='cor' name='spdob' type='text' >
+<tr><td>Date of Birth:${rowdat[0].dob}<br><input class='cor' name='selfdob' type='number' placeholder='SELF DOB YYYYMMDD format'>
+<tr><td>Gender:${rowdat[0].gender}<br><input class='cor' name='selfgend' type='text'  placeholder='SELF GENDER' >
+<tr><td>Mobile No:${rowdat[0].mobile}<br><input class='cor' name='mobile'  type='number'  placeholder='MOBILE'>
+<tr><td>Email:${rowdat[0].email}<br><input class='cor' name='email' type='email'  placeholder='EMAIL' >
+<tr><td>Adhar:${rowdat[0].adhar}<br><input class='cor' name='adhar'  type='number'  placeholder='ADHAR'>
+<tr><td>PAN:${rowdat[0].pan}<br><input class='cor' name='pan'  type='text'  placeholder='PAN'>
+<tr><td>Spouse Name:${rowdat[0].spname}<br><input class='cor' name='spname'  type='text'  placeholder='SPOUSE NAME'>
+<tr><td>Spouse Gender:${rowdat[0].spgender}<br><input class='cor' name='spgend' type='text'  placeholder='SPOUSE GENDER' >
+<tr><td>Spouse DOB:${rowdat[0].spdob}<br><input class='cor' name='spdob' type='text'   placeholder='SPOUSE DOB  YYYYMMDD format'>
 
-<tr><td>Nominee Name:${rowdat[0].nom}<br><input class='cor' name='nomname' type='text' >
-<tr><td>Nominee Gender:${rowdat[0].nomgender}<br><input class='cor' name='nomgend'  type='text' >
-<tr><td>Nominee DOB:${rowdat[0].nomdob}<br><input class='cor' name='nomdob' type='text' >
+<tr><td>Nominee Name:${rowdat[0].nom}<br><input class='cor' name='nomname' type='text'  placeholder='NOM NAME'>
+<tr><td>Nominee Gender:${rowdat[0].nomgender}<br><input class='cor' name='nomgend'  type='text'   placeholder='NOM GENDER'>
+<tr><td>Nominee DOB:${rowdat[0].nomdob}<br><input class='cor' name='nomdob' type='text'  placeholder='NOM DOB YYYYMMDD format'>
 
-<tr><td>Nominee Relation:${rowdat[0].nomrelation}<br><input class='cor' name='nomrelat'  type='text' >`
+<tr><td>Nominee Relation:${rowdat[0].nomrelation}<br><input class='cor' name='nomrelat'  type='text'  placeholder='NOM RELATION'>`
 document.getElementById("myModal").style.display = "block"
 
 
