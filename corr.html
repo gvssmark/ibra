@@ -6,6 +6,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html>
 
@@ -142,10 +143,6 @@ inddata =`<table class='mod' BORDER=1><tr><td>Name:${rowdat[0].name}
 <tr><td>Email:${rowdat[0].email}<br><input class='cor' name='email' type='email' >
 <tr><td>Adhar:${rowdat[0].adhar}<br><input class='cor' name='adhar'  type='number' >
 <tr><td>PAN:${rowdat[0].pan}<br><input class='cor' name='pan'  type='text' >
-<tr><td>Address:${rowdat[0].add}, ${rowdat[0].city} - ${rowdat[0].pin} <br><input class='cor' name='address'  type='text' >
-
-
-
 <tr><td>Spouse Name:${rowdat[0].spname}<br><input class='cor' name='spname'  type='text' >
 <tr><td>Spouse Gender:${rowdat[0].spgender}<br><input class='cor' name='spgend' type='text' >
 <tr><td>Spouse DOB:${rowdat[0].spdob}<br><input class='cor' name='spdob' type='text' >
@@ -168,10 +165,10 @@ document.getElementById("modalData").innerHTML=inddata +"<button onclick='inputs
 }
 
 function inputs(){
-allinputstext= rowdat[0].srno +"#"
+allinputstext= rowdat[0].srno 
 allinputs = document.querySelectorAll(".cor");
 for (i=0; i<allinputs.length; i++){
-allinputstext += `#${allinputs[i].value}-`
+allinputstext += `#${allinputs[i].value}`
 }
 //allinputstext.select();
 //allinputstext.setSelectionRange(0, 99999);
