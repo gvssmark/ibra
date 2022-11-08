@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html>
 
@@ -30,7 +31,7 @@ h2, h4{text-align:center; padding:0; margin-top:0; box-shadow: 0 4px 8px 0 rgba(
             
         }
         .mod{border:1px solid black; border-collapse: collapse; border-left:none; border-right:none;}
-input {width:95%;}
+.cor {width:100%; outline:none; border-top:none; border-right:none; border-left:none;  autocomplete:off}
 </style>
 </head>
 <body>
@@ -130,21 +131,21 @@ x=rowdat[0].name
 //document.getElementById('inddata').innerHTML=x
 inddata =`<table class='mod' BORDER=0><tr><td>Name:${rowdat[0].name}
 <tr><td>SR No:${rowdat[0].srno}
-<tr><td>Date of Birth:${rowdat[0].dob}<br><input class='cor' name='selfdob' type='number' placeholder='SELF DOB YYYYMMDD format'>
-<tr><td>Gender:${rowdat[0].gender}<br><input class='cor' name='selfgend' type='text'  placeholder='SELF GENDER' >
-<tr><td>Mobile No:${rowdat[0].mobile}<br><input class='cor' name='mobile'  type='number'  placeholder='MOBILE'>
-<tr><td>Email:${rowdat[0].email}<br><input class='cor' name='email' type='email'  placeholder='EMAIL' >
-<tr><td>Adhar:${rowdat[0].adhar}<br><input class='cor' name='adhar'  type='number'  placeholder='ADHAR'>
-<tr><td>PAN:${rowdat[0].pan}<br><input class='cor' name='pan'  type='text'  placeholder='PAN'>
-<tr><td>Spouse Name:${rowdat[0].spname}<br><input class='cor' name='spname'  type='text'  placeholder='SPOUSE NAME'>
-<tr><td>Spouse Gender:${rowdat[0].spgender}<br><input class='cor' name='spgend' type='text'  placeholder='SPOUSE GENDER' >
-<tr><td>Spouse DOB:${rowdat[0].spdob}<br><input class='cor' name='spdob' type='text'   placeholder='SPOUSE DOB  YYYYMMDD format'>
+<tr><td>Date of Birth:${rowdat[0].dob}<br><input class='cor' name='selfdob' type='number' placeholder='SELF DOB YYYYMMDD format' autocomplete="off">
+<tr><td>Gender:${rowdat[0].gender}<br><input class='cor' name='selfgend' type='text'  placeholder='SELF GENDER' autocomplete="off">
+<tr><td>Mobile No:${rowdat[0].mobile}<br><input class='cor' name='mobile'  type='number'  placeholder='MOBILE' autocomplete="off">
+<tr><td>Email:${rowdat[0].email}<br><input class='cor' name='email' type='email'  placeholder='EMAIL' autocomplete="off">
+<tr><td>Adhar:${rowdat[0].adhar}<br><input class='cor' name='adhar'  type='number'  placeholder='ADHAR' autocomplete="off">
+<tr><td>PAN:${rowdat[0].pan}<br><input class='cor' name='pan'  type='text'  placeholder='PAN' autocomplete="off">
+<tr><td>Spouse Name:${rowdat[0].spname}<br><input class='cor' name='spname'  type='text'  placeholder='SPOUSE NAME' autocomplete="off">
+<tr><td>Spouse Gender:${rowdat[0].spgender}<br><input class='cor' name='spgend' type='text'  placeholder='SPOUSE GENDER' autocomplete="off">
+<tr><td>Spouse DOB:${rowdat[0].spdob}<br><input class='cor' name='spdob' type='text'   placeholder='SPOUSE DOB  YYYYMMDD format' autocomplete="off">
 
-<tr><td>Nominee Name:${rowdat[0].nom}<br><input class='cor' name='nomname' type='text'  placeholder='NOM NAME'>
-<tr><td>Nominee Gender:${rowdat[0].nomgender}<br><input class='cor' name='nomgend'  type='text'   placeholder='NOM GENDER'>
-<tr><td>Nominee DOB:${rowdat[0].nomdob}<br><input class='cor' name='nomdob' type='text'  placeholder='NOM DOB YYYYMMDD format'>
+<tr><td>Nominee Name:${rowdat[0].nom}<br><input class='cor' name='nomname' type='text'  placeholder='NOM NAME' autocomplete="off">
+<tr><td>Nominee Gender:${rowdat[0].nomgender}<br><input class='cor' name='nomgend'  type='text'   placeholder='NOM GENDER' autocomplete="off">
+<tr><td>Nominee DOB:${rowdat[0].nomdob}<br><input class='cor' name='nomdob' type='text'  placeholder='NOM DOB YYYYMMDD format' autocomplete="off">
 
-<tr><td>Nominee Relation:${rowdat[0].nomrelation}<br><input class='cor' name='nomrelat'  type='text'  placeholder='NOM RELATION'>`
+<tr><td>Nominee Relation:${rowdat[0].nomrelation}<br><input class='cor' name='nomrelat'  type='text'  placeholder='NOM RELATION' autocomplete="off">`
 document.getElementById("myModal").style.display = "block"
 
 
