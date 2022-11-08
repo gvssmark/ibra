@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html>
 
@@ -159,11 +160,15 @@ document.getElementById("modalData").innerHTML=inddata +"<button onclick='inputs
 }
 
 function inputs(){
-allinputstext= rowdat[0].srno 
+inputname=['Self DOB', 'Self Gender', 'Mobile', 'Email', 'Adhar', 'PAN', 'Spouse Name', 'Spouse Gender', 'Spouse DOB', 'Nominee Namee', 'Nominee Gender', 'Nominee DOB', 'Nominee Relation']
+
+allinputstext= rowdat[0].srno +"\n"
 allinputs = document.querySelectorAll(".cor");
 for (i=0; i<allinputs.length; i++){
-allinputstext += `#${allinputs[i].value}`
+allinputstext += allinputs[i].value.length>0 ? `${inputname[i]}#${allinputs[i].value}\n` :""
 }
+
+
 //allinputstext.select();
 //allinputstext.setSelectionRange(0, 99999);
 navigator.clipboard.writeText(allinputstext);
