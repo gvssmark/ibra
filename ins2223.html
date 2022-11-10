@@ -92,7 +92,11 @@ premiumArray = [
 [38940,	"Self",	400000,	0],
 [43890,	"Self",	400000,	300000],
 [44880,	"Self",	400000,	400000],
-[47191,	"Self",	400000,	500000]]
+[47191,	"Self",	400000,	500000],
+[49474,	"Family+Hanicap",	300000,	400000],
+[48001,	"Family+Hanicap",	300000,	300000],
+
+]
 
 paobject = premiumArray.map(([premium, type, base, supertop]) => ({ premium, type, base, supertop }))
 
@@ -125,7 +129,7 @@ x=rowdat[0].name
 //alert(x)
 //document.getElementById('inddata').style.display='block'
 //document.getElementById('inddata').innerHTML=x
-inddata =`<table class='mod' BORDER=1><tr><td>Name:${rowdat[0].name}
+inddata =`<table class='mod' BORDER=1><tr><td>Name: ${rowdat[0].name}
 <tr><td>Premium:${rowdat[0].premium}
 
 <tr><td>Policy Type:${ptable[0].type}
