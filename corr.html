@@ -1,9 +1,5 @@
-
-
-
 <!DOCTYPE html>
 <html>
-
 <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins&effect=neon|outline|emboss|shadow-multiple">
@@ -18,20 +14,8 @@ body{width:360px; margin:auto;}
 #regionTable {border-collapse: collapse;width: 100%;margin-left: 1px;margin-right: 1px;border: 1px soild black;font-size: large; border-right:none; border-left:none;}
 h2, h4{text-align:center; padding:0; margin-top:0; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); background:yellow;}
 #top{position:fixed; background:powderblue; top:0; width:360px;}
-#myInput {
-            margin-top: -10px;
-            width: 300px;;
-            margin-left:30px;
-            height: 30px;
-            border-radius: 15px;
-            background-color: cyan;
-            border: 0px;
-            outline: 0;
-            display: block;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-            
-        }
-        .mod{border:1px solid black; border-collapse: collapse; border-left:none; border-right:none;}
+#myInput {margin-top: -10px;width: 300px;;margin-left:30px;height: 30px;border-radius: 15px;background-color: cyan;border: 0px;outline: 0;display: block;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);}
+.mod{border:1px solid black; border-collapse: collapse; border-left:none; border-right:none;}
 .cor {width:100%; outline:none; border:1px solid red; border-top:none; background:inherit; border-right:none; border-left:none;  autocomplete:off}
 </style>
 </head>
@@ -41,11 +25,9 @@ h2, h4{text-align:center; padding:0; margin-top:0; box-shadow: 0 4px 8px 0 rgba(
 <input type='text' id='myInput' onkeyup="fiterName()" placeholder="Search here..."></input>
 <br>
 </div>
-
 <div id='alldata' style='margin-top:130px; '>
 <p id='tdata'></p>
 </div>
-
   <div id="myModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -54,14 +36,10 @@ h2, h4{text-align:center; padding:0; margin-top:0; box-shadow: 0 4px 8px 0 rgba(
     </div>
 <div id='submitted' style='width=360px; margin-top:0; height:100vh; background:black; color:white; display:none ' >
 <br><br><br><br>
-<h1 align=center>Data Copied <br> Open WhatsApp <br> Paste and Send to <br>IBRA</h2>
+<h1 align=center>Data Copied <br> Open WhatsApp <br> Select Recipient  <br>Paste and Send to <br>IBRA</h2>
 <br><br><br>
-
 <p id='copieddata' style='margin-left:10px;'></p>
-
 </div>
-
-
 <script>
  url = 'https://script.google.com/macros/s/AKfycbxkaYSUygwStIhq9PIXSujYZemAj4lF9FElPYIBwbLeZy-PRAPhsQKisTp8f3JrrlrW6Q/exec'
             async function getMyData() {
@@ -71,17 +49,10 @@ h2, h4{text-align:center; padding:0; margin-top:0; box-shadow: 0 4px 8px 0 rgba(
                 
 srnos = tempData.sort(function (a, b) { return a.srno - b.srno })                
  tabdata=''               
-                
-//srnos = tempData.filter(a=> a.relation.toLowerCase() === "1self").sort(function (a, b) { return a.srno - b.srno }) 
-
 srnos.forEach(function(a) { tabdata += `<tr bgcolor=${clr(a.premium*1)} onclick='rowclick(this.id)' id='${a.srno}' ><td> SR No ${a.srno}<br>${a.name}-(${a.membno})  `})                
 document.getElementById('tdata').innerHTML =`<table id='regionTable' class='pname' border=1 ><tr><td> SR No  and Name-(Memb No) ${tabdata}  </table>`              
-                
-                }
-               
+}
   getMyData()              
-
-
 premiumArray = [
 [0,'Not Filled',0,0],
 [35913,	"Family",	300000,	0],
@@ -98,38 +69,18 @@ premiumArray = [
 [43890,	"Self",	400000,	300000],
 [44880,	"Self",	400000,	400000],
 [47191,	"Self",	400000,	500000]]
-
 paobject = premiumArray.map(([premium, type, base, supertop]) => ({ premium, type, base, supertop }))
-
 clv=''
-
 function clr(c){
 c >0 ? clv= '#ccffcc' : clv='#f9e6ff'
 return clv
-    
 }
-
-
-
 function rowclick(id){
 //window.scrollTo(0,0)
 //alert(typeof(id))
 rowdat = tempData.filter(a=> a.srno === id*1)
-
 pamt = rowdat[0].premium ==="" ? 0 : rowdat[0].premium
-
 ptable =  paobject.filter(a => a.premium === pamt)
-
-
-
-x=rowdat[0].name
-//alert(x)
-//document.getElementById('inddata').style.display='block'
-//document.getElementById('inddata').innerHTML=x
-x=rowdat[0].name
-//alert(x)
-//document.getElementById('inddata').style.display='block'
-//document.getElementById('inddata').innerHTML=x
 inddata =`<table class='mod' BORDER=0><tr><td>Name:${rowdat[0].name}
 <tr><td>SR No:${rowdat[0].srno}
 <tr><td>Date of Birth:${rowdat[0].dob}<br><input class='cor' name='selfdob' type='number' placeholder='SELF DOB YYYYMMDD format' autocomplete="off">
@@ -141,59 +92,42 @@ inddata =`<table class='mod' BORDER=0><tr><td>Name:${rowdat[0].name}
 <tr><td>Spouse Name:${rowdat[0].spname}<br><input class='cor' name='spname'  type='text'  placeholder='SPOUSE NAME' autocomplete="off">
 <tr><td>Spouse Gender:${rowdat[0].spgender}<br><input class='cor' name='spgend' type='text'  placeholder='SPOUSE GENDER' autocomplete="off">
 <tr><td>Spouse DOB:${rowdat[0].spdob}<br><input class='cor' name='spdob' type='text'   placeholder='SPOUSE DOB  YYYYMMDD format' autocomplete="off">
-
 <tr><td>Nominee Name:${rowdat[0].nom}<br><input class='cor' name='nomname' type='text'  placeholder='NOM NAME' autocomplete="off">
 <tr><td>Nominee Gender:${rowdat[0].nomgender}<br><input class='cor' name='nomgend'  type='text'   placeholder='NOM GENDER' autocomplete="off">
 <tr><td>Nominee DOB:${rowdat[0].nomdob}<br><input class='cor' name='nomdob' type='text'  placeholder='NOM DOB YYYYMMDD format' autocomplete="off">
-
 <tr><td>Nominee Relation:${rowdat[0].nomrelation}<br><input class='cor' name='nomrelat'  type='text'  placeholder='NOM RELATION' autocomplete="off">`
 document.getElementById("myModal").style.display = "block"
-
-
-            document.getElementById("modalData").style.backgroundColor  = clr(rowdat[0].premium*1)
-         //   alert(clr(rowdat[0].trstatus))
-
+document.getElementById("modalData").style.backgroundColor  = clr(rowdat[0].premium*1)
 document.getElementById("modalData").innerHTML=inddata +"<button onclick='inputs()' >submit</button></table>"
-                        
-
-
 }
 
 function inputs(){
 inputname=['Self DOB', 'Self Gender', 'Mobile', 'Email', 'Adhar', 'PAN', 'Spouse Name', 'Spouse Gender', 'Spouse DOB', 'Nominee Namee', 'Nominee Gender', 'Nominee DOB', 'Nominee Relation']
-
-allinputstext= rowdat[0].srno +"\n"
+allinputstext= ''
 allinputs = document.querySelectorAll(".cor");
 for (i=0; i<allinputs.length; i++){
-allinputstext += allinputs[i].value.length>0 ? `${inputname[i]}#${allinputs[i].value}\n` :""
+allinputstext += allinputs[i].value.length>0 ? `${rowdat[0].srno}#${inputname[i]}#${allinputs[i].value}\n` :""
 }
 
 
-//allinputstext.select();
-//allinputstext.setSelectionRange(0, 99999);
 navigator.clipboard.writeText(allinputstext);
 modal.style.display = "none";
 document.getElementById("submitted").style.display = "block"
 document.getElementById("top").style.display = "none"
 document.getElementById("alldata").style.display = "none"
-document.getElementById("copieddata").innerHTML = allinputstext
-
+//document.getElementById("copieddata").innerHTML = allinputstext
 }
 
 
 function clbtn(){
 document.getElementById('inddata').innerHTML=''
 document.getElementById('inddata').style.display='none'
-
 }
-
       var modal = document.getElementById("myModal");
         var span = document.getElementsByClassName("close")[0];
-        
         span.onclick = function () {
             modal.style.display = "none";
         }
-        
         window.onclick = function (event) {
             if (event.target == modal) {
                 modal.style.display = "none";
@@ -219,10 +153,7 @@ document.getElementById('inddata').style.display='none'
                     }
                 }
             }
-
-
 </script>
-
 </body>
 </html>
 
