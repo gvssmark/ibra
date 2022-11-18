@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins&effect=neon|outline|emboss|shadow-multiple">
+         <title>IBRA Ins 2223</title>
+        <style>
+.pname {font-family: "Poppins", sans-serif; text-shadow: 3px 3px 3px #ababab;   font-size:15px; }
+body{width:360px; margin:auto;}
+.modal {display: none;position: fixed;z-index: 10;padding-top: 1px;left: inherit;top: 0;width: 360px;height: 100%;overflow: auto;background-color: rgb(0, 0, 0);background-color: rgba(0, 0, 0, 0.4);}
+.modal-content {background-color: #ffe7c0;margin: auto;padding: 2px;padding-bottom: 2px;border: 1px solid #888;width: 95%;border-radius: 15px; height:auto; overflow-y: scroll;  font-family: Arial, Helvetica, sans-serif; font-size:small;}
+.close {color: #fd0b20;float: right;font-size: 28px;font-weight: bold;}
+#modalData{padding:0px;}
+#regionTable {border-collapse: collapse;width: 100%;margin-left: 1px;margin-right: 1px;border: 1px soild black;font-size: large; border-right:none; border-left:none;}
+h2, h4{text-align:center; padding:0; margin-top:0; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); background:yellow;}
+#top{position:fixed; background:powderblue; top:0; width:360px;}
+#myInput {margin-top: -10px;width: 300px;;margin-left:30px;height: 30px;border-radius: 15px;background-color: cyan;border: 0px;outline: 0;display: block;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);}
+.mod{border:1px solid black; border-collapse: collapse; border-left:none; border-right:none; text-align:center; }
+.cor {width:100%; height:30px;  outline:none; border:1px solid red; border-top:none; background:yellow; border-right:none; border-left:none; font-size:15px; autocomplete:off}
+</style>
+</head>
+<body>
+<div id='top'>
+<h2>IBRA - INSURANCE 2022-23<br>CORRECTIONS </h1>
+<input type='text' id='myInput' onkeyup="fiterName()" placeholder="Search here..."></input>
+<br>
+</div>
+<div id='alldata' style='margin-top:130px; '>
+<p id='tdata'></p>
+</div>
+  <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p id="modalData"></p>
+        </div>
+    </div>
+<div id='submitted' style='width=360px; margin-top:0; height:100vh; background:black; color:white; display:none ' >
+<br><br><br><br>
+<h1 align=center>Data Copied <br> Open WhatsApp <br> Select Recipient  <br>Paste and Send to <br>IBRA</h2>
+<br><br><br>
+<p id='copieddata' style='margin-left:10px;'></p>
+</div>
+<script>
+ url = 'https://script.google.com/macros/s/AKfycbxkaYSUygwStIhq9PIXSujYZemAj4lF9FElPYIBwbLeZy-PRAPhsQKisTp8f3JrrlrW6Q/exec'
+            async function getMyData() {
+                response = await fetch(url)
+                data = await response.json()
+                tempData = data["user"]
+                
+srnos = tempData.sort(function (a, b) { return a.srno - b.srno })                
+ tabdata=''               
+srnos.forEach(function(a) { tabdata += `<tr bgcolor=${clr(a.premium*1)} onclick='rowclick(this.id)' id='${a.srno}' ><td> SR No ${a.srno}<br>${a.name}-(${a.membno})  `})                
+document.getElementById('tdata').innerHTML =`<table id='regionTable' class='pname' border=1 ><tr><td> SR No  and Name-(Memb No) ${tabdata}  </table>`              
+}
+  getMyData()              
+premiumArray = [
+[0,'Not Filled',0,0],
+[35913,	"Family",	300000,	0],
+[43281,	"Family", 300000,	300000],
+[44754,	"Family",	300000,	400000],
+[46173,	"Family",	400000,	0],
+[53541,	"Family",	400000,	300000],
+[55014,	"Family",	400000,	400000],
+[58452,	"Family",	400000,	500000],
+[27376,	"Self",	300000,	0],
+[32326,	"Self",	300000,	300000],
+[33316,	"Self",	300000,	400000],
+[38940,	"Self",	400000,	0],
+[43890,	"Self",	400000,	300000],
+[44880,	"Self",	400000,	400000],
+[47191,	"Self",	400000,	500000]]
+paobject = premiumArray.map(([premium, type, base, supertop]) => ({ premium, type, base, supertop }))
+clv=''
+function clr(c){
+c >0 ? clv= '#ccffcc' : clv='#f9e6ff'
+return clv
+}
+function rowclick(id){
+//window.scrollTo(0,0)
+//alert(typeof(id))
+rowdat = tempData.filter(a=> a.srno === id*1)
+pamt = rowdat[0].premium ==="" ? 0 : rowdat[0].premium
+ptable =  paobject.filter(a => a.premium === pamt)
+inddata =`<table class='mod' align=center BORDER=0><tr><td>Name:${rowdat[0].name}
+<tr><td>SR No:${rowdat[0].srno}<BR><BR>
+<tr ><td style='background:black; color:white;'>SELF DETAILS
+<tr><td>Name:${rowdat[0].name}<br><input class='cor' name='selfname' type='text' placeholder='SELF NAME' autocomplete="off">
+<tr><td>Date of Birth:${rowdat[0].dob}<br><input class='cor' name='selfdob' type='number' placeholder='SELF DOB YYYYMMDD format' autocomplete="off">
+<tr><td>Gender:${rowdat[0].gender}<br><input class='cor' name='selfgend' type='text'  placeholder='SELF GENDER' autocomplete="off">
+<tr ><td style='background:black; color:white;'>SPOUSE DETAILS
+<tr><td>Spouse Name:${rowdat[0].spname}<br><input class='cor' name='spname'  type='text'  placeholder='SPOUSE NAME' autocomplete="off">
+<tr><td>Spouse Gender:${rowdat[0].spgender}<br><input class='cor' name='spgend' type='text'  placeholder='SPOUSE GENDER' autocomplete="off">
+<tr><td>Spouse DOB:${rowdat[0].spdob}<br><input class='cor' name='spdob' type='text'   placeholder='SPOUSE DOB  YYYYMMDD format' autocomplete="off">
+`
+document.getElementById("myModal").style.display = "block"
+document.getElementById("modalData").style.backgroundColor  = clr(rowdat[0].premium*1)
+document.getElementById("modalData").innerHTML=inddata +"<BR><BR><button onclick='inputs()' >submit</button><BR><BR></table>"
+}
+
+function inputs(){
+inputname=['Self Name','Self DOB', 'Self Gender', 'Mobile', 'Email', 'Adhar', 'PAN', 'Spouse Name', 'Spouse Gender', 'Spouse DOB', 'Nominee Namee', 'Nominee Gender', 'Nominee DOB', 'Nominee Relation']
+allinputstext= ''
+allinputs = document.querySelectorAll(".cor");
+for (i=0; i<allinputs.length; i++){
+allinputstext += allinputs[i].value.length>0 ? `${rowdat[0].srno}#${inputname[i]}#${allinputs[i].value}\n` :""
+}
+
+
+navigator.clipboard.writeText(allinputstext);
+modal.style.display = "none";
+document.getElementById("submitted").style.display = "block"
+document.getElementById("top").style.display = "none"
+document.getElementById("alldata").style.display = "none"
+//document.getElementById("copieddata").innerHTML = allinputstext
+}
+
+
+function clbtn(){
+document.getElementById('inddata').innerHTML=''
+document.getElementById('inddata').style.display='none'
+}
+      var modal = document.getElementById("myModal");
+        var span = document.getElementsByClassName("close")[0];
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+
+ function fiterName() {
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("myInput");
+                filter = input.value.toUpperCase().replaceAll(" ","");
+                table = document.getElementById("regionTable");
+                tr = table.getElementsByTagName("tr");
+                for (i = 0; i < tr.length; i++) {
+                    td = tr[i].getElementsByTagName("td")[0];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().replaceAll(" ","").indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                }
+            }
+</script>
+</body>
+</html>
+
