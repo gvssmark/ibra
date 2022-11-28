@@ -82,17 +82,17 @@ ${/*<tr><td>Bank Name: ${rowdat[0].bank}*/''}
 
 ptable[0].type === 'Family'? s=`
 <tr bgcolor=cyan><td> SPOUSE DETAILS
-<tr><td>Spouse Name:${rowdat[0].spname}
-<tr><td>Spouse Gender :${rowdat[0].spgender} 
-<tr><td>Spouse DOB :  ${rowdat[0].spdob}
+<tr><td>Name:${rowdat[0].spname}
+<tr><td>Gender :${rowdat[0].spgender} 
+<tr><td>DOB :  ${rowdat[0].spdob}
 ` : s=''
 
 inddata =`<BR><BR><table ALIGN=CENTER width=360 class='mod' BORDER=1>
 <tr bgcolor=cyan><td> SELF DETAILS
 <tr><td>SR No :${rowdat[0].srno} 
 <tr><td>Name: ${rowdat[0].name}
-<tr><td>Self DOB : ${rowdat[0].dob} 
-<tr><td>Self Gender: ${rowdat[0].gender}
+<tr><td>DOB : ${rowdat[0].dob} 
+<tr><td>Gender: ${rowdat[0].gender}
 ${s}
 <tr bgcolor=cyan><td> POLICY DETAILS
 <tr><td>Premium: Rs.${rowdat[0].premium}
