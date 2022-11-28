@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -57,13 +58,12 @@ paobject = premiumArray.map(([premium, type, base, supertop]) => ({ premium, typ
 function submitclick(){
 tempsr = input = document.getElementById("myInput").value*1
 rowclick(tempsr)
-input = document.getElementById("myInput").value=""
 }
 function rowclick(id){
 rowdat = tempData.filter(a=> a.srno === id*1)
 pamt = rowdat[0].premium ==="" ? 0 : rowdat[0].premium
 ptable =  paobject.filter(a => a.premium === pamt)
-inddata =`<table class='mod' BORDER=1><tr><td>Name: ${rowdat[0].name}
+inddata1 =`<table class='mod' BORDER=1><tr><td>Name: ${rowdat[0].name}
 <tr><td>Premium: Rs.${rowdat[0].premium}
 <tr><td>Policy Type: ${ptable[0].type}
 <tr><td>Base / Super Topup: Rs.${ptable[0].base} / Rs.${ptable[0].supertop} 
@@ -79,6 +79,33 @@ ${/*<tr><td>Bank Name: ${rowdat[0].bank}*/''}
 <tr><td>Nominee Name:${rowdat[0].nom}
 <tr><td>Nominee Gender / DOB :${rowdat[0].nomgender} / ${rowdat[0].nomdob}
 <tr><td>Nominee Relation:${rowdat[0].nomrelation}`
+
+ptable[0].type === 'Family'? s=`
+<tr bgcolor=cyan><td> SPOUSE DETAILS
+<tr><td>Spouse Name:${rowdat[0].spname}
+<tr><td>Spouse Gender :${rowdat[0].spgender} 
+<tr><td>Spouse DOB :  ${rowdat[0].spdob}
+` : s=''
+
+inddata =`<BR><BR><table ALIGN=CENTER class='mod' BORDER=1>
+<tr bgcolor=cyan><td> SELF DETAILS
+<tr><td>SR No :${rowdat[0].srno} 
+<tr><td>Name: ${rowdat[0].name}
+<tr><td>Self DOB : ${rowdat[0].dob} 
+<tr><td>Self Gender: ${rowdat[0].gender}
+${s}
+<tr bgcolor=cyan><td> POLICY DETAILS
+<tr><td>Premium: Rs.${rowdat[0].premium}
+<tr><td>Policy Type: ${ptable[0].type}
+<tr><td>Base : Rs.${ptable[0].base}  
+<tr><td>Super Topup: Rs.${ptable[0].supertop} 
+
+`
+
+
+
+
+
 document.getElementById("tt").innerHTML=inddata +"</table>"
 }
 </script>
