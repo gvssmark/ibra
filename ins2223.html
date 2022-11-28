@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -63,22 +64,28 @@ function rowclick(id){
 rowdat = tempData.filter(a=> a.srno === id*1)
 pamt = rowdat[0].premium ==="" ? 0 : rowdat[0].premium
 ptable =  paobject.filter(a => a.premium === pamt)
-inddata1 =`<table class='mod' BORDER=1><tr><td>Name: ${rowdat[0].name}
-<tr><td>Premium: Rs.${rowdat[0].premium}
-<tr><td>Policy Type: ${ptable[0].type}
-<tr><td>Base / Super Topup: Rs.${ptable[0].base} / Rs.${ptable[0].supertop} 
+
+inddata =`<table class='mod' BORDER=1><tr bgcolor=cyan><td>SELF DETAILS<tr><td>Name: ${rowdat[0].name}
 <tr><td>SR No / Memb No:${rowdat[0].srno} / ${rowdat[0].membno}
 <tr><td>Date of Birth / Gender: ${rowdat[0].dob} / ${rowdat[0].gender}
 ${/*<tr><td>Bank Name: ${rowdat[0].bank}*/''}
+<tr bgcolor=cyan><td>SPOUSE DETAILS
+<tr><td>Name:${rowdat[0].spname}
+<tr><td>Gender / DOB :${rowdat[0].spgender} /  ${rowdat[0].spdob}
+<tr bgcolor=cyan><td>NOMINEE DETAILS
+<tr><td>Name:${rowdat[0].nom}
+<tr><td>Gender / DOB :${rowdat[0].nomgender} / ${rowdat[0].nomdob}
+<tr><td>Relation:${rowdat[0].nomrelation}
+<tr bgcolor=cyan><td>OTHER DETAILS
+<tr><td>Premium: Rs.${rowdat[0].premium}
+<tr><td>Policy Type: ${ptable[0].type}
+<tr><td>Base / Super Topup: Rs.${ptable[0].base} / Rs.${ptable[0].supertop} 
 <tr><td>Mobile No: ${rowdat[0].mobile}
 <tr><td>Email: ${rowdat[0].email}
 <tr><td>Adhar / PAN: ${rowdat[0].adhar} / ${rowdat[0].pan}
 <tr><td>Address:${rowdat[0].add}, ${rowdat[0].city} - ${rowdat[0].pin} 
-<tr><td>Spouse Name:${rowdat[0].spname}
-<tr><td>Spouse Gender / DOB :${rowdat[0].spgender} /  ${rowdat[0].spdob}
-<tr><td>Nominee Name:${rowdat[0].nom}
-<tr><td>Nominee Gender / DOB :${rowdat[0].nomgender} / ${rowdat[0].nomdob}
-<tr><td>Nominee Relation:${rowdat[0].nomrelation}`
+
+`
 
 ptable[0].type === 'Family'? s=`
 <tr bgcolor=cyan><td> SPOUSE DETAILS
@@ -87,7 +94,7 @@ ptable[0].type === 'Family'? s=`
 <tr><td>DOB :  ${rowdat[0].spdob}
 ` : s=''
 
-inddata =`<BR><BR><table ALIGN=CENTER width=360 class='mod' BORDER=1>
+inddata1 =`<BR><BR><table ALIGN=CENTER width=360 class='mod' BORDER=1>
 <tr bgcolor=cyan><td> SELF DETAILS
 <tr><td>SR No :${rowdat[0].srno} 
 <tr><td>Name: ${rowdat[0].name}
@@ -99,15 +106,32 @@ ${s}
 <tr><td>Policy Type: ${ptable[0].type}
 <tr><td>Base : Rs.${ptable[0].base}  
 <tr><td>Super Topup: Rs.${ptable[0].supertop} 
-
 `
-
-
-
-
-
-document.getElementById("tt").innerHTML=inddata +"</table>"
+totable(rowdat[0].srno)
+document.getElementById("tt").innerHTML=inddata+tabdata +"</table>"
 }
+
+correctionsurl = 'https://script.google.com/macros/s/AKfycbxUDQRu-NlYI9bcDP72iyoyaaDUMIae1q2zqEth-zktyYppABl6iM8uPJ3ZstRggAj8/exec'
+            async function corrgetMyData() {
+                response = await fetch(correctionsurl)
+                corrdata = await response.json()
+                corrtempData = corrdata["user"]
+                
+//document.getElementById('report').innerHTML= totable(tempData)
+
+} 
+
+
+corrgetMyData()
+function totable(tsr){
+tabdata='<tr bgcolor=cyan><td>PENDING CORRECTIONS (if any)'
+
+corrtempData.filter(b=> b.col1 === tsr).forEach(function(a) { tabdata += `<tr><td>Field: ${a.col3}<br><SPAN class='clr'> Correction: ${a.col4}`})                
+//document.getElementById('report').innerHTML =`<table id='regionTable' border=1 ><tr><td> SR No / Name / To be corrected / New Data ${tabdata}  </table>`              
+
+
+}
+
 </script>
 </body>
 </html>
