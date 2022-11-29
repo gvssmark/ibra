@@ -65,13 +65,19 @@ rowdat = tempData.filter(a=> a.srno === id*1)
 pamt = rowdat[0].premium ==="" ? 0 : rowdat[0].premium
 ptable =  paobject.filter(a => a.premium === pamt)
 
+ptable[0].type === 'Family'? s=`
+<tr bgcolor=cyan><td> SPOUSE DETAILS
+<tr><td>Name:${rowdat[0].spname}
+<tr><td>Gender :${rowdat[0].spgender} 
+<tr><td>DOB :  ${rowdat[0].spdob}
+` : s=''
+ 
+ 
 inddata =`<table class='mod' BORDER=1><tr bgcolor=cyan><td>SELF DETAILS<tr><td>Name: ${rowdat[0].name}
 <tr><td>SR No / Memb No:${rowdat[0].srno} / ${rowdat[0].membno}
 <tr><td>Date of Birth / Gender: ${rowdat[0].dob} / ${rowdat[0].gender}
 ${/*<tr><td>Bank Name: ${rowdat[0].bank}*/''}
-<tr bgcolor=cyan><td>SPOUSE DETAILS
-<tr><td>Name:${rowdat[0].spname}
-<tr><td>Gender / DOB :${rowdat[0].spgender} /  ${rowdat[0].spdob}
+${s}
 <tr bgcolor=cyan><td>NOMINEE DETAILS
 <tr><td>Name:${rowdat[0].nom}
 <tr><td>Gender / DOB :${rowdat[0].nomgender} / ${rowdat[0].nomdob}
@@ -87,12 +93,6 @@ ${/*<tr><td>Bank Name: ${rowdat[0].bank}*/''}
 
 `
 
-ptable[0].type === 'Family'? s=`
-<tr bgcolor=cyan><td> SPOUSE DETAILS
-<tr><td>Name:${rowdat[0].spname}
-<tr><td>Gender :${rowdat[0].spgender} 
-<tr><td>DOB :  ${rowdat[0].spdob}
-` : s=''
 
 inddata1 =`<BR><BR><table ALIGN=CENTER width=360 class='mod' BORDER=1>
 <tr bgcolor=cyan><td> SELF DETAILS
