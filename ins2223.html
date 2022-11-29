@@ -124,11 +124,13 @@ correctionsurl = 'https://script.google.com/macros/s/AKfycbxUDQRu-NlYI9bcDP72iyo
 
 corrgetMyData()
 function totable(tsr){
-tabdata='<tr bgcolor=cyan><td>PENDING CORRECTIONS (if any)'
+tabdata='<tr bgcolor=cyan><td>PENDING CORRECTIONS - NIL'
+if (corrtempData.filter(b=> b.col1 === tsr).length >0){
+tabdata='<tr bgcolor=cyan><td>PENDING CORRECTIONS ' + corrtempData.filter(b=> b.col1 === tsr).length
 
 corrtempData.filter(b=> b.col1 === tsr).forEach(function(a) { tabdata += `<tr><td>Field: ${a.col3}<br><SPAN class='clr'> Correction: ${a.col4}`})                
 //document.getElementById('report').innerHTML =`<table id='regionTable' border=1 ><tr><td> SR No / Name / To be corrected / New Data ${tabdata}  </table>`              
-
+}
 
 }
 
