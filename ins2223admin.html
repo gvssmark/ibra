@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html>
 
@@ -29,14 +30,14 @@ h2, h4{text-align:center; padding:0; margin-top:0; box-shadow: 0 4px 8px 0 rgba(
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             
         }
-        .mod{border:1px solid black; border-collapse: collapse; border-left:none; border-right:none;}
+        .mod{border:1px solid black; border-collapse: collapse; border-left:none; border-right:none; font-size:small;}
 
 </style>
 </head>
 <body>
 <div id='top'>
 <h2>IBRA - INSURANCE 2022-23</h1>
-<p>Data sorted on SR Number<br>
+<p>
 Number of Applications: <span id='appno'></span><br>
 <span style='background:#ccffcc'>Number of Applications Reconciled: <span id='recno'></span></span><br>
 
@@ -45,7 +46,7 @@ Number of Applications: <span id='appno'></span><br>
 <input type='text' id='myInput' onkeyup="fiterName()" placeholder="Search here..."></input>
 <br>
 </div>
-<div id='alldata' style='margin-top:230px; '>
+<div id='alldata' style='margin-top:150px; '>
 <p id='tdata'></p>
 </div>
 
@@ -130,34 +131,35 @@ x=rowdat[0].name
 //alert(x)
 //document.getElementById('inddata').style.display='block'
 //document.getElementById('inddata').innerHTML=x
-inddata =`<table class='mod' BORDER=1><tr><td>Name: ${rowdat[0].name}
-<tr><td>Premium:${rowdat[0].premium}
-
-<tr><td>Policy Type:${ptable[0].type}
-<tr><td>Base:${ptable[0].base}
-<tr><td>S Topup:${ptable[0].supertop}
+inddata =`<table class='mod' BORDER=1 >
+<tr bgcolor='cyan'><td>SELF DETAILS
+<tr><td>Name: ${rowdat[0].name}
 <tr><td>SR No / Memb No:${rowdat[0].srno} / ${rowdat[0].membno}
-<tr><td>Date of Birth:${rowdat[0].dob}
-<tr><td>Gender:${rowdat[0].gender}
+<tr><td>Date of Birth / Gender:${rowdat[0].dob} / ${rowdat[0].gender} 
+
+<tr bgcolor='cyan'><td>SPOUSE DETAILS
+<tr><td>Spouse Name:${rowdat[0].spname}
+<tr><td>Spouse Gender / DOB:${rowdat[0].spgender} / ${rowdat[0].spdob}
+
+<tr bgcolor='cyan'><td>NOMINEE DETAILS
+<tr><td>Nominee Name:${rowdat[0].nom}
+<tr><td>Nominee Gender / DOB:${rowdat[0].nomgender} / ${rowdat[0].nomdob}
+<tr><td>Nominee Relation:${rowdat[0].nomrelation}
+
+<tr bgcolor='cyan'><td>OTHER DETAILS
+<tr><td>Premium / Type:${rowdat[0].premium} / ${ptable[0].type} 
+<tr><td>Base / Topup:${ptable[0].base} / ${ptable[0].supertop}
+
 
 <tr><td>Bank Name:${rowdat[0].bank}
 <tr><td>Mobile No:${rowdat[0].mobile}
 <tr><td>Email:${rowdat[0].email}
-<tr><td>Adhar:${rowdat[0].adhar}
-<tr><td>PAN:${rowdat[0].pan}
+<tr><td>Adhar / PAN :${rowdat[0].adhar} / ${rowdat[0].pan}
 <tr><td>Address:${rowdat[0].add}, ${rowdat[0].city} - ${rowdat[0].pin} 
 
 
 
-<tr><td>Spouse Name:${rowdat[0].spname}
-<tr><td>Spouse Gender:${rowdat[0].spgender}
-<tr><td>Spouse DOB:${rowdat[0].spdob}
-
-<tr><td>Nominee Name:${rowdat[0].nom}
-<tr><td>Nominee Gender:${rowdat[0].nomgender}
-<tr><td>Nominee DOB:${rowdat[0].nomdob}
-
-<tr><td>Nominee Relation:${rowdat[0].nomrelation}`
+`
 document.getElementById("myModal").style.display = "block"
 
 
