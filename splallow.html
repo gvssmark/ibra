@@ -28,7 +28,7 @@ url = 'https://script.google.com/macros/s/AKfycbxyfOGa713kZ6_fenPJkU8qQehe2D2AP5
                 data = await response.json()
                 tempData = data["user"]
                 
-srnos = tempData.sort(function (a, b) { return a.srno - b.srno })    
+srnos = tempData.sort(function (a, b) { return a.srno - b.srno }).filter(a => a.srno>0)     
 
  tabdata=''               
 sl=1                
