@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Special Allowance Suit</title>
+
+<style>
+#regionTable {border-collapse:collapse; border:1px; font-size:small; }
+h2 {text-align:center}
+tr:nth-child(even) {
+  background-color: #D6EEEE;
+}
+</style>
+</head>
+<body>
+
+<h2>Special Allowance Suit</h1>
+<p>List of retirees interested to join the suit</p>
+<p id='tdata'></p>
+
+
+<script>
+
+url = 'https://script.google.com/macros/s/AKfycbxyfOGa713kZ6_fenPJkU8qQehe2D2AP5IhedeH6xIoLxOjqTZWEa05PMwvGFLsazlD/exec'
+            async function getMyData() {
+                response = await fetch(url)
+                data = await response.json()
+                tempData = data["user"]
+                
+srnos = tempData.sort(function (a, b) { return a.srno - b.srno })    
+
+ tabdata=''               
+sl=1                
+
+srnos.forEach(function(a,b) { tabdata += `<tr><td> ${b+1} <td> ${a.srno}<td>${a.name}-(${a.membno}) <td> ${a.dor} <td> ${a.mobile} `})                
+document.getElementById('tdata').innerHTML =`<table id='regionTable' class='pname' border=1 ><tr><td>Sl No<td> SR No<td>Name(Memb No) <td> Ret Date<td> Mobile ${tabdata}  </table>`              
+                }
+               
+  getMyData() 
+</script>
+
+</body>
+</html>
+
+
