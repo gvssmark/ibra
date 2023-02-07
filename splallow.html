@@ -8,17 +8,26 @@
 
 <style>
 #regionTable {border-collapse:collapse; border:1px; font-size:small; font-family: "Lucida Console", "Courier New", monospace;}
-h2 , h5{text-align:center}
+
 tr:nth-child(even) {
   background-color: #D6EEEE;
 }
-b {color:red;}
+b {color:cyan;}
+
+h2, h5{text-align:center; color:white; padding:0 5px;}
+#tdata {margin-top:110px;}
 </style>
 </head>
 <body>
+<div style="  position: fixed;
+  top: 0;
+  width: 100%; background: #555;
 
+
+">
 <h2>IBRA Special Allowance Suit</h1>
 <h5 id='tot'>List of retirees interested to join the suit</h5>
+</div>
 <p id='tdata'></p>
 
 
@@ -30,7 +39,7 @@ url = 'https://script.google.com/macros/s/AKfycbxyfOGa713kZ6_fenPJkU8qQehe2D2AP5
                 data = await response.json()
                 tempData = data["user"]
                 
-srnos = tempData.sort(function (a, b) { return a.srno - b.srno }).filter(a => a.srno>0)     
+srnos = tempData.filter(a => a.srno>0).sort(function (a, b) { return a.srno - b.srno })     
 
  tabdata=''               
 sl=1                
