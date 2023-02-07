@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,6 +12,7 @@ h2 , h5{text-align:center}
 tr:nth-child(even) {
   background-color: #D6EEEE;
 }
+b {color:red;}
 </style>
 </head>
 <body>
@@ -33,9 +35,9 @@ srnos = tempData.sort(function (a, b) { return a.srno - b.srno }).filter(a => a.
  tabdata=''               
 sl=1                
 
-srnos.forEach(function(a,b) { tabdata += `<tr><td> ${b+1} <td> ${a.srno}<td>${a.name}-(${a.membno}) <td> ${a.dor} <td> ${a.mobile} `})                
-document.getElementById('tdata').innerHTML =`<table align=center id='regionTable' class='pname' border=1 ><tr><td>Sl No<td> SR No<td>Name(Memb No) <td> Ret Date<td> Mobile ${tabdata}  </table>`              
-document.getElementById('tot').innerHTML = `${srnos.length} retirees interested to join the suit`
+srnos.forEach(function(a,b) { tabdata += `<tr> <td> ${a.srno}<td>${a.name}-(${a.membno}) <td> ${a.dor} <td> ${a.mobile} `})                
+document.getElementById('tdata').innerHTML =`<table align=center id='regionTable' class='pname' border=1 ><tr><td> SR No<td>Name(Memb No) <td> Ret Date<td> Mobile ${tabdata}  </table>`              
+document.getElementById('tot').innerHTML = `<b>${srnos.length} </b>retirees interested to join the suit`
             }
                
   getMyData() 
