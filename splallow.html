@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,18 +23,17 @@ url = 'https://script.google.com/macros/s/AKfycbxyfOGa713kZ6_fenPJkU8qQehe2D2AP5
                 response = await fetch(url)
                 data = await response.json()
                 tempData = data["user"]                
-srnos = tempData.filter(a => a.srno>0).sort(function (a, b) { return a.srno - b.srno })     
+srnos = tempData.filter(a => a.srno>0).sort(function (a, b) { return a.srno - b.srno })  
+non = srnos.filter(a => a.membno.length>4).length
  tabdata=''                            
 srnos.forEach(function(a,b) { 
 bclr=''
 if (a.membno.length>4 ){bclr='pink'}
 tabdata += `<tr bgcolor= ${bclr}> <td> ${a.srno}<td  >${a.name}-(${a.membno}) <td> ${a.dor} <td> ${a.mobile} `})                
 document.getElementById('tdata').innerHTML =`<table align=center id='regionTable' class='pname' border=1 ><tr><td> SR No<td>Name(Memb No) <td> Ret Date<td> Mobile ${tabdata}  </table>`              
-document.getElementById('tot').innerHTML = `<b>${srnos.length} </b>retirees interested to join the suit`
+document.getElementById('tot').innerHTML = `<b>${srnos.length}<span style='color:pink;'>(${non}) </span></b>retirees interested to join the suit`
             }               
   getMyData() 
 </script>
 </body>
 </html>
-
-
