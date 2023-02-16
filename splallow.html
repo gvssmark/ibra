@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,7 +9,8 @@
 tr:nth-child(even) {background-color: #D6EEEE;}
 b {color:cyan;}
 h2, h5{text-align:center; color:white; ;}
-#tdata {margin-top:110px;}
+#tdata {margin-top:105px;}
+th{position:sticky; top:106px; background:red; color:white; height:25px;}
 </style>
 </head>
 <body>
@@ -30,7 +32,7 @@ srnos.forEach(function(a,b) {
 bclr=''
 if (a.membno.length>4 ){bclr='pink'}
 tabdata += `<tr bgcolor= ${bclr}> <td> ${a.srno}<td  >${a.name}-(${a.membno}) <td> ${a.dor} <td> ${a.mobile} `})                
-document.getElementById('tdata').innerHTML =`<table align=center id='regionTable' class='pname' border=1 ><tr><td> SR No<td>Name(Memb No) <td> Ret Date<td> Mobile ${tabdata}  </table>`              
+document.getElementById('tdata').innerHTML =`<table align=center id='regionTable' class='pname' border=1 ><tr><th> SR No</th><th>Name(Memb No) </th><th> Ret Date</th><th> Mobile</th></tr> ${tabdata}  </table>`              
 document.getElementById('tot').innerHTML = `<b>${srnos.length}<span style='color:pink;'>(${non}) </span></b>retirees interested to join the suit`
             }               
   getMyData() 
