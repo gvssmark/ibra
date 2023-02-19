@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,8 +31,8 @@ non = srnos.filter(a => a.membno.length>4).length
  tabdata=''                            
 srnos.forEach(function(a,b) { 
 bclr=''
-if (a.membno.length>4 ){bclr='pink'}
-tabdata += `<tr bgcolor= ${bclr}> <td> ${a.srno}<td  >${a.name}-(${a.membno}) <td> ${a.dor} <td> ${a.mobile} `})                
+if (a.membno.length>4 ){bclr='red'}
+tabdata += `<tr style="color: ${bclr}"> <td> ${a.srno}<td  >${a.name}-(${a.membno}) <td> ${a.dor} <td> ${a.mobile} `})                
 document.getElementById('tdata').innerHTML =`<table align=center id='regionTable' class='pname' border=1 ><tr><th> SR No</th><th>Name(Memb No) </th><th> Ret Date</th><th> Mobile</th></tr> ${tabdata}  </table>`              
 document.getElementById('tot').innerHTML = `<b>${srnos.length}<span style='color:pink;'>(${non}) </span></b>retirees interested to join the suit`
             }               
