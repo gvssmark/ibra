@@ -62,7 +62,7 @@ table {border-collapse: collapse; margin:auto; width: 340px;;border: 1px soild b
   <option value="9">Substaff</option>
   <option value="10">PPTS</option>
 </select>
-<tr><td >Basic Pay<td colspan=2><input name='basic' id='basic' type='number'>
+<tr><td >Revised Basic Pay<td colspan=2><input name='basic' id='basic' type='number'>
 </table>
 <br>
 <input class='btn' type='button' onclick='submitbtn()' value='Calculate'></button>
@@ -95,24 +95,24 @@ sprate = bps=== 10 ? spl12.filter(a=> a.scale === sc.value*1)[0].splallrate12 : 
 document.getElementById('fdata').innerHTML= `<table border=1><tr><td>Desgination<td> ${scales[sc.value]} <tr><td> Retirement Month & Year<td> ${mths[
 mt.value*1]} / ${yr.value} <tr><td> Bipartite<td> ${bps} BPS <tr><td> Special Allowance Rate<td> ${sprate} <tr> <td>Basic<td> ${basic.value} <tr><td>Special Allowance<td> ${basic.value*1*sprate/100} <tr><td> Pension Basic on Spl Allowance<td> ${basic.value*1*sprate/200} </table>`
 spda = splallda.filter(a => a.year>=ym*1)
-datable ='<table border=1><td>Year<td>Month <td>DA Rate<td>DA'
+datable ='<table border=1><td>Year<td>Month <td align=center>DA Rate<td align=center>DA'
 databledata=''
 cumda=0
 for (i=0; i<spda.length; i++){
-databledata += `<tr><td>${(spda[i].year).toString().substr(0,4)}<td>${(spda[i].year).toString().substr(4,2)}<td>`
-if (bps===10){ databledata +=`${spda[i].bp10}<td> ${Math.round(basic.value*1*sprate/200* spda[i].bp10)/100}`
+databledata += `<tr><td>${(spda[i].year).toString().substr(0,4)}<td>${(spda[i].year).toString().substr(4,2)}<td align=center>`
+if (bps===10){ databledata +=`${spda[i].bp10}<td  align=center> ${Math.round(basic.value*1*sprate/200* spda[i].bp10)/100}`
 b=basic.value*1*sprate/200
 d=spda[i].bp10
 cumda += Math.round((b*d))/100
 }
 else 
-{ databledata +=`${spda[i].bp11}<td> ${Math.round(basic.value*1*sprate/200 * spda[i].bp11)/100} `
+{ databledata +=`${spda[i].bp11}<td  align=center> ${Math.round(basic.value*1*sprate/200 * spda[i].bp11)/100} `
 b=basic.value*1*sprate/200
 d=spda[i].bp11
 cumda += Math.round((b*d))/100
 }
 }
-document.getElementById('spdacalc').innerHTML='<table border=1 ><tr><td>Total Basic Pension <td>'+ b* spda.length+'<tr><td>Total DA  <td>' + Math.round(cumda) +'<tr><td>Total Loss  <td>'+ (b* spda.length+ Math.round(cumda))+'</table><br>' + datable + databledata +"</table>"
+document.getElementById('spdacalc').innerHTML='<table border=1 ><tr><td>Number of Months<td>'+spda.length+'<tr><td>Total Basic Pension <td>'+ b* spda.length+'<tr><td>Total DA  <td>' + Math.round(cumda) +'<tr><td>Total Loss  <td>'+ (b* spda.length+ Math.round(cumda))+'</table><br>' + datable + databledata +"</table>"
 }
 }
 
