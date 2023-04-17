@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,12 +13,13 @@ table {border-collapse: collapse; margin:auto; width: 340px;;border: 1px soild b
 #datadiv {width:360px; margin: 0 auto;}
 .btn {width: 300px; margin:0 30px; }
 #datadiv {display:none}
+b{color:red}
 </style>
 
 </head>
 <body>
 <div id='container' class='container'>
-<h4 align=center>IBRA - Specila Allowance Loss</h4>
+<h4 align=center>IBRA - Specila Allowance - Loss of Pension</h4>
 <table border=1><tr>
 <td>Month and Year <br>of Retirement:
 <td align=center>Month<br><select name="mt" id="mt" >
@@ -67,10 +69,10 @@ table {border-collapse: collapse; margin:auto; width: 340px;;border: 1px soild b
 <tr><td colspan=3>* Gratruity Not considered<br>* Assumed 33 Years Service<br>* Stagnation increment sanctioned not considered
 </table>
 <br>
-<input class='btn' type='button' onclick='submitbtn()' value='Calculate'></button>
+<input class='btn' type='button' onclick='submitbtn()' value='Calculate'></button><br><br>
 </div>
 <div id='datadiv'>
-<h4 align=center>IBRA - Specila Allowance Loss</h4>
+<h4 align=center>IBRA - Specila Allowance - Loss of Pension</h4>
 <p id='fdata'></p>
 <input class='btn' type='button' onclick='calcagain()' value='Calculate Again'></button>
 <p id='spdacalc'></p>
@@ -96,7 +98,7 @@ if(ym*1>201210){
 bps= (ym*1 >201710) ? 11 : 10
 sprate = bps=== 10 ? spl12.filter(a=> a.scale === sc.value*1)[0].splallrate12 : spl12.filter(a=> a.scale === sc.value*1)[0].splallrate17
 document.getElementById('fdata').innerHTML= `<table border=1><tr><td>Desgination<td> ${scales[sc.value]} <tr><td> Retirement Month & Year<td> ${mths[
-mt.value*1]} / ${yr.value} <tr><td> Bipartite<td> ${bps} BPS <tr><td> Special Allowance Rate<td> ${sprate} <tr> <td>Basic<td> ${basic.value} <tr><td>Special Allowance<td> ${(basic.value*1*sprate/100).toFixed(2)} <tr><td> Pension Basic on Spl Allowance<td> ${(basic.value*1*sprate/200).toFixed(2)} </table>`
+mt.value*1]} / ${yr.value} <tr><td> Bipartite<td> ${bps} BPS <tr><td><b>A</b> Special Allowance Rate<td> ${sprate}% <tr> <td><b>B</b> New Basic Salary on Retirement<td> ${basic.value} <tr><td><b>C</b> Special Allowance (<b>A*B</b>)<td> ${(basic.value*1*sprate/100).toFixed(2)} <tr><td><b>D</b> Pension Basic on Spl Allowance ( <b>50% of C</b>)<td> ${(basic.value*1*sprate/200).toFixed(2)} </table>`
 //ok upto here
 spda = splallda.filter(a => a.year>ym*1)
 datable ='<table border=1><td>Year<td>Month <td align=center>DA Rate<td align=center>DA<td>Total'
@@ -105,7 +107,7 @@ cumda=0
 for (i=0; i<spda.length; i++){
 basicpension = (basic.value*1*sprate/200).toFixed(2)
 databledata += `<tr><td>${(spda[i].year).toString().substr(0,4)}<td>${(spda[i].year).toString().substr(4,2)}<td align=center>`
-if (bps===10){ databledata +=`${spda[i].bp10}<td  align=center> ${(basicpension * spda[i].bp10/100).toFixed(2)} <td>
+if (bps===10){ databledata +=`${spda[i].bp10}<td  align=center> ${(basicpension * spda[i].bp10/100).toFixed(2)} <td align=center>
 ${(((basicpension * spda[i].bp10/100).toFixed(2))*1 + (basicpension*1).toFixed(2)*1).toFixed(2)}
 `
 //to check
@@ -115,7 +117,7 @@ cumda += (b*1*d/100).toFixed(2)*1
 }
 
 else 
-{ databledata +=`${spda[i].bp11}<td  align=center> ${(basicpension * spda[i].bp11/100).toFixed(2)} <td>
+{ databledata +=`${spda[i].bp11}<td  align=center> ${(basicpension * spda[i].bp11/100).toFixed(2)} <td align=center>
 ${(((basicpension * spda[i].bp11/100).toFixed(2))*1 + (basicpension*1).toFixed(2)*1).toFixed(2)}
 `
 //to check
@@ -125,7 +127,7 @@ cumda += (b*1*d/100).toFixed(2)*1
 
 }
 }
-document.getElementById('spdacalc').innerHTML='<table border=1 ><tr><td>Number of Months<td>'+spda.length+'<tr><td>Total Basic Pension <td>'+ (b*1* spda.length).toFixed(2) +'<tr><td>Total DA  <td>' + cumda.toFixed(2) +'<tr><td>Total Loss  <td>'+ ((b*1* spda.length).toFixed(2)*1 + cumda.toFixed(2)*1)  +'</table><br>' + datable + databledata +"</table>"
+document.getElementById('spdacalc').innerHTML='<table border=1 ><tr><td><b>E</b> Number of Months<td>'+spda.length+'<tr><td><b>F</b> Total Basic Pension (<b>D*E</b> )<td>'+ (b*1* spda.length).toFixed(2) +'<tr><td><b>G</b> Total DA for all Months  <td>' + cumda.toFixed(2) +'<tr><td><b>H</b> Total Loss (<b>F+G</b>) <td>'+ ((b*1* spda.length).toFixed(2)*1 + cumda.toFixed(2)*1)  +'</table><br>' + datable + databledata +"</table>"
 }
 }
 
