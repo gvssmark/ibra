@@ -98,7 +98,7 @@ sprate = bps=== 10 ? spl12.filter(a=> a.scale === sc.value*1)[0].splallrate12 : 
 document.getElementById('fdata').innerHTML= `<table border=1><tr><td>Desgination<td> ${scales[sc.value]} <tr><td> Retirement Month & Year<td> ${mths[
 mt.value*1]} / ${yr.value} <tr><td> Bipartite<td> ${bps} BPS <tr><td> Special Allowance Rate<td> ${sprate} <tr> <td>Basic<td> ${basic.value} <tr><td>Special Allowance<td> ${(basic.value*1*sprate/100).toFixed(2)} <tr><td> Pension Basic on Spl Allowance<td> ${(basic.value*1*sprate/200).toFixed(2)} </table>`
 //ok upto here
-spda = splallda.filter(a => a.year>=ym*1)
+spda = splallda.filter(a => a.year>ym*1)
 datable ='<table border=1><td>Year<td>Month <td align=center>DA Rate<td align=center>DA<td>Total'
 databledata=''
 cumda=0
