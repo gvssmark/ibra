@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,7 +13,6 @@ table {border-collapse: collapse; margin:auto; width: 340px;;border: 1px soild b
 #datadiv {display:none}
 b{color:red}
 </style>
-
 </head>
 <body>
 <div id='container' class='container'>
@@ -97,13 +93,11 @@ if(ym*1>201210){
 bps= (ym*1 >201710) ? 11 : 10
 bps === 10 ? sarecdmonths = splallda.filter(a=> a.year >= 201211 & a.year <= ym*1).length : sarecdmonths = splallda.filter(a=> a.year >= 201711 & a.year <= ym*1).length
 sarecdmonths >10 ? sarecdmonths=10 : sarecdmonths=sarecdmonths 
-
 sprate = bps=== 10 ? spl12.filter(a=> a.scale === sc.value*1)[0].splallrate12 : spl12.filter(a=> a.scale === sc.value*1)[0].splallrate17
 document.getElementById('fdata').innerHTML= `<table border=1><tr><td>Desgination<td> ${scales[sc.value]} <tr><td> Retirement Month & Year<td> ${mths[
 mt.value*1]} / ${yr.value} <tr><td> Bipartite<td> ${bps} BPS <tr><td><b>A</b> Special Allowance Rate<td> ${sprate}% <tr> <td><b>B</b> New Basic Salary on Retirement<td> ${basic.value} <tr><td><b>C</b> Special Allowance (<b>A*B</b>)<td> ${(basic.value*1*sprate/100).toFixed(2)}
 <tr><td><b>C1</b>Special Allowance Received for Months<td>${sarecdmonths}<tr><td><b>C2</b>Average Special Allowance <b>CxC1/10</b><td>${(elbasic= (basic.value*1*sprate/100).toFixed(2)* sarecdmonths/10).toFixed(2)} 
 <tr><td><b>D</b> Pension Basic on Spl Allowance ( <b>50% of C2</b>)<td> ${(elbasic/2).toFixed(2)} </table>`
-
 splallda.forEach(a=> {a.basic = (elbasic/2).toFixed(2)*1; 
 bps === 10 ? dar = a.bp10/100 : dar = a.bp11/100;  
 a.da = (a.basic * dar).toFixed(2)*1 } )
@@ -112,9 +106,8 @@ datable ='<table border=1><td>Year<td>Month <td align=center>DA Rate<td>Basic<td
 databledata=''
 cumda=0
 for (i=0; i<spda.length; i++){
-databledata += `<tr><td>${(spda[i].year).toString().substr(0,4)}<td>${(spda[i].year).toString().substr(4,2)}<td align=center> ${bps===10 ? spda[i].bp10 : spda[i].bp11 }<td>${spda[i].basic}<td> ${spda[i].da} <td> ${(spda[i].basic+spda[i].da).toFixed(2)} `
+databledata += `<tr><td>${(spda[i].year).toString().substr(0,4)}<td>${(spda[i].year).toString().substr(4,2)}<td align=center> ${bps===10 ? spda[i].bp10 : spda[i].bp11 }<td>${(spda[i].basic).toFixed(2)}<td> ${(spda[i].da).toFixed(2)} <td> ${(spda[i].basic+spda[i].da).toFixed(2)} `
 }
-
 basictotal = spda.reduce((n, {basic}) => n + basic, 0)
 datotal = spda.reduce((n, {da}) => n + da, 0)
 document.getElementById('spdacalc').innerHTML='<table border=1 ><tr><td><b>E</b> Number of Months<td>'+spda.length+'<tr><td><b>F</b> Total Basic Pension (<b>D*E</b> )<td>'+ (spda.reduce((n, {basic}) => n + basic, 0)).toFixed(2)
@@ -123,12 +116,10 @@ document.getElementById('spdacalc').innerHTML='<table border=1 ><tr><td><b>E</b>
 +'</table><br>' + datable + databledata +"</table>"
 }
 }
-
 function calcagain(){
 document.getElementById('container').style.display='block'
 document.getElementById('datadiv').style.display='none'
 }
-
 splalldatemp = [[201211,6.7,0],
 [201212,6.7,0],[201301,6.7,0],
 [201302,13.4,0],[201303,13.4,0],[201304,13.4,0],[201305,13.4,0],[201306,13.4,0],[201307,13.4,0],[201308,19.2,0],[201309,19.2,0],[201310,19.2,0],[201311,19.2,0],[201312,19.2,0],
