@@ -18,8 +18,11 @@ b{color:red}
 <body>
 <div id='container' class='container'>
 <h4 align=center>IBRA - Specila Allowance - Loss of Pension</h4>
-<table border=1><tr>
-<td>Month and Year <br>of Retirement:
+<table border=1>
+<tr><td>Name of the Retiree<td colspan=2><input name='retireename' id='retireename' type='text'>
+<tr><td>SR Number<td colspan=2><input name='srno' id='srno' type='number'>
+
+<tr><td>Month and Year <br>of Retirement:
 <td align=center>Month<br><select name="mt" id="mt" >
   <option value="01">Jan</option>
   <option value="02">Feb</option>
@@ -100,7 +103,7 @@ bps= (ym*1 >201710) ? 11 : 10
 bps === 10 ? sarecdmonths = splallda.filter(a=> a.year >= 201211 & a.year <= ym*1).length : sarecdmonths = splallda.filter(a=> a.year >= 201711 & a.year <= ym*1).length
 sarecdmonths >10 ? sarecdmonths=10 : sarecdmonths=sarecdmonths 
 sprate = bps=== 10 ? spl12.filter(a=> a.scale === sc.value*1)[0].splallrate12 : spl12.filter(a=> a.scale === sc.value*1)[0].splallrate17
-document.getElementById('fdata').innerHTML= `<table border=1><tr><td>Desgination<td> ${scales[sc.value]} <tr><td> Retirement Month & Year<td> ${mths[
+document.getElementById('fdata').innerHTML= `<table border=1><tr><td width=25%>Name<td>${retireename.value} <tr><td>SR No<td>${srno.value}</table><BR><table border=1><tr><td>Desgination<td> ${scales[sc.value]} <tr><td> Retirement Month & Year<td> ${mths[
 mt.value*1]} / ${yr.value} <tr><td> Bipartite<td> ${bps} BPS <tr><td><b>A</b> Special Allowance Rate<td> ${sprate}% <tr> <td><b>B</b> New Basic Salary on Retirement<td> ${basic.value} <tr><td><b>C</b> Special Allowance (<b>A*B</b>)<td> ${(basic.value*1*sprate/100).toFixed(2)}
 <tr><td><b>C1</b>Special Allowance Received for Months<td>${sarecdmonths}<tr><td><b>C2</b>Average Special Allowance <b>CxC1/10</b><td>${(elbasic= (basic.value*1*sprate/100).toFixed(2)* sarecdmonths/10).toFixed(2)} 
 <tr><td><b>D</b> Pension Basic on Spl Allowance ( <b>50% of C2</b>)<td> ${(elbasic/2).toFixed(2)} </table>`
