@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -96,7 +97,7 @@ ym >= 201711 ? bps = 11 : bps = 10
 sprate = bps=== 10 ? spl12.filter(a=> a.scale === sc.value*1)[0].splallrate12 : spl12.filter(a=> a.scale === sc.value*1)[0].splallrate17
 
 bps === 10 ? sarecdmonths = splallda.filter(a=> a.year >= 201211 & a.year <= ym*1).length : sarecdmonths = splallda.filter(a=> a.year >= 201711 & a.year <= ym*1).length
-
+sarecdmonthsinthisbps = sarecdmonths
 sarecdmonths >10 ? sarecdmonths=10 : sarecdmonths=sarecdmonths 
 avgSplAllw= (basic.value*1*sprate/100).toFixed(2)* (sarecdmonths/10).toFixed(2)
 
@@ -161,7 +162,7 @@ brow=''
 drow=''
 crow=''
 }
-totable = th + trow + "</table> <h4 onclick='window.print();'> Print </h4>"
+totable = th + trow + "</table> Basic and DA in Rs., DA Rate in %<h4 onclick='window.print();'> Print </h4>"
 document.getElementById('calc').innerHTML=totable
 document.getElementById('bio').style.display='none'
 totmths = splallda.filter(a=> a.year>ym &  a.year<202304).length
@@ -172,13 +173,13 @@ datotal = splallda.reduce((n, {da}) => n + da*1, 0).toFixed(2)
 
 bt = `<h4 align=center>IBRA - Calculation of Pension Loss on Special Pay </h4><table class='biotable' border=0>
 <tr><td>Name<td>${retireename.value}<td>SR No<td>${srno.value}
-<tr><td>Retirement MMYYYY<td>${ym}<td>Pension MMYYYY<td>${penstart}
-<tr><td>Designation<td>${scales[sc.value]}<td>Bipartite<td>${bps}th
-<tr><td>Special Pay Rate<td>${sprate}<td>Special Pay<td>${basic.value}
-<tr><td>Average Special Pay<td>${avgSplAllw}<td>Pension Basic Special<td>${elbasic }
-<tr><td>Total Months<td>${totmths}<td>Basic Pay Loss<td>${basictotal*1}
-<tr><td>Total DA Loss<td>${datotal}<td>Total Loss<td>${datotal*1+ basictotal*1}
-</table> <br>`
+<tr><td>Retirement YYYYMM<td>${ym}<td>Pension YYYYMM<td>${penstart}
+<tr><td>Designation<td>${scales[sc.value]}<td>Bipartite / Months worked in this BPS<td>${bps}th / ${sarecdmonthsinthisbps}
+<tr><td>Special Pay Rate<td>${sprate}%<td>Basic Pay<td>Rs.${basic.value}
+<tr><td>Average Special Pay(Spl All x Months / 10 (Max) )<td>Rs.${avgSplAllw}<td>Pensionable Special<td>Rs.${elbasic }
+<tr><td>Total Months<td>${totmths}<td>Basic Pay Loss<td>Rs.${basictotal*1}
+<tr><td>Total DA Loss<td>Rs.${datotal}<td>Total Loss<td>Rs.${(datotal*1+ basictotal*1).toFixed(2)}
+</table>  `
 
 document.getElementById('biotable').innerHTML=bt
 }
