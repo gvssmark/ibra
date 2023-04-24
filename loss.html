@@ -1,12 +1,12 @@
 
-
 <!DOCTYPE html>
 <html>
 <head>
       <meta name="viewport" content="width=device-width, maximum-scale=1 , initial-scale=1.0">
     <title>IBRA-Pension Loss on Special Allowance</title>
- <style>
-      body{  margin: 0mm 0mm 0mm 0mm;}
+
+<style>
+
 .bio {width:360px; margin:0 auto; }
 .calc { width:100%; margin:0 auto; font-size:small;  }
 table { border-collapse: collapse; margin:auto; width: 340px;;border: 1px soild black;font-size: small}
@@ -14,6 +14,28 @@ select, input {background:yellow; border:none;}
 .datable td{text-align:center;}
 .datable {width:95%; }
 .biotable {width:95%; }
+
+
+@media print 
+{
+    @page {
+      size: A4; /* DIN A4 standard, Europe */
+      margin: 0;
+    }
+    html, body {
+        width: 210mm;
+        /* height: 297mm; */
+        height: 282mm;
+        font-size: small;
+        background: #FFF;
+        overflow: visible;
+    }
+    body {
+        padding-top: 0mm;
+    }
+}
+
+
 </style>
 </head>
 <body>
