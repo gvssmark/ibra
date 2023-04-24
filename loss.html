@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.bio {width:360px; margin:0 auto; }
+.calc { width:90%; margin:0 auto; font-size:small; }
+table { border-collapse: collapse; margin:auto; width: 340px;;border: 1px soild black;font-size: small}
+select, input {background:yellow; border:none;}
+.datable td{text-align:center;}
+.datable {width:800px;}
+</style>
+</head>
+<body>
+<div class='bio' id='bio'>
+<table border=1>
+<tr><td>Name of the Retiree<td colspan=2><input name='retireename' id='retireename' type='text' value='Markandeyulu'>
+<tr><td>SR Number<td colspan=2><input name='srno' id='srno' type='number' value=30349>
+<tr><td>Month and Year <br>of Retirement:
+<td align=center>Month<br><select name="mt" id="mt" >
+  <option value="01">Jan</option>
+  <option value="02">Feb</option>
+  <option value="03">Mar</option>
+  <option value="04">Apr</option>
+  <option value="05">May</option>
+  <option value="06">Jun</option>
+  <option value="07">Jul</option>
+  <option value="08">Aug</option>
+  <option value="09">Sep</option>
+  <option value="10">Oct</option>
+  <option value="11" selected>Nov</option>
+  <option value="12">Dec</option>
+</select>
+<td align=center>Year<br>
+<select name="yr" id="yr" >
+  <option value="2012">2012</option>
+  <option value="2013">2013</option>
+  <option value="2014">2014</option>
+  <option value="2015">2015</option>
+  <option value="2016">2016</option>
+  <option value="2017">2017</option>
+  <option value="2018">2018</option>
+  <option value="2019">2019</option>
+  <option value="2020">2020</option>
+  <option value="2021">2021</option>
+  <option value="2022">2022</option>
+  <option value="2023">2023</option>
+</select>
+<tr>
+<td>Scale / Designation at <br>the time of Retirement:
+<td align=center colspan=2><select name="sc" id="sc" >
+  <option value="1">Scale 1</option>
+  <option value="2">Scale 2</option>
+  <option value="3">Scale 3</option>
+  <option value="4" selected>Scale 4</option>
+  <option value="5">Scale 5</option>
+  <option value="6">Scale 6</option>
+  <option value="7">Scale 7</option>
+  <option value="8">Clerk</option>
+  <option value="9">Substaff</option>
+  <option value="10">PPTS</option>
+</select>
+<tr><td >Revised Basic Pay - Do not include FPP and PQA<td colspan=2><input name='basic' id='basic' type='number' value=59170>
+<tr><td colspan=3>Special Allowance as % of Basic
+<tr><td>Designation<td>10th BPS<td>11th BPS
+<tr><td>Scale 1,2,3,Award Staff<td>7.75%<td>16.4%
+<tr><td>Scale 4,5<td>10%<td>19%
+<tr><td>Scale 6,7<td>11%<td>20%
+<tr><td colspan=3>* Gratruity Not considered<br>* Assumed 33 Years Service<br>* Stagnation increment sanctioned not considered<br>
+<input class='btn' type='button' onclick='submitbtn()' value='Calculate'></button>
+</table>
+
+
+</div>
+<br>
+<div class='calc' >
+<table border=1 class='datable'>
+<tr><td>Name<td>Markandeyulu<td>SR No<td>30349<td>Retirement Month & Year<td>112012<td>Pension Start Month & Year<td>122012</table><br>
+<table border=1 class='datable'>
+<tr><td>Bipartite<td>10<td>Special Allowance<td>59170<td>Average Special Allowance<td>600<td>Spl Allowance Pension<td>295<td>No of Months<td>1
+</table>
+<br>
+</div>
+<div class='calc' id='calc'>
+</div>
+
+
+<script>
+
+function submitbtn(){
+splallda = splalldatemp.map(([year, bp10, bp11, basic, da]) => ({ year, bp10, bp11,basic,da }))
+
+
+
+ym = (yr.value + mt.value)*1
+ym >= 201711 ? bps = 11 : bps = 10
+sprate = bps=== 10 ? spl12.filter(a=> a.scale === sc.value*1)[0].splallrate12 : spl12.filter(a=> a.scale === sc.value*1)[0].splallrate17
+
+bps === 10 ? sarecdmonths = splallda.filter(a=> a.year >= 201211 & a.year <= ym*1).length : sarecdmonths = splallda.filter(a=> a.year >= 201711 & a.year <= ym*1).length
+
+sarecdmonths >10 ? sarecdmonths=10 : sarecdmonths=sarecdmonths 
+avgSplAllw= (basic.value*1*sprate/100).toFixed(2)* (sarecdmonths/10).toFixed(2)
+
+elbasic = avgSplAllw/2
+
+
+totable1()
+}
+
+spl12t =[[1,7.75,16.4],[2,7.75,16.4],[3,7.75,16.4],[4,10,19],[5,10,19],[6,11,20],[7,11,20],[8,7.75,16.4],[9,7.75,16.4],[10,7.75,16.4]]
+spl12 = spl12t.map(([scale, splallrate12,splallrate17]) => ({ scale, splallrate12,splallrate17 }))
+mths =['','Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+scales = ['','Scale 1','Scale 2','Scale 3','Scale 4','Scale 5','Scale 6','Scale 7','Clerk','Sub Staff','PPTS', ]
+splalldatemp = [[201201,0,0],[201202,0,0],[201203,0,0],[201204,0,0],[201205,0,0],[201206,0,0],[201207,0,0],[201208,0,0],[201209,0,0],[201210,0,0],
+[201211,6.7,0],
+[201212,6.7,0],[201301,6.7,0],
+[201302,13.4,0],[201303,13.4,0],[201304,13.4,0],[201305,13.4,0],[201306,13.4,0],[201307,13.4,0],[201308,19.2,0],[201309,19.2,0],[201310,19.2,0],[201311,19.2,0],[201312,19.2,0],
+[201401,19.2,0],[201402,26.5,0],[201403,26.5,0],[201404,26.5,0],[201405,26.5,0],[201406,26.5,0],[201407,26.5,0],[201408,28.2,0],[201409,28.2,0],[201410,28.2,0],[201411,28.2,0],[201412,28.2,0],
+[201501,28.2,0],[201502,33.3,0],[201503,33.3,0],[201504,33.3,0],[201505,33.3,0],[201506,33.3,0],[201507,33.3,0],[201508,36.4,0],[201509,36.4,0],[201510,36.4,0],[201511,36.4,0],[201512,36.4,0],
+[201601,36.4,0],[201602,42.6,0],[201603,42.6,0],[201604,42.6,0],[201605,42.6,0],[201606,42.6,0],[201607,42.6,0],[201608,45.5,0],[201609,45.5,0],[201610,45.5,0],[201611,45.5,0],[201612,45.5,0],
+[201701,45.5,0],[201702,46.9,0],[201703,46.9,0],[201704,46.9,0],[201705,46.9,0],[201706,46.9,0],[201707,46.9,0],[201708,47.8,0],[201709,47.8,0],[201710,47.8,0],[201711,47.8,0],[201712,47.8,0],
+[201801,47.8,0],[201802,52.7,3.43],[201803,52.7,3.43],[201804,52.7,3.43],[201805,52.7,3.43],[201806,52.7,3.43],[201807,52.7,3.43],[201808,54.1,4.41],[201809,54.1,4.41],[201810,54.1,4.41],[201811,54.1,4.41],[201812,54.1,4.41],
+[201901,54.1,4.41],[201902,61.1,9.31],[201903,61.1,9.31],[201904,61.1,9.31],[201905,61.1,9.31],[201906,61.1,9.31],[201907,61.1,9.31],[201908,68.1,14.21],[201909,68.1,14.21],[201910,68.1,14.21],[201911,68.1,14.21],[201912,68.1,14.21],
+[202001,68.1,14.21],[202002,75.9,19.67],[202003,75.9,19.67],[202004,75.9,19.67],[202005,75.9,19.67],[202006,75.9,19.67],[202007,75.9,19.67],[202008,77.5,20.79],[202009,77.5,20.79],[202010,77.5,20.79],[202011,77.5,20.79],[202012,77.5,20.79],
+[202101,77.5,20.79],[202102,85.2,26.18],[202103,85.2,26.18],[202104,85.2,26.18],[202105,85.2,26.18],[202106,85.2,26.18],[202107,85.2,26.18],[202108,87.5,27.79],[202109,87.5,27.79],[202110,87.5,27.79],[202111,87.5,27.79],[202112,87.5,27.79],
+[202201,87.5,27.79],[202202,94.9,32.97],[202203,94.9,32.97],[202204,94.9,32.97],[202205,94.9,32.97],[202206,94.9,32.97],[202207,94.9,32.97],[202208,100.4,36.82],[202209,100.4,36.82],[202210,100.4,36.82],[202211,100.4,36.82],[202212,100.4,36.82],
+[202301,100.4,36.82],[202302,106.6,41.16],[202303,106.6,41.16],[202304,106.6,41.16],[202305,106.6,41.16],[202306,106.6,41.16],[202307,106.6,41.16],
+[202308,0,0],[202309,0,0],[202310,0,0],[202311,0,0],[202312,0,0],
+]
+
+
+
+function totable1(){
+
+
+splallda.forEach(a=> {
+a.year > ym ? (
+a.basic = (elbasic).toFixed(2)*1, 
+bps === 10 ? dar = a.bp10/100 : dar = a.bp11/100,  
+a.da = (a.basic * dar).toFixed(2)*1 ) : (a.basic ='', a.bp10='', a.bp11='',  a.da='')
+})
+
+
+if(mt.value*1 ===12){y = yr.value*1 + 1}else {y = yr.value*1}
+
+splallda = splallda.filter(a=> a.year.toString().substring(0,4)*1 >= y )
+
+splallda.forEach (a=> a.year>202303? (a.basic='', a.bp10='', a.bp11='', a.da=''):'')
+
+brow=''
+drow=''
+crow=''
+th =`<table border=1 class='datable'><tr><td>Year<td>Details <td>Jan<td>Feb<td>Mar<td>Apr<td>May<td>Jun<td>Jul<td>Aug<td>Sep<td>Oct<td>Nov<td>Dec`
+trow =''
+for (i=0; i<splallda.length; i++){
+brow += `<td> ${splallda[i].basic} `
+drow += bps ===10? `<td> ${splallda[i].bp10} ` :`<td> ${splallda[i].bp11} `
+crow += `<td> ${splallda[i].da} `
+if (splallda[i].year.toString().substring(4)*1 %12 ===0){
+trow += `<tr><td rowspan=3>${splallda[i].year.toString().substring(0,4)}<td>Basic  ${brow} <tr> <td>DA Rate ${drow} <tr><td>DA ${crow}`
+brow=''
+drow=''
+crow=''
+}
+totable = th + trow + "</table> <h4 onclick='window.print();'> Print </h4>"
+document.getElementById('calc').innerHTML=totable
+document.getElementById('bio').style.display='none'
+
+}
+}
+
+</script>
+</body>
+</html>
+
