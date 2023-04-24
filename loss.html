@@ -170,7 +170,7 @@ penstart = splallda.filter(a=> a.year>ym &  a.year<202304)[0].year
 basictotal = splallda.reduce((n, {basic}) => n + basic*1, 0).toFixed(2)
 datotal = splallda.reduce((n, {da}) => n + da*1, 0).toFixed(2)
 
-bt = `<table class='biotable' border=0>
+bt = `<h4 align=center>IBRA - Calculation of Pension Loss on Special Pay </h4><table class='biotable' border=0>
 <tr><td>Name<td>${retireename.value}<td>SR No<td>${srno.value}
 <tr><td>Retirement MMYYYY<td>${ym}<td>Pension MMYYYY<td>${penstart}
 <tr><td>Designation<td>${scales[sc.value]}<td>Bipartite<td>${bps}th
