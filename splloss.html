@@ -216,8 +216,11 @@ datotal = splallda.reduce((n, {da}) => n + da*1, 0).toFixed(2)
 }
 }
 function printdata(){
+document.body.style.backgroundColor = "white";
+
 document.getElementById('printdiv').style.display='block'
 document.getElementById('datadiv').style.display='none'
+
 window.print();      
 
 
