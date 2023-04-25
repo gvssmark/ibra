@@ -101,6 +101,7 @@ avgSplAllw= (basic.value*1*sprate/100).toFixed(2)* (sarecdmonths/10).toFixed(2)
 splalw = (basic.value*1*sprate/100).toFixed(2)
 elbasic = avgSplAllw/2
 totable1()
+window.print();      
 }
 
 spl12t =[[1,7.75,16.4],[2,7.75,16.4],[3,7.75,16.4],[4,10,19],[5,10,19],[6,11,20],[7,11,20],[8,7.75,16.4],[9,7.75,16.4],[10,7.75,16.4]]
@@ -150,7 +151,7 @@ brow=''
 drow=''
 crow=''
 }
-totable = th + trow + "</table> <h4 onclick='window.print();'> Print </h4>"
+totable = th + trow + "</table>"
 document.getElementById('calc').innerHTML=totable
 document.getElementById('bio').style.display='none'
 totmths = splallda.filter(a=> a.year>ym &  a.year<202304).length
