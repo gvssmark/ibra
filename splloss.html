@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,8 +12,8 @@ table {border-collapse: collapse; margin:auto; width: 340px;;border: 1px soild b
 .btn {width: 300px; margin:0 30px; }
 #datadiv {display:none}
 b{color:red}
-#printdiv {width:100%; border:1px solid black; display:none; }
-#biotable1 {width:100%; border:1px solid black;}
+#printdiv {width:100%;  display:none; }
+#biotable1 {width:100%; }
 .biotable {width:95%; }
 .datable{width:95%; }
 #calc {width:100%; }
@@ -102,9 +99,7 @@ b{color:red}
 <div id='printdiv'>
 <div id='biotable'>biodata goes here</div>
 <div id='calc'>biodata goes here</div>
-
 </div>
-
 <script>
 spl12t =[[1,7.75,16.4],[2,7.75,16.4],[3,7.75,16.4],[4,10,19],[5,10,19],[6,11,20],[7,11,20],[8,7.75,16.4],[9,7.75,16.4],[10,7.75,16.4]]
 spl12 = spl12t.map(([scale, splallrate12,splallrate17]) => ({ scale, splallrate12,splallrate17 }))
@@ -118,7 +113,6 @@ m= document.getElementById('mt').value
 y= document.getElementById('yr').value
 ym=y+m
 document.getElementById('fdata').innerHTML=''
-
 if(ym*1>201210){
 bps= (ym*1 >201710) ? 11 : 10
 bps === 10 ? sarecdmonths = splallda.filter(a=> a.year >= 201211 & a.year <= ym*1).length : sarecdmonths = splallda.filter(a=> a.year >= 201711 & a.year <= ym*1).length
@@ -170,13 +164,8 @@ splalldatemp = [[201201,0,0],[201202,0,0],[201203,0,0],[201204,0,0],[201205,0,0]
 ]
 splallda = splalldatemp.map(([year, bp10, bp11, basic, da]) => ({ year, bp10, bp11,basic,da }))
 
-
 function biodata(){
-
 penstart= spda[0].year
-//bps === 10 ? sarecdmonths = spda.filter(a=> a.year >= 201211 & a.year <= ym*1).length : sarecdmonths = spda.filter(a=> a.year >= 201711 & a.year <= ym*1).length
-//sarecdmonthsinthisbps = sarecdmonths
-//sarecdmonths >10 ? sarecdmonths=10 : sarecdmonths=sarecdmonths 
 splalw = (basic.value*1*sprate/100).toFixed(2)
 avgSplAllw= (basic.value*1*sprate/100).toFixed(2)* (sarecdmonths/10).toFixed(2)
 totmths = spda.filter(a=> a.year>ym &  a.year<202304).length
@@ -192,14 +181,11 @@ bt = `<h4 align=center>IBRA - Calculation of Pension Loss on Special Pay </h4><t
 </table>  `
 document.getElementById('biotable').innerHTML=bt
 }
-
-
 function totable1(){
 if(mt.value*1 ===12){y = yr.value*1 + 1}else {y = yr.value*1}
 splallda = splallda.filter(a=> a.year.toString().substring(0,4)*1 >= y )
 splallda.forEach (a=> a.year>202303? (a.basic='', a.bp10='', a.bp11='', a.da=''):'')
 splallda.forEach (a=> a.year<=ym*1 ? (a.basic='', a.bp10='', a.bp11='', a.da=''):'')
-
 brow=''
 drow=''
 crow=''
@@ -226,17 +212,10 @@ datotal = splallda.reduce((n, {da}) => n + da*1, 0).toFixed(2)
 }
 function printdata(){
 document.body.style.backgroundColor = "white";
-
 document.getElementById('printdiv').style.display='block'
 document.getElementById('datadiv').style.display='none'
-
 window.print();      
-
-
-
 }
-
 </script>
 </body>
 </html>
-
