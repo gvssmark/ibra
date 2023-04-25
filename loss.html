@@ -1,12 +1,9 @@
-
 <!DOCTYPE html>
 <html>
 <head>
       <meta name="viewport" content="width=device-width, maximum-scale=1 , initial-scale=1.0">
     <title>IBRA-Pension Loss on Special Allowance</title>
-
 <style>
-
 .bio {width:360px; margin:0 auto; }
 .calc { width:100%; margin:0 auto; font-size:small;  }
 table { border-collapse: collapse; margin:auto; width: 340px;;border: 1px soild black;font-size: small}
@@ -14,28 +11,15 @@ select, input {background:yellow; border:none;}
 .datable td{text-align:center;}
 .datable {width:95%; }
 .biotable {width:95%; }
-
-
 @media print 
 {
     @page {
       size: A4; /* DIN A4 standard, Europe */
       margin: 0;
     }
-    html, body {
-        width: 210mm;
-        /* height: 297mm; */
-        height: 282mm;
-        font-size: small;
-        background: #FFF;
-        overflow: visible;
-    }
-    body {
-        padding-top: 0mm;
-    }
+    html, body {width: 210mm; height: 282mm; font-size: small; background: #FFF; overflow: visible; }
+    body {        padding-top: 0mm;    }
 }
-
-
 </style>
 </head>
 <body>
@@ -96,37 +80,26 @@ select, input {background:yellow; border:none;}
 <tr><td colspan=3>* Gratruity Not considered<br>* Assumed 33 Years Service<br>* Stagnation increment sanctioned not considered<br>
 <input class='btn' type='button' onclick='submitbtn()' value='Calculate'></button>
 </table>
-
-
 </div>
 <br>
 <div class='calc' id='biotable' >
-
 <br>
 </div>
 <div class='calc' id='calc'>
 </div>
-
-
 <script>
 
 function submitbtn(){
 splallda = splalldatemp.map(([year, bp10, bp11, basic, da]) => ({ year, bp10, bp11,basic,da }))
-
-
-
 ym = (yr.value + mt.value)*1
 ym >= 201711 ? bps = 11 : bps = 10
 sprate = bps=== 10 ? spl12.filter(a=> a.scale === sc.value*1)[0].splallrate12 : spl12.filter(a=> a.scale === sc.value*1)[0].splallrate17
-
 bps === 10 ? sarecdmonths = splallda.filter(a=> a.year >= 201211 & a.year <= ym*1).length : sarecdmonths = splallda.filter(a=> a.year >= 201711 & a.year <= ym*1).length
 sarecdmonthsinthisbps = sarecdmonths
 sarecdmonths >10 ? sarecdmonths=10 : sarecdmonths=sarecdmonths 
 avgSplAllw= (basic.value*1*sprate/100).toFixed(2)* (sarecdmonths/10).toFixed(2)
-
+splalw = (basic.value*1*sprate/100).toFixed(2)
 elbasic = avgSplAllw/2
-
-
 totable1()
 }
 
@@ -151,11 +124,7 @@ splalldatemp = [[201201,0,0],[201202,0,0],[201203,0,0],[201204,0,0],[201205,0,0]
 [202308,0,0],[202309,0,0],[202310,0,0],[202311,0,0],[202312,0,0],
 ]
 
-
-
 function totable1(){
-
-
 splallda.forEach(a=> {
 a.year > ym ? (
 a.basic = (elbasic).toFixed(2)*1, 
@@ -163,13 +132,9 @@ bps === 10 ? dar = a.bp10/100 : dar = a.bp11/100,
 a.da = (a.basic * dar).toFixed(2)*1 ) : (a.basic ='', a.bp10='', a.bp11='',  a.da='')
 })
 
-
 if(mt.value*1 ===12){y = yr.value*1 + 1}else {y = yr.value*1}
-
 splallda = splallda.filter(a=> a.year.toString().substring(0,4)*1 >= y )
-
 splallda.forEach (a=> a.year>202303? (a.basic='', a.bp10='', a.bp11='', a.da=''):'')
-
 brow=''
 drow=''
 crow=''
@@ -180,7 +145,7 @@ brow += `<td> ${splallda[i].basic} `
 drow += bps ===10? `<td> ${splallda[i].bp10} ` :`<td> ${splallda[i].bp11} `
 crow += `<td> ${splallda[i].da} `
 if (splallda[i].year.toString().substring(4)*1 %12 ===0){
-trow += `<tr><td rowspan=3>${splallda[i].year.toString().substring(0,4)}<td>Basic  ${brow} <tr> <td>DA Rate ${drow} <tr><td>DA ${crow}`
+trow += `<tr><td rowspan=3>${splallda[i].year.toString().substring(0,4)}<td>Basic Rs.  ${brow} <tr> <td>DA % ${drow} <tr><td>DA Rs. ${crow}`
 brow=''
 drow=''
 crow=''
@@ -190,24 +155,21 @@ document.getElementById('calc').innerHTML=totable
 document.getElementById('bio').style.display='none'
 totmths = splallda.filter(a=> a.year>ym &  a.year<202304).length
 penstart = splallda.filter(a=> a.year>ym &  a.year<202304)[0].year
-
 basictotal = splallda.reduce((n, {basic}) => n + basic*1, 0).toFixed(2)
 datotal = splallda.reduce((n, {da}) => n + da*1, 0).toFixed(2)
-
 bt = `<h4 align=center>IBRA - Calculation of Pension Loss on Special Pay </h4><table class='biotable' border=0>
 <tr><td>Name<td>${retireename.value}<td>SR No<td>${srno.value}
 <tr><td>Retirement YYYYMM<td>${ym}<td>Pension YYYYMM<td>${penstart}
-<tr><td>Designation<td>${scales[sc.value]}<td>Bipartite / Months worked in this BPS<td>${bps}th / ${sarecdmonthsinthisbps}
-<tr><td>Special Pay Rate<td>${sprate}%<td>Basic Pay<td>Rs.${basic.value}
-<tr><td>Average Special Pay(Spl All x Months / 10 (Max) )<td>Rs.${avgSplAllw}<td>Pensionable Special<td>Rs.${elbasic }
+<tr><td>Designation<td>${scales[sc.value]}<td>Bipartite / Months worked in this BPS<td>${bps}th / ${sarecdmonthsinthisbps} Months
+<tr><td>Special All. Rate<td>${sprate}%<td>Basic Pay<td>Rs.${basic.value}
+<tr><td>Splg All. / Average Special All.<td>Rs.${splalw} / Rs.${avgSplAllw}<td>Pensionable Special<td>Rs.${elbasic }
 <tr><td>Total Months<td>${totmths}<td>Basic Pay Loss<td>Rs.${basictotal*1}
 <tr><td>Total DA Loss<td>Rs.${datotal}<td>Total Loss<td>Rs.${(datotal*1+ basictotal*1).toFixed(2)}
+<tr><td colspan=4>*Special Allowance = Basic Pay x Spl All. Rate. * Avg Spl Allowance = Special Allowance x Months worked in Bipartite (Max 10) / 10. *Pensionable Special Allowance = 50% of Avg Spl Allowance.     
 </table>  `
-
 document.getElementById('biotable').innerHTML=bt
 }
 }
-
 </script>
 </body>
 </html>
