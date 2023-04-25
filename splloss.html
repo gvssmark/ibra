@@ -20,11 +20,20 @@ b{color:red}
 .biotable {width:95%; }
 .datable{width:95%; }
 #calc {width:100%; }
-</style>
+@media print 
+{
+    @page {
+      size: A4; /* DIN A4 standard, Europe */
+      margin: 0;
+    }
+    html, body {width: 210mm; height: 282mm; font-size: small; background: #FFF; overflow: visible; }
+    body {        padding-top: 0mm;    }
+}
+  </style>
 </head>
 <body>
 <div id='container' class='container'>
-<h4 align=center>IBRA - Specila Allowance - Loss of Pension</h4>
+<h4 align=center>IBRA - Special Allowance - Loss of Pension</h4>
 <table border=1>
 <tr><td>Name of the Retiree<td colspan=2><input name='retireename' id='retireename' type='text' value='Markandeyulu'>
 <tr><td>SR Number<td colspan=2><input name='srno' id='srno' type='number' value=30349>
@@ -85,7 +94,7 @@ b{color:red}
 <input class='btn' type='button' onclick='submitbtn()' value='Calculate'></button><br><br>
 </div>
 <div id='datadiv'>
-<h4 align=center>IBRA - Specila Allowance - Loss of Pension</h4>
+<h4 align=center>IBRA - Special Allowance - Loss of Pension</h4>
 <p id='fdata'></p>
 <input class='btn' type='button' onclick='printdata()' value='Print / Save as PDF'></button>
 <p id='spdacalc'></p>
@@ -176,8 +185,8 @@ bt = `<h4 align=center>IBRA - Calculation of Pension Loss on Special Pay </h4><t
 <tr><td>Retirement YYYYMM<td>${ym}<td>Pension YYYYMM<td>${penstart}
 <tr><td>Designation<td>${scales[sc.value]}<td>Bipartite / Months worked in this BPS<td>${bps}th / ${sarecdmonths} Months
 <tr><td>Special All. Rate<td>${sprate}%<td>Basic Pay<td>Rs.${basic.value}
-<tr><td>Splg All. / Average Special All.<td>Rs.${splalw} / Rs.${avgSplAllw}<td>Pensionable Special<td>Rs.${elbasic }
-<tr><td>Total Months<td>${totmths}<td>Basic Pay Loss<td>Rs.${(basictotal*1).toFixed(2)}
+<tr><td>Spl All. / Average Special All.<td>Rs.${splalw} / Rs.${avgSplAllw}<td>Pensionable Special All<td>Rs.${elbasic/2 }
+<tr><td>Total Months<td>${totmths}<td>Total Basic Pay Loss<td>Rs.${(basictotal*1).toFixed(2)}
 <tr><td>Total DA Loss<td>Rs.${datotal.toFixed(2)}<td>Total Loss<td>Rs.${(datotal*1+ basictotal*1).toFixed(2)}
 <tr><td colspan=4>*Special Allowance = Basic Pay x Spl All. Rate. * Avg Spl Allowance = Special Allowance x Months worked in Bipartite (Max 10) / 10. *Pensionable Special Allowance = 50% of Avg Spl Allowance.     
 </table>  `
