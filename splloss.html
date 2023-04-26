@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -192,9 +193,10 @@ crow=''
 th =`<table border=1 class='datable'><tr><td>Year<td>Details <td>Jan<td>Feb<td>Mar<td>Apr<td>May<td>Jun<td>Jul<td>Aug<td>Sep<td>Oct<td>Nov<td>Dec`
 trow =''
 for (i=0; i<splallda.length; i++){
-brow += `<td> ${splallda[i].basic} `
-drow += bps ===10? `<td> ${splallda[i].bp10} ` :`<td> ${splallda[i].bp11} `
-crow += `<td> ${splallda[i].da} `
+brow += `<td> ${ splallda[i].basic>0 ? (splallda[i].basic*1).toFixed(2) : ''} `
+bps = 10 ? dr = splallda[i].bp10 : dr= splallda[i].bp11
+drow +=  `<td> ${dr*1 > 0 ? (dr*1).toFixed(2) : ''} `
+crow += `<td> ${splallda[i].da>0 ? (splallda[i].da*1).toFixed(2):''} `
 if (splallda[i].year.toString().substring(4)*1 %12 ===0){
 trow += `<tr><td rowspan=3>${splallda[i].year.toString().substring(0,4)}<td>Basic Rs.  ${brow} <tr> <td>DA % ${drow} <tr><td>DA Rs. ${crow}`
 brow=''
