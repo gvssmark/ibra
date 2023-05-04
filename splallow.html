@@ -30,13 +30,14 @@ url = 'https://script.google.com/macros/s/AKfycbxyfOGa713kZ6_fenPJkU8qQehe2D2AP5
                 tempData = data["user"]                
 srnos = tempData.filter(a => a.srno>0).sort(function (a, b) { return a.srno - b.srno })  
 non = srnos.filter(a => a.membno.length>4).length
+paid = srnos.filter(a => a.serpensioner >0).length
  tabdata=''                            
 srnos.forEach(function(a,b) { 
 a.membno ==='Non Memb' ? bclr='yellow' : bclr=''
 a.serpensioner >0 ? pgreen='pay' : pgreen=''
 tabdata += `<tr> <td class=${pgreen}> ${a.srno}<td   class=${bclr} >${a.name}-(${a.membno})-(${a.serpensioner})<td> ${a.dor} <td> ${a.mobile} `})                
 document.getElementById('tdata').innerHTML =`<table align=center id='regionTable' class='pname' border=1 ><tr><th> SR No</th><th>Name(Memb No) (Paid SlNo)</th><th> Ret Date</th><th> Mobile</th></tr> ${tabdata}  </table>`              
-document.getElementById('tot').innerHTML = `<b>${srnos.length}<span style='color:pink;'>(${non}) </span></b>retirees interested to join the suit`
+document.getElementById('tot').innerHTML = `<b>${srnos.length}<span style='color:pink;'>(${non}) </span></b>retirees interested to join the suit. <span class='pay' >Paid ${paid} </span>`
             }               
   getMyData() 
 </script>
