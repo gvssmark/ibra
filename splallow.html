@@ -11,6 +11,9 @@ h2, h5{text-align:center; color:white; ;}
 #tdata {margin-top:105px;}
 th{position:sticky; top:106px; background:red; color:white; height:25px;}
 .yellow {background:yellow}
+
+.pay{background:green }
+
 </style>
 </head>
 <body>
@@ -30,7 +33,8 @@ non = srnos.filter(a => a.membno.length>4).length
  tabdata=''                            
 srnos.forEach(function(a,b) { 
 a.membno ==='Non Memb' ? bclr='yellow' : bclr=''
-tabdata += `<tr> <td> ${a.srno}<td   class=${bclr} >${a.name}-(${a.membno})-(${a.serpensioner})<td> ${a.dor} <td> ${a.mobile} `})                
+a.serpensioner >0 ? pgreen='pay' : pgreen=''
+tabdata += `<tr> <td class=${pgreen}> ${a.srno}<td   class=${bclr} >${a.name}-(${a.membno})-(${a.serpensioner})<td> ${a.dor} <td> ${a.mobile} `})                
 document.getElementById('tdata').innerHTML =`<table align=center id='regionTable' class='pname' border=1 ><tr><th> SR No</th><th>Name(Memb No) </th><th> Ret Date</th><th> Mobile</th></tr> ${tabdata}  </table>`              
 document.getElementById('tot').innerHTML = `<b>${srnos.length}<span style='color:pink;'>(${non}) </span></b>retirees interested to join the suit`
             }               
