@@ -28,7 +28,7 @@ url = 'https://script.google.com/macros/s/AKfycbxyfOGa713kZ6_fenPJkU8qQehe2D2AP5
                 response = await fetch(url)
                 data = await response.json()
                 tempData = data["user"]                
-srnos = tempData.filter(a => a.srno>0).sort(function (a, b) { return a.srno - b.srno })  
+srnos = tempData.filter(a => a.srno>0).sort(function (a, b) { return a.srno - b.srno }).filter(a=> a.serpensioner >0)
 non = srnos.filter(a => a.membno.length>4).length
 paid = srnos.filter(a => a.serpensioner >0).length
  tabdata=''                            
