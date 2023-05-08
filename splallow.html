@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,13 +8,14 @@
 #regionTable {border-collapse:collapse; border:1px; font-size:small; font-family: "Lucida Console", "Courier New", monospace;}
 tr:nth-child(even) {background-color: #D6EEEE;}
 b {color:cyan;}
-h2, h5{text-align:center; color:white; ;}
+h2 {text-align:center; color:white; margin-top:0; ;}
+h5 {text-align:center; color:white;  ;}
 #tdata {margin-top:105px;}
-th{position:sticky; top:106px; background:red; color:white; height:25px;}
+th{position:sticky; top:100px; background:red; color:white; height:25px;}
 .yellow {background:yellow}
 
-.pays{background:lime }
-
+.pay{background:lime;  }
+#docrecd {color:lime ; }
 </style>
 </head>
 <body>
@@ -31,13 +33,15 @@ url = 'https://script.google.com/macros/s/AKfycbxyfOGa713kZ6_fenPJkU8qQehe2D2AP5
 srnos = tempData.filter(a => a.srno>0).sort(function (a, b) { return a.srno - b.srno }).filter(a=> a.serpensioner >0)
 non = srnos.filter(a => a.membno.length>4).length
 paid = srnos.filter(a => a.serpensioner >0).length
+dr= srnos.filter(a => a.pentype ==='Y').length
  tabdata=''                            
 srnos.forEach(function(a,b) { 
 a.membno ==='Non Memb' ? bclr='yellow' : bclr=''
-a.serpensioner >0 ? pgreen='pay' : pgreen=''
+a.pentype ==='Y'? pgreen='pay' : pgreen=''
+
 tabdata += `<tr> <td class=${pgreen}> ${a.srno}<td   class=${bclr} >${a.name}-(${a.membno})<td> ${a.dor} <td> ${a.mobile} `})                
 document.getElementById('tdata').innerHTML =`<table align=center id='regionTable' class='pname' border=1 ><tr><th> SR No</th><th>Name(Memb No)</th><th> Ret Date</th><th> Mobile</th></tr> ${tabdata}  </table>`              
-document.getElementById('tot').innerHTML = `<b>${srnos.length}<span style='color:pink;'>(${non}) </span></b>retirees paid to join the suit `
+document.getElementById('tot').innerHTML = `<b>${srnos.length}<span style='color:pink;'>(${non}) </span></b>retirees paid to join the suit <br> Documents Received: <span id='docrecd' >${dr}</span>`
             }               
   getMyData() 
 </script>
