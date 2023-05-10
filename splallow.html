@@ -12,18 +12,72 @@ h5 {text-align:center; color:white; margin-top:-21px ;}
 #tdata {margin-top:75px;}
 th{position:sticky; top:60px; background:red; color:white; height:25px;}
 .yellow {background:yellow}
-
 .pay{background:lime;  }
 #docrecd {color:lime ; }
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 0; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: powderblue;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+.pnames {width:100%; border:1px solid black; border-collapse:collapse; }
+#modaldata {background:balck; }
+
+.h5clr {color:red;}
 </style>
 </head>
 <body>
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content" >
+    <span class="close">&times;</span>
+    <p id='modaldata'>Some text in the Modal..</p>
+  </div>
+
+</div>
+
 <div style="  position: fixed; top: 0; width: 100%; background: #555; margin-left:-10px;">
 <h2>IBRA Special Allowance Suit</h1>
 <h5 id='tot'>List of retirees interested to join the suit</h5>
 </div>
 <p id='tdata'></p>
+
 <script>
+ modal = document.getElementById("myModal");
+
 url = 'https://script.google.com/macros/s/AKfycbxyfOGa713kZ6_fenPJkU8qQehe2D2AP5IhedeH6xIoLxOjqTZWEa05PMwvGFLsazlD/exec'
             async function getMyData() {
                 response = await fetch(url)
@@ -38,11 +92,39 @@ srnos.forEach(function(a,b) {
 a.membno ==='Non Memb' ? bclr='yellow' : bclr=''
 a.pentype ==='Y'? pgreen='pay' : pgreen=''
 
-tabdata += `<tr> <td class=${pgreen}> ${a.srno}<td   class=${bclr} >${a.name}-(${a.membno})<td> ${a.dor} <td> ${a.mobile} `})                
+tabdata += `<tr onclick='nameclick(${a.srno})'> <td class=${pgreen}> ${a.srno}<td   class=${bclr} >${a.name}-(${a.membno})<td> ${a.dor} <td> ${a.mobile} `})                
 document.getElementById('tdata').innerHTML =`<table align=center id='regionTable' class='pname' border=1 ><tr><th> SR No</th><th>Name(Memb No)</th><th> Ret Date</th><th> Mobile</th></tr> ${tabdata}  </table>`              
 document.getElementById('tot').innerHTML = `<b>${srnos.length}<span style='color:pink;'>(${non}) </span></b>retirees paid to join the suit <br> Documents Received: <span id='docrecd' >${dr}</span>`
             }               
   getMyData() 
+  
+function nameclick(s){
+docs = srnos.filter(a => a.srno ===s)
+docs = docs[0]
+docsrecd=`<h5 class='h5clr'>Documents Received Status</h5><table class='pnames' border=1 ><tr><td>SR No <td>${docs.srno} <tr><td>Name <td>${docs.name} <tr><td>Vakalat* <td>${expand(docs.sonof)}<tr><td> Consent*  <td>${expand(docs.add1)} <tr><td>PPO* <td> ${expand(docs.add2)} <tr><td>Adhar*<td> ${expand(docs.add3)}<tr><td> Salary Slip**<td> ${expand(docs.add4)} <tr><td>Pension Slip** <td>${expand(docs.pin)} </table>* Required <br> ** If Available`
+document.getElementById('modaldata').innerHTML =docsrecd
+document.getElementById('myModal').style.display='block'
+}
+
+
+function expand(a){
+a === "Y" ? b="Yes" : b="No"
+return b
+}
+
+var span = document.getElementsByClassName("close")[0];
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
 </script>
 </body>
 </html>
