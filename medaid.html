@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,8 +8,7 @@
 <style>
 .bio {border:1px solid black;  border-collapse:collapse}
 #data {display:none}
-#dataentry {width:360px; margin:auto; background:powderblue; border-radius:15px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
+#dataentry {width:360px; margin:auto; background:powderblue; border-radius:15px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);   box-sizing: border-box;}
 @media print 
 {
     @page {
@@ -29,21 +29,21 @@ button {background:cyan; border:none;height:40px; border-radius:15px ; box-shado
 <div id='dataentry'>
 <h3 align=center>Medical Aid Application</h3>
 <table border=0 width=100%>
-<tr><td>Name of the Retiree<td><input type='text' name='retname'id='retname' required>
-<tr><td>SR No<td><input type='text' name='srno' id='srno' required>
-<tr><td>Designation<td><input type='text' name='desig' id='desig' required>
-<tr><td>Date of Birth<td><input type='text' name='dob' id='dob' required>
-<tr><td>Retirement Branch/office<td><input type='text' name='retbr' id='retbr'  required>
-<tr><td>Retirement Date<td><input type='text' name='retdate' id='retdate'  required>
-<tr><td>SB Account No<td><input type='text' name='sbno'  id='sbno'  required>
-<tr><td>Pension Branch<td><input type='text' name='penbr' id='penbr'  required>
-<tr><td>Address<td><textarea name='add' rows="4" cols="21" id='add'   required></textarea>
-<tr><td>Mobile No<td><input type='text' name='mob' id='mob'  required>
-<tr><td>Email<td><input type='text' name='email' id='email'  required>
-<tr><td>Year of Claim<td><input type='text' name='yr' id='yr'  required>
-<tr><td>Consultation Fee<td><input type='number' name='consult' id='consult'  required>
-<tr><td>Cost of Medicines<td><input type='number' name='medicine'  id='medicine' required>
-<tr><td>Date of Submission<td><input type='text' name='submitdate' id='submitdate'  required>
+<tr><td>Name of the Retiree<td><input type='text' name='retname'id='retname' placeholder='Retiree Name'required>
+<tr><td>SR No<td><input type='number' name='srno' id='srno'placeholder='SR Number' required>
+<tr><td>Designation<td><input type='text' name='desig' id='desig' placeholder='Designation'required>
+<tr><td>Date of Birth<td><input type='text' name='dob' id='dob' placeholder='DD/MM/YYYY'required>
+<tr><td>Retirement Branch/office<td><input type='text' name='retbr' id='retbr' placeholder='Retired branch / office' required>
+<tr><td>Retirement Date<td><input type='text' name='retdate' id='retdate' placeholder='DD/MM/YYYY' required>
+<tr><td>SB Account No<td><input type='number' name='sbno'  id='sbno' placeholder='Savings Acc No'  inputmode='decimal' required>
+<tr><td>Pension Branch<td><input type='text' name='penbr' id='penbr'  placeholder='Pension Branch'required>
+<tr><td>Address<td><textarea name='add' rows="4" cols="21" id='add'   placeholder='Address' required></textarea>
+<tr><td>Mobile No<td><input type='tel' name='mob' id='mob' placeholder='Mobile Number' required>
+<tr><td>Email<td><input type='email' name='email' id='email'  placeholder='Email Address'required>
+<tr><td>Year of Claim<td><input type='number' name='yr' id='yr' placeholder='Year of Claim' required>
+<tr><td>Consultation Fee<td><input type='number' name='consult' id='consult'  placeholder='Consulation Amt' inputmode='decimal' required>
+<tr><td>Cost of Medicines<td><input type='number' name='medicine'  id='medicine' placeholder='Medicines Amt' inputmode='decimal' required>
+<tr><td>Date of Submission<td><input type='text' name='submitdate' id='submitdate' placeholder='DD/MM/YYYY' required>
 <tr class='trheight'><td colspan=2 align=center> <button  value='submit'>Submit / Print / Save as PDF<br> </button>
 </table>
 <br>
