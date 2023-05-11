@@ -6,6 +6,16 @@
 <style>
 .bio {border:1px solid black;  border-collapse:collapse}
 #data {display:none}
+#dataentry {width:360px; margin:auto; }
+@media print 
+{
+    @page {
+      size: A4; /* DIN A4 standard, Europe */
+      margin: 30px;
+    }
+    html, body {width: 210mm; height: 282mm;  background: #FFF; overflow: visible; }
+    body {        padding-top: 0mm;    }
+}
 </style>
 
 </head>
@@ -20,14 +30,14 @@
 <tr><td>Retirement Date<td><input type='text' name='retdate' id='retdate' VALUE=13/08/2013>
 <tr><td>SB Account No<td><input type='text' name='sbno'  id='sbno'VALUE=440548818>
 <tr><td>Pension Branch<td><input type='text' name='penbr' id='penbr' VALUE=KUKATPALLI>
-<tr><td>Address<td><input type='text' name='add' id='add' VALUE='G001 MY HOME BHOOJA, GACHIBOWLI, HYDERABAD'>
+<tr><td>Address<td><textarea name='add' rows="4" cols="21" id='add'  VALUE='G001 MY HOME BHOOJA, GACHIBOWLI, HYDERABAD'></textarea>
 <tr><td>Mobile No<td><input type='text' name='mob' id='mob' VALUE=9989036183>
 <tr><td>Email<td><input type='text' name='email' id='email' VALUE=GVSSMARK@GMAIL.COM>
 <tr><td>Year of Claim<td><input type='text' name='yr' id='yr' VALUE=2023>
 <tr><td>Consultation Fee<td><input type='number' name='consult' id='consult' VALUE=4000>
 <tr><td>Cost of Medicines<td><input type='number' name='medicine'  id='medicine'VALUE=4000>
 <tr><td>Date of Submission<td><input type='text' name='submitdate' id='submitdate' VALUE=01/01/2023>
-<tr><td colspan=2 align=center> <button onclick='disp()' value='submit'>Submit </button>
+<tr><td colspan=2 align=center> <button onclick='disp()' value='submit'>Submit / Print / Save as PDF<br> </button>
 </table>
 </div>
 
@@ -39,7 +49,7 @@ function disp(){
 totable = `<table width=100%>
 <tr><td colspan=2 align=center><h4>APPLICATION FROM RETIRED STAFF FOR ANNUAL MEDICAL AID.</h4>
 <tr><td>The Asst. General Manager<br> CO: HRM Department 254-260,<br> Avvai Shanmugam Salai <br>Royapettah, Chennai 600014.<td align=right>
-Submitted thru’ <br><br>${penbr.value}
+Submitted thru’ <br><br>${penbr.value} branch
 <tr><td colspan=2><br>Dear Sir,<br><br>
 I request you to grant me the Annual Medical Aid as per the scheme for GRANT OF ANNUAL MEDICAL AID TO RETIRED STAFF of our Bank. The required details are given below:
 </table>
@@ -50,14 +60,14 @@ I request you to grant me the Annual Medical Aid as per the scheme for GRANT OF 
 <tr><td>5. Branch/Dept at which last worked<td>${retbr.value}<td>6. Date of Retirement on superannuation<td>${retdate.value}
 <tr><td>7. SB A/c No<td>440548818<td>8. Branch: where a/c is maintained<td>${penbr.value}
 <tr><td>Present/ Permanent Address<td>${add.value}<td>10. Mobile No:<br>Email Address<td>${mob.value}<br>${email.value}
-<tr><td>11.Year of Claim<td>${yr.value}<td>Total Amount Claimed<td>${calim = (consult.value*1 + medicine.value*1)}
+<tr><td>11.Year of Claim<td>${yr.value}<td>Total Amount Claimed<td>Rs. ${calim = (consult.value*1 + medicine.value*1)}
 <tr><td colspan=4 align=center>Declaration by the Retiree
 <tr><td colspan=4>
 I hereby declare that I retired from the Bank on superannuation and the particulars given above are correct. I hereby declare that I have incurred the following expenses for self and family and request you to reimburse the same as per rules.<br><table align=right><tr><td>Consultation Fees:<td> Rs.${consult.value} <tr><td>Cost of Medicines: <td>Rs.${medicine.value}<tr><td>Total <td>Rs.${consult.value*1 + medicine.value*1} </table>
-<tr><td Colspan=2>Date:${submitdate.value}<td colspan=2 align=center><br><br>Signature of the Retiree:
+<tr><td Colspan=2>Date:${submitdate.value}<td colspan=2 align=center><br><br><br><br>Signature of the Retiree:
 <tr><td colspan=4>Certified that the applicant is maintaining SB account with our Bank.
 Application details are entered in HRM online portal
-<tr><td>Date: ${submitdate.value}<td>Branch Seal <td colspan=2 align=center><br><br>Signature of Branch Manager
+<tr><td>Date: ${submitdate.value}<td>Branch Seal <td colspan=2 align=center><br><br><br><br>Signature of Branch Manager
 </table>
 <br>
 <table class='bio' border=0 width=100%><tr><td align=center><b>ACKNOWLEDGEMENT</b><br>
@@ -70,6 +80,7 @@ Branch Seal: <td align=right><br>Signature of ABM / Branch Manager</table><br></
 document.getElementById('data').innerHTML = totable
 document.getElementById('dataentry').style.display = 'none'
 document.getElementById('data').style.display = 'block'
+window.print();      
 
 
 
