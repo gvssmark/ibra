@@ -2,6 +2,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,6 +14,10 @@
 .bio {border:1px solid black;  border-collapse:collapse}
 #data {display:none}
 #dataentry {width:350px; margin:auto; background:powderblue; border-radius:15px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);   box-sizing: border-box;}
+.inputs {margin-left: 3px; }
+.inputs  td:nth-child(1) {font-size:small; }
+textarea:focus {background:cyan; outline:none;}
+textarea {border:none}
 @media print 
 {
     @page {
@@ -25,6 +30,8 @@
 h3 {color:white;   text-shadow: 2px 2px 4px #000000; padding:5px; }
 .trheight {height:50px;}
 button {background:cyan; border:none;height:40px; border-radius:15px ; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); color:blue; font-size:large;   }
+input {border:none;}
+input:focus { background:cyan; outline:none;  }
 </style>
 
 </head>
@@ -32,7 +39,7 @@ button {background:cyan; border:none;height:40px; border-radius:15px ; box-shado
 <form action="javascript:disp();">
 <div id='dataentry'>
 <h3 align=center>Medical Aid Application</h3>
-<table border=0 width=100%>
+<table border=0 class='inputs'  width=100%>
 <tr><td>Name of the Retiree<td><input type='text' name='retname'id='retname' placeholder='Retiree Name'required>
 <tr><td>SR No<td><input type='number' name='srno' id='srno'placeholder='SR Number' inputmode='decimal' required>
 <tr><td>Designation<td><input type='text' name='desig' id='desig' placeholder='Designation'required>
