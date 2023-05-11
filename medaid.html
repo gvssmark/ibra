@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+.bio {border:1px solid black;  border-collapse:collapse}
+#data {display:none}
+</style>
+
+</head>
+<body>
+<div id='dataentry'>
+<table border=0 width=100%>
+<tr><td>Name of the Retiree<td><input type='text' name='retname'id='retname' value='GVSS MARKANDEYULU'>
+<tr><td>SR No<td><input type='text' name='srno' id='srno' VALUE=30349>
+<tr><td>Designation<td><input type='text' name='desig' id='desig' VALUE='CHEIF MANAGER'>
+<tr><td>Date of Birth<td><input type='text' name='dob' id='dob' VALUE=24/11/1954>
+<tr><td>Retirement Branch/office<td><input type='text' name='retbr' id='retbr' VALUE='ZONAL OFFICE HYDERABAD'>
+<tr><td>Retirement Date<td><input type='text' name='retdate' id='retdate' VALUE=13/08/2013>
+<tr><td>SB Account No<td><input type='text' name='sbno'  id='sbno'VALUE=440548818>
+<tr><td>Pension Branch<td><input type='text' name='penbr' id='penbr' VALUE=KUKATPALLI>
+<tr><td>Address<td><input type='text' name='add' id='add' VALUE='G001 MY HOME BHOOJA, GACHIBOWLI, HYDERABAD'>
+<tr><td>Mobile No<td><input type='text' name='mob' id='mob' VALUE=9989036183>
+<tr><td>Email<td><input type='text' name='email' id='email' VALUE=GVSSMARK@GMAIL.COM>
+<tr><td>Year of Claim<td><input type='text' name='yr' id='yr' VALUE=2023>
+<tr><td>Consultation Fee<td><input type='number' name='consult' id='consult' VALUE=4000>
+<tr><td>Cost of Medicines<td><input type='number' name='medicine'  id='medicine'VALUE=4000>
+<tr><td>Date of Submission<td><input type='text' name='submitdate' id='submitdate' VALUE=01/01/2023>
+<tr><td colspan=2 align=center> <button onclick='disp()' value='submit'>Submit </button>
+</table>
+</div>
+
+<p id='data'>data will be here</p>
+<script>
+
+
+function disp(){
+totable = `<table width=100%>
+<tr><td colspan=2 align=center><h4>APPLICATION FROM RETIRED STAFF FOR ANNUAL MEDICAL AID.</h4>
+<tr><td>The Asst. General Manager<br> CO: HRM Department 254-260,<br> Avvai Shanmugam Salai <br>Royapettah, Chennai 600014.<td align=right>
+Submitted thru’ <br><br>${penbr.value}
+<tr><td colspan=2><br>Dear Sir,<br><br>
+I request you to grant me the Annual Medical Aid as per the scheme for GRANT OF ANNUAL MEDICAL AID TO RETIRED STAFF of our Bank. The required details are given below:
+</table>
+<br>
+<table border=1 class='bio'>
+<tr><td>1.Name of the Retiree<td>${retname.value}<td>2. S.R No<td>${srno.value}
+<tr><td>3. Designation at the time of retirement<td>${desig.value}<td>4. Date of Birth<td>${dob.value}
+<tr><td>5. Branch/Dept at which last worked<td>${retbr.value}<td>6. Date of Retirement on superannuation<td>${retdate.value}
+<tr><td>7. SB A/c No<td>440548818<td>8. Branch: where a/c is maintained<td>${penbr.value}
+<tr><td>Present/ Permanent Address<td>${add.value}<td>10. Mobile No:<br>Email Address<td>${mob.value}<br>${email.value}
+<tr><td>11.Year of Claim<td>${yr.value}<td>Total Amount Claimed<td>${calim = (consult.value*1 + medicine.value*1)}
+<tr><td colspan=4 align=center>Declaration by the Retiree
+<tr><td colspan=4>
+I hereby declare that I retired from the Bank on superannuation and the particulars given above are correct. I hereby declare that I have incurred the following expenses for self and family and request you to reimburse the same as per rules.<br><table align=right><tr><td>Consultation Fees:<td> Rs.${consult.value} <tr><td>Cost of Medicines: <td>Rs.${medicine.value}<tr><td>Total <td>Rs.${consult.value*1 + medicine.value*1} </table>
+<tr><td Colspan=2>Date:${submitdate.value}<td colspan=2 align=center><br><br>Signature of the Retiree:
+<tr><td colspan=4>Certified that the applicant is maintaining SB account with our Bank.
+Application details are entered in HRM online portal
+<tr><td>Date: ${submitdate.value}<td>Branch Seal <td colspan=2 align=center><br><br>Signature of Branch Manager
+</table>
+<br>
+<table class='bio' border=0 width=100%><tr><td align=center><b>ACKNOWLEDGEMENT</b><br>
+
+<tr><td>Received Application for Grant of Medical Aid for Retirees from
+Mr/Mrs/Ms ${retname.value}  S R No: ${srno.value}
+on ${submitdate.value}<BR><BR><TABLE  width=100%><TR><td>
+Branch Seal: <td align=right><br>Signature of ABM / Branch Manager</table><br></table>`
+
+document.getElementById('data').innerHTML = totable
+document.getElementById('dataentry').style.display = 'none'
+document.getElementById('data').style.display = 'block'
+
+
+
+}
+</script>
+</body>
+</html>
+
