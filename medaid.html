@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,7 +7,8 @@
 <style>
 .bio {border:1px solid black;  border-collapse:collapse}
 #data {display:none}
-#dataentry {width:360px; margin:auto; }
+#dataentry {width:360px; margin:auto; background:powderblue; border-radius:15px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
 @media print 
 {
     @page {
@@ -16,31 +18,37 @@
     html, body {width: 210mm; height: 282mm;  background: #FFF; overflow: visible; }
     body {        padding-top: 0mm;    }
 }
+h3 {color:white;   text-shadow: 2px 2px 4px #000000; padding:5px; }
+.trheight {height:50px;}
+button {background:cyan; border:none;height:40px; border-radius:15px ; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); color:blue; font-size:large;   }
 </style>
 
 </head>
 <body>
+<form action="javascript:disp();">
 <div id='dataentry'>
+<h3 align=center>Medical Aid Application</h3>
 <table border=0 width=100%>
-<tr><td>Name of the Retiree<td><input type='text' name='retname'id='retname' value='GVSS MARKANDEYULU'>
-<tr><td>SR No<td><input type='text' name='srno' id='srno' VALUE=30349>
-<tr><td>Designation<td><input type='text' name='desig' id='desig' VALUE='CHEIF MANAGER'>
-<tr><td>Date of Birth<td><input type='text' name='dob' id='dob' VALUE=24/11/1954>
-<tr><td>Retirement Branch/office<td><input type='text' name='retbr' id='retbr' VALUE='ZONAL OFFICE HYDERABAD'>
-<tr><td>Retirement Date<td><input type='text' name='retdate' id='retdate' VALUE=13/08/2013>
-<tr><td>SB Account No<td><input type='text' name='sbno'  id='sbno'VALUE=440548818>
-<tr><td>Pension Branch<td><input type='text' name='penbr' id='penbr' VALUE=KUKATPALLI>
-<tr><td>Address<td><textarea name='add' rows="4" cols="21" id='add'  VALUE='G001 MY HOME BHOOJA, GACHIBOWLI, HYDERABAD'></textarea>
-<tr><td>Mobile No<td><input type='text' name='mob' id='mob' VALUE=9989036183>
-<tr><td>Email<td><input type='text' name='email' id='email' VALUE=GVSSMARK@GMAIL.COM>
-<tr><td>Year of Claim<td><input type='text' name='yr' id='yr' VALUE=2023>
-<tr><td>Consultation Fee<td><input type='number' name='consult' id='consult' VALUE=4000>
-<tr><td>Cost of Medicines<td><input type='number' name='medicine'  id='medicine'VALUE=4000>
-<tr><td>Date of Submission<td><input type='text' name='submitdate' id='submitdate' VALUE=01/01/2023>
-<tr><td colspan=2 align=center> <button onclick='disp()' value='submit'>Submit / Print / Save as PDF<br> </button>
+<tr><td>Name of the Retiree<td><input type='text' name='retname'id='retname' required>
+<tr><td>SR No<td><input type='text' name='srno' id='srno' required>
+<tr><td>Designation<td><input type='text' name='desig' id='desig' required>
+<tr><td>Date of Birth<td><input type='text' name='dob' id='dob' required>
+<tr><td>Retirement Branch/office<td><input type='text' name='retbr' id='retbr'  required>
+<tr><td>Retirement Date<td><input type='text' name='retdate' id='retdate'  required>
+<tr><td>SB Account No<td><input type='text' name='sbno'  id='sbno'  required>
+<tr><td>Pension Branch<td><input type='text' name='penbr' id='penbr'  required>
+<tr><td>Address<td><textarea name='add' rows="4" cols="21" id='add'   required></textarea>
+<tr><td>Mobile No<td><input type='text' name='mob' id='mob'  required>
+<tr><td>Email<td><input type='text' name='email' id='email'  required>
+<tr><td>Year of Claim<td><input type='text' name='yr' id='yr'  required>
+<tr><td>Consultation Fee<td><input type='number' name='consult' id='consult'  required>
+<tr><td>Cost of Medicines<td><input type='number' name='medicine'  id='medicine' required>
+<tr><td>Date of Submission<td><input type='text' name='submitdate' id='submitdate'  required>
+<tr class='trheight'><td colspan=2 align=center> <button  value='submit'>Submit / Print / Save as PDF<br> </button>
 </table>
+<br>
 </div>
-
+</form>
 <p id='data'>data will be here</p>
 <script>
 
