@@ -1,14 +1,17 @@
 
 
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
+<title>Medical Aid</title>
+
 
 <style>
 .bio {border:1px solid black;  border-collapse:collapse}
 #data {display:none}
-#dataentry {width:360px; margin:auto; background:powderblue; border-radius:15px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);   box-sizing: border-box;}
+#dataentry {width:350px; margin:auto; background:powderblue; border-radius:15px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);   box-sizing: border-box;}
 @media print 
 {
     @page {
@@ -88,6 +91,7 @@ Branch Seal: <td align=right><br>Signature of ABM / Branch Manager</table><br></
 document.getElementById('data').innerHTML = totable
 document.getElementById('dataentry').style.display = 'none'
 document.getElementById('data').style.display = 'block'
+document.title= `${srno.value} - Medical Aid`
 window.print();      
 
 
