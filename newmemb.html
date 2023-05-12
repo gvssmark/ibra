@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+::placeholder {color:blue}
+
+* {  box-sizing: border-box;}
+input {border:none; width:200px; background:powderblue; }
+input:focus { background:cyan; outline: none }
+.tdwidth {width:150px;}
+table {width:320px; border: 0px solid black; border-collapse:collapse; margin:auto;}
+td:nth-child(1) {font-size:small; }
+textarea {border:none; outline:none; background:powderblue;}
+textarea:focus {background:cyan;}
+.trheight1 {height:50px;}
+button {background:cyan; border:none;height:25px; border-radius:15px ; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); color:blue;    }
+#dataentry {margin:auto; width:330px; background:powderblue; padding:5px; border-radius:15px;}
+#pdf {display:none}
+
+</style>
+
+</head>
+<body>
+<div id='dataentry'>
+<form action="javascript:disp();">
+<table border=0>
+<tr><td class='tdwidth'>Name <td><input type='text' name='retname'id='retname' placeholder='Retiree Name'required>
+<tr><td>SR Number<td><input type='number' name='srno'id='srno' placeholder='SR Number'required>
+<tr><td>Date of Birth<td><input type='text' name='dob'id='dob' placeholder='DOB YYYYMMDD'required>
+<tr><td>Qualification<td><input type='text' name='qual'id='qual' placeholder='Edcn Qualification'required>
+<tr><td>Designation / Scale<td><input type='text' name='desig'id='desig' placeholder='Designation'required>
+<tr><td>Br. / Off where Retd<td><input type='text' name='retbr'id='retbr' placeholder='Retired at 'required>
+<tr><td>Dt of Joining Bank<td><input type='text' name='doj'id='doj' placeholder='Dt of Joining Bank YYYYMMDD'required>
+<tr><td>Date of Retirement<td><input type='text' name='dor'id='dor' placeholder='Retired on YYYYMMDD'required>
+<tr><td>Basic Pay<td><input type='number' name='basic'id='basic' placeholder='Basic Pay'required>
+<tr><td>FPP<td><input type='number' name='fpp'id='fpp' placeholder='FPP'required>
+<tr><td>PQA<td><input type='number' name='pqa'id='pqa' placeholder='PQA'required>
+<tr><td>Special Allowance<td><input type='number' name='spl'id='spl' placeholder='Special Allowance'required>
+<tr><td>Pension Drawing Branch<td><input type='text' name='penbr'id='penbr' placeholder='Pension Branch'required>
+<tr><td>Pension Account No<td><input type='number' name='sbac'id='sbac' placeholder='Pension Ac No'required>
+<tr><td>Address<td><textarea name='add' rows="4" cols="24" id='add'   placeholder='Address' required></textarea>
+<tr><td>Mobile Number<td><input type='mobile' name='mob'id='mob' placeholder='Mobile No'required>
+<tr><td>Email Address<td><input type='email' name='mail'id='mail' placeholder='Email'required>
+<tr><td>Fixedline with STD Code<td><input type='text' name='fxdline'id='fxdline' placeholder='Fixed Line with STD'required>
+<tr><td>Spouse Name<td><input type='text' name='spouse'id='spouse' placeholder='Spouse Name'required>
+<tr class='trheight'><td colspan=2 align=center> <button  value='submit'>Submit / Print / Save as PDF<br> </button>
+</table>
+</form>
+</div>
+<div id='pdf'>form comes here
+
+
+</div>
+
+<script>
+
+function disp(){
+totable0 = `To<br>
+The General Secretary<br>
+Indian Bank Retirees’ Association<br>
+Flat No 401, Haritasa Residency,<br>
+New Nallakunta, Hyderabad 500044<br><br>
+Dear Comrade<br>
+<p style="  text-align: justify;">Please enrol me as member of the Retirees’ Association. I have read the Bye-laws and rules of the Association and I am willing to abide by them. I am remitting a sum of Rs.1000/- (Rupees One Thousand only) towards one time admission fee and Life Membership.Amount Credited to SB Account No 465693063 with Indian Bank, Himayatnagar Branch / Demand Draft / Cheque favouring Indian Bank Retirees’ Association, is enclosed.<br></p>
+Yours faithfully<br><br><br><br>
+Signature<br><br>`
+
+totable1 = `
+${retname.value}
+
+
+`
+document.getElementById('dataentry').style.display='none'
+document.getElementById('pdf').style.display='block'
+document.getElementById('pdf').innerHTML=totable0 + totable1 
+}
+</script>
+</body>
+</html>
+
