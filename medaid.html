@@ -53,6 +53,8 @@ input:focus { background:cyan; outline:none;  }
 <script>
 days =[0,31,28,31,30,31,30,31,31,30,31,30,31]
 ele= document.getElementById("dob")
+ele.addEventListener('blur',dob1)
+
 function disp(){
 lastday = days[ele.value.substring(5,7)*1]
 month = ele.value.substring(5,7)*1
@@ -60,7 +62,7 @@ year = 60 + dob.value.substring(0,4)*1
 r = `${lastday}-${month}-${year}`
 dobddmmyy = ele.value.substring(8) +"-" +ele.value.substring(5,7)+"-"+
 dob.value.substring(0,4)
-ele.addEventListener('blur',dob1)
+//ele.addEventListener('blur',dob1)
 //retdate =r
 yr= Date().substring(11,15)*1
 submitdate = Date().substring(4,15)
