@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,7 +36,7 @@ input:focus { background:cyan; outline:none;  }
 <tr><td>Name of the Retiree<td><input type='text' name='retname'id='retname' placeholder='Retiree Name'required>
 <tr><td>SR No<td><input type='number' name='srno' id='srno'placeholder='SR Number' inputmode='decimal' required>
 <tr><td>Designation<td><input type='text' name='desig' id='desig' placeholder='Designation'required>
-<tr><td>Date of Birth<td><input type="date" id="dob" name='dob' placeholder='DD-MM-YYYY' value = "" autofocus required>
+<tr><td>Date of Birth<td><input type="date" id="dob" name='dob' placeholder='DD-MM-YYYY' value = ""  required>
 <tr><td>Retirement Branch/office<td><input type='text' name='retbr' id='retbr' placeholder='Retired branch / office' required>
 <tr><td>SB Account No<td><input type='number' name='sbno'  id='sbno' placeholder='Savings Acc No'  inputmode='decimal' required>
 <tr><td>Pension Branch<td><input type='text' name='penbr' id='penbr'  placeholder='Pension Branch'required>
@@ -53,7 +54,13 @@ input:focus { background:cyan; outline:none;  }
 <script>
 days =[0,31,28,31,30,31,30,31,31,30,31,30,31]
 ele= document.getElementById("dob")
-ele.addEventListener('blur',dob1)
+maxyr= `${Date().substring(11,15)*1 -61}-12-31`
+
+ele.min='1900-01-01'
+ele.max= maxyr
+
+
+//ele.addEventListener('blur',dob1)
 
 function disp(){
 lastday = days[ele.value.substring(5,7)*1]
@@ -62,8 +69,6 @@ year = 60 + dob.value.substring(0,4)*1
 r = `${lastday}-${month}-${year}`
 dobddmmyy = ele.value.substring(8) +"-" +ele.value.substring(5,7)+"-"+
 dob.value.substring(0,4)
-//ele.addEventListener('blur',dob1)
-//retdate =r
 yr= Date().substring(11,15)*1
 submitdate = Date().substring(4,15)
 
