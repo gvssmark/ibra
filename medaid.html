@@ -3,6 +3,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,7 +45,7 @@ input:focus { background:cyan; outline:none;  }
 <tr><td>SR No<td><input type='number' name='srno' id='srno'placeholder='SR Number' inputmode='decimal' required>
 <tr><td>Designation<td><input type='text' name='desig' id='desig' placeholder='Designation'required>
     
-<tr><td>Date of Birth<td><input type="date" id="dob" name='dob'  value = "2014-02-09" autofocus required>
+<tr><td>Date of Birth<td><input type="date" id="dob" name='dob' placeholder='DD-MM-YYYY' value = "" autofocus required>
 <tr><td>Retirement Branch/office<td><input type='text' name='retbr' id='retbr' placeholder='Retired branch / office' required>
 <tr><td>Retirement Date<td><input type='text' name='retdate' id='retdate' placeholder='DD/MM/YYYY' required>
 <tr><td>SB Account No<td><input type='number' name='sbno'  id='sbno' placeholder='Savings Acc No'  inputmode='decimal' required>
@@ -66,6 +67,7 @@ input:focus { background:cyan; outline:none;  }
 
 
 function disp(){
+dob1()
 totable = `<table width=100%>
 <tr><td colspan=2 align=center><h4>APPLICATION FROM RETIRED STAFF FOR ANNUAL MEDICAL AID.</h4>
 <tr><td>The Asst. General Manager<br> CO: HRM Department 254-260,<br> Avvai Shanmugam Salai <br>Royapettah, Chennai 600014.<td align=right>
@@ -98,14 +100,20 @@ on ${submitdate.value}<BR><BR><TABLE  width=100%><TR><td>
 Branch Seal: <td align=right><br>Signature of ABM / Branch Manager</table><br></table>`
 
 document.getElementById('data').innerHTML = totable
-document.getElementById('dataentry').style.display = 'none'
+document.getElementById('dataentry').style.display = 'block'
 document.getElementById('data').style.display = 'block'
 document.title= `${srno.value} - Medical Aid`
 window.print();      
-
-
-
 }
+
+ele= document.getElementById("dob")
+ele.addEventListener('blur',dob1)
+
+function dob1(){
+(Date().substring(11,15)*1) - (dob.value.substring(0,4)*1)  >=61 ? "" :
+document.getElementById('dob').focus() 
+}
+
 </script>
 </body>
 </html>
