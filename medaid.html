@@ -1,16 +1,8 @@
-
-
-
-
-
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
 <title>Medical Aid</title>
-
-
 <style>
 .bio {border:1px solid black;  border-collapse:collapse}
 #data {display:none}
@@ -34,7 +26,6 @@ button {background:cyan; border:none;height:40px; border-radius:15px ; box-shado
 input {border:none;}
 input:focus { background:cyan; outline:none;  }
 </style>
-
 </head>
 <body>
 <form action="javascript:disp();">
@@ -44,19 +35,15 @@ input:focus { background:cyan; outline:none;  }
 <tr><td>Name of the Retiree<td><input type='text' name='retname'id='retname' placeholder='Retiree Name'required>
 <tr><td>SR No<td><input type='number' name='srno' id='srno'placeholder='SR Number' inputmode='decimal' required>
 <tr><td>Designation<td><input type='text' name='desig' id='desig' placeholder='Designation'required>
-    
 <tr><td>Date of Birth<td><input type="date" id="dob" name='dob' placeholder='DD-MM-YYYY' value = "" autofocus required>
 <tr><td>Retirement Branch/office<td><input type='text' name='retbr' id='retbr' placeholder='Retired branch / office' required>
-<tr><td>Retirement Date<td><input type='text' name='retdate' id='retdate' placeholder='DD/MM/YYYY' required>
 <tr><td>SB Account No<td><input type='number' name='sbno'  id='sbno' placeholder='Savings Acc No'  inputmode='decimal' required>
 <tr><td>Pension Branch<td><input type='text' name='penbr' id='penbr'  placeholder='Pension Branch'required>
 <tr><td>Address<td><textarea name='add' rows="4" cols="21" id='add'   placeholder='Address' required></textarea>
 <tr><td>Mobile No<td><input type='tel' name='mob' id='mob' placeholder='Mobile Number' required>
 <tr><td>Email<td><input type='email' name='email' id='email'  placeholder='Email Address'required>
-<tr><td>Year of Claim<td><input type='number' name='yr' id='yr' placeholder='Year of Claim' inputmode='decimal' required>
 <tr><td>Consultation Fee<td><input type='number' name='consult' id='consult'  placeholder='Consulation Amt' inputmode='decimal' required>
 <tr><td>Cost of Medicines<td><input type='number' name='medicine'  id='medicine' placeholder='Medicines Amt' inputmode='decimal' required>
-<tr><td>Date of Submission<td><input type='text' name='submitdate' id='submitdate' placeholder='DD/MM/YYYY' required>
 <tr class='trheight'><td colspan=2 align=center> <button  value='submit'>Submit / Print / Save as PDF<br> </button>
 </table>
 <br>
@@ -64,10 +51,20 @@ input:focus { background:cyan; outline:none;  }
 </form>
 <p id='data'>data will be here</p>
 <script>
-
-
+days =[0,31,28,31,30,31,30,31,31,30,31,30,31]
+ele= document.getElementById("dob")
 function disp(){
-dob1()
+lastday = days[ele.value.substring(5,7)*1]
+month = ele.value.substring(5,7)*1
+year = 60 + dob.value.substring(0,4)*1 
+r = `${lastday}-${month}-${year}`
+dobddmmyy = ele.value.substring(8) +"-" +ele.value.substring(5,7)+"-"+
+dob.value.substring(0,4)
+ele.addEventListener('blur',dob1)
+//retdate =r
+yr= Date().substring(11,15)*1
+submitdate = Date().substring(4,15)
+
 totable = `<table width=100%>
 <tr><td colspan=2 align=center><h4>APPLICATION FROM RETIRED STAFF FOR ANNUAL MEDICAL AID.</h4>
 <tr><td>The Asst. General Manager<br> CO: HRM Department 254-260,<br> Avvai Shanmugam Salai <br>Royapettah, Chennai 600014.<td align=right>
@@ -78,42 +75,36 @@ I request you to grant me the Annual Medical Aid as per the scheme for GRANT OF 
 <br>
 <table border=1 class='bio'>
 <tr><td>1.Name of the Retiree<td>${retname.value}<td>2. S.R No<td>${srno.value}
-<tr><td>3. Designation at the time of retirement<td>${desig.value}<td>4. Date of Birth<td>${dob.value}
-<tr><td>5. Branch/Dept at which last worked<td>${retbr.value}<td>6. Date of Retirement on superannuation<td>${retdate.value}
-<tr><td>7. SB A/c No<td>440548818<td>8. Branch: where a/c is maintained<td>${penbr.value}
+<tr><td>3. Designation at the time of retirement<td>${desig.value}<td>4. Date of Birth<td>${dobddmmyy}
+<tr><td>5. Branch/Dept at which last worked<td>${retbr.value}<td>6. Date of Retirement on superannuation<td>${r}
+<tr><td>7. SB A/c No<td>${sbno.value}<td>8. Branch: where a/c is maintained<td>${penbr.value}
 <tr><td>Present/ Permanent Address<td>${add.value}<td>10. Mobile No:<br>Email Address<td>${mob.value}<br>${email.value}
-<tr><td>11.Year of Claim<td>${yr.value}<td>Total Amount Claimed<td>Rs. ${calim = (consult.value*1 + medicine.value*1)}
+<tr><td>11.Year of Claim<td>${yr}<td>Total Amount Claimed<td>Rs. ${calim = (consult.value*1 + medicine.value*1)}
 <tr><td colspan=4 align=center>Declaration by the Retiree
 <tr><td colspan=4>
 I hereby declare that I retired from the Bank on superannuation and the particulars given above are correct. I hereby declare that I have incurred the following expenses for self and family and request you to reimburse the same as per rules.<br><table align=right><tr><td>Consultation Fees:<td> Rs.${consult.value} <tr><td>Cost of Medicines: <td>Rs.${medicine.value}<tr><td>Total <td>Rs.${consult.value*1 + medicine.value*1} </table>
-<tr><td Colspan=2><br><br><br><br>Date:${submitdate.value}<td colspan=2 align=center><br><br><br><br>Signature of the Retiree
+<tr><td Colspan=2><br><br><br><br>Date:${submitdate}<td colspan=2 align=center><br><br><br><br>Signature of the Retiree
 <tr><td colspan=4>Certified that the applicant is maintaining SB account with our Bank.
 Application details are entered in HRM online portal
-<tr><td><br><br><br><br>Date: ${submitdate.value}<td>Branch Seal <td colspan=2 align=center><br><br><br><br>Signature of Branch Manager
+<tr><td><br><br><br><br>Date: ${submitdate}<td><br><br><br><br>Branch Seal <td colspan=2 align=center><br><br><br><br>Signature of Branch Manager
 </table>
 <br>
 <table class='bio' border=0 width=100%><tr><td align=center><b>ACKNOWLEDGEMENT</b><br>
-
 <tr><td>Received Application for Grant of Medical Aid for Retirees from
 Mr/Mrs/Ms ${retname.value}  S R No: ${srno.value}
-on ${submitdate.value}<BR><BR><TABLE  width=100%><TR><td>
+on ${submitdate.value}<BR><BR><br><TABLE  width=100%><TR><td>
 Branch Seal: <td align=right><br>Signature of ABM / Branch Manager</table><br></table>`
 
 document.getElementById('data').innerHTML = totable
-document.getElementById('dataentry').style.display = 'block'
+document.getElementById('dataentry').style.display = 'none'
 document.getElementById('data').style.display = 'block'
 document.title= `${srno.value} - Medical Aid`
 window.print();      
 }
-
-ele= document.getElementById("dob")
-ele.addEventListener('blur',dob1)
-
 function dob1(){
 (Date().substring(11,15)*1) - (dob.value.substring(0,4)*1)  >=61 ? "" :
 document.getElementById('dob').focus() 
 }
-
 </script>
 </body>
 </html>
