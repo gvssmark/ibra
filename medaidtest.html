@@ -3,39 +3,100 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
 <style>
-body {width:360px; margin:auto; color:white; font-size:small;}
+@media print 
+{@page {size: A4;margin: 30px;    }
+    html, body {width: 210mm; height: 282mm;  background: #FFF; overflow: visible; }
+    body {padding-top: 0mm;    }
+}
+body {width:360px; margin:auto;}
+#dataentry {width:360px; margin:auto; color:white; font-size:small;}
 input:focus{background:yellow; }
 input {width:95%; outline:none; border:none; background:powderblue; height:20px;text-align:center; }
 #dataentry {width:95%; background:blue; margin:0 auto; text-align:center; padding-top:0; margin-top:-15px  }
-h2 {color:white;   text-shadow: 2px 2px 4px #000000; padding:5px; margin-top:0; padding:0}
+h2 {color:white;   text-shadow: 2px 2px 4px #000000; ; margin-top:15px; padding:0}
 textarea {background:powderblue; width:95%; outline:none;}
 textarea:focus {background:yellow; }
 </style></head>
 <body>
 
-<h2 align=center>Medical Aid Application </h2>
 
 <div id='dataentry'>
+<h2 align=center>Medical Aid Application </h2>
+
 <form action="javascript:disp();">
-Retiree Name <input type='text' name='retname'id='retname' >
-SR Number <input type='number' name='srno' id='srno'>
-Designation<input type='text' name='desig' id='desig' placeholder='Designation'>
-Date of Birth <input type='date' id="dob" name='dob' ><br>
-Retirement Branch <input type='text' name='retbr' id='retbr' placeholder='Retirement Branch / Office'>
-Pension Drawing Branch <input type='text' name='penbr' id='penbr'  >
-SB Account <input type='number' name='sbno'  id='sbno' >
-Address <br><textarea name='add' rows="2" cols="45" id='add' >  </textarea>
-Mobile Number <input type='tel' name='mob' id='mob' placeholder='Mobile Number' >
-Email<input type='email' name='email' id='email'  placeholder='Email Address'>
-Consultation Fee<input type='number' name='consult' id='consult'  placeholder='Consulation Amt' inputmode='decimal' >
-Cost of Medicines<input type='number' name='medicine'  id='medicine' placeholder='Medicines Amt' inputmode='decimal' >
+Retiree Name <input type='text' name='retname'id='retname' required >
+SR Number <input type='number' name='srno' id='srno'  required>
+Designation<input type='text' name='desig' id='desig' placeholder='Designation' required>
+Date of Birth <input type='date' id="dob" name='dob'  required><br>
+Retirement Branch <input type='text' name='retbr' id='retbr' placeholder='Retirement Branch / Office' required>
+Pension Drawing Branch <input type='text' name='penbr' id='penbr'   required>
+SB Account <input type='number' name='sbno'  id='sbno'  required>
+Address <br><textarea name='add' rows="2" cols="45" id='add'  required>  </textarea>
+Mobile Number <input type='tel' name='mob' id='mob' placeholder='Mobile Number'  required>
+Email<input type='email' name='email' id='email'  placeholder='Email Address' required>
+Consultation Fee<input type='number' name='consult' id='consult'  placeholder='Consulation Amt' inputmode='decimal'  required>
+Cost of Medicines<input type='number' name='medicine'  id='medicine' placeholder='Medicines Amt' inputmode='decimal'  required>
 <button  value='submit'>Submit / Print / Save as PDF<br> </button>
 </form>
 </div>
+<p id='data'></p>
 <script>
 
+days =[0,31,28,31,30,31,30,31,31,30,31,30,31]
+ele= document.getElementById("dob")
+maxyr= `${Date().substring(11,15)*1 -61}-12-31`
+
+ele.min='1900-01-01'
+ele.max= maxyr
+
+
+//ele.addEventListener('blur',dob1)
+
 function disp(){
-alert(retname.value)
+lastday = days[ele.value.substring(5,7)*1]
+month = ele.value.substring(5,7)*1
+year = 60 + dob.value.substring(0,4)*1 
+r = `${lastday}-${month}-${year}`
+dobddmmyy = ele.value.substring(8) +"-" +ele.value.substring(5,7)+"-"+
+dob.value.substring(0,4)
+yr= Date().substring(11,15)*1
+submitdate = Date().substring(4,15)
+
+totable = `<table width=100%>
+<tr><td colspan=2 align=center><h4>APPLICATION FROM RETIRED STAFF FOR ANNUAL MEDICAL AID.</h4>
+<tr><td>The Asst. General Manager<br> CO: HRM Department 254-260,<br> Avvai Shanmugam Salai <br>Royapettah, Chennai 600014.<td align=right>
+Submitted thru’ <br><br>${penbr.value} branch
+<tr><td colspan=2><br>Dear Sir,<br><br>
+I request you to grant me the Annual Medical Aid as per the scheme for GRANT OF ANNUAL MEDICAL AID TO RETIRED STAFF of our Bank. The required details are given below:
+</table>
+<br>
+<table border=1 class='bio'>
+<tr><td>1.Name of the Retiree<td>${retname.value}<td>2. S.R No<td>${srno.value}
+<tr><td>3. Designation at the time of retirement<td>${desig.value}<td>4. Date of Birth<td>${dobddmmyy}
+<tr><td>5. Branch/Dept at which last worked<td>${retbr.value}<td>6. Date of Retirement on superannuation<td>${r}
+<tr><td>7. SB A/c No<td>${sbno.value}<td>8. Branch: where a/c is maintained<td>${penbr.value}
+<tr><td>Present/ Permanent Address<td>${add.value}<td>10. Mobile No:<br>Email Address<td>${mob.value}<br>${email.value}
+<tr><td>11.Year of Claim<td>${yr}<td>Total Amount Claimed<td>Rs. ${calim = (consult.value*1 + medicine.value*1)}
+<tr><td colspan=4 align=center>Declaration by the Retiree
+<tr><td colspan=4>
+I hereby declare that I retired from the Bank on superannuation and the particulars given above are correct. I hereby declare that I have incurred the following expenses for self and family and request you to reimburse the same as per rules.<br><table align=right><tr><td>Consultation Fees:<td> Rs.${consult.value} <tr><td>Cost of Medicines: <td>Rs.${medicine.value}<tr><td>Total <td>Rs.${consult.value*1 + medicine.value*1} </table>
+<tr><td Colspan=2><br><br><br><br>Date:${submitdate}<td colspan=2 align=center><br><br><br><br>Signature of the Retiree
+<tr><td colspan=4>Certified that the applicant is maintaining SB account with our Bank.
+Application details are entered in HRM online portal
+<tr><td><br><br><br><br>Date: ${submitdate}<td><br><br><br><br>Branch Seal <td colspan=2 align=center><br><br><br><br>Signature of Branch Manager
+</table>
+<br>
+<table class='bio' border=0 width=100%><tr><td align=center><b>ACKNOWLEDGEMENT</b><br>
+<tr><td>Received Application for Grant of Medical Aid for Retirees from
+Mr/Mrs/Ms ${retname.value}  S R No: ${srno.value}
+on ${submitdate.value}<BR><BR><br><TABLE  width=100%><TR><td>
+Branch Seal: <td align=right><br>Signature of ABM / Branch Manager</table><br></table>`
+document.body.style.width= '210mm'
+document.getElementById('data').innerHTML = totable
+document.getElementById('dataentry').style.display = 'none'
+document.getElementById('data').style.display = 'block'
+document.title= `${srno.value} - Medical Aid`
+window.print();      
 }
 
 </script>
