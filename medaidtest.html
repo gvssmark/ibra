@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
+<style>
+body {width:360px; margin:auto; color:white}
+input:focus{background:yellow; }
+input {width:99%; outline:none; border:none; background:powderblue; height:20px;text-align:center; }
+#dataentry {width:95%; background:blue; margin: auto; text-align:center;  }
+h2 {color:white;   text-shadow: 2px 2px 4px #000000; padding:5px; margin-top:0; padding:0}
+textarea {background:powderblue;}
+</style></head>
+<body>
+
+<h2 align=center>Medical Aid Application </h2>
+
+<div id='dataentry'>
+<form action="javascript:disp();">
+Retiree Name <input type='text' name='retname'id='retname' >
+SR Number <input type='number' name='srno' id='srno'>
+Designation<input type='text' name='desig' id='desig' placeholder='Designation'>
+Date of Birth <input type='date' id="dob" name='dob' >
+Retirement Branch <input type='text' name='retbr' id='retbr' placeholder='Retirement Branch / Office'>
+Pension Drawing Branch <input type='text' name='penbr' id='penbr'  >
+SB Account <input type='number' name='sbno'  id='sbno' >
+Address <br><textarea name='add' rows="2" cols="45" id='add' >  </textarea>
+Mobile Number <input type='tel' name='mob' id='mob' placeholder='Mobile Number' >
+Email<input type='email' name='email' id='email'  placeholder='Email Address'>
+Consultation Fee<input type='number' name='consult' id='consult'  placeholder='Consulation Amt' inputmode='decimal' >
+Cost of Medicines<input type='number' name='medicine'  id='medicine' placeholder='Medicines Amt' inputmode='decimal' >
+<button  value='submit'>Submit / Print / Save as PDF<br> </button>
+</form>
+</div>
+<script>
+
+function disp(){
+alert(retname.value)
+}
+
+</script>
+
+
+
+</body>
+</html>
+
