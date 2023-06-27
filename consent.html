@@ -6,10 +6,10 @@
 
 <style>
 body {font-size:small; }
-table {border:1px solid balck; border-collapse:collapse; width:350px; }
-.modal {  display: none;   position: fixed;   z-index: 0;   padding-top: 50px;   left: 12px;  top: 0;  width: 96%;   height: 100%;   overflow: auto;   background-color: rgb(0,0,0);   background-color: rgba(0,0,0,0.4); }
+table {border:1px solid balck; border-collapse:collapse; width:340px; }
+.modal {  display: none;   position: fixed;   z-index: 0;   padding-top: 50px;   left: 0px;  top: 0;  width: 100%;   height: 100%;   overflow: auto;   background-color: rgb(0,0,0);   background-color: rgba(0,0,0,0.4); }
 /* Modal Content */
-.modal-content {  background-color: blue;  margin: auto;  padding: 20px;  border: 1px solid #888;  width: 360px; color:white; border-radius:15px; }
+.modal-content {  background-color: blue;  margin:0 auto;  padding: 20px 0px;  border: 1px solid #888;  width: 350px; color:white; border-radius:15px; }
 /* The Close Button */
 .close {  color: #aaaaaa;  float: right;  font-size: 28px;  font-weight: bold; margin-top:-20px;}
 .close:hover,.close:focus {  color: #000;  text-decoration: none;  cursor: pointer;}
@@ -57,7 +57,8 @@ splallw= mydata.basic*splrates/100
 avgsplallw = splallw * avgmonths / 10
 pensionable = avgsplallw / 2
 
-tomodal = `<br><table border=1 align=center > 
+tomodal = `<br><table  align=center > 
+<tr><td colspan=4 align=center bgcolor=red>Documents Submitted
 <tr><td>Vakalat <td>${mydata.vakalt}
 <td>Consent<td>${mydata.consent}
 <tr><td>PPO <td>${mydata.ppo}
@@ -66,8 +67,8 @@ tomodal = `<br><table border=1 align=center >
 <td>Sal Slip<td>${mydata.salslip}
 </table>`
 
-tomodal1 = `<br><table border=1 align=center>
-<tr bgcolor=red><td colspan=2 align=center><b>Check the data for correctness</b>
+tomodal1 = `<table  align=center>
+<tr bgcolor=red><td colspan=2 align=center>Check the data for correctness
 <tr><td width='30%' >Name<td>${mydata.name}
 <tr><td>Father's Name<td>${mydata.sonof}
 <tr><td>Designation<td>${mydata.scale}
@@ -89,9 +90,17 @@ tomodal1 = `<br><table border=1 align=center>
 `
 document.getElementById('modaldata').innerHTML= tomodal+ tomodal1 
 document.getElementById('myModal').style.display='block'
+report()
 }
+function report(){
+splallda.filter(a=> a.year >= mydata.yr).forEach(b=> {b.basic =pensionable; b.da = bps === 10 ? b.basic* b.bp10 : b.basic* b.bp11} )
+console.log(splallda)
 
- modal = document.getElementById("myModal");
+
+
+
+}
+modal = document.getElementById("myModal");
 
 var span = document.getElementsByClassName("close")[0];
 span.onclick = function() {
