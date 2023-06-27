@@ -194,7 +194,7 @@ th =`<table border=1 class='datable'><tr><td>Year<td>Details <td>Jan<td>Feb<td>M
 trow =''
 for (i=0; i<splallda.length; i++){
 brow += `<td> ${ splallda[i].basic>0 ? (splallda[i].basic*1).toFixed(2) : ''} `
-bps = 10 ? dr = splallda[i].bp10 : dr= splallda[i].bp11
+bps === 10 ? dr = splallda[i].bp10 : dr= splallda[i].bp11
 drow +=  `<td> ${dr*1 > 0 ? (dr*1).toFixed(2) : ''} `
 crow += `<td> ${splallda[i].da>0 ? (splallda[i].da*1).toFixed(2):''} `
 if (splallda[i].year.toString().substring(4)*1 %12 ===0){
