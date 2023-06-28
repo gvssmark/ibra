@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,11 +22,15 @@ table {border:1px solid balck; border-collapse:collapse; width:340px; }
     }
     html, body {width: 210mm; height: 282mm; font-size: small; background: #FFF; overflow: visible; }
     body {        padding-top: 0mm;    }
+        .printbox {
+      display:none;}
 }
 #printdiv {width:100%;  display:block; }
 #calc {width:100%; }
 .biotable {width:95%; }
 .datable{width:95%; text-align:right }
+.printbox {background:red; color:white}
+
 </style>
 </head>
 <body>
@@ -113,6 +118,7 @@ document.getElementById('toTable').style.display='none'
 document.getElementById('myModal').style.display='none'
 totable1()
 biodata()
+document.getElementById('printdiv').style.display='block'
 }
 modal = document.getElementById("myModal");
 
@@ -197,18 +203,30 @@ bt = `<h4 align=center onclick='printdata()'>IBRA - Calculation of Pension Loss 
 <tr><td colspan=4>*Special Allowance = Basic Pay x Spl All. Rate. * Avg Spl Allowance = Special Allowance x Months worked in Bipartite (Max 10) / 10. *Pensionable Special Allowance = 50% of Avg Spl Allowance.     
 </table> 
 `
-document.getElementById('biotable').innerHTML=bt
+printbox=`<table class='printbox'><tr align=center><td width=100 onclick='printdata()'>PRINT<td width=100 onclick='closebtn()'> CLOSE</table>`
+
+document.getElementById('biotable').innerHTML= printbox + bt
 }
 
 function printdata(){
-document.body.style.backgroundColor = "white";
+//document.body.style.backgroundColor = "white";
 document.getElementById('printdiv').style.display='block'
 document.getElementById('datadiv').style.display='none'
 document.title =  mydata.srno +"-"+mydata.name
 window.print();  
-//document.getElementById('datadiv').style.display='block'
-//document.getElementById('printdiv').style.display='block'
+
 }
+
+function closebtn(){
+
+document.getElementById('datadiv').style.display='block'
+document.getElementById('toTable').style.display='block'
+
+
+document.getElementById('printdiv').style.display='none'
+
+}
+
 </script>
 </body> 
 </html>
