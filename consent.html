@@ -7,13 +7,27 @@
 <style>
 body {font-size:small; }
 table {border:1px solid balck; border-collapse:collapse; width:340px; }
-.modal {  display: none;   position: fixed;   z-index: 0;   padding-top: 50px;   left: 0px;  top: 0;  width: 100%;   height: 100%;   overflow: auto;   background-color: rgb(0,0,0);   background-color: rgba(0,0,0,0.4); }
+.modal {  display: none;   position: fixed;   z-index: 0;   padding-top: 1px;   left: 0px;  top: 0;  width: 100%;   height: 100%;   overflow: auto;   background-color: rgb(0,0,0);   background-color: rgba(0,0,0,0.4); }
 /* Modal Content */
 .modal-content {  background-color: blue;  margin:0 auto;  padding: 20px 0px;  border: 1px solid #888;  width: 350px; color:white; border-radius:15px; }
 /* The Close Button */
 .close {  color: #aaaaaa;  float: right;  font-size: 28px;  font-weight: bold; margin-top:-20px;}
 .close:hover,.close:focus {  color: #000;  text-decoration: none;  cursor: pointer;}
 
+
+@media print 
+{
+    @page {
+      size: A4; /* DIN A4 standard, Europe */
+      margin: 0;
+    }
+    html, body {width: 210mm; height: 282mm; font-size: small; background: #FFF; overflow: visible; }
+    body {        padding-top: 0mm;    }
+}
+#printdiv {width:100%;  display:block; }
+#calc {width:100%; }
+.biotable {width:95%; }
+.datable{width:95%; text-align:right }
 </style>
 </head>
 <body>
@@ -26,7 +40,12 @@ table {border:1px solid balck; border-collapse:collapse; width:340px; }
   </div>
 
 </div>
-<p id='toTable'>My first paragraph.</p>
+<div id='datadiv'>
+<p id='toTable'>My first paragraph.</p></div>
+<div id='printdiv'>
+<div id='biotable'>biodata goes here</div>
+<div id='calc'>biodata goes here</div>
+</div>
 
 <script>
 tableData=''
@@ -38,7 +57,7 @@ tempData = data["master"]
 tempData.filter(a=> a.srno> 0).forEach(a=> 
 
 tableData+= `<tr onclick='pop(${a.srno})' id=${a.srno}><td> ${a.srno}<td >${a.name.length>0 ? a.name : a.name1 + "-NO DATA" }<td>${(a.loss*1).toFixed(2)}`)
-document.getElementById('toTable').innerHTML=`<table border='1' align=center> ${tableData} </table>`
+document.getElementById('toTable').innerHTML=`<table border='1' align=center><tr><td>Sr No<td>Name<td>Aprox Loss ${tableData} </table>`
 }
 
 getMyData();
@@ -86,16 +105,21 @@ tomodal1 = `<table  align=center>
 <tr><td>Special Allowance<td>${splallw.toFixed(2)} 
 <tr><td>Avg Spl Allowance<td>${avgsplallw.toFixed(2)} 
 <tr><td>Pension on Spl All<td>${pensionable.toFixed(2)} 
+<tr><td colspan=2 onclick='report()'> Show Report 
 </table>
 `
 document.getElementById('modaldata').innerHTML= tomodal+ tomodal1 
 document.getElementById('myModal').style.display='block'
-report()
+
+//printdata()
 }
 function report(){
-splallda.filter(a=> a.year >= mydata.yr).forEach(b=> {b.basic =pensionable; b.da = bps === 10 ? b.basic* b.bp10 : b.basic* b.bp11} )
-console.log(splallda)
-
+splallda.filter(a=> a.year >= mydata.yr).forEach(b=> {b.basic =pensionable; b.da = bps === 10 ? b.basic* b.bp10/100 : b.basic* b.bp11/100} )
+//console.log(splallda)
+document.getElementById('toTable').style.display='none'
+document.getElementById('myModal').style.display='none'
+totable1()
+biodata()
 
 
 
@@ -132,12 +156,85 @@ splalldatemp = [[201201,0,0],[201202,0,0],[201203,0,0],[201204,0,0],[201205,0,0]
 [202001,68.1,14.21],[202002,75.9,19.67],[202003,75.9,19.67],[202004,75.9,19.67],[202005,75.9,19.67],[202006,75.9,19.67],[202007,75.9,19.67],[202008,77.5,20.79],[202009,77.5,20.79],[202010,77.5,20.79],[202011,77.5,20.79],[202012,77.5,20.79],
 [202101,77.5,20.79],[202102,85.2,26.18],[202103,85.2,26.18],[202104,85.2,26.18],[202105,85.2,26.18],[202106,85.2,26.18],[202107,85.2,26.18],[202108,87.5,27.79],[202109,87.5,27.79],[202110,87.5,27.79],[202111,87.5,27.79],[202112,87.5,27.79],
 [202201,87.5,27.79],[202202,94.9,32.97],[202203,94.9,32.97],[202204,94.9,32.97],[202205,94.9,32.97],[202206,94.9,32.97],[202207,94.9,32.97],[202208,100.4,36.82],[202209,100.4,36.82],[202210,100.4,36.82],[202211,100.4,36.82],[202212,100.4,36.82],
-[202301,100.4,36.82],[202302,106.6,41.16],[202303,106.6,41.16]
+[202301,100.4,36.82],[202302,106.6,41.16],[202303,106.6,41.16],[202304,106.6,41.16],[202305,106.6,41.16],[202306,106.6,41.16],[202307,106.6,41.16],
+[202308,0,0],[202309,0,0],[202310,0,0],[202311,0,0],[202312,0,0],
 ]
 splallda = splalldatemp.map(([year, bp10, bp11, basic, da]) => ({ year, bp10, bp11,basic,da }))
+
+
+function totable1(){
+mt= mydata.yr.substring(4)*1
+y= mydata.yr.substring(0,4)*1
+totable=""
+
+if(mt ===12){y = y + 1}else {y = y}
+splallda = splallda.filter(a=> a.year.toString().substring(0,4)*1 >= y )
+splallda.forEach (a=> a.year>202303? (a.basic='', a.bp10='', a.bp11='', a.da=''):'')
+splallda.forEach (a=> a.year<=mydata.yr*1 ? (a.basic='', a.bp10='', a.bp11='', a.da=''):'')
+brow=''
+drow=''
+crow=''
+th =`<table border=1 class='datable'><tr><td>Year<td>Details <td>Jan<td>Feb<td>Mar<td>Apr<td>May<td>Jun<td>Jul<td>Aug<td>Sep<td>Oct<td>Nov<td>Dec`
+trow =''
+for (i=0; i<splallda.length; i++){
+brow += `<td> ${ splallda[i].basic>0 ? (splallda[i].basic*1).toFixed(2) : ''} `
+bps === 10 ? dr = splallda[i].bp10 : dr= splallda[i].bp11
+drow +=  `<td> ${dr*1 > 0 ? (dr*1).toFixed(2) : ''} `
+crow += `<td> ${splallda[i].da>0 ? (splallda[i].da*1).toFixed(2):''} `
+if (splallda[i].year.toString().substring(4)*1 %12 ===0){
+trow += `<tr><td rowspan=3>${splallda[i].year.toString().substring(0,4)}<td>Basic Rs.  ${brow} <tr> <td>DA % ${drow} <tr><td>DA Rs. ${crow}`
+brow=''
+drow=''
+crow=''
+}}
+totable = th + trow + "</table><br>"
+//myWindow=''
+ //var myWindow = window.open("", "MsgWindow", "width=600,height=800");
+  //myWindow.document.write(totable);
+document.getElementById('calc').innerHTML=totable
+
+}
+
+function biodata(){
+penstart= splallda.filter(a=> a.year > mydata.yr)[0].year
+
+splalw = splallw
+avgSplAllw= avgsplallw
+basictotal = splallda.reduce((n, {basic}) => n + basic*1, 0);
+datotal = splallda.reduce((n, {da}) => n + da*1, 0)
+
+totmths = splallda.filter(a=> a.year > mydata.yr).length;
+
+
+bt = `<h4 align=center onclick='printdata()'>IBRA - Calculation of Pension Loss on Special Pay </h4><table class='biotable' width=100 border=0>
+<tr><td>Name<td>${mydata.name}<td>SR No<td>${mydata.srno}
+<tr><td>Retirement YYYYMM<td>${mydata.yr}<td>Pension YYYYMM<td>${penstart}
+<tr><td>Designation<td>${mydata.scale}<td>Bipartite / Months worked in this BPS<td>${bps}th / ${monthsWorked} Months
+<tr><td>Special All. Rate<td>${splrates}%<td>Basic Pay<td>Rs.${mydata.basic}
+<tr><td>Spl All. / Average Special All.<td>Rs.${splalw} / Rs.${avgSplAllw}<td>Pensionable Special All<td>Rs.${pensionable.toFixed(2)}
+<tr><td>Total Months<td>${totmths }<td>Total Basic Pay Loss<td>Rs.${basictotal.toFixed(2)}
+<tr><td>Total DA Loss<td>Rs.${datotal.toFixed(2) }<td>Total Loss<td>Rs.${(basictotal + datotal).toFixed(2) }
+<tr><td colspan=4>*Special Allowance = Basic Pay x Spl All. Rate. * Avg Spl Allowance = Special Allowance x Months worked in Bipartite (Max 10) / 10. *Pensionable Special Allowance = 50% of Avg Spl Allowance.     
+</table> 
+`
+document.getElementById('biotable').innerHTML=bt
+}
+
+function printdata(){
+document.body.style.backgroundColor = "white";
+document.getElementById('printdiv').style.display='block'
+document.getElementById('datadiv').style.display='none'
+document.title =  mydata.srno +"-"+mydata.name
+window.print();  
+document.getElementById('datadiv').style.display='block'
+document.getElementById('printdiv').style.display='block'
+//document.getElementById('toTable').style.display='block'
+}
+
+
 </script>
 
 
-</body>
+</body> 
 </html>
 
