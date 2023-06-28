@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +11,7 @@ table { align:center; }
 #rep {width:95%;   align-items: center; margin:0 auto; }
 .datable {width:100% ; border:1px solid black; border-collapse: collapse; text-align:right;}
 .th {text-align:center; }
-
+.printbox {background:red; color:white}
 @media print 
 {
     @page {
@@ -19,6 +20,9 @@ table { align:center; }
     }
     html, body {width: 210mm; height: 282mm; font-size: small; background: #FFF; overflow: visible; }
     body {        padding-top: 0mm;    }
+    .printbox {
+      visibility: hidden;
+
 }
 
 </style>
@@ -26,7 +30,7 @@ table { align:center; }
 <body>
 <div id='container'><table align=center;  >
 <tr align=center><td>SR Number<td ><input name='sr' id='sr' type='number' value=30349>
-<tr><td colspan=2 align=center><input class='btn' id='btn' type='button' onclick='printdata()' value='Print / Save as PDF' ></button>
+<tr><td colspan=2 align=center><input class='btn' id='btn' type='button' onclick='printdata()' value='Show Report' ></button>
 </table>
 </div>
 <div id='rep'></div>
@@ -69,7 +73,7 @@ splallda.forEach (a=> a.year<=mydata.yr*1 ? (a.basic='', a.bp10='', a.bp11='', a
 
 basictotal = splallda.filter(a=> a.year>mydata.yr ).reduce((n, {basic}) => n + basic*1, 0);
 datotal = splallda.filter(a=> a.year>mydata.yr).reduce((n, {da}) => n + da*1, 0)
-bt = `<h4 align=center onclick='printdata1()'>IBRA - Calculation of Pension Loss on Special Pay </h4><table class='biotable' width=100% border=0 align=center>
+bt = `<h4 align=center >IBRA - Calculation of Pension Loss on Special Pay </h4><table class='biotable' width=100% border=0 align=center>
 <tr><td>Name<td>${mydata.name}<td>SR No<td>${mydata.srno}
 <tr><td>Retirement YYYYMM<td>${mydata.yr}<td>Pension YYYYMM<td>${penstart}
 <tr><td>Designation<td>${mydata.scale}<td>Bipartite / Months worked in this BPS<td>${bps}th / ${monthsWorked} Months
@@ -104,8 +108,10 @@ totemp = `
 <tr><td>Total Loss <td> ${(datotal+basictotal).toFixed(2)}
 </table>
 `
+printbox=`<table class='printbox'><tr align=center><td width=100 onclick='printdata1()'>PRINT<td width=100 onclick='closebtn()'> CLOSE</table>`
 totable1()
-document.getElementById('rep').innerHTML=bt +  totable
+document.getElementById('rep').innerHTML=printbox + bt + totable
+document.getElementById('container').style.display='none'
 //printdata()
 }
 
@@ -176,6 +182,12 @@ window.print();
 //document.getElementById('datadiv').style.display='block'
 //document.getElementById('printdiv').style.display='block'
 //document.getElementById('toTable').style.display='block'
+}
+
+function closebtn(){
+document.getElementById('container').style.display='block'
+document.getElementById('rep').style.display='none'
+
 }
 </script>
 </body>
