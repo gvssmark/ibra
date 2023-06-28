@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, maximum-scale=1 , initial-scale=1.0">
+<title>IBRA-Special Allowance Loss</title>
+<style>
+#container {background:powderblue; width:360px;margin:0 auto; }
+table { align:center; }
+.btn {display:none; background: yellow; outline:none; border:none;  }
+#rep {width:95%;   align-items: center; }
+.datable {width:100% ; border:1px solid black; border-collapse: collapse; text-align:right;}
+.th {text-align:center; }
+
+@media print 
+{
+    @page {
+      size: A4; /* DIN A4 standard, Europe */
+      margin: 0;
+    }
+    html, body {width: 210mm; height: 282mm; font-size: small; background: #FFF; overflow: visible; }
+    body {        padding-top: 0mm;    }
+}
+
+</style>
+</head>
+<body>
+<div id='container'><table align=center;  >
+<tr align=center><td>SR Number<td ><input name='sr' id='sr' type='number' value=30349>
+<tr><td colspan=2 align=center><input class='btn' id='btn' type='button' onclick='printdata()' value='Print / Save as PDF' ></button>
+</table>
+</div>
+<div id='rep'></div>
+<script>
+spl12t =[["Scale 1",7.75,16.4],["Scale 2",7.75,16.4],["Scale 3",7.75,16.4],["Scale 4",10,19],["Scale 5",10,19],["Scale 6",11,20],["Scale 7",11,20],["Clerk",7.75,16.4],["SubStaff",7.75,16.4],["PPTS",7.75,16.4]]
+
+spl12 = spl12t.map(([scale, splallrate12,splallrate17]) => ({ scale, splallrate12,splallrate17 }))
+
+mths =['','Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+scales = ['','Scale 1','Scale 2','Scale 3','Scale 4','Scale 5','Scale 6','Scale 7','Clerk','Sub Staff','PPTS', ]
+
+url = 'https://script.google.com/macros/s/AKfycbznnPsZdLU0Zq7hTW2SJ90QplQpVQIeRzOTq9gJalVStlw5aPnQCay3nU6DcCBIeecxMQ/exec'
+async function getMyData() {
+response = await fetch(url)
+data = await response.json()
+tempData = data["master"]
+if (tempData.length >0){document.getElementById('btn').style.display='block'}
+}
+getMyData()
+
+function printdata(){
+document.getElementById('rep').style.display='block'
+srno = sr.value*1
+mydata= tempData.filter(n=> n.srno===srno)
+mydata = mydata[0]
+bps = mydata.yr>201710 ? 11 : 10
+splrate = spl12.filter(a=> a.scale === mydata.scale)
+splrates = bps === 10 ? splrate[0].splallrate12 : splrate[0].splallrate17 
+splallda = splalldatemp.map(([year, bp10, bp11, basic, da]) => ({ year, bp10, bp11,basic,da }))
+monthsWorked = bps===10 ? splallda.filter(a=> a.year >=201210 & a.year < mydata.yr).length :  splallda.filter(a=> a.year >=201710 & a.year < mydata.yr).length
+avgmonths = monthsWorked>10 ? 10: monthsWorked
+splallw= mydata.basic*splrates/100
+avgsplallw = splallw * avgmonths / 10
+pensionable = avgsplallw / 2
+penstart = splallda.filter(a=> a.year >mydata.yr)[0].year
+arrearmonths = splallda.filter(a=> a.year >mydata.yr & a.year<=202303).length
+updateDA()
+splallda.forEach (a=> a.year>202303? (a.basic='', a.bp10='', a.bp11='', a.da=''):'')
+splallda.forEach (a=> a.year<=mydata.yr*1 ? (a.basic='', a.bp10='', a.bp11='', a.da=''):'')
+
+basictotal = splallda.filter(a=> a.year>mydata.yr ).reduce((n, {basic}) => n + basic*1, 0);
+datotal = splallda.filter(a=> a.year>mydata.yr).reduce((n, {da}) => n + da*1, 0)
+bt = `<h4 align=center onclick='printdata1()'>IBRA - Calculation of Pension Loss on Special Pay </h4><table class='biotable' width=100% border=0 align=center>
+<tr><td>Name<td>${mydata.name}<td>SR No<td>${mydata.srno}
+<tr><td>Retirement YYYYMM<td>${mydata.yr}<td>Pension YYYYMM<td>${penstart}
+<tr><td>Designation<td>${mydata.scale}<td>Bipartite / Months worked in this BPS<td>${bps}th / ${monthsWorked} Months
+<tr><td>Special All. Rate<td>${splrates}%<td>Basic Pay<td>Rs.${mydata.basic}
+<tr><td>Spl All. / Average Special All.<td>Rs.${splallw} / Rs.${avgsplallw}<td>Pensionable Special All<td>Rs.${pensionable.toFixed(2)}
+<tr><td>Total Months<td>${arrearmonths }<td>Total Basic Pay Loss<td>Rs.${basictotal.toFixed(2)}
+<tr><td>Total DA Loss<td>Rs.${datotal.toFixed(2) }<td>Total Loss<td>Rs.${(basictotal + datotal).toFixed(2) }
+<tr><td colspan=4>*Special Allowance = Basic Pay x Spl All. Rate. * Avg Spl Allowance = Special Allowance x Months worked in Bipartite (Max 10) / 10. *Pensionable Special Allowance = 50% of Avg Spl Allowance.     
+</table> <hr>
+`
+//document.getElementById('biotable').innerHTML=bt
+
+
+
+totemp = `
+<table width=100%>
+<tr><td>Name<td> ${mydata.name}
+<tr><td>srno<td> ${mydata.srno}
+<tr><td>rod<td> ${mydata.yr}
+<tr><td>basic<td> ${mydata.basic}
+<tr><td>scale<td> ${mydata.scale}
+<tr><td>pension start<td> ${penstart}
+<tr><td>Arrear months<td> ${arrearmonths}
+<tr><td>Months worked in this bps<td> ${monthsWorked}
+<tr><td>Special allowance<td> ${splallw}
+<tr><td>Special allowance reate<td> ${splrates}%
+<tr><td>Average Months <td> ${avgmonths}
+<tr><td>Average Special alloawnce <td> ${avgsplallw}
+<tr><td>Pensionable Special alloawnce <td> ${pensionable}
+<tr><td>Basic Loss<td> ${basictotal.toFixed(2)}
+<tr><td>DA Loss <td> ${datotal.toFixed(2)}
+<tr><td>Total Loss <td> ${(datotal+basictotal).toFixed(2)}
+</table>
+`
+totable1()
+document.getElementById('rep').innerHTML=bt +  totable
+//printdata()
+}
+
+function updateDA() {
+splallda.filter(a=> a.year >= mydata.yr).forEach(b=> {b.basic =pensionable; b.da = bps === 10 ? b.basic* b.bp10/100 : b.basic* b.bp11/100} )}
+
+splalldatemp = [[201201,0,0],[201202,0,0],[201203,0,0],[201204,0,0],[201205,0,0],[201206,0,0],[201207,0,0],[201208,0,0],[201209,0,0],[201210,0,0],
+[201211,6.7,0],
+[201212,6.7,0],[201301,6.7,0],
+[201302,13.4,0],[201303,13.4,0],[201304,13.4,0],[201305,13.4,0],[201306,13.4,0],[201307,13.4,0],[201308,19.2,0],[201309,19.2,0],[201310,19.2,0],[201311,19.2,0],[201312,19.2,0],
+[201401,19.2,0],[201402,26.5,0],[201403,26.5,0],[201404,26.5,0],[201405,26.5,0],[201406,26.5,0],[201407,26.5,0],[201408,28.2,0],[201409,28.2,0],[201410,28.2,0],[201411,28.2,0],[201412,28.2,0],
+[201501,28.2,0],[201502,33.3,0],[201503,33.3,0],[201504,33.3,0],[201505,33.3,0],[201506,33.3,0],[201507,33.3,0],[201508,36.4,0],[201509,36.4,0],[201510,36.4,0],[201511,36.4,0],[201512,36.4,0],
+[201601,36.4,0],[201602,42.6,0],[201603,42.6,0],[201604,42.6,0],[201605,42.6,0],[201606,42.6,0],[201607,42.6,0],[201608,45.5,0],[201609,45.5,0],[201610,45.5,0],[201611,45.5,0],[201612,45.5,0],
+[201701,45.5,0],[201702,46.9,0],[201703,46.9,0],[201704,46.9,0],[201705,46.9,0],[201706,46.9,0],[201707,46.9,0],[201708,47.8,0],[201709,47.8,0],[201710,47.8,0],[201711,47.8,0],[201712,47.8,0],
+[201801,47.8,0],[201802,52.7,3.43],[201803,52.7,3.43],[201804,52.7,3.43],[201805,52.7,3.43],[201806,52.7,3.43],[201807,52.7,3.43],[201808,54.1,4.41],[201809,54.1,4.41],[201810,54.1,4.41],[201811,54.1,4.41],[201812,54.1,4.41],
+[201901,54.1,4.41],[201902,61.1,9.31],[201903,61.1,9.31],[201904,61.1,9.31],[201905,61.1,9.31],[201906,61.1,9.31],[201907,61.1,9.31],[201908,68.1,14.21],[201909,68.1,14.21],[201910,68.1,14.21],[201911,68.1,14.21],[201912,68.1,14.21],
+[202001,68.1,14.21],[202002,75.9,19.67],[202003,75.9,19.67],[202004,75.9,19.67],[202005,75.9,19.67],[202006,75.9,19.67],[202007,75.9,19.67],[202008,77.5,20.79],[202009,77.5,20.79],[202010,77.5,20.79],[202011,77.5,20.79],[202012,77.5,20.79],
+[202101,77.5,20.79],[202102,85.2,26.18],[202103,85.2,26.18],[202104,85.2,26.18],[202105,85.2,26.18],[202106,85.2,26.18],[202107,85.2,26.18],[202108,87.5,27.79],[202109,87.5,27.79],[202110,87.5,27.79],[202111,87.5,27.79],[202112,87.5,27.79],
+[202201,87.5,27.79],[202202,94.9,32.97],[202203,94.9,32.97],[202204,94.9,32.97],[202205,94.9,32.97],[202206,94.9,32.97],[202207,94.9,32.97],[202208,100.4,36.82],[202209,100.4,36.82],[202210,100.4,36.82],[202211,100.4,36.82],[202212,100.4,36.82],
+[202301,100.4,36.82],[202302,106.6,41.16],[202303,106.6,41.16],[202304,106.6,41.16],[202305,106.6,41.16],[202306,106.6,41.16],[202307,106.6,41.16],
+[202308,0,0],[202309,0,0],[202310,0,0],[202311,0,0],[202312,0,0],
+]
+splallda = splalldatemp.map(([year, bp10, bp11, basic, da]) => ({ year, bp10, bp11,basic,da }))
+
+
+function totable1(){
+mt= mydata.yr.substring(4)*1
+y= mydata.yr.substring(0,4)*1
+totable=""
+
+if(mt ===12){y = y + 1}else {y = y}
+splallda = splallda.filter(a=> a.year.toString().substring(0,4)*1 >= y )
+splallda.forEach (a=> a.year>202303? (a.basic='', a.bp10='', a.bp11='', a.da=''):'')
+splallda.forEach (a=> a.year<=mydata.yr*1 ? (a.basic='', a.bp10='', a.bp11='', a.da=''):'')
+brow=''
+drow=''
+crow=''
+th =`<table border=1 class='datable' align=center><tr class='th'><td>Year<td>Details <td>Jan<td>Feb<td>Mar<td>Apr<td>May<td>Jun<td>Jul<td>Aug<td>Sep<td>Oct<td>Nov<td>Dec`
+trow =''
+for (i=0; i<splallda.length; i++){
+brow += `<td> ${ splallda[i].basic>0 ? (splallda[i].basic*1).toFixed(2) : ''} `
+bps === 10 ? dr = splallda[i].bp10 : dr= splallda[i].bp11
+drow +=  `<td> ${dr*1 > 0 ? (dr*1).toFixed(2) : ''} `
+crow += `<td> ${splallda[i].da>0 ? (splallda[i].da*1).toFixed(2):''} `
+if (splallda[i].year.toString().substring(4)*1 %12 ===0){
+trow += `<tr><td rowspan=3>${splallda[i].year.toString().substring(0,4)}<td>Basic Rs.  ${brow} <tr> <td>DA % ${drow} <tr><td>DA Rs. ${crow}`
+brow=''
+drow=''
+crow=''
+}}
+totable = th + trow + "</table><br>"
+//myWindow=''
+ //var myWindow = window.open("", "MsgWindow", "width=600,height=800");
+  //myWindow.document.write(totable);
+
+}
+
+function printdata1(){
+//document.body.style.backgroundColor = "white";
+//document.getElementById('printdiv').style.display='block'
+document.getElementById('container').style.display='none'
+document.title =  mydata.srno +"-"+mydata.name
+
+window.print();  
+document.getElementById('container').style.display='block'
+document.getElementById('rep').style.display='none'
+
+//document.getElementById('datadiv').style.display='block'
+//document.getElementById('printdiv').style.display='block'
+//document.getElementById('toTable').style.display='block'
+}
+</script>
+</body>
+</html>
+
