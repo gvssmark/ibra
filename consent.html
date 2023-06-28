@@ -13,8 +13,6 @@ table {border:1px solid balck; border-collapse:collapse; width:340px; }
 /* The Close Button */
 .close {  color: #aaaaaa;  float: right;  font-size: 28px;  font-weight: bold; margin-top:-20px;}
 .close:hover,.close:focus {  color: #000;  text-decoration: none;  cursor: pointer;}
-
-
 @media print 
 {
     @page {
@@ -35,7 +33,6 @@ table {border:1px solid balck; border-collapse:collapse; width:340px; }
   <!-- Modal content -->
   <div class="modal-content" >
     <span class="close">&times;</span>
-
 <p id='modaldata'>Some text in the Modal..</p>
   </div>
 
@@ -55,7 +52,6 @@ response = await fetch(url)
 data = await response.json()
 tempData = data["master"]
 tempData.filter(a=> a.srno> 0).forEach(a=> 
-
 tableData+= `<tr onclick='pop(${a.srno})' id=${a.srno}><td> ${a.srno}<td >${a.name.length>0 ? a.name : a.name1 + "-NO DATA" }<td>${(a.loss*1).toFixed(2)}`)
 document.getElementById('toTable').innerHTML=`<table border='1' align=center><tr><td>Sr No<td>Name<td>Aprox Loss ${tableData} </table>`
 }
@@ -110,19 +106,13 @@ tomodal1 = `<table  align=center>
 `
 document.getElementById('modaldata').innerHTML= tomodal+ tomodal1 
 document.getElementById('myModal').style.display='block'
-
-//printdata()
 }
 function report(){
 splallda.filter(a=> a.year >= mydata.yr).forEach(b=> {b.basic =pensionable; b.da = bps === 10 ? b.basic* b.bp10/100 : b.basic* b.bp11/100} )
-//console.log(splallda)
 document.getElementById('toTable').style.display='none'
 document.getElementById('myModal').style.display='none'
 totable1()
 biodata()
-
-
-
 }
 modal = document.getElementById("myModal");
 
@@ -130,8 +120,6 @@ var span = document.getElementsByClassName("close")[0];
 span.onclick = function() {
   modal.style.display = "none";
 }
-
-
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
   if (event.target == modal) {
@@ -188,24 +176,16 @@ drow=''
 crow=''
 }}
 totable = th + trow + "</table><br>"
-//myWindow=''
- //var myWindow = window.open("", "MsgWindow", "width=600,height=800");
-  //myWindow.document.write(totable);
 document.getElementById('calc').innerHTML=totable
-
 }
 
 function biodata(){
 penstart= splallda.filter(a=> a.year > mydata.yr)[0].year
-
 splalw = splallw
 avgSplAllw= avgsplallw
 basictotal = splallda.reduce((n, {basic}) => n + basic*1, 0);
 datotal = splallda.reduce((n, {da}) => n + da*1, 0)
-
-totmths = splallda.filter(a=> a.year > mydata.yr).length;
-
-
+totmths = splallda.filter(a=> a.year > mydata.yr & a.year<=202303).length;
 bt = `<h4 align=center onclick='printdata()'>IBRA - Calculation of Pension Loss on Special Pay </h4><table class='biotable' width=100 border=0>
 <tr><td>Name<td>${mydata.name}<td>SR No<td>${mydata.srno}
 <tr><td>Retirement YYYYMM<td>${mydata.yr}<td>Pension YYYYMM<td>${penstart}
@@ -226,15 +206,10 @@ document.getElementById('printdiv').style.display='block'
 document.getElementById('datadiv').style.display='none'
 document.title =  mydata.srno +"-"+mydata.name
 window.print();  
-document.getElementById('datadiv').style.display='block'
-document.getElementById('printdiv').style.display='block'
-//document.getElementById('toTable').style.display='block'
+//document.getElementById('datadiv').style.display='block'
+//document.getElementById('printdiv').style.display='block'
 }
-
-
 </script>
-
-
 </body> 
 </html>
 
