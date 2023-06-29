@@ -43,10 +43,10 @@ table {border:1px solid balck; border-collapse:collapse; width:340px; }
 
 </div>
 <div id='datadiv'>
-<p id='toTable'>My first paragraph.</p></div>
+<p id='toTable'></p></div>
 <div id='printdiv'>
-<div id='biotable'>biodata goes here</div>
-<div id='calc'>biodata goes here</div>
+<div id='biotable'></div>
+<div id='calc'></div>
 </div>
 
 <script>
@@ -91,21 +91,21 @@ tomodal1 = `<table  align=center>
 <tr bgcolor=red><td colspan=2 align=center>Check the data for correctness
 <tr><td width='30%' >Name<td>${mydata.name}
 <tr><td>Father's Name<td>${mydata.sonof}
-<tr><td>Designation<td>${mydata.scale}
-<tr><td>Retirement Branch<td>${mydata.retbr}
 <tr><td>Mobile Numbers<td>${mydata.mob1}, ${mydata.mob2}
 <tr><td>Email Address<td>${mydata.email.toLowerCase()}
 <tr><td>Address<td>${mydata.add}
-<tr><td>DOB<td>${new Date(mydata.dob).toString().substring(4,15)}
-<tr><td>DOR<td>${new Date(mydata.dor).toString().substring(4,15)}
-<tr><td>Basic Pay<td>${mydata.basic.toFixed(2)}
-<tr><td>Aprox. Loss<td>${mydata.loss.toFixed(2)}
+<tr><td>Retirement Branch<td>${mydata.retbr}
+<tr><td>Designation<td>${mydata.scale}
+<tr><td>DOB<td>${new Date(mydata.dob).toDateString('EN-IN').substring(4)}
+<tr><td>DOR<td>${new Date(mydata.dor).toDateString('EN-IN').substring(4)}
 <tr><td>Bipartite<td>${bps}th
 <tr><td>Spl All Rate<td>${splrates}%
 <tr><td>Months Worked<td>${monthsWorked} , Eligible for Pension Calculation ${avgmonths}
+<tr><td>Basic Pay<td>${mydata.basic.toFixed(2)}
 <tr><td>Special Allowance<td>${splallw.toFixed(2)} 
 <tr><td>Avg Spl Allowance<td>${avgsplallw.toFixed(2)} 
 <tr><td>Pension on Spl All<td>${pensionable.toFixed(2)} 
+<tr><td>Aprox. Loss<td>${mydata.loss.toFixed(2)}
 <tr><td colspan=2 onclick='report()' align=center bgcolor=red> Show Report 
 </table>
 `
