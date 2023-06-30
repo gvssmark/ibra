@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -57,8 +58,8 @@ response = await fetch(url)
 data = await response.json()
 tempData = data["master"]
 tempData.filter(a=> a.srno> 0).forEach(a=> 
-tableData+= `<tr onclick='pop(${a.srno})' id=${a.srno}><td> ${a.srno}<td >${a.name.length>0 ? a.name : a.name1 + "-NO DATA" }<td>${(a.loss*1).toFixed(2)}`)
-document.getElementById('toTable').innerHTML=`<table border='1' align=center><tr><td>Sr No<td>Name<td>Aprox Loss ${tableData} </table>`
+tableData+= `<tr onclick='pop(${a.srno})' id=${a.srno}><td bgcolor=${d(a.docsrecd)}> ${a.srno}<td >${a.name.length>0 ? a.name : a.name1 + "-NO DATA" }<td>${(a.loss*1).toFixed(2)}`)
+document.getElementById('toTable').innerHTML=`<table align=center border=1 bgcolor=cyan><tr align=center><td colspan=3>Documents Status </tr><tr align=center><td bgcolor=#58FA58>All Received <td bgcolor=#F2F5A9>Partially Received<td bgcolor=#F781F3>Not Received</table><br><table border='1' align=center><tr bgcolor=cyan><td>Sr No<td>Name<td>Aprox Loss ${tableData} </table>`
 }
 
 getMyData();
@@ -205,7 +206,6 @@ bt = `<h4 align=center onclick='printdata()'>IBRA - Calculation of Pension Loss 
 </table> 
 `
 printbox=`<table class='printbox'><tr align=center><td width=100 onclick='printdata()'>PRINT<td width=100 onclick='closebtn()'> CLOSE</table>`
-
 document.getElementById('biotable').innerHTML= printbox + bt
 }
 
@@ -215,17 +215,16 @@ document.getElementById('printdiv').style.display='block'
 document.getElementById('datadiv').style.display='none'
 document.title =  mydata.srno +"-"+mydata.name
 window.print();  
-
 }
 
 function closebtn(){
-
 document.getElementById('datadiv').style.display='block'
 document.getElementById('toTable').style.display='block'
-
-
 document.getElementById('printdiv').style.display='none'
+}
 
+function d (a){
+return clr = a===0 ? '#F781F3' : a===4 ? '#58FA58' :'#F2F5A9'
 }
 
 </script>
