@@ -35,10 +35,16 @@ table {border:1px solid balck; border-collapse:collapse; width:340px; }
 .red {background: #F781F3}
 .green {background:#58FA58}
 .orange {background:#F2F5A9}
+    .pulsing-2 {width:50px;height:50px;border-radius: 50%;background:purple; box-shadow: 0 10 20 30 #0004;animation:pl2 1.5s infinite linear;position: relative; margin:0 auto; top:50px;}
+.pulsing-2:before,.pulsing-2:after {  content:"";  position: absolute;  inset:0;  border-radius: inherit;  box-shadow: 0 0 0 0 #0004;  animation: inherit;  animation-delay: -0.1s;}
+.pulsing-2:after {  animation-delay: -1s;}
+@keyframes pl2 {    100% {box-shadow: 0 0 0 40px #0000}}
+
 </style>
 </head>
 <body>
-<div id="myModal" class="modal">
+<div class="pulsing-2" id='loader' style='display: block' ></div>
+    <div id="myModal" class="modal">
   <!-- Modal content -->
   <div class="modal-content" >
     <span class="close">&times;</span>
@@ -66,6 +72,7 @@ orange = 313- green - red
 tempData.filter(a=> a.srno> 0).forEach(a=> 
 tableData+= `<tr onclick='pop(${a.srno})' id=${a.srno}><td class=${d(a.docsrecd)}> ${a.srno}<td >${a.name.length>0 ? a.name : a.name1 + "-NO DATA" }<td>${(a.loss*1).toFixed(2)}`)
 document.getElementById('toTable').innerHTML=`<table align=center border=1 bgcolor=cyan><tr align=center><td colspan=3>Documents Status (out of 313) </tr><tr align=center><td class=green>All Received (${green})<td class=orange>Partially Received (${orange})<td class=red>Not Received (${red})</table><br><table border='1' align=center><tr bgcolor=cyan><td>Sr No<td>Name<td>Aprox Loss ${tableData} </table>`
+tempData.length >0 ? document.getElementById('loader').style.display='none' : ""
 }
 
 getMyData();
