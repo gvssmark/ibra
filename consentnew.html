@@ -92,8 +92,8 @@ avgsplallw =  (bps ===11 & monthsWorked <10) ? ((mydata.basic*splrate[0].splallr
 pensionable = avgsplallw /2
 oldrate = (bps ===11 & monthsWorked <10) ? `  (Old Rate : ${splrate[0].splallrate12}% for ${10- monthsWorked} Months)` : ""
 
-forlessthan10months = (bps ===11 & monthsWorked <10) ? `(${mydata.basic}*${splrate[0].splallrate12}%*${10-avgmonths}M + ${mydata.basic}*${splrates}%*${avgmonths}M)/10`: `(${mydata.basic} *  ${splrate[0].splallrate12} % * ${avgmonths} )/10`
-
+forlessthan10months = (bps ===11 & monthsWorked <10) ? `(${mydata.dummy3}*${splrate[0].splallrate12}%*${10-avgmonths}M + ${mydata.basic}*${splrates}%*${avgmonths}M)/10`: `(${mydata.basic} *  ${splrate[0].splallrate12} % * ${avgmonths} )/10`
+oldbasic = (bps ===11 & monthsWorked <10) ? `(old basic ${mydata.dummy3})`:""
 tomodal = `<br><table  align=center > 
 <tr><td colspan=4 align=center bgcolor=red>Documents Submitted
 <tr><td>Vakalat <td>${mydata.vakalt}
@@ -119,7 +119,7 @@ tomodal1 = `<table  align=center>
 <tr><td>Bipartite<td>${bps}th
 <tr><td>Spl All Rate<td>${splrates}% ${oldrate}
 <tr><td>Months Worked<td>${monthsWorked} , Eligible for Pension Calculation ${avgmonths}
-<tr><td>Basic Pay<td>${mydata.basic.toFixed(2)}
+<tr><td>Basic Pay<td>${mydata.basic.toFixed(2)}  ${oldbasic}
 <tr><td>Special Allowance<td>${splallw.toFixed(2)} (Basic Pay * Spl All Rate%)
 <tr><td>Avg Spl Allowance<td>${avgsplallw.toFixed(2)} ${forlessthan10months}
 <tr><td>Pension on Spl All<td>${(pensionable).toFixed(2)} (Avg Spl Allowance/2)
