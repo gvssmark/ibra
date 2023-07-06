@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -66,8 +67,12 @@ tempData = data["master"]
 green = tempData.filter(a=> a.docsrecd===4).length
 red = tempData.filter(a=> a.docsrecd===0).length
 orange = 313- green - red
+
+tempData.filter(a=> a.yr>0).forEach(a=> a.loss = calculateLoss(a.yr, a.basic, a.scale, a.dummy3))
+
 tempData.filter(a=> a.srno> 0).forEach(a=> 
 tableData+= `<tr onclick='pop(${a.srno})' id=${a.srno}><td class=${d(a.docsrecd)}> ${a.srno}<td >${a.name.length>0 ? a.name : a.name1 + "-NO DATA" }<td>${(a.loss*1).toFixed(2)}`)
+
 document.getElementById('toTable').innerHTML=`<table align=center border=1 bgcolor=cyan><tr align=center><td colspan=3>Documents Status (out of 313) </tr><tr align=center><td class=green>All Received (${green})<td class=orange>Partially Received (${orange})<td class=red>Not Received (${red})</table><br><table border='1' align=center><tr bgcolor=cyan><td>Sr No<td>Name<td>Aprox Loss ${tableData} </table>`
 tempData.length >0 ? document.getElementById('loader').style.display='none' : ""
 }
@@ -245,6 +250,32 @@ function d (a){
 return clr = a===0 ? 'red' : a===4 ? 'green' :'orange'
 }
 
+
+function calculateLoss(retyr, bpay , sc, obp){
+bipartite = retyr>= 201711 ? 11 : 10
+bpsyear = retyr>= 201711 ? 201711 : 201211
+splrate = spl12.filter(a=> a.scale ===sc)
+applyrate = bipartite === 10 ?  splrate[0].splallrate12 : splrate[0].splallrate17
+monthsWorkedInThisBPS = splallda.filter(a=> a.year>= bpsyear & a.year <= retyr).length 
+allmonths = splallda.filter(a=> a.year>retyr & a.year <=202303)
+monthsworkedt = allmonths.length
+monthsworked = monthsWorkedInThisBPS >=10 ? 10 : monthsWorkedInThisBPS 
+oldrate = (bipartite  ===11 & monthsworked <10) ? splrate[0].splallrate12 :""
+shortMonths = 10 - monthsworked
+
+SpecialAllowance = bpay * applyrate /100
+OldSpecialAllowance = obp * oldrate /100
+averageSpecialAllowance = (SpecialAllowance * monthsworked) + (OldSpecialAllowance * shortMonths)
+totda = 0
+pension = averageSpecialAllowance /10/2
+
+basicloss = pension * allmonths.length
+allmonths.forEach(a=>  { a.basic= pension;  
+bipartite ===10 ? (totda += a.bp10*pension/100, a.da=a.bp10*pension/100)  : (totda += a.bp11*pension/100, a.da=a.bp11*pension/100)} )
+daloss = totda
+return totalloss = basicloss + daloss
+
+}
 </script>
 </body> 
 </html>
