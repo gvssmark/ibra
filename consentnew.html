@@ -86,7 +86,7 @@ monthsWorked = bps===10 ? splallda.filter(a=> a.year >=201210 & a.year < mydata.
 avgmonths = monthsWorked>10 ? 10: monthsWorked
 splallw= mydata.basic*splrates/100
 //avgsplallw = splallw * avgmonths / 10
-avgsplallw =  (bps ===11 & monthsWorked <10) ? ((mydata.basic*splrate[0].splallrate12/100 * (10 - monthsWorked)) + (splallw* monthsWorked))/10: splallw * avgmonths / 10
+avgsplallw =  (bps ===11 & monthsWorked <10) ? ((mydata.dummy3*splrate[0].splallrate12/100 * (10 - monthsWorked)) + (splallw* monthsWorked))/10: splallw * avgmonths / 10
 //avgsplallw = spltbps17
 //avgsplallw = splallw
 pensionable = avgsplallw /2
