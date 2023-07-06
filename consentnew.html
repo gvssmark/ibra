@@ -217,7 +217,7 @@ avgSplAllw= avgsplallw
 basictotal = splallda.reduce((n, {basic}) => n + basic*1, 0);
 datotal = splallda.reduce((n, {da}) => n + da*1, 0)
 totmths = splallda.filter(a=> a.year > mydata.yr & a.year<=202303).length;
-bt = `<h4 align=center >IBRA - Calculation of Pension Loss on Special Pay </h4><table class='biotable' width=100% border=0>
+bt = `<h4 align=center >IBRA - Calculation of Pension Loss on Special Pay </h4><table class='biotable' width=100% border=1>
 <tr><td>Name<td>${mydata.name}<td>SR No<td>${mydata.srno}
 <tr><td>Retirement YYYYMM<td>${mydata.yr}<td>Pension YYYYMM<td>${penstart}
 <tr><td>Designation<td>${mydata.scale}<td>Bipartite / Months worked in this BPS<td>${bps}th / ${monthsWorked} Months
