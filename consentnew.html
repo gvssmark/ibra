@@ -97,7 +97,7 @@ avgsplallw =  (bps ===11 & monthsWorked <10) ? ((mydata.dummy3*splrate[0].splall
 pensionable = avgsplallw /2
 oldrate = (bps ===11 & monthsWorked <10) ? `  (Old Rate : ${splrate[0].splallrate12}% for ${10- monthsWorked} Months)` : ""
 
-forlessthan10months = (bps ===11 & monthsWorked <10) ? `(${mydata.dummy3}*${splrate[0].splallrate12}%*${10-avgmonths}M + ${mydata.basic}*${splrates}%*${avgmonths}M)/10`: `(${mydata.basic} *  ${splrate[0].splallrate12} % * ${avgmonths} )/10`
+forlessthan10months = (bps ===11 & monthsWorked <10) ? `(${mydata.dummy3}*${splrate[0].splallrate12}%*${10-avgmonths}M + ${mydata.basic}*${splrates}%*${avgmonths}M)/10`: `(${mydata.basic} *  ${splrates} % * ${avgmonths} )/10`
 oldbasic = (bps ===11 & monthsWorked <10) ? `(old basic ${mydata.dummy3})`:""
 tomodal = `<br><table  align=center > 
 <tr><td colspan=4 align=center bgcolor=red>Documents Submitted
