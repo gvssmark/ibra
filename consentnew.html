@@ -115,11 +115,11 @@ tomodal1 = `<table  align=center>
 <tr bgcolor=red><td colspan=2 align=center>Check the data for correctness
 <tr><td width='30%' >Name<td>${mydata.name.toTitle()}
 <tr><td  >SR No<td>${mydata.srno}
-<tr><td>Son of / Wife of<td>${mydata.sonof}
+<tr><td>Son of / Wife of<td>${mydata.sonof.toTitle()}
 <tr><td>Mobile Numbers<td>${mydata.mob1}, ${mydata.mob2}
 <tr><td>Email Address<td>${mydata.email.toLowerCase()}
-<tr><td>Address<td>${mydata.add} - ${mydata.pin}
-<tr><td>Retirement Branch<td>${mydata.retbr}
+<tr><td>Address<td>${mydata.add} - ${mydata.pin.toTitle()}
+<tr><td>Retirement Branch<td>${mydata.retbr.toTitle()}
 <tr><td>Designation<td>${mydata.scale}
 <tr><td>DOB<td>${new Date(mydata.dob).toDateString('EN-IN').substring(4)}
 <tr><td>DOR<td>${new Date(mydata.dor).toDateString('EN-IN').substring(4)}
