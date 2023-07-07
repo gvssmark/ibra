@@ -113,7 +113,7 @@ tomodal = `<br><table  align=center >
 
 tomodal1 = `<table  align=center>
 <tr bgcolor=red><td colspan=2 align=center>Check the data for correctness
-<tr><td width='30%' >Name<td>${mydata.name}
+<tr><td width='30%' >Name<td>${mydata.name.toTitle()}
 <tr><td  >SR No<td>${mydata.srno}
 <tr><td>Son of / Wife of<td>${mydata.sonof}
 <tr><td>Mobile Numbers<td>${mydata.mob1}, ${mydata.mob2}
@@ -220,7 +220,7 @@ basictotal = splallda.reduce((n, {basic}) => n + basic*1, 0);
 datotal = splallda.reduce((n, {da}) => n + da*1, 0)
 totmths = splallda.filter(a=> a.year > mydata.yr & a.year<=202303).length;
 bt = `<h4 align=center >IBRA - Calculation of Pension Loss on Special Pay </h4><table class='biotable' width=100% border=1>
-<tr><td width=20%>Name<td>${mydata.name}<td width=20%>SR No<td>${mydata.srno}
+<tr><td width=20%>Name<td>${mydata.name.toTitle()}<td width=20%>SR No<td>${mydata.srno}
 <tr><td>Retirement YYYYMM<td>${mydata.yr}<td>Pension YYYYMM<td>${penstart}
 <tr><td>Designation<td>${mydata.scale}<td>Bipartite / Months worked in this BPS<td>${bps}th / ${monthsWorked} Months
 <tr><td>Special All. Rate<td>${splrates}%<td>Basic Pay<td>Rs.${mydata.basic}
@@ -238,7 +238,7 @@ function printdata(){
 //document.body.style.backgroundColor = "white";
 document.getElementById('printdiv').style.display='block'
 document.getElementById('datadiv').style.display='none'
-document.title =  mydata.srno +"-"+mydata.name
+document.title =  mydata.srno +"-"+mydata.name.toTitle()
 window.print();  
 }
 
