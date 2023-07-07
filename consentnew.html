@@ -58,7 +58,9 @@ table {border:1px solid balck; border-collapse:collapse; width:340px; }
 </div>
 
 <script>
-tableData=''
+String.prototype.toTitle = function() {  return this.toLowerCase().replace(/(^|\s)\S/g, function(t) { return t.toUpperCase() });}
+    
+    tableData=''
 url = 'https://script.google.com/macros/s/AKfycbznnPsZdLU0Zq7hTW2SJ90QplQpVQIeRzOTq9gJalVStlw5aPnQCay3nU6DcCBIeecxMQ/exec'
 async function getMyData() {
 response = await fetch(url)
@@ -71,7 +73,7 @@ orange = 313- green - red
 tempData.filter(a=> a.yr>0).forEach(a=> a.loss = calculateLoss(a.yr, a.basic, a.scale, a.dummy3))
 
 tempData.filter(a=> a.srno> 0).forEach(a=> 
-tableData+= `<tr onclick='pop(${a.srno})' id=${a.srno}><td class=${d(a.docsrecd)}> ${a.srno}<td >${a.name.length>0 ? a.name : a.name1 + "-NO DATA" }<td>${(a.loss*1).toFixed(2)}`)
+tableData+= `<tr onclick='pop(${a.srno})' id=${a.srno}><td class=${d(a.docsrecd)}> ${a.srno}<td >${a.name.length>0 ? a.name.toTitle() : a.name1.toTitle() + "-NO DATA" }<td>${(a.loss*1).toFixed(2)}`)
 
 document.getElementById('toTable').innerHTML=`<table align=center border=1 bgcolor=cyan><tr align=center><td colspan=3>Documents Status (out of 313) </tr><tr align=center><td class=green>All Received (${green})<td class=orange>Partially Received (${orange})<td class=red>Not Received (${red})</table><br><table border='1' align=center><tr bgcolor=cyan><td>Sr No<td>Name<td>Aprox Loss ${tableData} </table>`
 tempData.length >0 ? document.getElementById('loader').style.display='none' : ""
