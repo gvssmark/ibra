@@ -128,10 +128,10 @@ tomodal1 = `<table  align=center>
 <tr><td>Special Allowance<td>${splallw.toFixed(2)} (Basic Pay * Spl All Rate%)
 <tr><td>Avg Spl Allowance<td>${avgsplallw.toFixed(2)} ${forlessthan10months}
 <tr><td>Pension on Spl All<td>${(pensionable).toFixed(2)} (Avg Spl Allowance/2)
+<tr><td>Aprox. Loss<td>${mydata.loss.toFixed(2)} 
 <tr><td colspan=2 onclick='report()' align=center bgcolor=red> Show Report 
 </table>
 `
-//<tr><td>Aprox. Loss<td>${mydata.loss.toFixed(2)} 
 
 
 document.getElementById('modaldata').innerHTML= tomodal+ tomodal1 
