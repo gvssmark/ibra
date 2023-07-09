@@ -278,6 +278,60 @@ daloss = totda
 return totalloss = basicloss + daloss
 
 }
+
+    // not implemented
+
+
+
+/*
+
+    
+function fillarray(retyr, bpay , sc, obp){
+bipartite = retyr>= 201711 ? 11 : 10
+bpsyear = retyr>= 201711 ? 201711 : 201211
+splrate = spl12.filter(a=> a.scale ===sc)
+applyrate = bipartite === 10 ?  splrate[0].splallrate12 : splrate[0].splallrate17
+monthsWorkedInThisBPS = splallda.filter(a=> a.year>= bpsyear & a.year <= retyr).length 
+allmonths = splallda.filter(a=> a.year>retyr & a.year <=202303)
+monthsworkedt = allmonths.length
+monthsworked = monthsWorkedInThisBPS >=10 ? 10 : monthsWorkedInThisBPS 
+oldrate = (bipartite  ===11 & monthsworked <10) ? splrate[0].splallrate12 :""
+shortMonths = 10 - monthsworked
+SpecialAllowance = bpay * applyrate /100
+OldSpecialAllowance = obp * oldrate /100 
+averageSpecialAllowance = ((SpecialAllowance * monthsworked) + (OldSpecialAllowance * shortMonths))/10
+totda=0
+pension = averageSpecialAllowance / 2
+basicloss =  pension * allmonths.length
+
+allmonths.forEach(a=>  {totda += bipartite ===10 ?  a.bp10*pension/100  :  a.bp11*pension/100} )
+
+return newarray = {
+'bipartite' : bipartite, 
+'applyRate' : applyrate, 
+'monthsWorkedInThisBPS': monthsWorkedInThisBPS, 
+'oldRate' : oldrate    ,
+'oldBasic' : obp*1, 
+'newBasic' : bpay,
+'shortMonths': shortMonths,
+'specialAllowance' :SpecialAllowance,
+'oldSpecialAllowance' :OldSpecialAllowance,
+'averageSpecialAllowance' :averageSpecialAllowance,
+'pension' : averageSpecialAllowance / 2,
+'arrearMonths': allmonths.length,
+'basicLoss' : basicloss,
+'daLoss' : totda,
+'totalLoss' : basicloss + totda
+}
+
+}
+
+tempData.filter(a=> a.yr>0).forEach(a=> a.myarray = fillarray(a.yr, a.basic, a.scale, a.dummy3))
+t=tempData.filter(a=> a.srno === 15496)[0]
+myar =(srno) => console.table(tempData.filter(a=> a.srno === srno)[0].myarray)
+myar(15496)
+
+   */ 
 </script>
 </body> 
 </html>
