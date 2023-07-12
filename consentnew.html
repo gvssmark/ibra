@@ -88,7 +88,8 @@ bps = mydata.yr>201710 ? 11 : 10
 splrate = spl12.filter(a=> a.scale === mydata.scale)
 splrates = bps === 10 ? splrate[0].splallrate12 : splrate[0].splallrate17 
 splallda = splalldatemp.map(([year, bp10, bp11, basic, da]) => ({ year, bp10, bp11,basic,da }))
-
+dates = mydata.dummy1.split("#")
+//${new Date(mydata.dob).toDateString('EN-IN').substring(4)} ${new Date(mydata.dor).toDateString('EN-IN').substring(4)}
 monthsWorked = bps===10 ? splallda.filter(a=> a.year >=201210 & a.year < mydata.yr).length :  splallda.filter(a=> a.year >=201710 & a.year < mydata.yr).length
 avgmonths = monthsWorked>10 ? 10: monthsWorked
 splallw= mydata.basic*splrates/100
@@ -121,8 +122,8 @@ tomodal1 = `<table  align=center>
 <tr><td>Address<td>${mydata.add} - ${mydata.pin.toTitle()}
 <tr><td>Retirement Branch<td>${mydata.retbr.toTitle()}
 <tr><td>Designation<td>${mydata.scale}
-<tr><td>DOB<td>${new Date(mydata.dob).toDateString('EN-IN').substring(4)}
-<tr><td>DOR<td>${new Date(mydata.dor).toDateString('EN-IN').substring(4)}
+<tr><td>DOB<td> ${dates[0]}
+<tr><td>DOR<td> ${dates[1]} 
 <tr><td>Bipartite<td>${bps}th
 <tr><td>Spl All Rate<td>${splrates}% ${oldrate}
 <tr><td>Months Worked<td>${monthsWorked} , Eligible for Pension Calculation ${avgmonths}
