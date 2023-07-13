@@ -48,7 +48,7 @@ Cost of Medicines<input type='number' name='medicine'  id='medicine' placeholder
 <script>
 days =[0,31,28,31,30,31,30,31,31,30,31,30,31]
 ele= document.getElementById("dob")
-maxyr= `${Date().substring(11,15)*1 -61}-12-31`
+maxyr= `${new Date().getFullYear()-61}-12-31`
 ele.min='1900-01-01'
 ele.max= maxyr
 function disp(){
@@ -58,7 +58,7 @@ year = 60 + dob.value.substring(0,4)*1
 r = `${lastday}-${month}-${year}`
 dobddmmyy = ele.value.substring(8) +"-" +ele.value.substring(5,7)+"-"+
 dob.value.substring(0,4)
-yr= Date().substring(11,15)*1
+yr= new Date().getFullYear()
 submitdate = Date().substring(4,15)
 totable = `<table width=100%>
 <tr><td colspan=2 align=center><h4>APPLICATION FROM RETIRED STAFF FOR ANNUAL MEDICAL AID.</h4>
