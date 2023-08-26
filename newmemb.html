@@ -1,7 +1,9 @@
+
 <!DOCTYPE html>
 <html>
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no ">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>New Member</title>
 
 <style>
@@ -11,14 +13,27 @@
 input {border:none; width:200px; background:powderblue; }
 input:focus { background:cyan; outline: none }
 .tdwidth {width:150px;}
-table {width:320px; border: 0px solid black; border-collapse:collapse; margin:auto;}
+table {width:100%; border: 0px solid black; border-collapse:collapse; margin:auto;}
 td:nth-child(1) {font-size:small; }
 textarea {border:none; outline:none; background:powderblue;}
 textarea:focus {background:cyan;}
 .trheight1 {height:50px;}
-button {background:cyan; border:none;height:25px; border-radius:15px ; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); color:blue;    }
+button {background:cyan; border:none;height:25px; border-radius:15px ; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); 
+
+color:blue;    }
 #dataentry {margin:auto; width:330px; background:powderblue; padding:5px; border-radius:15px;}
 #pdf {display:none}
+table {border:1px solid black; border-collapse:collapse;}
+
+@media print 
+{
+    @page {size: A4; /* DIN A4 standard, Europe */      margin: 10px;    }
+    html, body,   {width: 210mm; height: 282mm; font-family: Arial, Helvetica, sans-serif; font-size: small; background: #FFF; overflow: visible; }
+    body {  padding-top: 0mm;    }
+table {width:100%}
+    tr {height:30px}
+.tdwidth {width:30%}
+  }
 
 </style>
 
@@ -27,29 +42,30 @@ button {background:cyan; border:none;height:25px; border-radius:15px ; box-shado
 <div id='dataentry'>
 <form action="javascript:disp();">
 <table border=0>
-<tr><td class='tdwidth'>Name <td><input type='text' name='retname'id='retname' placeholder='Retiree Name'required>
-<tr><td>SR Number<td><input type='number' name='srno'id='srno' placeholder='SR Number'required>
-<tr><td>Date of Birth<td><input type='text' name='dob'id='dob' placeholder='DOB YYYYMMDD'required>
-<tr><td>Qualification<td><input type='text' name='qual'id='qual' placeholder='Edcn Qualification'required>
-<tr><td>Designation / Scale<td><input type='text' name='desig'id='desig' placeholder='Designation'required>
-<tr><td>Br. / Off where Retd<td><input type='text' name='retbr'id='retbr' placeholder='Retired at 'required>
-<tr><td>Dt of Joining Bank<td><input type='text' name='doj'id='doj' placeholder='Dt of Joining Bank YYYYMMDD'required>
-<tr><td>Date of Retirement<td><input type='text' name='dor'id='dor' placeholder='Retired on YYYYMMDD'required>
-<tr><td>Basic Pay<td><input type='number' name='basic'id='basic' placeholder='Basic Pay'required>
-<tr><td>FPP<td><input type='number' name='fpp'id='fpp' placeholder='FPP'required>
-<tr><td>PQA<td><input type='number' name='pqa'id='pqa' placeholder='PQA'required>
-<tr><td>Special Allowance<td><input type='number' name='spl'id='spl' placeholder='Special Allowance'required>
-<tr><td>Pension Drawing Branch<td><input type='text' name='penbr'id='penbr' placeholder='Pension Branch'required>
-<tr><td>Pension Account No<td><input type='number' name='sbac'id='sbac' placeholder='Pension Ac No'required>
-<tr><td>Address<td><textarea name='add' rows="4" cols="24" id='add'   placeholder='Address' required></textarea>
-<tr><td>Mobile Number<td><input type='mobile' name='mob'id='mob' placeholder='Mobile No'required>
-<tr><td>Email Address<td><input type='email' name='mail'id='mail' placeholder='Email'required>
-<tr><td>Fixedline with STD Code<td><input type='text' name='fxdline'id='fxdline' placeholder='Fixed Line with STD'required>
-<tr><td>Spouse Name<td><input type='text' name='spouse'id='spouse' placeholder='Spouse Name'required>
-<tr class='trheight'><td colspan=2 align=center> <button  value='submit'>Submit / Print / Save as PDF<br> </button>
+<tr><td >Name <td ><input type='text' name='retname'id='retname' placeholder='Retiree Name'>
+<tr><td>SR Number<td><input type='number' name='srno'id='srno' placeholder='SR Number'>
+<tr><td>Date of Birth<td><input type='text' name='dob'id='dob' placeholder='DOB YYYYMMDD'>
+<tr><td>Qualification<td><input type='text' name='qual'id='qual' placeholder='Edcn Qualification'>
+<tr><td>Designation / Scale<td><input type='text' name='desig'id='desig' placeholder='Designation'>
+<tr><td>Br. / Off where Retd<td><input type='text' name='retbr'id='retbr' placeholder='Retired at '>
+<tr><td>Dt of Joining Bank<td><input type='text' name='doj'id='doj' placeholder='Dt of Joining Bank YYYYMMDD'>
+<tr><td>Date of Retirement<td><input type='text' name='dor'id='dor' placeholder='Retired on YYYYMMDD'>
+<tr><td>Basic Pay<td><input type='number' name='basic'id='basic' placeholder='Basic Pay'>
+<tr><td>FPP<td><input type='number' name='fpp'id='fpp' placeholder='FPP'>
+<tr><td>PQA<td><input type='number' name='pqa'id='pqa' placeholder='PQA'>
+<tr><td>Special Allowance<td><input type='number' name='spl'id='spl' placeholder='Special Allowance'>
+<tr><td>Pension Drawing Branch<td><input type='text' name='penbr'id='penbr' placeholder='Pension Branch'>
+<tr><td>Pension Account No<td><input type='number' name='sbac'id='sbac' placeholder='Pension Ac No'>
+<tr><td>Address<td><textarea name='add' rows="4" cols="24" id='add'   placeholder='Address' ></textarea>
+<tr><td>Mobile Number<td><input type='mobile' name='mob'id='mob' placeholder='Mobile No'>
+<tr><td>Email Address<td><input type='email' name='mail'id='mail' placeholder='Email'>
+<tr><td>Fixedline with STD Code<td><input type='text' name='fxdline'id='fxdline' placeholder='Fixed Line with STD'>
+<tr><td>Spouse Name<td><input type='text' name='spouse'id='spouse' placeholder='Spouse Name'>
+<tr class='trheight'><td colspan=2 align=center> <button  value='submit' >Submit / Print / Save as PDF<br> </button>
 </table>
 </form>
 </div>
+
 <div id='pdf'>form comes here
 
 
@@ -64,19 +80,49 @@ Indian Bank Retirees’ Association<br>
 Flat No 401, Haritasa Residency,<br>
 New Nallakunta, Hyderabad 500044<br><br>
 Dear Comrade<br>
-<p style="  text-align: justify;">Please enrol me as member of the Retirees’ Association. I have read the Bye-laws and rules of the Association and I am willing to abide by them. I am remitting a sum of Rs.1000/- (Rupees One Thousand only) towards one time admission fee and Life Membership.Amount Credited to SB Account No 465693063 with Indian Bank, Himayatnagar Branch / Demand Draft / Cheque favouring Indian Bank Retirees’ Association, is enclosed.<br></p>
-Yours faithfully<br><br><br><br>
+<p style="  text-align: justify;">Please enrol me as member of the Retirees’ Association. I have read the Bye-laws and rules of the Association and I am 
+
+willing to abide by them. I am remitting a sum of Rs.1000/- (Rupees One Thousand only) towards one time admission fee and Life Membership.Amount Credited to SB 
+
+Account No 465693063 with Indian Bank, Himayatnagar Branch / Demand Draft / Cheque favouring Indian Bank Retirees’ Association, is enclosed.<br></p>
+Yours faithfully<br><br>
+
+(${retname.value})<br>
 Signature<br><br>`
 
-totable1 = `
-${retname.value}
+totable1 = `<table border=1 width=100%>
+<tr><td classs='tdwidth'>SR No <td >${srno.value}
+<tr><td width=30%>Name of the Retiree<td>${retname.value}
+<tr><td>Date of Birth <td>${dob.value}
+<tr><td>Qualification<td>${qual.value}
+<tr><td>Designation<td>${desig.value}
+<tr><td>Retirement Branch / Office<td>${retbr.value}
+<tr><td>Date of Joining the Bank <td>${doj.value}
+<tr><td>Date of Retirement<td>${dor.value}
+<tr><td>Basic Pay <td>${basic.value} 
+<tr><td>FPP<td>${fpp.value}
+<tr><td>PQP<td>${pqa.value}
+<tr><td>Spl Allowance<td>${spl.value}
 
+<tr><td>Pension Drawing Branch<td>${penbr.value}
+<tr><td>Pension Account No<td>${sbac.value}
 
+<tr><td>Address<td>${add.value}
+<tr><td>Mobile No<td>${mob.value}
+<tr><td>Email Address<td>${mail.value}
+
+<tr><td>Fixed Line Number<td>${fxdline.value}
+<tr><td>Spouse Name<td>${spouse.value}
+</table>
 `
 document.getElementById('dataentry').style.display='none'
 document.getElementById('pdf').style.display='block'
 document.getElementById('pdf').innerHTML=totable0 + totable1 
+window.print()
 }
+
+function pr(){window.print()}
+
 </script>
 </body>
 </html>
