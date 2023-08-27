@@ -64,7 +64,7 @@ maxyr= `${new Date().getFullYear()-61}-12-31`
 ele.min='1900-01-01'
 ele.max= maxyr
 function disp(){
-    document.body.style.overflow = "visible";
+    document.body.style.overflow = "scroll";
 lastday = days[ele.value.substring(5,7)*1]
 month = ele.value.substring(5,7)*1
 year = 60 + dob.value.substring(0,4)*1 
@@ -173,7 +173,7 @@ signatureCanvas.addEventListener('mouseup', () => {
 captureButton.addEventListener('click', () => {
     croppedImage.src = signatureCanvas.toDataURL();
     croppedImage.style.display = 'inline';
-    document.body.style.overflow = "visible";
+    document.body.style.overflow = "scroll";
     disp();
 document.getElementById('signdiv').style.display='none';
     
