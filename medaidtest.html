@@ -7,7 +7,8 @@
     <title>Medical Aid</title>
 
 <style>
-html, body {margin: 0; height: 100%; overflow: hidden}
+/*html, body {margin: 0; height: 100%; overflow: hidden}*/
+#signdiv {overflow:hidden}
 @media print 
 {@page {size: A4;margin: 20px;    }
     html, body {width: 210mm; height: 282mm;  background: #FFF; overflow: visible; }
@@ -49,7 +50,7 @@ Cost of Medicines<input type='number' name='medicine'  id='medicine' placeholder
 </div>
 <p id='data'></p>
 <div id='signdiv' style='display:none' >
-    <canvas id="signatureCanvas" width="360" height="200" style="border: 1px solid black;"></canvas><br>
+    <canvas id="signatureCanvas" width="340" height="200" style="border: 1px solid black;"></canvas><br>
     <button id="captureButton">Capture Signature / Save / Print</button>
     <button id="clearButton">Clear Signature</button>
     <br>
@@ -64,7 +65,7 @@ maxyr= `${new Date().getFullYear()-61}-12-31`
 ele.min='1900-01-01'
 ele.max= maxyr
 function disp(){
-    document.body.style.overflow = "scroll";
+ //   document.body.style.overflow = "scroll";
 lastday = days[ele.value.substring(5,7)*1]
 month = ele.value.substring(5,7)*1
 year = 60 + dob.value.substring(0,4)*1 
@@ -173,7 +174,7 @@ signatureCanvas.addEventListener('mouseup', () => {
 captureButton.addEventListener('click', () => {
     croppedImage.src = signatureCanvas.toDataURL();
     croppedImage.style.display = 'inline';
-    document.body.style.overflow = "scroll";
+//    document.body.style.overflow = "scroll";
     disp();
 document.getElementById('signdiv').style.display='none';
     
