@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,14 +11,33 @@ input {width:100%; height:30px; background:#E9E7E6; border:none; outline:none}
 ::placeholder {color:blue; font-size:large; font-family: "Courier New", Courier, monospace;}
 * {  box-sizing: border-box;}
 input:focus { background:cyan; outline: none }
-#dataentry { margin:0 auto;  ; padding:5px; border-radius:15px; overflow: hidden; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);     }
+#dataentry { margin:0 auto;  display:none; padding:5px; border-radius:15px; overflow: hidden; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);     }
 h1 {color:red; margin:0 auto; }
+#rep {display:none}
 </style></head>
 <body>
+<div id='home'>
+<h3>Important Instructions</h3>
+<ol>
+<li>Sponsorship will be restricted to a max of 75 to 100 sponsors on first cum first serve basis.
+<li>Sponsors will have to submit the details in this form, filled up in English only.
+<li>Each sponsoror can sponsor a maximum of 3 or 4 occasions only & on each occasion names of a couple ( like Grandmother / Grandfather , Mother /Father , Father in Law / Mother in Law ). 
+<li>In case of a single deceased , a second name can be provided.
+<li>CONTRIBUTION PER SPONSOR PER OCCASION WILL BE Rs 2000/- which can be remitted to the following a/c of Smt B Visalakshi. 
+SB A/c. No. 473583196
+IFSC IDIB000H013, 
+Hyderabad Main branch.
+<li>LAST DATE FOR JOINING SEVA WILL BE 27/9/23 for SEVA FROM 30/9/23 to 7/10/23.
+<li>LAST DATE FOR SEVA FROM 8/10/23 to 14/10/23 will be 2/10/23.
+<li>For one date / Occasion you can add maximum of two names.
+</ol> 
+<button onclick='showDataEntry()'>Accept and Proceed</button>
+</div>
+
 <div id='dataentry'>
 <h1 align=center>Seva 2023</h1>
 <form  name='submit-to-google-sheet'>
-Date of Seva<br><input type="date"  name="date"    min='2023-09-30' max='2023-10-15' required><br>
+Date of Seva<br><input type="date"  name="date"    min='2023-09-30' max='2023-10-14' required><br>
 Sponsor 1 Name<br> <input type="text"  name="sponsor1"  placeholder="Sponsor1 Name"   inputmode='text' required><br>
 Sponsor 1 Gotra<br> <input type="text"  name= "gotra1"  placeholder="Sponsor1 Gotra"  inputmode='text'  required><br>
 Mobile No <br><input type='mobile' name='mob'id='mob' placeholder='Mobile No'  inputmode='tel'  required    ><br>
@@ -31,13 +51,27 @@ Pitru Devata 2 Gotra <br><input type="text"  name="pitrugotra2"  placeholder="Pi
     <button  style="width:100%; background:yellow; border:none; height:30px; border-radius:25px;  " type="submit" >Submit</button>
 </form>
 </div>
+<div id='rep' ><h1>Data Report</h1></div>
 <script>
+
+function showDataEntry(){document.getElementById('dataentry').style.display='block'
+document.getElementById('home').style.display='none'
+}
+
+function shrep(){
+document.getElementById('dataentry').style.display='none'
+document.getElementById('rep').style.display='block'
+}
+
 scriptURL='https://script.google.com/macros/s/AKfycbzY15eGvspKz6CdIAwuMU4c-vLCfDrrMku44bcI402lfw_i2EdUpt719GRfz0xV82WQ/exec'
 const form = document.forms['submit-to-google-sheet']
   form.addEventListener('submit', e => {
     e.preventDefault()
     fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-form.reset();
+//form.reset();
+
+document.getElementById('dataentry').style.display='none'
+document.getElementById('rep').style.display='block'
   })
 </script>
 </body>
