@@ -115,7 +115,7 @@ const form = document.forms['submit-to-google-sheet']
   form.addEventListener('submit', e => {
     e.preventDefault()
     fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-//form.reset();
+form.reset();
 //alert('hi')
 //shreport()
 document.getElementById('dataentry').style.display='none'
