@@ -6,7 +6,18 @@
 <title>Seva 23</title>
 <meta name="theme-color" content="#FFFFFF" />
 <style>
-table {border-collapse:collapse}
+.modal {  display: none;  position: fixed;  z-index: 1;    left: 0;  top: 0;  width: 100%;  height: 100%;  overflow: auto;
+  background-color: rgb(0,0,0);  background-color: rgba(0,0,0,0.4); }
+.modal-content {background-color: #99ffcc;margin:0 auto;padding: 2px;padding-bottom: 2px;border: 1px solid #888;width: 90%;margin-top: 90px;   }
+#modalData {margin:auto}
+.close {color: red;float: right;;font-weight: bold;}
+close:hover,.close:focus {color: #000;text-decoration: none;cursor: pointer;}
+@media only screen and (min-width: 400px)  {
+  #home, #dataentry {     margin: auto; width:70%;   }}
+@media only screen and (min-width: 800px)  {
+  #home, #dataentry {     margin: auto; width:50%;   }}
+  
+table {border-collapse:collapse; width:90%}
 input {width:100%; height:30px; background:#E9E7E6; border:none; outline:none}
 ::placeholder {color:blue; font-size:large; font-family: "Courier New", Courier, monospace;}
 * {  box-sizing: border-box;}
@@ -16,8 +27,14 @@ h1 {color:red; margin:0 auto; }
 #rep {display:none}
 </style></head>
 <body>
+
+
 <div id='home'>
+<div style='background:black; color:white; height:100'><h2 align=center>ॐ पितृ दैवतायै नम:</h2></div>
 <h3>Important Instructions</h3>
+
+
+
 <ol>
 <li>Sponsorship will be restricted to a max of 75 to 100 sponsors on first cum first serve basis.
 <li>Sponsors will have to submit the details in this form, filled up in English only.
@@ -31,7 +48,7 @@ Hyderabad Main branch.
 <li>LAST DATE FOR SEVA FROM 8/10/23 to 14/10/23 will be 2/10/23.
 <li>For one date / Occasion you can add maximum of two names.
 </ol> 
-<button onclick='showDataEntry()'>Accept and Proceed</button>
+<button onclick='showDataEntry()'>Accept and Proceed</button><button onclick='shreport()'>Report</button>
 </div>
 
 <div id='dataentry'>
@@ -48,11 +65,36 @@ Pitru Devata 1 Gotra <br><input type="text"  name="pitrugotra1"  placeholder="Pi
 Pitru Devata 2 Name <br><input type="text"  name="pitru2"  placeholder="Pitrudevata2 Name"  inputmode='text'  ><br>
 Pitru Devata 2 Gotra <br><input type="text"  name="pitrugotra2"  placeholder="Pitrudevata2 Gotra"  inputmode='text'  ><br>
 <br>
-    <button  style="width:100%; background:yellow; border:none; height:30px; border-radius:25px;  " type="submit" >Submit</button>
+    <button  style="width:100%; background:yellow; font-size:large; color:red;;border:none; height:30px; border-radius:25px;  " type="submit" >Submit</button>
 </form>
 </div>
-<div id='rep' ><h1>Data Report</h1></div>
+<div id='rep' ><h1>Data Report</h1>
+<p id='report'></p>
+<button onclick='shhome()'>Home</button>
+<p id='temp1'></p>
+</div>
+
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p id=temp></p>
+  </div>
+</div>
+
+
+
 <script>
+
+function shreport(){
+document.getElementById('home').style.display='none'
+document.getElementById('rep').style.display='block'
+}
+
+function shhome(){
+document.getElementById('rep').style.display='none'
+document.getElementById('home').style.display='block'
+
+}
 
 function showDataEntry(){document.getElementById('dataentry').style.display='block'
 document.getElementById('home').style.display='none'
@@ -73,6 +115,47 @@ const form = document.forms['submit-to-google-sheet']
 document.getElementById('dataentry').style.display='none'
 document.getElementById('rep').style.display='block'
   })
+  
+url ='https://script.google.com/macros/s/AKfycbwCJfPX8BSP099jkescIBUjJ1mcUByRYBexgpK14LxRDCgWRUI8gAGkSSOvHZef3crRdg/exec'
+async function getMyData() {
+response = await fetch(url)
+tdata = await response.json()
+data= tdata.map(([date,sponsor1,gotra1,mob,sponsor2,gotra2,pitru1,pitrugotra1,pitru2,pitrugotra2,slno ]) => ({ date,sponsor1,gotra1,mob,sponsor2,gotra2,pitru1,pitrugotra1,pitru2,pitrugotra2,slno}))
+data.shift()
+data.sort((a, b) => a.mob - b.mob)
+datarep=''
+data.filter(a=> a.slno>0).forEach(a=> datarep+= `<tr id=${a.slno} onclick='shdata(this.id)'><td>${a.mob}<td>${a.sponsor1}(${a.slno})`)
+document.getElementById('report').innerHTML = `Data Sorted on Mobile No. <br><table border=1>${datarep}</table><br>`
+}
+getMyData()
+
+var modal = document.getElementById("myModal");
+function shdata(sl){
+//alert(sl)
+repdata=data.filter(a=> a.slno === +sl)
+r=repdata[0]
+repdatarep=`Date: ${r.date}<br>
+Sponsor 1:  ${r.sponsor1} (${r.gotra1})<br>
+Sponsor 2:  ${r.sponsor2} (${r.gotra2})<br>
+Pitru 1: ${r.pitru1} (${r.pitrugotra1})<br>
+Pitru 2: ${r.pitru2} (${r.pitrugotra2})<br>
+`
+document.getElementById('temp').innerHTML = repdatarep
+modal.style.display = "block"
+alert(repdatarep)
+}
+
+
+var span = document.getElementsByClassName("close")[0];
+span.onclick = function() {
+  modal.style.display = "none";
+}
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
 </script>
 </body>
 </html>
