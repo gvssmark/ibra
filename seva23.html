@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -74,7 +75,7 @@ Pitru Devata 2 Gotra <br><input type="text"  name="pitrugotra2"  placeholder="Pi
 </div>
 <div id='rep' ><h1>Data Report</h1>
 <p id='report'></p>
-<button onclick='shhome()'>Home</button>
+<button onclick='shhome()' style='position:fixed; top:10px;right:50px; height:50px; background:red; border-radius:50px; border:none; color:white;'>Home</button>
 <p id='temp1'></p>
 </div>
 
@@ -86,8 +87,9 @@ Pitru Devata 2 Gotra <br><input type="text"  name="pitrugotra2"  placeholder="Pi
 </div>
 
 
-
 <script>
+
+String.prototype.toTitle = function() {  return this.replace(/(^|\s)\S/g, function(t) { return t.toLowerCase().toUpperCase() });}
 
 function shreport(){
 getMyData()
@@ -134,7 +136,7 @@ datarep=''
 //data = data.filter(a=> a.slno>0)
 data.forEach((a,b)=> a.slno = b+1)
 
-data.forEach(a=> datarep+= `<tr id=${a.slno} onclick='shdata(this.id)'><td>${a.mob}<td>${a.sponsor1}(${a.slno})`)
+data.forEach(a=> datarep+= `<tr id=${a.slno} onclick='shdata(this.id)'><td>${a.mob}<td>${a.sponsor1.toLowerCase().toTitle()}(${a.slno})`)
 document.getElementById('report').innerHTML = `Data Sorted on Mobile No. <br><table border=1>${datarep}</table><br>`
 }
 
@@ -145,11 +147,11 @@ function shdata(sl){
 repdata=data.filter(a=> a.slno === +sl)
 r=repdata[0]
 repdatarep=`Date: ${r.date}<br><br>
-Sponsor 1:  ${r.sponsor1} (${r.gotra1})<br><br>
-Sponsor 2:  ${r.sponsor2} (${r.gotra2})<br><br>
-Pitru 1: <br>${r.pitru1}-${r.rel1} <br>(${r.pitrugotra1}) <br><br>
+Sponsor 1:  ${r.sponsor1.toTitle()} (${r.gotra1.toTitle()})<br><br>
+Sponsor 2:  ${r.sponsor2.toTitle()} (${r.gotra2.toTitle()})<br><br>
+Pitru 1: <br>${r.pitru1.toTitle()}-${r.rel1.toTitle()} <br>(${r.pitrugotra1.toTitle()}) <br><br>
 
-Pitru 2:<br> ${r.pitru2}-${r.rel2} <br> (${r.pitrugotra2})<br>
+Pitru 2:<br> ${r.pitru2.toTitle()}-${r.rel2.toTitle()} <br> (${r.pitrugotra2.toTitle()})<br>
 
 `
 document.getElementById('temp').innerHTML = repdatarep
