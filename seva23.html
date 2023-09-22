@@ -18,7 +18,7 @@ close:hover,.close:focus {color: #000;text-decoration: none;cursor: pointer;}
   #home, #dataentry {     margin: auto; width:50%;   }}
   
 table {border-collapse:collapse; width:90%}
-input {width:100%; height:30px; background:#E9E7E6; border:none; outline:none}
+input {width:100%; height:25px; background:#E9E7E6; border:none; outline:none}
 ::placeholder {color:blue; font-size:large; font-family: "Courier New", Courier, monospace;}
 * {  box-sizing: border-box;}
 input:focus { background:cyan; outline: none }
@@ -54,15 +54,19 @@ Hyderabad Main branch.
 <div id='dataentry'>
 <h1 align=center>Seva 2023</h1>
 <form  name='submit-to-google-sheet'>
-Date of Seva<br><input type="date"  name="date"    min='2023-09-30' max='2023-10-14' required><br>
-Sponsor 1 Name<br> <input type="text"  name="sponsor1"  placeholder="Sponsor1 Name"   inputmode='text' required><br>
-Sponsor 1 Gotra<br> <input type="text"  name= "gotra1"  placeholder="Sponsor1 Gotra"  inputmode='text'  required><br>
-Mobile No <br><input type='mobile' name='mob'id='mob' placeholder='Mobile No'  inputmode='tel'  required    ><br>
+Date of Seva<br><input type="date"  name="date"    min='2023-09-30' max='2023-10-14' required ><br>
+Sponsor 1 Name<br> <input type="text"  name="sponsor1"  placeholder="Sponsor1 Name"  required inputmode='text' ><br>
+Sponsor 1 Gotra<br> <input type="text"  name= "gotra1"  placeholder="Sponsor1 Gotra"  inputmode='text' required ><br>
+Mobile No <br><input type='mobile' name='mob'id='mob' placeholder='Mobile No'  inputmode='tel'    required  ><br>
 Sponsor 2 Name<br> <input type="text"  name="sponsor2"  placeholder="Sponsor1 Name"  inputmode='text'  ><br>
 Sponsor 2 Gotra<br> <input type="text"  name="gotra2"  placeholder="Sponsor1 Gotra"  inputmode='text'  ><br>
-Pitru Devata 1 Name <br><input type="text"  name="pitru1"  placeholder="Pitrudevata1 Name"  inputmode='text'  required><br>
-Pitru Devata 1 Gotra <br><input type="text"  name="pitrugotra1"  placeholder="Pitrudevata1 Gotra"  inputmode='text'  required><br>
+Pitru Devata 1 Name <br><input type="text"  name="pitru1"  placeholder="Pitrudevata1 Name"  inputmode='text' required ><br>
+Pitru Devata 1 Relationship to Sponsor1 <br><input type="text"  name="relation1"  placeholder="Father / Mother/"  inputmode='text' required ><br>
+
+Pitru Devata 1 Gotra <br><input type="text"  name="pitrugotra1"  placeholder="Pitrudevata1 Gotra"  inputmode='text' required ><br>
 Pitru Devata 2 Name <br><input type="text"  name="pitru2"  placeholder="Pitrudevata2 Name"  inputmode='text'  ><br>
+Pitru Devata 2 Relationship to Sponsor1 <br><input type="text"  name="relation2"  placeholder="Father / Mother/"  inputmode='text'  ><br>
+
 Pitru Devata 2 Gotra <br><input type="text"  name="pitrugotra2"  placeholder="Pitrudevata2 Gotra"  inputmode='text'  ><br>
 <br>
     <button  style="width:100%; background:yellow; font-size:large; color:red;;border:none; height:30px; border-radius:25px;  " type="submit" >Submit</button>
@@ -86,6 +90,7 @@ Pitru Devata 2 Gotra <br><input type="text"  name="pitrugotra2"  placeholder="Pi
 <script>
 
 function shreport(){
+getMyData()
 document.getElementById('home').style.display='none'
 document.getElementById('rep').style.display='block'
 }
@@ -105,13 +110,14 @@ document.getElementById('dataentry').style.display='none'
 document.getElementById('rep').style.display='block'
 }
 
-scriptURL='https://script.google.com/macros/s/AKfycbzY15eGvspKz6CdIAwuMU4c-vLCfDrrMku44bcI402lfw_i2EdUpt719GRfz0xV82WQ/exec'
+scriptURL='https://script.google.com/macros/s/AKfycbwzSDamzZU9UiZCpmFDUNVNSNoFm8R3eYJt9Dj-U1rmi52YRwCz_EEqcM1zuTY1mn2X/exec'
 const form = document.forms['submit-to-google-sheet']
   form.addEventListener('submit', e => {
     e.preventDefault()
     fetch(scriptURL, { method: 'POST', body: new FormData(form)})
 //form.reset();
-
+//alert('hi')
+shreport()
 document.getElementById('dataentry').style.display='none'
 document.getElementById('rep').style.display='block'
   })
@@ -120,29 +126,35 @@ url ='https://script.google.com/macros/s/AKfycbwCJfPX8BSP099jkescIBUjJ1mcUByRYBe
 async function getMyData() {
 response = await fetch(url)
 tdata = await response.json()
-data= tdata.map(([date,sponsor1,gotra1,mob,sponsor2,gotra2,pitru1,pitrugotra1,pitru2,pitrugotra2,slno ]) => ({ date,sponsor1,gotra1,mob,sponsor2,gotra2,pitru1,pitrugotra1,pitru2,pitrugotra2,slno}))
+data= tdata.map(([date,sponsor1,gotra1,mob,sponsor2,gotra2,pitru1,pitrugotra1,pitru2,pitrugotra2,rel1,rel2,slno ]) => ({ date,sponsor1,gotra1,mob,sponsor2,gotra2,pitru1,pitrugotra1,pitru2,pitrugotra2,rel1,rel2,slno,}))
 data.shift()
+
 data.sort((a, b) => a.mob - b.mob)
 datarep=''
-data.filter(a=> a.slno>0).forEach(a=> datarep+= `<tr id=${a.slno} onclick='shdata(this.id)'><td>${a.mob}<td>${a.sponsor1}(${a.slno})`)
+//data = data.filter(a=> a.slno>0)
+data.forEach((a,b)=> a.slno = b+1)
+
+data.forEach(a=> datarep+= `<tr id=${a.slno} onclick='shdata(this.id)'><td>${a.mob}<td>${a.sponsor1}(${a.slno})`)
 document.getElementById('report').innerHTML = `Data Sorted on Mobile No. <br><table border=1>${datarep}</table><br>`
 }
-getMyData()
+
 
 var modal = document.getElementById("myModal");
 function shdata(sl){
 //alert(sl)
 repdata=data.filter(a=> a.slno === +sl)
 r=repdata[0]
-repdatarep=`Date: ${r.date}<br>
-Sponsor 1:  ${r.sponsor1} (${r.gotra1})<br>
-Sponsor 2:  ${r.sponsor2} (${r.gotra2})<br>
-Pitru 1: ${r.pitru1} (${r.pitrugotra1})<br>
-Pitru 2: ${r.pitru2} (${r.pitrugotra2})<br>
+repdatarep=`Date: ${r.date}<br><br>
+Sponsor 1:  ${r.sponsor1} (${r.gotra1})<br><br>
+Sponsor 2:  ${r.sponsor2} (${r.gotra2})<br><br>
+Pitru 1: <br>${r.pitru1}-${r.rel1} <br>(${r.pitrugotra1}) <br><br>
+
+Pitru 2:<br> ${r.pitru2}-${r.rel2} <br> (${r.pitrugotra2})<br>
+
 `
 document.getElementById('temp').innerHTML = repdatarep
 modal.style.display = "block"
-alert(repdatarep)
+//alert(repdatarep)
 }
 
 
