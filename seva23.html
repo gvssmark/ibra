@@ -14,7 +14,7 @@
 .close {color: red;float: right;;font-weight: bold;}
 close:hover,.close:focus {color: #000;text-decoration: none;cursor: pointer;}
 @media only screen and (min-width: 400px)  {
-  #home, #dataentry,#rep {     margin: auto; width:70%;   }}
+  #home, #dataentry,#rep {     margin: auto; width:100%;   }}
 @media only screen and (min-width: 800px)  {
   #home, #dataentry,#rep  {     margin: auto; width:50%;   }}
   
@@ -26,6 +26,7 @@ input:focus { background:cyan; outline: none }
 #dataentry { margin:0 auto;  display:none; padding:5px; border-radius:15px; overflow: hidden; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);     }
 h1 {color:red; margin:0 auto; }
 #rep {display:none}
+.smallfont {font-size:small;}  
 </style></head>
 <body>
 
@@ -136,7 +137,7 @@ datarep=''
 //data = data.filter(a=> a.slno>0)
 data.forEach((a,b)=> a.slno = b+1)
 
-data.forEach(a=> datarep+= `<tr id=${a.slno} onclick='shdata(this.id)'><td>${a.mob}<td>${a.sponsor1.toLowerCase().toTitle()}(${a.slno})`)
+data.forEach(a=> datarep+= `<tr id=${a.slno} onclick='shdata(this.id)'><td>${a.mob}<td class='smallfont'>${a.sponsor1.toLowerCase().toTitle()}(${a.slno})`)
 document.getElementById('report').innerHTML = `Data Sorted on Mobile No. <br><table border=1>${datarep}</table><br>`
 }
 
