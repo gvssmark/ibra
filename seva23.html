@@ -138,7 +138,7 @@ datarep=''
 data.forEach((a,b)=> a.slno = b+1)
 
 data.forEach(a=> datarep+= `<tr id=${a.slno} onclick='shdata(this.id)'><td>${a.mob}<td class='smallfont'>${a.sponsor1.toLowerCase().toTitle()}(${a.slno})`)
-document.getElementById('report').innerHTML = `Data Sorted on Mobile No. <br><table border=1>${datarep}</table><br>`
+document.getElementById('report').innerHTML = `Data Sorted on Mobile No. Click on the row to get details.<br><table border=1>${datarep}</table><br>`
 }
 
 
