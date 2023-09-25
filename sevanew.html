@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+#dataentry { margin:0 auto;   padding:5px; border-radius:15px; overflow: hidden; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);     }
+input {width:99%; height:25px; background:#E9E7E6; border:none; outline:none}
+
+</style>
+</head>
+<body>
+<div id='rep'></div>
+<div id='dataentry'>
+<form  name='submit-to-google-sheet'>
+Date of Seva<br><input type="date"  name="date"    min='2023-09-30' max='2023-10-14' required ><br>
+Sponsor 1 Name<br> <input type="text"  name="sponsor1"  placeholder="Sponsor1 Name"  required inputmode='text' ><br>
+Sponsor 1 Gotra<br> <input type="text"  name= "gotra1"  placeholder="Sponsor1 Gotra"  inputmode='text' required ><br>
+Mobile No <br><input type='mobile' name='mob' id='mob' placeholder='Mobile No'  inputmode='tel'   pattern="[6-9]{1}[0-9]{9}"  required  ><br>
+Sponsor 2 Name<br> <input type="text"  name="sponsor2"  placeholder="Sponsor2 Name"  inputmode='text'  ><br>
+Sponsor 2 Gotra<br> <input type="text"  name="gotra2"  placeholder="Sponsor2 Gotra"  inputmode='text'  ><br>
+Pitru Devata 1 Name <br><input type="text"  name="pitru0"  placeholder="Generation 0"  inputmode='text' required ><br>
+Pitru Devata 2 Name <br><input type="text"  name="pitru1"  placeholder="Generation 1"  inputmode='text' required ><br>
+Pitru Devata 3 Name <br><input type="text"  name="pitru2"  placeholder="Generation 2"  inputmode='text' required ><br>
+Pitru Devata 1 Gotra <br><input type="text"  name="pitrugotra"  placeholder="Pitrudevata1 Gotra"  inputmode='text' required ><br>
+Pitru Devata 1 Relationship to Sponsor1 <br><input type="text"  name="relation0"  placeholder="Father / Mother/"  inputmode='text' required ><br>
+<br>
+<button  style="width:100%; background:yellow; font-size:large; color:red;;border:none; height:30px; border-radius:25px;  " type="submit" >Submit</button>
+</form>
+</div>
+<script>
+url='https://script.google.com/macros/s/AKfycbw6igT4DUmmC14pwqAb73Vp_fQ5kFCX374dm0w4gdmmf4kdH83WVqBxrUSBnUJrli45/exec'
+const form = document.forms['submit-to-google-sheet']
+  form.addEventListener('submit', e => {
+    e.preventDefault()
+    fetch(url, { method: 'POST', body: new FormData(form)})
+form.reset();
+//alert('hi')
+//shreport()
+document.getElementById('dataentry').style.display='none'
+document.getElementById('home').style.display='block'
+  })
+repurl='https://script.google.com/macros/s/AKfycbwi7N28QuQ4Wx70KbHd5O1Obp_zySnTv5LjrepuyBPZjMyGBuWehmPRhV3r4q0aE5H4Pw/exec'  
+
+</script>
+
+</body>
+</html>
+
