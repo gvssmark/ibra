@@ -51,7 +51,7 @@ data.sort((a, b) => a.date.replaceAll("-","")
 datarep=''
 data.forEach(a=> datarep+= `<tr><td class='mob'><b> ${a.mob}</b> - Date: ${a.date} - Sl No: ${a.slno}<tr><td><span class='headings'>Sponsor1:</span>  ${a.sponsor1} <br><span class='headings'>Gotra:</span> ${a.gotra1}<tr><td><span class='headings'>Sponsor 2:</span> ${a.sponsor2}<br><span class='headings'>Gotra:</span> ${a.gotra2}<tr><td><span class='headings'>Pitru 1: </span>${a.pitru1}<br><span class='headings'>Gotra:</span> ${a.pitrugotra1} <br><span class='headings'>Relation:</span> ${a.rel1}<tr><td><span class='headings'>Pitru 2:</span> ${a.pitru2}<br><span class='headings'>Gotra:</span> ${a.pitrugotra2} <br><span class='headings'>Relation:</span> ${a.rel2}<tr class='blank'><td>1 `)
 
-document.getElementById('report').innerHTML = `Data Sorted on Mobile No. <br><table border=1>${datarep}</table><br>`
+document.getElementById('report').innerHTML = `Data Sorted on Date. <br><table border=1>${datarep}</table><br>`
 
 
 }
