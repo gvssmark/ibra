@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,16 +13,18 @@
   
 table {border-collapse:collapse; width:100%}
 h3 {color:red; margin:0 auto;  }
-.mob {background:black; color:white; font-size:large;}
+.mob {background:black; color:white; }
 .headings{ color:red; }
 .blank {height:20px; background:white; color:white}
+body {letter-spacing: 1.25px;}
 </style></head>
 <body>
 
 <div id='rep' ><h3 align=center>IBRA-IBRSS - Data Report <br>Sort on <button onclick='mobiwise()'>Mobile</button> <button onclick='datewise()'>Date</button></h1>
 <p id='report'></p>
 </div>
-  <button onclick='shhome()' style='box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19); position:fixed; top:30px;right:10px; height:50px; background:red; border-radius:50px; border:none; color:white;'>Go Top</button>
+<button onclick='shhome()' style='box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19); position:fixed; top:30px;right:10px; height:50px; background:red; border-radius:50px; border:none; color:white;'>Go Top</button>
+
 <script>
 url ='https://script.google.com/macros/s/AKfycbwCJfPX8BSP099jkescIBUjJ1mcUByRYBexgpK14LxRDCgWRUI8gAGkSSOvHZef3crRdg/exec'
 async function getMyData() {
@@ -33,7 +36,7 @@ data.shift()
 data.sort((a, b) => a.mob - b.mob)
 datarep=''
 data.forEach((a,b)=> a.slno = b+1)
-data.forEach(a=> datarep+= `<tr><td class='mob'><b> ${a.mob}</b> - Date: ${a.date} - Sl No: ${a.slno}<tr><td><span class='headings'>Sponsor1:</span>  ${a.sponsor1} <br><span class='headings'>Gotra:</span> ${a.gotra1}<tr><td><span class='headings'>Sponsor 2:</span> ${a.sponsor2}<br><span class='headings'>Gotra:</span> ${a.gotra2}<tr><td><span class='headings'>Pitru 1: </span>${a.pitru1}<br><span class='headings'>Gotra:</span> ${a.pitrugotra1} <br><span class='headings'>Relation:</span> ${a.rel1}<tr><td><span class='headings'>Pitru 2:</span> ${a.pitru2}<br><span class='headings'>Gotra:</span> ${a.pitrugotra2} <br><span class='headings'>Relation:</span> ${a.rel2}<tr class='blank'><td>1 `)
+data.forEach(a=> datarep+= `<tr><td class='mob'> ${a.mob}- Date: ${a.date} - (${a.slno})<tr><td><span class='headings'>Sponsor1:</span>  ${a.sponsor1} <br><span class='headings'>Gotra:</span> ${a.gotra1}<tr><td><span class='headings'>Sponsor 2:</span> ${a.sponsor2}<br><span class='headings'>Gotra:</span> ${a.gotra2}<tr><td><span class='headings'>Pitru 1: </span>${a.pitru1}<br><span class='headings'>Gotra:</span> ${a.pitrugotra1} <br><span class='headings'>Relation:</span> ${a.rel1}<tr><td><span class='headings'>Pitru 2:</span> ${a.pitru2}<br><span class='headings'>Gotra:</span> ${a.pitrugotra2} <br><span class='headings'>Relation:</span> ${a.rel2}<tr class='blank'><td>1 `)
 
 document.getElementById('report').innerHTML = `Data Sorted on Mobile No. <br><table border=1>${datarep}</table><br>`
 }
@@ -45,18 +48,19 @@ data.sort((a, b) => a.date.replaceAll("-","")
  - b.date.replaceAll("-","")
 )
 datarep=''
-data.forEach(a=> datarep+= `<tr><td class='mob'><b> ${a.mob}</b> - Date: ${a.date} - Sl No: ${a.slno}<tr><td><span class='headings'>Sponsor1:</span>  ${a.sponsor1} <br><span class='headings'>Gotra:</span> ${a.gotra1}<tr><td><span class='headings'>Sponsor 2:</span> ${a.sponsor2}<br><span class='headings'>Gotra:</span> ${a.gotra2}<tr><td><span class='headings'>Pitru 1: </span>${a.pitru1}<br><span class='headings'>Gotra:</span> ${a.pitrugotra1} <br><span class='headings'>Relation:</span> ${a.rel1}<tr><td><span class='headings'>Pitru 2:</span> ${a.pitru2}<br><span class='headings'>Gotra:</span> ${a.pitrugotra2} <br><span class='headings'>Relation:</span> ${a.rel2}<tr class='blank'><td>1 `)
+data.forEach(a=> datarep+= `<tr><td class='mob'><b> ${a.mob}</b> - Date: ${a.date} - (${a.slno})<tr><td><span class='headings'>Sponsor1:</span>  ${a.sponsor1} <br><span class='headings'>Gotra:</span> ${a.gotra1}<tr><td><span class='headings'>Sponsor 2:</span> ${a.sponsor2}<br><span class='headings'>Gotra:</span> ${a.gotra2}<tr><td><span class='headings'>Pitru 1: </span>${a.pitru1}<br><span class='headings'>Gotra:</span> ${a.pitrugotra1} <br><span class='headings'>Relation:</span> ${a.rel1}<tr><td><span class='headings'>Pitru 2:</span> ${a.pitru2}<br><span class='headings'>Gotra:</span> ${a.pitrugotra2} <br><span class='headings'>Relation:</span> ${a.rel2}<tr class='blank'><td>1 `)
 document.getElementById('report').innerHTML = `Data Sorted on Date. <br><table border=1>${datarep}</table><br>`
 }
 function mobiwise(){
 data.sort((a, b) => a.mob - b.mob)
 datarep=''
 data.forEach((a,b)=> a.slno = b+1)
-data.forEach(a=> datarep+= `<tr><td class='mob'><b> ${a.mob}</b> - Date: ${a.date} - Sl No: ${a.slno}<tr><td><span class='headings'>Sponsor1:</span>  ${a.sponsor1} <br><span class='headings'>Gotra:</span> ${a.gotra1}<tr><td><span class='headings'>Sponsor 2:</span> ${a.sponsor2}<br><span class='headings'>Gotra:</span> ${a.gotra2}<tr><td><span class='headings'>Pitru 1: </span>${a.pitru1}<br><span class='headings'>Gotra:</span> ${a.pitrugotra1} <br><span class='headings'>Relation:</span> ${a.rel1}<tr><td><span class='headings'>Pitru 2:</span> ${a.pitru2}<br><span class='headings'>Gotra:</span> ${a.pitrugotra2} <br><span class='headings'>Relation:</span> ${a.rel2}<tr class='blank'><td>1 `)
+data.forEach(a=> datarep+= `<tr><td class='mob'><b> ${a.mob}</b> - Date: ${a.date} - (${a.slno})<tr><td><span class='headings'>Sponsor1:</span>  ${a.sponsor1} <br><span class='headings'>Gotra:</span> ${a.gotra1}<tr><td><span class='headings'>Sponsor 2:</span> ${a.sponsor2}<br><span class='headings'>Gotra:</span> ${a.gotra2}<tr><td><span class='headings'>Pitru 1: </span>${a.pitru1}<br><span class='headings'>Gotra:</span> ${a.pitrugotra1} <br><span class='headings'>Relation:</span> ${a.rel1}<tr><td><span class='headings'>Pitru 2:</span> ${a.pitru2}<br><span class='headings'>Gotra:</span> ${a.pitrugotra2} <br><span class='headings'>Relation:</span> ${a.rel2}<tr class='blank'><td>1 `)
 
 document.getElementById('report').innerHTML = `Data Sorted on Mobile No. <br><table border=1>${datarep}</table><br>`
 }
-function shhome(){scrollTo(0, 0)}  
+
+function shhome(){scrollTo(0, 0)}
 </script>
 </body>
 </html>
