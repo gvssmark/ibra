@@ -21,6 +21,7 @@ h3 {color:red; margin:0 auto;  }
 <div id='rep' ><h3 align=center>IBRA-IBRSS - Data Report <br>Sort on <button onclick='mobiwise()'>Mobile</button> <button onclick='datewise()'>Date</button></h1>
 <p id='report'></p>
 </div>
+  <button onclick='shhome()' style='box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19); position:fixed; top:30px;right:10px; height:50px; background:red; border-radius:50px; border:none; color:white;'>Go Top</button>
 <script>
 url ='https://script.google.com/macros/s/AKfycbwCJfPX8BSP099jkescIBUjJ1mcUByRYBexgpK14LxRDCgWRUI8gAGkSSOvHZef3crRdg/exec'
 async function getMyData() {
@@ -55,7 +56,7 @@ data.forEach(a=> datarep+= `<tr><td class='mob'><b> ${a.mob}</b> - Date: ${a.dat
 
 document.getElementById('report').innerHTML = `Data Sorted on Mobile No. <br><table border=1>${datarep}</table><br>`
 }
-  
+function shhome(){scrollTo(0, 0)}  
 </script>
 </body>
 </html>
