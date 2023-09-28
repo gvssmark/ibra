@@ -1,0 +1,144 @@
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IBRA-APTS</title>
+<style>
+body {font-size: small; ; align-items: center; font-family: "Lucida Console"}
+table, tr, td  {border:1px solid black;border-collapse: collapse;  margin-top:-15px;}
+td {height:20px;}
+th{ background: red; color:white;position: sticky;top: 0;}
+a {color:black; text-decoration:none; }
+
+@media print 
+{
+    @page {
+      size: A4; /* DIN A4 standard, Europe */
+      margin: 50px;
+    }
+    html, body {width: 210mm; height: 282mm; font-family: Arial, Helvetica, sans-serif; font-size: small; background: #FFF; overflow: visible; }
+    body {        padding-top: 0mm;    }
+  #atdata, button {display:none}
+#myBtn {display:none}
+  table {width:100%}
+#tdata {width:100%}
+
+
+}
+
+</style>
+</head>
+<body >
+<h1 align=center id='year'>Ledger</h1>
+<button onclick='window.print()' style='width:300px;  left: 50%; position: absolute; transform: translate(-50%, -50%); '>Print</button>
+<div id="atdata" style="  ; margin:0 auto;  ; align-items: center"></div>
+<div id="tdata" style="  ; margin:0 auto;  ; align-items: center"></div>
+<button id='myBtn' onclick='shhome()' style='box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19); position:fixed; top:30px;right:10px; 
+
+height:50px; background:red; border-radius:50px; border:none; color:white; display: none;'>Go Top</button>
+<script>
+url = 'https://script.google.com/macros/s/AKfycbyM8VvTakfBAu16BnGsYoUZwHPnUW7dHiJs_Cg40VGxXI2cAOk/exec'
+            async function getMyData() {
+                response = await fetch(url)
+                data = await response.json()
+                tempData1 = data["jrnldata"]
+                bsyear = tempData1[0].dt
+                tempData = tempData1.filter(a => a.amt!=0)
+                getActData()
+ //     everyacno()          
+}
+
+acturl = 'https://script.google.com/macros/s/AKfycbxg1OCW2FO6NzNvkFOUnIs4U3LE4DI0dCNgnrL5yQEWlgg1uaE/exec'
+            async function getActData() {
+                response = await fetch(acturl)
+                data1 = await response.json()
+                actData = data1["acctsdata"]
+actData = actData.filter(a=> a.acno*1 >0)
+                everyacno()
+                }
+                
+getMyData() 
+
+function everyacno(){
+           document.getElementById("year").innerHTML = "Ledger for " + bsyear
+           tabledata= "<table  align=center ><thead><tr><th>Date<th>Details<th>DC<th>Amount<th>Balance</thead>"
+
+           for (j=0; j<actData.length; j++){
+           actno = actData[j].acno
+           actname = actData[j].acdisplay
+           filtered =  tempData.filter(o => {return (o.drac*1 == actno || o.crac*1 == actno)}).map(a => ({ dt: gdt(a.dt), details: a.trdetail, drac: a.drac, crac: 
+
+a.crac, amt: a.amt }));
+           if (filtered.length>0) {filterac(actno)}
+           }
+           tabledata += "</table>"
+           
+           
+        
+           
+           abc()
+   acts="<br><br><br><table id='actstable' align=center ><tr><td>AcNo<td >Ac Name<td >Balance"
+actDataReport.filter(a=> a.bal!=0).forEach( a => {acts += `<tr class='acrow'><td> ${a.acno} <td><a href='#${a.acno}'> ${a.acname} </a><td align=right>${a.bal}`})
+acts +="</table><br><br>"
+
+document.getElementById("atdata").innerHTML = acts 
+document.getElementById("tdata").innerHTML = tabledata
+
+//   alert("total assets= "+assts+ "    total liabilites=   "+liabs)
+}
+
+
+function filterac(acno){
+           Math.floor(acno/1000) %2 ? (balance = filtered[0].amt*-1, dc="Dr"): (balance = filtered[0].amt, dc="Cr")
+           tabledata += `<tr><td id=${acno} colspan=5>&nbsp;<tr ><td  colspan=5 align=center bgcolor=yellow>${ actname}  `
+           tabledata += "<tr><td>" + filtered[0].dt + "<td>"+filtered[0].details +"<td>"+dc+"<td align=right>" + filtered[0].amt+"<td align=right>"+balance 
+           for (i=1; i<filtered.length; i++){
+                      filtered[i].drac == acno ? balance = balance - filtered[i].amt : balance = balance + filtered[i].amt
+                      filtered[i].drac == acno ? dc = "Dr": dc="Cr"
+                      tabledata += "<tr><td>"+filtered[i].dt+"<td>"+ filtered[i].details+"<td>"+dc+"<td align=right>"+filtered[i].amt+"<td align=right>"+balance
+           }
+
+}
+
+function gdt (d){
+           mm  = (new Date(d).getMonth()*1+1).toString().padStart(2,0)
+           dd  = new Date(d).getDate().toString().padStart(2,0)
+           yyyy= new Date(d).getFullYear()
+           return dd+"/"+mm+"/"+yyyy
+}
+
+function abc(){
+acts=''
+           actDataReport = actData.filter(a => a.acno >0 & a.acno !=2003);
+           acType =["ASSET","LIABILITY","RECEIPT", "PAYMENT" ];
+           
+           assts= sumOnType(acType[1])+sumOnType(acType[2])
+           liabs= sumOnType(acType[0])+sumOnType(acType[3])
+}
+
+function sumOnType(actype){
+           totalsum = actDataReport.filter(a => a.actype ===actype).reduce((accumulator, current) => accumulator + current.bal, 0)
+           return totalsum
+}
+
+function shhome(){scrollTo(0, 0)}
+let mybutton = document.getElementById("myBtn");
+
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+    mybutton.style.display = "block";
+  } else {
+    mybutton.style.display = "none";
+  }
+}  
+
+</script>  
+</body>
+</html>
