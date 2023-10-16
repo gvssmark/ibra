@@ -68,7 +68,7 @@ document.getElementById('recdate').innerHTML=`Bank Statement as on ${data[1][51]
 kmddata.forEach(a=> {
 reconciled = a.TotalPremiumReconciled*1 >0 ? 'yes' : 'no'
 totable+= `<tr class=${reconciled} onclick='showsrno(${a.SRNo})'><td>${a.SRNo}<td>${a.RetName}<td>${a.TotalPremiumReconciled}` })
-document.getElementById('srnoTable').innerHTML= `<table border=1 id='myTable' width=100%><tr><td>SR No<td>Name ${totable} </table>`
+document.getElementById('srnoTable').innerHTML= `<table border=1 id='myTable' width=100%><tr><td>SR No<td>Name<td>Amount ${totable} </table>`
 }
 function showsrno(sr){
 ThisSRNo = kmddata.filter(a=> a.SRNo === sr)
