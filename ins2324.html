@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,6 +22,8 @@ close:hover,.close:focus {color: #000;text-decoration: none;cursor: pointer;}
 
 <h3 align=center>IBRA-Insurance-Reconcilation</h3>
 <h4 id='recdate' align=center></h4>
+<table border=0 width=100%><tr><td width=50%><button onclick='report()' style='width:100%'>KMD Data</button><td width=50%><button onclick='bankrecon()' style='width:100%'>Bank Ac Reconciliation</button></table>
+
 <p><span class='yes'>Reconciled </span><span class='no' style='float:right'>Not Yet Reconciled</span></p>
 <p id='srnoTable'></p>
         
@@ -39,13 +42,24 @@ url='https://script.google.com/macros/s/AKfycbziDjEIsbGGQaW8Bb30RXhnbOIXkW_tXb3A
 async function getKmdData() {
 response = await fetch(url)
 data = await response.json()
-kmddata= data.map(([BankSlno,TotalPremiumReconciled,SRNo,RetName,RetGender,RetDOB,Address,Email,Mobile,Option,SpName,SpGender,SpDOB,BaseFamily,BaseFamilyPremium,BaseSelf,BaseSelfPremium,FamilyTopup,FamilyTopupPremium,NIFamilyPremium,SelfTopup,SelfTopupPremium,NISelfPremium,DepChildOption,Child1Name,Child1DOB,Child1Gender,Child2Name,Child2DOB,Child2Gender,ChildPremium,TotalPremium,SBITopupFamily,SBIFamilyPremium,SBITopupSelf,SBISelfPremium,GrandTotalPremium,PaymentMode,BankName,AccountNo,IFSC,TransactionNo,PaidOn,NomName,NomDOB,NomRelation,ChqDeposited,AmountPaid,Agree,emt,AddedDate,ModifiedTime,ReconDate,Remarks]
-) => ({BankSlno,TotalPremiumReconciled,SRNo,RetName,RetGender,RetDOB,Address,Email,Mobile,Option,SpName,SpGender,SpDOB,BaseFamily,BaseFamilyPremium,BaseSelf,BaseSelfPremium,FamilyTopup,FamilyTopupPremium,NIFamilyPremium,SelfTopup,SelfTopupPremium,NISelfPremium,DepChildOption,Child1Name,Child1DOB,Child1Gender,Child2Name,Child2DOB,Child2Gender,ChildPremium,TotalPremium,SBITopupFamily,SBIFamilyPremium,SBITopupSelf,SBISelfPremium,GrandTotalPremium,PaymentMode,BankName,AccountNo,IFSC,TransactionNo,PaidOn,NomName,NomDOB,NomRelation,ChqDeposited,AmountPaid,Agree,emt,AddedDate,ModifiedTime,ReconDate,Remarks}))
+kmddata= data.map(([BankSlno,TotalPremiumReconciled,SRNo,RetName,RetGender,RetDOB,Address,Email,Mobile,Option,SpName,SpGender,SpDOB,BaseFamily,BaseFamilyPremium,BaseSelf,BaseSelfPremium,FamilyTopup,FamilyTopupPremium,NIFamilyPremium,SelfTopup,SelfTopupPremium,NISelfPremium,DepChildOption,Child1Name,Child1DOB,Child1Gender,Child2Name,Child2DOB,Child2Gender,ChildPremium,TotalPremium,SBITopupFamily,SBIFamilyPremium,SBITopupSelf,SBISelfPremium,GrandTotalPremium,PaymentMode,BankName,AccountNo,IFSC,TransactionNo,PaidOn,NomName,NomDOB,NomRelation,ChqDeposited,AmountPaid,Agreememt,AddedDate,ModifiedTime,ReconDate,Remarks]
+) => ({BankSlno,TotalPremiumReconciled,SRNo,RetName,RetGender,RetDOB,Address,Email,Mobile,Option,SpName,SpGender,SpDOB,BaseFamily,BaseFamilyPremium,BaseSelf,BaseSelfPremium,FamilyTopup,FamilyTopupPremium,NIFamilyPremium,SelfTopup,SelfTopupPremium,NISelfPremium,DepChildOption,Child1Name,Child1DOB,Child1Gender,Child2Name,Child2DOB,Child2Gender,ChildPremium,TotalPremium,SBITopupFamily,SBIFamilyPremium,SBITopupSelf,SBISelfPremium,GrandTotalPremium,PaymentMode,BankName,AccountNo,IFSC,TransactionNo,PaidOn,NomName,NomDOB,NomRelation,ChqDeposited,AmountPaid,Agreememt,AddedDate,ModifiedTime,ReconDate,Remarks}))
 kmddata.shift()
 kmddata = kmddata.sort((a, b) => a.SRNo -b.SRNo);
 report()
 }
 
+reconurl='https://script.google.com/macros/s/AKfycbyeVnqWNYoEyYsRisXxp8agFGqL5dlDgq_f0EDBC4bj7xbVvgWUsw7yB_1c34E0asts/exec'
+
+async function getBankData() {
+response = await fetch(reconurl)
+recondata = await response.json()
+unreconciled = recondata.map(([trdate,det,slno,dummy1,amt,dummy2,dataslno,shdetails])=>({trdate,det,slno,dummy1,amt,dummy2,dataslno,shdetails}))
+unreconciled.shift()
+unreconciled.shift()
+}
+
+getBankData()
 getKmdData()
 function report(){
 totable=''
@@ -95,8 +109,7 @@ ${sbitopups}
 <tr><td colspan=2>Nom. Name:${ThisSRNo.NomName}
 <tr><td colspan=2>Nom. DOB:${ThisSRNo.NomDOB}
 <tr><td colspan=2>Nom. Relation:${ThisSRNo.NomRelation}
-
-
+<tr><td colspan=2>Remarks:${ThisSRNo.Remarks}
 `
 document.getElementById("nameHeader").innerHTML = ThisSRNo.RetName
 document.getElementById("modalData").innerHTML =myrep +'</table>'
@@ -107,6 +120,14 @@ var modal = document.getElementById("myModal");
 var span = document.getElementsByClassName("close")[0];
 window.onclick = function (event) {if (event.target == modal) {modal.style.display = "none";}}
 span.onclick = function () {modal.style.display = "none";}
+
+
+function bankrecon(){
+bankDataTable='<table border=1 width=100%><tr><td colspan=3>Amount Received -KMD Data Not Received<tr><td>Date<td>Details<td>Amount'
+unreconciled.forEach(a=> bankDataTable += `<tr><td>${a.trdate}<td>${a.shdetails}<td>${a.amt}`)
+document.getElementById('srnoTable').innerHTML= bankDataTable + '</table>'
+}
+
 
 </script>
 
