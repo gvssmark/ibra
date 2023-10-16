@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, maximum-scale=1 , initial-scale=1.0">
+ <title>IBRA-Ins-2324</title>
+
+
+<style>
+.yes {background:#bbfacc}
+.no {background:#f7b9ab}
+table {border-collapse:collapse; border:1px solid black; }
+.modal {display: none;position: fixed;z-index: 1;padding-top: 1px;left: inherit;top: 0;width: 100%;height: 100%;overflow: auto;background-color: rgb(0, 0, 0);background-color: rgba(0, 0, 0, 0.4);}
+.modal-content {background-color: #99ffcc;margin: auto;padding: 2px;padding-bottom: 2px;border: 1px solid #888;width: 95%;border-radius: 15px;margin-top: 53px;}
+.close {color: #aaaaaa;float: right;font-size: 28px;font-weight: bold;}
+close:hover,.close:focus {color: #000;text-decoration: none;cursor: pointer;}
+@media only screen and (min-width: 400px) {body {background: lightblue; width:50%; margin: auto} .modal {width:50%; left:25% }}
+
+</style></style>
+<body>
+
+<h3 align=center>IBRA-Insurance-Reconcilation</h3>
+<h4 id='recdate' align=center></h4>
+<p><span class='yes'>Reconciled </span><span class='no' style='float:right'>Not Yet Reconciled</span></p>
+<p id='srnoTable'></p>
+        
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h4 align=center id="nameHeader">Retiree Name</h4>
+                <p id="modalData">Test Data </p>
+            </div>
+        </div>
+        
+<script>
+
+url='https://script.google.com/macros/s/AKfycbziDjEIsbGGQaW8Bb30RXhnbOIXkW_tXb3AmoO7FTtdD8U_3l-mi8g0ZK9H-KDmlt2gOQ/exec'
+
+async function getKmdData() {
+response = await fetch(url)
+data = await response.json()
+kmddata= data.map(([BankSlno,TotalPremiumReconciled,SRNo,RetName,RetGender,RetDOB,Address,Email,Mobile,Option,SpName,SpGender,SpDOB,BaseFamily,BaseFamilyPremium,BaseSelf,BaseSelfPremium,FamilyTopup,FamilyTopupPremium,NIFamilyPremium,SelfTopup,SelfTopupPremium,NISelfPremium,DepChildOption,Child1Name,Child1DOB,Child1Gender,Child2Name,Child2DOB,Child2Gender,ChildPremium,TotalPremium,SBITopupFamily,SBIFamilyPremium,SBITopupSelf,SBISelfPremium,GrandTotalPremium,PaymentMode,BankName,AccountNo,IFSC,TransactionNo,PaidOn,NomName,NomDOB,NomRelation,ChqDeposited,AmountPaid,Agree,emt,AddedDate,ModifiedTime,ReconDate,Remarks]
+) => ({BankSlno,TotalPremiumReconciled,SRNo,RetName,RetGender,RetDOB,Address,Email,Mobile,Option,SpName,SpGender,SpDOB,BaseFamily,BaseFamilyPremium,BaseSelf,BaseSelfPremium,FamilyTopup,FamilyTopupPremium,NIFamilyPremium,SelfTopup,SelfTopupPremium,NISelfPremium,DepChildOption,Child1Name,Child1DOB,Child1Gender,Child2Name,Child2DOB,Child2Gender,ChildPremium,TotalPremium,SBITopupFamily,SBIFamilyPremium,SBITopupSelf,SBISelfPremium,GrandTotalPremium,PaymentMode,BankName,AccountNo,IFSC,TransactionNo,PaidOn,NomName,NomDOB,NomRelation,ChqDeposited,AmountPaid,Agree,emt,AddedDate,ModifiedTime,ReconDate,Remarks}))
+kmddata.shift()
+kmddata = kmddata.sort((a, b) => a.SRNo -b.SRNo);
+report()
+}
+
+getKmdData()
+function report(){
+totable=''
+document.getElementById('recdate').innerHTML=`Bank Statement as on ${data[1][51]}<br>KMD Data as on ${data[2][51]}`
+
+kmddata.forEach(a=> {
+reconciled = a.TotalPremiumReconciled*1 >0 ? 'yes' : 'no'
+totable+= `<tr class=${reconciled} onclick='showsrno(${a.SRNo})'><td>${a.SRNo}<td>${a.RetName}<td>${a.TotalPremiumReconciled}` })
+document.getElementById('srnoTable').innerHTML= `<table border=1 id='myTable' width=100%><tr><td>SR No<td>Name ${totable} </table>`
+}
+function showsrno(sr){
+ThisSRNo = kmddata.filter(a=> a.SRNo === sr)
+ThisSRNo=ThisSRNo[0]
+
+spdetails = ThisSRNo.Option ==='Self+Spouse' ? `<tr><td>Spouse Name<td>${ThisSRNo.SpName}
+<tr><td>Gender<td>${ThisSRNo.SpGender}
+<tr><td>DOB<td>${ThisSRNo.SpDOB}` : ''
+
+basedetails = ThisSRNo.Option ==='Self+Spouse' ? `<tr><td>Base Family: <td>Rs.${ThisSRNo.BaseFamily}
+<tr><td>Premium: <td>Rs.${ThisSRNo.BaseFamilyPremium}
+<tr><td>Family Topup<td>${ThisSRNo.FamilyTopup}
+<tr><td>Family Topup Premium<td>Rs.${ThisSRNo.FamilyTopupPremium}
+<tr><td>New Indian Premium<td>Rs.${ThisSRNo.NIFamilyPremium}
+` : 
+`<tr><td>Base Self<td>${ThisSRNo.BaseSelf}<tr><td>Base Self Premium<td>Rs.${ThisSRNo.BaseSelfPremium}
+<tr><td>Self Topup<td>${ThisSRNo.SelfTopup}
+<tr><td>Self Topup Premium<td>Rs.${ThisSRNo.SelfTopupPremium}
+<tr><td>New Indian Premium<td>Rs.${ThisSRNo.NISelfPremium}
+`
+
+sbitopups =   ThisSRNo.Option ==='Self+Spouse' ? `<tr><td>SBI Topup Fam<td>${ThisSRNo.SBITopupFamily}
+<tr><td>SBI Topup Prem<td>Rs.${ThisSRNo.SBIFamilyPremium}
+` : `<tr><td>SBI Topup Self<td>${ThisSRNo.SBITopupSelf}
+<tr><td>SBI Topup Prem<td>Rs.${ThisSRNo.SBISelfPremium}`
+
+myrep ='<table border=1><tr><td style="width:30%;">Data<td>Details'
+myrep +=`
+<tr><td>SR No: <td>${ThisSRNo.SRNo}
+<tr><td>Gender: <td>${ThisSRNo.RetGender}
+<tr><td>DOB: <td>${ThisSRNo.RetDOB}
+<tr><td>Address: <td>${ThisSRNo.Address}
+<tr><td>Email: <td>${ThisSRNo.Email}
+<tr><td>Mobile: <td>${ThisSRNo.Mobile}
+<tr><td>Option: <td>${ThisSRNo.Option}
+${spdetails}
+${basedetails}
+${sbitopups}
+<tr><td>Total Premium<td>Rs.${ThisSRNo.GrandTotalPremium}
+<tr><td>Nom. Name<td>${ThisSRNo.NomName}
+<tr><td>Nom. DOB<td>${ThisSRNo.NomDOB}
+<tr><td>Nom. Relation<td>${ThisSRNo.NomRelation}
+
+
+`
+document.getElementById("nameHeader").innerHTML = ThisSRNo.RetName
+document.getElementById("modalData").innerHTML =myrep +'</table>'
+modal.style.display = "block";
+}
+
+var modal = document.getElementById("myModal");
+var span = document.getElementsByClassName("close")[0];
+window.onclick = function (event) {if (event.target == modal) {modal.style.display = "none";}}
+</script>
+
+</body>
+</html>
+
