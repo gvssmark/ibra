@@ -6,6 +6,7 @@
 
 
 <style>
+body {font-size:small}
 .yes {background:#bbfacc}
 .no {background:#f7b9ab}
 table {border-collapse:collapse; border:1px solid black; }
@@ -60,42 +61,40 @@ ThisSRNo = kmddata.filter(a=> a.SRNo === sr)
 ThisSRNo=ThisSRNo[0]
 
 spdetails = ThisSRNo.Option ==='Self+Spouse' ? `<tr><td>Spouse Name<td>${ThisSRNo.SpName}
-<tr><td>Gender<td>${ThisSRNo.SpGender}
-<tr><td>DOB<td>${ThisSRNo.SpDOB}` : ''
+<tr><td>Gender/DOB<td>${ThisSRNo.SpGender}/${ThisSRNo.SpDOB}` : ''
 
-basedetails = ThisSRNo.Option ==='Self+Spouse' ? `<tr><td>Base Family: <td>Rs.${ThisSRNo.BaseFamily}
-<tr><td>Premium: <td>Rs.${ThisSRNo.BaseFamilyPremium}
-<tr><td>Family Topup<td>${ThisSRNo.FamilyTopup}
-<tr><td>Family Topup Premium<td>Rs.${ThisSRNo.FamilyTopupPremium}
-<tr><td>New Indian Premium<td>Rs.${ThisSRNo.NIFamilyPremium}
+basedetails = ThisSRNo.Option ==='Self+Spouse' ? `<tr><td colspan=2>Base Family:Rs.${ThisSRNo.BaseFamily}
+<tr><td colspan=2>Premium: Rs.${ThisSRNo.BaseFamilyPremium}
+<tr><td colspan=2>Family Topup:${ThisSRNo.FamilyTopup}
+<tr><td colspan=2>Family Topup Premium:Rs.${ThisSRNo.FamilyTopupPremium}
+<tr><td colspan=2>New Indian Premium:Rs.${ThisSRNo.NIFamilyPremium}
 ` : 
-`<tr><td>Base Self<td>${ThisSRNo.BaseSelf}<tr><td>Base Self Premium<td>Rs.${ThisSRNo.BaseSelfPremium}
-<tr><td>Self Topup<td>${ThisSRNo.SelfTopup}
-<tr><td>Self Topup Premium<td>Rs.${ThisSRNo.SelfTopupPremium}
-<tr><td>New Indian Premium<td>Rs.${ThisSRNo.NISelfPremium}
+`<tr><td colspan=2>Base Self:${ThisSRNo.BaseSelf}<tr><td colspan=2>Base Self Premium:Rs.${ThisSRNo.BaseSelfPremium}
+<tr><td colspan=2>Self Topup:${ThisSRNo.SelfTopup}
+<tr><td colspan=2>Self Topup Premium:Rs.${ThisSRNo.SelfTopupPremium}
+<tr><td colspan=2>New Indian Premium:Rs.${ThisSRNo.NISelfPremium}
 `
 
-sbitopups =   ThisSRNo.Option ==='Self+Spouse' ? `<tr><td>SBI Topup Fam<td>${ThisSRNo.SBITopupFamily}
-<tr><td>SBI Topup Prem<td>Rs.${ThisSRNo.SBIFamilyPremium}
-` : `<tr><td>SBI Topup Self<td>${ThisSRNo.SBITopupSelf}
-<tr><td>SBI Topup Prem<td>Rs.${ThisSRNo.SBISelfPremium}`
+sbitopups =   ThisSRNo.Option ==='Self+Spouse' ? `<tr><td colspan=2>SBI Topup Fam:${ThisSRNo.SBITopupFamily}
+<tr><td colspan=2>SBI Topup Prem:Rs.${ThisSRNo.SBIFamilyPremium}
+` : `<tr><td colspan=2>SBI Topup Self:${ThisSRNo.SBITopupSelf}
+<tr><td colspan=2>SBI Topup Prem:Rs.${ThisSRNo.SBISelfPremium}`
 
 myrep ='<table border=1><tr><td style="width:30%;">Data<td>Details'
 myrep +=`
 <tr><td>SR No: <td>${ThisSRNo.SRNo}
-<tr><td>Gender: <td>${ThisSRNo.RetGender}
-<tr><td>DOB: <td>${ThisSRNo.RetDOB}
-<tr><td>Address: <td>${ThisSRNo.Address}
+<tr><td>Gender/DOB <td>${ThisSRNo.RetGender} / ${ThisSRNo.RetDOB}
+<tr><td  colspan=2>Address: ${ThisSRNo.Address}
 <tr><td>Email: <td>${ThisSRNo.Email}
 <tr><td>Mobile: <td>${ThisSRNo.Mobile}
 <tr><td>Option: <td>${ThisSRNo.Option}
 ${spdetails}
 ${basedetails}
 ${sbitopups}
-<tr><td>Total Premium<td>Rs.${ThisSRNo.GrandTotalPremium}
-<tr><td>Nom. Name<td>${ThisSRNo.NomName}
-<tr><td>Nom. DOB<td>${ThisSRNo.NomDOB}
-<tr><td>Nom. Relation<td>${ThisSRNo.NomRelation}
+<tr><td colspan=2>Total Premium:Rs.${ThisSRNo.GrandTotalPremium}
+<tr><td colspan=2>Nom. Name:${ThisSRNo.NomName}
+<tr><td colspan=2>Nom. DOB:${ThisSRNo.NomDOB}
+<tr><td colspan=2>Nom. Relation:${ThisSRNo.NomRelation}
 
 
 `
@@ -107,6 +106,8 @@ modal.style.display = "block";
 var modal = document.getElementById("myModal");
 var span = document.getElementsByClassName("close")[0];
 window.onclick = function (event) {if (event.target == modal) {modal.style.display = "none";}}
+span.onclick = function () {modal.style.display = "none";}
+
 </script>
 
 </body>
