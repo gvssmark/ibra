@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -77,22 +78,27 @@ ThisSRNo=ThisSRNo[0]
 spdetails = ThisSRNo.Option ==='Self+Spouse' ? `<tr><td>Spouse Name<td>${ThisSRNo.SpName}
 <tr><td>Gender/DOB<td>${ThisSRNo.SpGender}/${ThisSRNo.SpDOB}` : ''
 
-basedetails = ThisSRNo.Option ==='Self+Spouse' ? `<tr><td colspan=2>Base Family:Rs.${ThisSRNo.BaseFamily}
-<tr><td colspan=2>Premium: Rs.${ThisSRNo.BaseFamilyPremium}
-<tr><td colspan=2>Family Topup:${ThisSRNo.FamilyTopup}
-<tr><td colspan=2>Family Topup Premium:Rs.${ThisSRNo.FamilyTopupPremium}
-<tr><td colspan=2>New Indian Premium:Rs.${ThisSRNo.NIFamilyPremium}
-` : 
-`<tr><td colspan=2>Base Self:${ThisSRNo.BaseSelf}<tr><td colspan=2>Base Self Premium:Rs.${ThisSRNo.BaseSelfPremium}
-<tr><td colspan=2>Self Topup:${ThisSRNo.SelfTopup}
-<tr><td colspan=2>Self Topup Premium:Rs.${ThisSRNo.SelfTopupPremium}
-<tr><td colspan=2>New Indian Premium:Rs.${ThisSRNo.NISelfPremium}
-`
+//----------------------------------------------
+fbase = ThisSRNo.BaseFamilyPremium>0 ? 
+`<tr><td colspan=2>Family Base Policy: Rs.${ThisSRNo.BaseFamily}
+ <tr><td colspan=2>Family Base Preimu: Rs.${ThisSRNo.BaseFamilyPremium}`: ""
+ftopup = ThisSRNo.FamilyTopupPremium>0 ?
+`<tr><td colspan=2>Family Topup Policy: Rs.${ThisSRNo.FamilyTopup}
+ <tr><td colspan=2>Family Topup Preimu: Rs.${ThisSRNo.FamilyTopupPremium}` : ""
+sbase = ThisSRNo.BaseSelfPremium>0 ?
+`<tr><td colspan=2>Self Base Policy: Rs.${ThisSRNo.BaseSelf}
+ <tr><td colspan=2>Self Base Preimu: Rs.${ThisSRNo.BaseSelfPremium}` :""
+stopup = ThisSRNo.SelfTopupPremium>0 ?
+`<tr><td colspan=2>Self Topup Policy: Rs.${ThisSRNo.SelfTopup}
+ <tr><td colspan=2>Self Topup Preimu: Rs.${ThisSRNo.SelfTopupPremium}` : ""
+sbifam = ThisSRNo.SBIFamilyPremium>0 ?
+`<tr><td colspan=2>SBI Family Topup Policy: Rs.${ThisSRNo.SBITopupFamily}
+ <tr><td colspan=2>SBI Family Topup Preimu: Rs.${ThisSRNo.SBIFamilyPremium}` : ""
+sbiself = ThisSRNo.SBISelfPremium>0 ?
+`<tr><td colspan=2>SBI Self Topup Policy: Rs.${ThisSRNo.SBITopupSelf}
+ <tr><td colspan=2>SBI Self Topup Preimu: Rs.${ThisSRNo.SBISelfPremium}` : ""
+//-----------------------------------------------
 
-sbitopups =   ThisSRNo.Option ==='Self+Spouse' ? `<tr><td colspan=2>SBI Topup Fam:${ThisSRNo.SBITopupFamily}
-<tr><td colspan=2>SBI Topup Prem:Rs.${ThisSRNo.SBIFamilyPremium}
-` : `<tr><td colspan=2>SBI Topup Self:${ThisSRNo.SBITopupSelf}
-<tr><td colspan=2>SBI Topup Prem:Rs.${ThisSRNo.SBISelfPremium}`
 
 myrep ='<table border=1><tr><td style="width:30%;">Data<td>Details'
 myrep +=`
@@ -103,13 +109,18 @@ myrep +=`
 <tr><td>Mobile: <td>${ThisSRNo.Mobile}
 <tr><td>Option: <td>${ThisSRNo.Option}
 ${spdetails}
-${basedetails}
-${sbitopups}
+${fbase} 
+${ftopup} 
+${sbase }
+${stopup }
+${sbifam }
+${sbiself }
 <tr><td colspan=2>Total Premium:Rs.${ThisSRNo.GrandTotalPremium}
 <tr><td colspan=2>Nom. Name:${ThisSRNo.NomName}
 <tr><td colspan=2>Nom. DOB:${ThisSRNo.NomDOB}
 <tr><td colspan=2>Nom. Relation:${ThisSRNo.NomRelation}
 <tr><td colspan=2>Remarks:${ThisSRNo.Remarks}
+
 `
 document.getElementById("nameHeader").innerHTML = ThisSRNo.RetName
 document.getElementById("modalData").innerHTML =myrep +'</table>'
@@ -120,7 +131,6 @@ var modal = document.getElementById("myModal");
 var span = document.getElementsByClassName("close")[0];
 window.onclick = function (event) {if (event.target == modal) {modal.style.display = "none";}}
 span.onclick = function () {modal.style.display = "none";}
-
 
 function bankrecon(){
 bankDataTable='<table border=1 width=100%><tr><td colspan=3>Amount Received -KMD Data Not Received<tr><td>Date<td>Details<td>Amount'
