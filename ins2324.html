@@ -1,13 +1,8 @@
-
-
-
 <!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width,  initial-scale=1.0">
  <title>IBRA-Ins-2324</title>
-
-
 <style>
 body {font-size:small}
 .yes {background:#bbfacc}
@@ -18,18 +13,13 @@ table {border-collapse:collapse; border:1px solid black; }
 .close {color: #aaaaaa;float: right;font-size: 28px;font-weight: bold;}
 close:hover,.close:focus {color: #000;text-decoration: none;cursor: pointer;}
 @media only screen and (min-width: 400px) {body {background: lightblue; width:50%; margin: auto} .modal {width:50%; left:25% }}
-
 </style></style>
 <body>
-
 <h3 align=center>IBRA-Insurance-Reconcilation</h3>
 <h4 id='recdate' align=center></h4>
-    
 <table border=0 width=100%><tr><td width=50%><button onclick='report()' style='width:100%'>KMD Data</button><td width=50%><button onclick='bankrecon()' style='width:100%'>Bank Ac Reconciliation</button></table>
-
 <p><span class='yes'>Reconciled </span><span class='no' style='float:right'>Not Yet Reconciled</span></p>
 <p id='srnoTable'></p>
-        
         <div id="myModal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
@@ -37,13 +27,9 @@ close:hover,.close:focus {color: #000;text-decoration: none;cursor: pointer;}
                 <p id="modalData">Test Data </p>
             </div>
         </div>
-        
         <button id='myBtn' onclick='shhome()' style='box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19); position:fixed; top:30px;right:10px; height:50px; background:red; border-radius:50px; border:none; color:white; display: none;'>Go Top</button>
-        
 <script>
-
 url='https://script.google.com/macros/s/AKfycbziDjEIsbGGQaW8Bb30RXhnbOIXkW_tXb3AmoO7FTtdD8U_3l-mi8g0ZK9H-KDmlt2gOQ/exec'
-
 async function getKmdData() {
 response = await fetch(url)
 data = await response.json()
@@ -55,7 +41,6 @@ report()
 }
 
 reconurl='https://script.google.com/macros/s/AKfycbyeVnqWNYoEyYsRisXxp8agFGqL5dlDgq_f0EDBC4bj7xbVvgWUsw7yB_1c34E0asts/exec'
-
 async function getBankData() {
 response = await fetch(reconurl)
 recondata = await response.json()
@@ -69,7 +54,6 @@ getKmdData()
 function report(){
 totable=''
 document.getElementById('recdate').innerHTML=`Bank Statement as on ${data[1][51]}<br>KMD Data as on ${data[2][51]}`
-
 kmddata.forEach(a=> {
 reconciled = a.TotalPremiumReconciled*1 >0 ? 'yes' : 'no'
 totable+= `<tr class=${reconciled} onclick='showsrno(${a.SRNo})'><td>${a.SRNo}<td>${a.RetName}<td>${a.TotalPremiumReconciled}` })
@@ -78,10 +62,8 @@ document.getElementById('srnoTable').innerHTML= `<table border=1 id='myTable' wi
 function showsrno(sr){
 ThisSRNo = kmddata.filter(a=> a.SRNo === sr)
 ThisSRNo=ThisSRNo[0]
-
 spdetails = ThisSRNo.Option ==='Self+Spouse' ? `<tr><td>Spouse Name<td>${ThisSRNo.SpName}
 <tr><td>Gender/DOB<td>${ThisSRNo.SpGender}/${ThisSRNo.SpDOB}` : ''
-
 //----------------------------------------------
 fbase = ThisSRNo.BaseFamilyPremium>0 ? 
 `<tr><td colspan=2>Family Base Policy: Rs.${ThisSRNo.BaseFamily}
@@ -102,8 +84,6 @@ sbiself = ThisSRNo.SBISelfPremium>0 ?
 `<tr><td colspan=2>SBI Self Topup Policy: Rs.${ThisSRNo.SBITopupSelf}
  <tr><td colspan=2>SBI Self Topup Preimu: Rs.${ThisSRNo.SBISelfPremium}` : ""
 //-----------------------------------------------
-
-
 myrep ='<table border=1><tr><td style="width:30%;">Data<td>Details'
 myrep +=`
 <tr><td>SR No: <td>${ThisSRNo.SRNo}
@@ -124,7 +104,6 @@ ${sbiself }
 <tr><td colspan=2>Nom. DOB:${ThisSRNo.NomDOB}
 <tr><td colspan=2>Nom. Relation:${ThisSRNo.NomRelation}
 <tr><td colspan=2>Remarks:${ThisSRNo.Remarks}
-
 `
 document.getElementById("nameHeader").innerHTML = ThisSRNo.RetName
 document.getElementById("modalData").innerHTML =myrep +'</table>'
@@ -137,19 +116,14 @@ window.onclick = function (event) {if (event.target == modal) {modal.style.displ
 span.onclick = function () {modal.style.display = "none";}
 
 function bankrecon(){
-bankDataTable='<table border=1 width=100%><tr><td colspan=3>Amount Received -KMD Data Not Received<tr><td>Date<td>Details<td>Amount'
+bankDataTable='<h3>Ensure to SUBMIT of Data.</h3><h3>Open the link received in Email and submit with payment details. You will get a download of acknowledgment.</h3><table border=1 width=100%><tr><td colspan=3>Amount Received -KMD Data Not Received<tr><td>Date<td>Details<td>Amount'
 unreconciled.forEach(a=> bankDataTable += `<tr><td>${a.trdate}<td>${a.shdetails}<td>${a.amt}`)
 document.getElementById('srnoTable').innerHTML= bankDataTable + '</table>'
 }
-
-
 function shhome(){scrollTo(0, 0)}
 let mybutton = document.getElementById("myBtn");
 window.onscroll = function() {scrollFunction2()};
 scrollFunction2=()=> (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) ? mybutton.style.display = "block" : mybutton.style.display = "none"; 
-
 </script>
-
 </body>
 </html>
-
