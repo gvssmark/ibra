@@ -22,7 +22,7 @@ close:hover,.close:focus {color: #000;text-decoration: none;cursor: pointer;}
 <h3 align=center>IBRA-Insurance-Reconcilation</h3>
 <h4 id='recdate' align=center></h4>
 <table border=0 width=100%><tr><td width=50%><button onclick='report()' style='width:100%'>KMD Data</button><td width=50%><button onclick='bankrecon()' style='width:100%'>Bank Ac Reconciliation</button></table>
-<p><span class='yes'>Reconciled </span><span class='no' style='float:right'>Not Yet Reconciled</span></p>
+<p><span class='yes'>Reconciled <span id='reconciledcount'></span> </span><span class='no' style='float:right'>Not Yet Reconciled <span id='notyetcount'></span></span></p>
 <input type='text' id='myInput' onkeyup="fiterName()" placeholder="Search here..."></input>
 <p id='srnoTable'></p>
         <div id="myModal" class="modal">
@@ -43,6 +43,8 @@ kmddata= data.map(([BankSlno,TotalPremiumReconciled,SRNo,RetName,RetGender,RetDO
 kmddata.shift()
 kmddata = kmddata.sort((a, b) => a.SRNo -b.SRNo);
 report()
+document.getElementById('reconciledcount').innerHTML = kmddata.filter(a=> a.BankSlno>0).length
+document.getElementById('notyetcount').innerHTML = kmddata.filter(a=> a.BankSlno==='').length
 }
 
 reconurl='https://script.google.com/macros/s/AKfycbyeVnqWNYoEyYsRisXxp8agFGqL5dlDgq_f0EDBC4bj7xbVvgWUsw7yB_1c34E0asts/exec'
