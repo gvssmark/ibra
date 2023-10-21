@@ -1,7 +1,9 @@
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width,  initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins&effect=neon|outline|emboss|shadow-multiple">
  <title>IBRA-Ins-2324</title>
 <style>
 body {font-size:small}
@@ -13,12 +15,27 @@ table {border-collapse:collapse; border:1px solid black; }
 .close {color: #aaaaaa;float: right;font-size: 28px;font-weight: bold;}
 close:hover,.close:focus {color: #000;text-decoration: none;cursor: pointer;}
 @media only screen and (min-width: 400px) {body {background: lightblue; width:50%; margin: auto} .modal {width:50%; left:25% }}
+#srnoTable {font-family: "Poppins", sans-serif; text-shadow: 3px 3px 3px #ababab;   font-size:15px; }
+#myInput {
+            margin-top: -10px;
+            width: 300px;;
+            margin-left:30px;
+            height: 30px;
+            border-radius: 15px;
+            background-color: cyan;
+            border: 0px;
+            outline: 0;
+            display: block;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            
+        }
 </style></style>
 <body>
 <h3 align=center>IBRA-Insurance-Reconcilation</h3>
 <h4 id='recdate' align=center></h4>
 <table border=0 width=100%><tr><td width=50%><button onclick='report()' style='width:100%'>KMD Data</button><td width=50%><button onclick='bankrecon()' style='width:100%'>Bank Ac Reconciliation</button></table>
 <p><span class='yes'>Reconciled </span><span class='no' style='float:right'>Not Yet Reconciled</span></p>
+<input type='text' id='myInput' onkeyup="fiterName()" placeholder="Search here..."></input>
 <p id='srnoTable'></p>
         <div id="myModal" class="modal">
             <div class="modal-content">
@@ -56,8 +73,9 @@ totable=''
 document.getElementById('recdate').innerHTML=`Bank Statement as on ${data[1][51]}<br>KMD Data as on ${data[2][51]}`
 kmddata.forEach(a=> {
 reconciled = a.TotalPremiumReconciled*1 >0 ? 'yes' : 'no'
-totable+= `<tr class=${reconciled} onclick='showsrno(${a.SRNo})'><td>${a.SRNo}<td>${a.RetName}<td>${a.TotalPremiumReconciled}` })
-document.getElementById('srnoTable').innerHTML= `<table border=1 id='myTable' width=100%><tr><td>SR No<td>Name<td>Amount ${totable} </table>`
+totable+= `<tr class=${reconciled} onclick='showsrno(${a.SRNo})'><td>${a.SRNo}<br>${a.RetName}` })
+document.getElementById('srnoTable').innerHTML= `<table table id='DataTable' border=1 id='myTable' width=100%><tr><td>SR No<br>Name ${totable} </table>`
+document.getElementById('myInput').style.display='block'
 }
 function showsrno(sr){
 ThisSRNo = kmddata.filter(a=> a.SRNo === sr)
@@ -119,11 +137,34 @@ function bankrecon(){
 bankDataTable='<h3>Ensure to SUBMIT of Data.</h3><h3>Open the link received in Email and submit with payment details. You will get a download of acknowledgment.</h3><table border=1 width=100%><tr><td colspan=3>Amount Received -KMD Data Not Received<tr><td>Date<td>Details<td>Amount'
 unreconciled.forEach(a=> bankDataTable += `<tr><td>${a.trdate}<td>${a.shdetails}<td>${a.amt}`)
 document.getElementById('srnoTable').innerHTML= bankDataTable + '</table>'
+document.getElementById('myInput').style.display='none'
+
 }
 function shhome(){scrollTo(0, 0)}
 let mybutton = document.getElementById("myBtn");
 window.onscroll = function() {scrollFunction2()};
 scrollFunction2=()=> (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) ? mybutton.style.display = "block" : mybutton.style.display = "none"; 
+
+
+function fiterName() {
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("myInput");
+                filter = input.value.toUpperCase().replaceAll(" ","");
+                table = document.getElementById("DataTable");
+                tr = table.getElementsByTagName("tr");
+                for (i = 0; i < tr.length; i++) {
+                    td = tr[i].getElementsByTagName("td")[0];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().replaceAll(" ","").indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                }
+            }
+
 </script>
 </body>
 </html>
