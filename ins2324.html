@@ -134,8 +134,8 @@ window.onclick = function (event) {if (event.target == modal) {modal.style.displ
 span.onclick = function () {modal.style.display = "none";}
 
 function bankrecon(){
-bankDataTable='<h3>Ensure to SUBMIT of Data.</h3><h3>Open the link received in Email and submit with payment details. You will get a download of acknowledgment.</h3><table border=1 width=100%><tr><td colspan=3>Amount Received -KMD Data Not Received<tr><td>Date<td>Details<td>Amount'
-unreconciled.forEach(a=> bankDataTable += `<tr><td>${a.trdate}<td>${a.shdetails}<td>${a.amt}`)
+bankDataTable='<h3>Ensure to SUBMIT of Data.</h3><h3>Open the link received in Email and submit with payment details. You will get a download of acknowledgment.</h3><table border=1 width=100%><tr><td colspan=3>Amount Received -KMD Data Not Received<tr><td>Date<br>Details / Amount'
+unreconciled.forEach(a=> bankDataTable += `<tr><td>${a.trdate}<br>${a.shdetails} -Rs. ${a.amt}`)
 document.getElementById('srnoTable').innerHTML= bankDataTable + '</table>'
 document.getElementById('myInput').style.display='none'
 
