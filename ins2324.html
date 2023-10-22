@@ -180,6 +180,7 @@ st1=premiumTable.filter(a=> a.option === 'Self+Spouse' && a.sbt>0).length
 st2=premiumTable.filter(a=> a.option === 'Only Self' && a.sbt>0).length
 st3 = st1+st2
 matrixtable += `<tr><td>Tot<td>${nt1}<td>${nt2}<td>${nt3}<td>Tot<td>${st1}<td>${st2}<td>${st3}</table>`
+document.getElementById("nameHeader").innerHTML = 'MIS'
 document.getElementById("modalData").innerHTML =matrixtable
 modal.style.display = "block";
 }
