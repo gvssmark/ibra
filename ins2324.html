@@ -58,6 +58,8 @@ unreconciled.shift()
 
 getBankData()
 getKmdData()
+premiumTable = kmddata.map(a=> ({srno: a.SRNo, option:a.Option, nib:a.BaseFamilyPremium+a.BaseSelfPremium, nit: a.SelfTopupPremium + a.FamilyTopupPremium, sbt: a.SBIFamilyPremium + a.SBISelfPremium }))
+    
 function report(){
 totable=''
 document.getElementById('recdate').innerHTML=`Bank Statement as on ${data[1][51]}<br>KMD Data as on ${data[2][51]}`
