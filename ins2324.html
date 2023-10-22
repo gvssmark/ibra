@@ -8,6 +8,7 @@
  <title>IBRA-Ins-2324</title>
 <style>
 .bw {background:black; color:white}
+.mis td {text-align:center}
 body {font-size:small}
 .yes {background:#bbfacc}
 .no {background:#f7b9ab}
@@ -163,7 +164,7 @@ function fiterName() {
 function generateMis(){
 sbitable = [[3755,2209,'1L'],[6009,3534,'2L'],[8712,5125,'3L'],[11761,6918,'4L'],[15289,8994,'5L'],[19112,11243,'6L'],[22934,13491,'7L'],[26375,15515,'8L'],[30331,17842,'9L'],[34881,20518,'10L']]
 ptable=[[37509,30006,'2L'],[44617,35262,'2L+2L'],[46718,36193,'2L+3L'],[44891,34220,'3L'],[54100,40407,'3L+3L'],[55942,41645,'3L+4L'],[57717,48675,'4L'],[68768,56100,'4L+4L'],[73065,58988,'4L+5L'],[0,0,'No NIA']]
-matrixtable='<table border=1 width=100%><tr class="bw"><td>NIA<td>Fam<td>Self<td>Tot<td>SBI<td>Fam<td>Self<td>Tot'
+matrixtable='<table border=1 width=100% class="mis"><tr class="bw"><td>NIA<td>Fam<td>Self<td>Tot<td>SBI<td>Fam<td>Self<td>Tot'
 for(i=0; i<sbitable.length; i++){
 n1=premiumTable.filter(a=> a.option ==='Self+Spouse' && a.nib ===ptable[i][0]).length
 n2=premiumTable.filter(a=> a.option ==='Only Self' && a.nib ===ptable[i][1]).length
