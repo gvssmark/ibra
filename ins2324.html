@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,6 +7,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins&effect=neon|outline|emboss|shadow-multiple">
  <title>IBRA-Ins-2324</title>
 <style>
+.bw {background:black; color:white}
 body {font-size:small}
 .yes {background:#bbfacc}
 .no {background:#f7b9ab}
@@ -19,7 +21,8 @@ close:hover,.close:focus {color: #000;text-decoration: none;cursor: pointer;}
 #myInput {margin-top: -10px; width: 80%;; margin-left:10%;height: 30px;border-radius: 15px;background-color: cyan;border: 0px;outline: 0;display: block;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);}
 </style></style>
 <body>
-<h3 align=center>IBRA-Insurance-Reconcilation</h3>
+<h3 align=center onclick='generateMis()'>IBRA-Insurance-Reconcilation</h3>
+
 <h4 id='recdate' align=center></h4>
 <table border=0 width=100%><tr><td width=50%><button onclick='report()' style='width:100%'>KMD Data</button><td width=50%><button onclick='bankrecon()' style='width:100%'>Bank Ac Reconciliation</button></table>
 <p><span class='yes'>Reconciled <span id='reconciledcount'></span> </span><span class='no' style='float:right'>Not Yet Reconciled <span id='notyetcount'></span></span></p>
@@ -28,8 +31,8 @@ close:hover,.close:focus {color: #000;text-decoration: none;cursor: pointer;}
         <div id="myModal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
-                <h4 align=center id="nameHeader">Retiree Name</h4>
-                <p id="modalData">Test Data </p>
+                <h4 align=center id="nameHeader">MIS</h4>
+                <p id="modalData"> </p>
             </div>
         </div>
         <button id='myBtn' onclick='shhome()' style='box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19); position:fixed; top:30px;right:10px; height:50px; background:red; border-radius:50px; border:none; color:white; display: none;'>Go Top</button>
@@ -158,9 +161,9 @@ function fiterName() {
                 }
             }
 function generateMis(){
-sbitable = [[3755,2209],[6009,3534],[8712,5125],[11761,6918],[15289,8994],[19112,11243],[22934,13491],[26375,15515],[30331,17842],[34881,20518]]
-ptable=[[37509,30006],[44617,35262],[46718,36193],[44891,34220],[54100,40407],[55942,41645],[57717,48675],[68768,56100],[73065,58988],[0,0]]
-matrixtable='<table border=1>'
+sbitable = [[3755,2209,'1L'],[6009,3534,'2L'],[8712,5125,'3L'],[11761,6918,'4L'],[15289,8994,'5L'],[19112,11243,'6L'],[22934,13491,'7L'],[26375,15515,'8L'],[30331,17842,'9L'],[34881,20518,'10L']]
+ptable=[[37509,30006,'2L'],[44617,35262,'2L+2L'],[46718,36193,'2L+3L'],[44891,34220,'3L'],[54100,40407,'3L+3L'],[55942,41645,'3L+4L'],[57717,48675,'4L'],[68768,56100,'4L+4L'],[73065,58988,'4L+5L'],[0,0,'No NIA']]
+matrixtable='<table border=1 width=100%><tr class="bw"><td>NIA<td>Fam<td>Self<td>Tot<td>SBI<td>Fam<td>Self<td>Tot'
 for(i=0; i<sbitable.length; i++){
 n1=premiumTable.filter(a=> a.option ==='Self+Spouse' && a.nib ===ptable[i][0]).length
 n2=premiumTable.filter(a=> a.option ==='Only Self' && a.nib ===ptable[i][1]).length
@@ -168,10 +171,11 @@ n3=n1+n2
 s1=premiumTable.filter(a=> a.option ==='Self+Spouse' && a.sbt ===sbitable[i][0]).length
 s2=premiumTable.filter(a=> a.option ==='Only Self' && a.sbt ===sbitable[i][1]).length
 s3=s1+s2
-matrixtable += `<tr><td>${n1}<td>${n2}<td>${n3}<td>${s1}<td>${s2}<td>${s3}`
+matrixtable += `<tr><td>${ptable[i][2]}<td>${n1}<td>${n2}<td>${n3}<td>${sbitable[i][2]}<td>${s1}<td>${s2}<td>${s3}`
 }
 matrixtable += `</table>`
-document.getElementById('misDiv').innerHTML=matrixtable
+document.getElementById("modalData").innerHTML =matrixtable
+modal.style.display = "block";
 }
 </script>
 </body>
