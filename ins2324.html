@@ -173,7 +173,13 @@ s2=premiumTable.filter(a=> a.option ==='Only Self' && a.sbt ===sbitable[i][1]).l
 s3=s1+s2
 matrixtable += `<tr><td>${ptable[i][2]}<td>${n1}<td>${n2}<td>${n3}<td>${sbitable[i][2]}<td>${s1}<td>${s2}<td>${s3}`
 }
-matrixtable += `</table>`
+nt1=premiumTable.filter(a=> a.option === 'Self+Spouse').length
+nt2=premiumTable.filter(a=> a.option === 'Only Self').length
+nt3=nt1+nt2
+st1=premiumTable.filter(a=> a.option === 'Self+Spouse' && a.sbt>0).length
+st2=premiumTable.filter(a=> a.option === 'Only Self' && a.sbt>0).length
+st3 = st1+st2
+matrixtable += `<tr><td>Tot<td>${nt1}<td>${nt2}<td>${nt3}<td>Tot<td>${st1}<td>${st2}<td>${st3}</table>`
 document.getElementById("modalData").innerHTML =matrixtable
 modal.style.display = "block";
 }
