@@ -42,8 +42,7 @@ kmddata= data.map(([BankSlno,TotalPremiumReconciled,SRNo,RetName,RetGender,RetDO
 ) => ({BankSlno,TotalPremiumReconciled,SRNo,RetName,RetGender,RetDOB,Address,Email,Mobile,Option,SpName,SpGender,SpDOB,BaseFamily,BaseFamilyPremium,BaseSelf,BaseSelfPremium,FamilyTopup,FamilyTopupPremium,NIFamilyPremium,SelfTopup,SelfTopupPremium,NISelfPremium,DepChildOption,Child1Name,Child1DOB,Child1Gender,Child2Name,Child2DOB,Child2Gender,ChildPremium,TotalPremium,SBITopupFamily,SBIFamilyPremium,SBITopupSelf,SBISelfPremium,GrandTotalPremium,PaymentMode,BankName,AccountNo,IFSC,TransactionNo,PaidOn,NomName,NomDOB,NomRelation,ChqDeposited,AmountPaid,Agreememt,AddedDate,ModifiedTime,ReconDate,Remarks}))
 kmddata.shift()
 kmddata = kmddata.sort((a, b) => a.SRNo -b.SRNo);
-premiumTable = kmddata.map(a=> ({srno: a.SRNo, option:a.Option, nib:a.BaseFamilyPremium+a.BaseSelfPremium, nit: a.SelfTopupPremium + a.FamilyTopupPremium, sbt: a.SBIFamilyPremium + a.SBISelfPremium }))
-
+premiumTable = kmddata.map(a=> ({srno: a.SRNo, option:a.Option, nib:a.BaseFamilyPremium+a.BaseSelfPremium + a.SelfTopupPremium + a.FamilyTopupPremium, sbt: a.SBIFamilyPremium + a.SBISelfPremium }))
 report()
 document.getElementById('reconciledcount').innerHTML = kmddata.filter(a=> a.BankSlno>0).length
 document.getElementById('notyetcount').innerHTML = kmddata.filter(a=> a.BankSlno==='').length
@@ -158,7 +157,22 @@ function fiterName() {
                     }
                 }
             }
-
+function generateMis(){
+sbitable = [[3755,2209],[6009,3534],[8712,5125],[11761,6918],[15289,8994],[19112,11243],[22934,13491],[26375,15515],[30331,17842],[34881,20518]]
+ptable=[[37509,30006],[44617,35262],[46718,36193],[44891,34220],[54100,40407],[55942,41645],[57717,48675],[68768,56100],[73065,58988],[0,0]]
+matrixtable='<table border=1>'
+for(i=0; i<sbitable.length; i++){
+n1=premiumTable.filter(a=> a.option ==='Self+Spouse' && a.nib ===ptable[i][0]).length
+n2=premiumTable.filter(a=> a.option ==='Only Self' && a.nib ===ptable[i][1]).length
+n3=n1+n2
+s1=premiumTable.filter(a=> a.option ==='Self+Spouse' && a.sbt ===sbitable[i][0]).length
+s2=premiumTable.filter(a=> a.option ==='Only Self' && a.sbt ===sbitable[i][1]).length
+s3=s1+s2
+matrixtable += `<tr><td>${n1}<td>${n2}<td>${n3}<td>${s1}<td>${s2}<td>${s3}`
+}
+matrixtable += `</table>`
+document.getElementById('misDiv').innerHTML=matrixtable
+}
 </script>
 </body>
 </html>
