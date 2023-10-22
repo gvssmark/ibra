@@ -56,7 +56,7 @@ reconurl='https://script.google.com/macros/s/AKfycbyeVnqWNYoEyYsRisXxp8agFGqL5dl
 async function getBankData() {
 response = await fetch(reconurl)
 recondata = await response.json()
-unreconciled = recondata.map(([trdate,det,slno,dummy1,amt,dummy2,dataslno,shdetails])=>({trdate,det,slno,dummy1,amt,dummy2,dataslno,shdetails}))
+unreconciled = recondata.map(([trdate,det,slno,dummy1,amt,dummy2,dataslno,shdetails,mobile])=>({trdate,det,slno,dummy1,amt,dummy2,dataslno,shdetails,mobile}))
 unreconciled.shift()
 unreconciled.shift()
 
@@ -132,7 +132,7 @@ span.onclick = function () {modal.style.display = "none";}
 
 function bankrecon(){
 bankDataTable='<h3>Ensure to SUBMIT of Data.</h3><h3>Open the link received in Email and submit with payment details. You will get a download of acknowledgment.</h3><table border=1 width=100%><tr><td colspan=3>Amount Received -KMD Data Not Received<tr><td>Date<br>Details / Amount'
-unreconciled.forEach(a=> bankDataTable += `<tr><td>${a.trdate}<br>${a.shdetails} -Rs. ${a.amt}`)
+unreconciled.forEach(a=> bankDataTable += `<tr><td>${a.trdate}<br>${a.shdetails} -Rs. ${a.amt} - Ph: ${a.mobile}`)
 document.getElementById('srnoTable').innerHTML= bankDataTable + '</table>'
 document.getElementById('myInput').style.display='none'
 
