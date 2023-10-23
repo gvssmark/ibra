@@ -1,6 +1,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -133,7 +134,7 @@ window.onclick = function (event) {if (event.target == modal) {modal.style.displ
 span.onclick = function () {modal.style.display = "none";}
 
 function bankrecon(){
-bankDataTable='<h1 align=center>FUNDS RECEIVED<BR>DATA NOT SUBMITTED</h1><h3 align=center>Ignore if Successfully Submitted</h3><table border=1 width=100%><tr><td>Date<br>Details / Amount'
+bankDataTable=`<h1 align=center>FUNDS RECEIVED<BR>DATA NOT SUBMITTED</h1><h3 align=center>Ignore if Successfully Submitted after ${data[2][51]}</h3><table border=1 width=100%><tr><td>Date<br>Details / Amount`
 unreconciled.forEach(a=> bankDataTable += `<tr><td>${a.trdate}<br>${a.shdetails} -Rs. ${a.amt} - Ph: ${a.mobile}`)
 document.getElementById('srnoTable').innerHTML= bankDataTable + '</table>'
 document.getElementById('myInput').style.display='none'
