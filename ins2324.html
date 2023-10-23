@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -48,6 +49,7 @@ kmddata.shift()
 kmddata = kmddata.sort((a, b) => a.SRNo -b.SRNo);
 premiumTable = kmddata.map(a=> ({srno: a.SRNo, option:a.Option, nib:a.BaseFamilyPremium+a.BaseSelfPremium + a.SelfTopupPremium + a.FamilyTopupPremium, sbt: a.SBIFamilyPremium + a.SBISelfPremium }))
 report()
+bankrecon()
 document.getElementById('reconciledcount').innerHTML = kmddata.filter(a=> a.BankSlno>0).length
 document.getElementById('notyetcount').innerHTML = kmddata.filter(a=> a.BankSlno==='').length
 }
@@ -131,7 +133,7 @@ window.onclick = function (event) {if (event.target == modal) {modal.style.displ
 span.onclick = function () {modal.style.display = "none";}
 
 function bankrecon(){
-bankDataTable='<h3>Ensure to SUBMIT of Data.</h3><h3>Open the link received in Email and submit with payment details. You will get a download of acknowledgment.</h3><table border=1 width=100%><tr><td colspan=3>Amount Received -KMD Data Not Received<tr><td>Date<br>Details / Amount'
+bankDataTable='<h1 align=center>FUNDS RECEIVED<BR>DATA NOT SUBMITTED</h1><table border=1 width=100%><tr><td>Date<br>Details / Amount'
 unreconciled.forEach(a=> bankDataTable += `<tr><td>${a.trdate}<br>${a.shdetails} -Rs. ${a.amt} - Ph: ${a.mobile}`)
 document.getElementById('srnoTable').innerHTML= bankDataTable + '</table>'
 document.getElementById('myInput').style.display='none'
