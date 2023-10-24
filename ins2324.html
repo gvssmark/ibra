@@ -191,6 +191,33 @@ document.getElementById("nameHeader").innerHTML = 'MIS'
 document.getElementById("modalData").innerHTML =matrixtable
 modal.style.display = "block";
 }
+
+function sbiDistribution(){
+tt='<tr class="bw"><td><td>2+0<td>2+2<td>2+3<td>3+0<td>3+3<td>3+4<td>4+0<td>4+4<td>4+5<td>0+0<td>t'
+for (i=0; i<sbitable.length; i++)
+{t=0
+tt +=`<tr><td class='bw'>${sbitable[i][2]}`
+for (j=0; j<ptable.length; j++)
+{tt += `<td>${premiumTable.filter(a=> a.nib === ptable[j][0] && a.sbt === sbitable[i][0]).length} `
+t +=premiumTable.filter(a=> a.nib === ptable[j][0] && a.sbt === sbitable[i][0]).length
+}tt += `<td class='bw'>${t}`}
+document.getElementById("modalData").innerHTML =`<table border=1 width=100% class="mis"class="mis"class="mis">${tt}</table>`
+document.getElementById("nameHeader").innerHTML = 'SBI DISTRIBUTION FAMILY'
+}
+
+function sbiDistributionSelf(){
+tt='<tr class="bw"><td><td>2+0<td>2+2<td>2+3<td>3+0<td>3+3<td>3+4<td>4+0<td>4+4<td>4+5<td>0+0<td>t'
+for (i=0; i<sbitable.length; i++)
+{t=0
+tt +=`<tr><td class='bw'>${sbitable[i][2]}`
+for (j=0; j<ptable.length; j++)
+{tt += `<td>${premiumTable.filter(a=> a.nib === ptable[j][1] && a.sbt === sbitable[i][1]).length} `
+t +=premiumTable.filter(a=> a.nib === ptable[j][1] && a.sbt === sbitable[i][1]).length
+}tt += `<td class='bw'>${t}`}
+document.getElementById("modalData").innerHTML =`<table border=1 width=100% class="mis"class="mis"class="mis">${tt}</table>`
+document.getElementById("nameHeader").innerHTML = 'SBI DISTRIBUTION SELF'
+}
+
 </script>
 </body>
 </html>
