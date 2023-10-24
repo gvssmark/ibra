@@ -48,7 +48,9 @@ kmddata= data.map(([BankSlno,TotalPremiumReconciled,SRNo,RetName,RetGender,RetDO
 ) => ({BankSlno,TotalPremiumReconciled,SRNo,RetName,RetGender,RetDOB,Address,Email,Mobile,Option,SpName,SpGender,SpDOB,BaseFamily,BaseFamilyPremium,BaseSelf,BaseSelfPremium,FamilyTopup,FamilyTopupPremium,NIFamilyPremium,SelfTopup,SelfTopupPremium,NISelfPremium,DepChildOption,Child1Name,Child1DOB,Child1Gender,Child2Name,Child2DOB,Child2Gender,ChildPremium,TotalPremium,SBITopupFamily,SBIFamilyPremium,SBITopupSelf,SBISelfPremium,GrandTotalPremium,PaymentMode,BankName,AccountNo,IFSC,TransactionNo,PaidOn,NomName,NomDOB,NomRelation,ChqDeposited,AmountPaid,Agreememt,AddedDate,ModifiedTime,ReconDate,Remarks}))
 kmddata.shift()
 kmddata = kmddata.sort((a, b) => a.SRNo -b.SRNo);
-premiumTable = kmddata.map(a=> ({srno: a.SRNo, option:a.Option, nib:a.BaseFamilyPremium+a.BaseSelfPremium + a.SelfTopupPremium + a.FamilyTopupPremium, sbt: a.SBIFamilyPremium + a.SBISelfPremium }))
+//premiumTable = kmddata.map(a=> ({srno: a.SRNo, option:a.Option, nib:a.BaseFamilyPremium+a.BaseSelfPremium + a.SelfTopupPremium + a.FamilyTopupPremium, sbt: a.SBIFamilyPremium + a.SBISelfPremium }))
+premiumTable = kmddata.map(a=> ({recon:  a.BankSlno, srno: a.SRNo, option:a.Option, nib:a.BaseFamilyPremium+a.BaseSelfPremium + a.SelfTopupPremium + a.FamilyTopupPremium, sbt: a.SBIFamilyPremium + a.SBISelfPremium }))
+
 report()
 bankrecon()
 document.getElementById('reconciledcount').innerHTML = kmddata.filter(a=> a.BankSlno>0).length
