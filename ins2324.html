@@ -2,6 +2,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,8 +28,8 @@ close:hover,.close:focus {color: #000;text-decoration: none;cursor: pointer;}
 <h3 align=center onclick='generateMis()'>IBRA-Insurance-Reconcilation</h3>
 
 <h4 id='recdate' align=center></h4>
-<table border=0 width=100%><tr><td width=50%><button onclick='report()' style='width:100%'>KMD Data</button><td width=50%><button onclick='bankrecon()' style='width:100%'>Bank Ac Reconciliation</button></table>
-<p><span class='yes'>Reconciled <span id='reconciledcount'></span> </span><span class='no' style='float:right'>Not Yet Reconciled <span id='notyetcount'></span></span></p>
+<table border=0 width=100% style='border:none;'><tr><td width=50%><button onclick='report()' style='width:100%; height:30px; background:green; color:white; outline:none; border:none;  '>KMD Data</button ><td width=50%><button onclick='bankrecon()' style='width:100% ; height:30px; background:red; color:white; outline:none; border:none;  '>Bank Ac Reconciliation</button></table>
+<p onclick='report()' style='font-size:large; '><span class='yes' >Reconciled <span id='reconciledcount'></span> </span><span class='no' style='float:right'>Not Yet Reconciled <span id='notyetcount'></span></span></p>
 <input type='text' id='myInput' onkeyup="fiterName()" placeholder="Search here..."></input>
 <p id='srnoTable'></p>
         <div id="myModal" class="modal">
