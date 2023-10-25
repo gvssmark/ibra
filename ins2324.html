@@ -3,6 +3,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,7 +30,7 @@ close:hover,.close:focus {color: #000;text-decoration: none;cursor: pointer;}
 
 <h4 id='recdate' align=center></h4>
 <table border=0 width=100% style='border:none;'><tr><td width=50%><button onclick='report()' style='width:100%; height:30px; background:green; color:white; outline:none; border:none;  '>KMD Data</button ><td width=50%><button onclick='bankrecon()' style='width:100% ; height:30px; background:red; color:white; outline:none; border:none;  '>Bank Ac Reconciliation</button></table>
-<p onclick='report()' style='font-size:large; '><span class='yes' >Reconciled <span id='reconciledcount'></span> </span><span class='no' style='float:right'>Not Yet Reconciled <span id='notyetcount'></span></span></p>
+<p  style='font-size:large; '><span onclick='report()' class='yes' >Reconciled <span id='reconciledcount'></span> </span><span onclick=' reportunreconciled()' class='no' style='float:right'>Not Yet Reconciled <span id='notyetcount'></span></span></p>
 <input type='text' id='myInput' onkeyup="fiterName()" placeholder="Search here..."></input>
 <p id='srnoTable'></p>
         <div id="myModal" class="modal">
@@ -74,12 +75,24 @@ getKmdData()
 function report(){
 totable=''
 document.getElementById('recdate').innerHTML=`Bank Statement as on ${data[1][51]}<br>KMD Data as on ${data[2][51]}`
-kmddata.forEach(a=> {
+kmddata.filter(a=> a.TotalPremiumReconciled>0).forEach(a=> {
 reconciled = a.TotalPremiumReconciled*1 >0 ? 'yes' : 'no'
 totable+= `<tr class=${reconciled} onclick='showsrno(${a.SRNo})'><td>${a.SRNo}<br>${a.RetName}` })
 document.getElementById('srnoTable').innerHTML= `<table table id='DataTable' border=1 id='myTable' width=100%><tr><td>SR No<br>Name ${totable} </table>`
 document.getElementById('myInput').style.display='block'
 }
+
+function reportunreconciled(){
+totable=''
+document.getElementById('recdate').innerHTML=`Bank Statement as on ${data[1][51]}<br>KMD Data as on ${data[2][51]}`
+kmddata.filter(a=> a.TotalPremiumReconciled===0).forEach(a=> {
+reconciled = a.TotalPremiumReconciled*1 >0 ? 'yes' : 'no'
+totable+= `<tr class=${reconciled} onclick='showsrno(${a.SRNo})'><td>${a.SRNo}<br>${a.RetName}` })
+document.getElementById('srnoTable').innerHTML= `<table table id='DataTable' border=1 id='myTable' width=100%><tr><td>SR No<br>Name ${totable} </table>`
+document.getElementById('myInput').style.display='block'
+}
+
+
 function showsrno(sr){
 ThisSRNo = kmddata.filter(a=> a.SRNo === sr)
 ThisSRNo=ThisSRNo[0]
