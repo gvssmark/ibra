@@ -1,34 +1,21 @@
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width,  initial-scale=1.0">
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins&effect=neon|outline|emboss|shadow-multiple">
 <style>
-
-table {border:1px solid black; border-collapse:collapse; }
-tr {height:30px; text-decoration:none;}
-a:link {
-  color: red;
-}
-
-/* visited link */
-a:visited {
-  color: green;
-}
-
-a:link {
-  text-decoration: none;
-}
-
+table {border:1px solid black; border-collapse:collapse; font-family: "Poppins", sans-serif; text-shadow: 3px 3px 3px #ababab;   font-size:25px; }}
+tr {height:35px; text-decoration:none; font-family: "Poppins",}
+a:link {  color: BLUE;}
+a:visited {  color: green;}
+a:link {  text-decoration: none;}
 </style>
 </head>
 <body>
-
 <h1>Not Renewed</h1>
-
 <p id='tabledatap'>My first paragraph.</p>
-
 <script>
-
 pend=[['BASETTY VEENA',9177770488],
 ['RAMA RAO CHALAMALASETTY',9490044190],
 ['JALLURI SAVITHRI',7075566879],
@@ -241,23 +228,12 @@ pend=[['BASETTY VEENA',9177770488],
 ['PITAMBER LAL',8791171085],
 ['TARA RAM',8126139167],
 ['DEVDUTTA SEN',9836851076]]
-
-
 pending = pend.map(([name,mob])=>({name,mob}))
-
-
-
-var whatsapp = encodeURIComponent(`Dear Sir/Madam, Last Year you have joined IBRA Insurance Policy. This year you have not renewed it`)
-
+var whatsapp = encodeURIComponent(`Dear Sir/Madam, Last Year you have joined IBRA Insurance Policy. This year you have not renewed it*TEAM IBRA*`)
 totable='<table border=1>'
-
 pending.forEach(a=> totable+= `<tr><td><a href='http://wa.me/91${a.mob}?text=${whatsapp}'>${a.name}</a>`)
 document.getElementById('tabledatap').innerHTML=totable+'</table>'
-
-//<a href='http://wa.me/91${mobile}?text=${whatsapp}'>WhatsApp Message</a> 
 </script>
-
-
 </body>
 </html>
 
