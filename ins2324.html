@@ -82,7 +82,7 @@ document.getElementById('recdate').innerHTML=`Bank Statement as on ${data[1][51]
 kmddata.filter(a=> a.TotalPremiumReconciled===0).forEach(a=> {
 reconciled = a.TotalPremiumReconciled*1 >0 ? 'yes' : 'no'
 totable+= `<tr class=${reconciled} onclick='showsrno(${a.SRNo})'><td>${a.SRNo}<br>${a.RetName}` })
-document.getElementById('srnoTable').innerHTML= `<table table id='DataTable' border=1 id='myTable' width=100%><tr><td style='background:red; color:white; text-align:center;font-size:large; '>Payment Details Not found  ${totable} </table>`
+document.getElementById('srnoTable').innerHTML= `<table table id='DataTable' border=1 id='myTable' width=100%><tr><td style='background:red; color:white; text-align:center;font-size:large; '>Payment Details Not found in Bank Statement  ${totable} </table>`
 document.getElementById('myInput').style.display='block'
 }
 
