@@ -229,7 +229,7 @@ pend=[['BASETTY VEENA',9177770488],
 ['TARA RAM',8126139167],
 ['DEVDUTTA SEN',9836851076]]
 pending = pend.map(([name,mob])=>({name,mob}))
-var whatsapp = encodeURIComponent(`Dear Sir/Madam, Last Year you have joined IBRA Insurance Policy. This year you have not renewed it*TEAM IBRA*`)
+var whatsapp = encodeURIComponent(`Dear Sir/Madam, Last Year you have joined IBRA Insurance Policy. This year you have not renewed it 0%a*TEAM IBRA*`)
 totable='<table border=1>'
 pending.forEach(a=> totable+= `<tr><td><a href='http://wa.me/91${a.mob}?text=${whatsapp}'>${a.name}</a>`)
 document.getElementById('tabledatap').innerHTML=totable+'</table>'
