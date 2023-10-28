@@ -1,0 +1,233 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width,  initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins&effect=neon|outline|emboss|shadow-multiple">
+ <title>IBRA-Ins-2324</title>
+<style>
+.bw {background:black; color:white}
+.mis td {text-align:center}
+body {font-size:small}
+.yes {background:#bbfacc}
+.no {background:#f7b9ab}
+table {border-collapse:collapse; border:1px solid black; }
+.modal {display: none;position: fixed;z-index: 1;padding-top: 1px;left: 0;top: 0;width: 100%;height: 100%;overflow: auto;background-color: rgb(0, 0, 0);background-color: rgba(0, 0, 0, 0.4);}
+.modal-content {background-color: #99ffcc;margin: auto;padding: 2px;padding-bottom: 2px;border: 1px solid #888;width: 95%;border-radius: 15px;margin-top: 53px;}
+.close {color: #aaaaaa;float: right;font-size: 28px;font-weight: bold;}
+close:hover,.close:focus {color: #000;text-decoration: none;cursor: pointer;}
+@media only screen and (min-width: 400px) {body {background: lightblue; width:50%; margin: auto} .modal {width:50%; left:25% }}
+#srnoTable {font-family: "Poppins", sans-serif; text-shadow: 3px 3px 3px #ababab;   font-size:15px; }
+#myInput {margin-top: -10px; width: 80%;; margin-left:10%;height: 30px;border-radius: 15px;background-color: cyan;border: 0px;outline: 0;display: block;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);}
+</style></style>
+<body>
+<h3 align=center onclick='generateMis()'>IBRA-Insurance-Reconcilation</h3>
+
+<h4 id='recdate' align=center></h4>
+<table border=0 width=100% style='border:none;'><tr><td width=50%><button onclick='report()' style='width:100%; height:30px; background:green; color:white; outline:none; border:none;  '>KMD Data</button ><td width=50%><button onclick='bankrecon()' style='width:100% ; height:30px; background:red; color:white; outline:none; border:none;  '>Bank Ac Reconciliation</button></table>
+<p  style='font-size:large; '><span onclick='report()' class='yes' >Reconciled <span id='reconciledcount'></span> </span><span onclick=' reportunreconciled()' class='no' style='float:right'>Not Yet Reconciled <span id='notyetcount'></span></span></p>
+<input type='text' id='myInput' onkeyup="fiterName()" placeholder="Search here..."></input>
+<p id='srnoTable'></p>
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h4 align=center id="nameHeader">MIS</h4>
+                <p id="modalData"> </p>
+            </div>
+        </div>
+        <button id='myBtn' onclick='shhome()' style='box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19); position:fixed; top:30px;right:10px; height:50px; background:red; border-radius:50px; border:none; color:white; display: none;'>Go Top</button>
+<script>
+url='https://script.google.com/macros/s/AKfycbziDjEIsbGGQaW8Bb30RXhnbOIXkW_tXb3AmoO7FTtdD8U_3l-mi8g0ZK9H-KDmlt2gOQ/exec'
+async function getKmdData() {
+response = await fetch(url)
+data = await response.json()
+kmddata= data.map(([BankSlno,TotalPremiumReconciled,SRNo,RetName,RetGender,RetDOB,Address,Email,Mobile,Option,SpName,SpGender,SpDOB,BaseFamily,BaseFamilyPremium,BaseSelf,BaseSelfPremium,FamilyTopup,FamilyTopupPremium,NIFamilyPremium,SelfTopup,SelfTopupPremium,NISelfPremium,DepChildOption,Child1Name,Child1DOB,Child1Gender,Child2Name,Child2DOB,Child2Gender,ChildPremium,TotalPremium,SBITopupFamily,SBIFamilyPremium,SBITopupSelf,SBISelfPremium,GrandTotalPremium,PaymentMode,BankName,AccountNo,IFSC,TransactionNo,PaidOn,NomName,NomDOB,NomRelation,ChqDeposited,AmountPaid,Agreememt,AddedDate,ModifiedTime,ReconDate,Remarks]
+) => ({BankSlno,TotalPremiumReconciled,SRNo,RetName,RetGender,RetDOB,Address,Email,Mobile,Option,SpName,SpGender,SpDOB,BaseFamily,BaseFamilyPremium,BaseSelf,BaseSelfPremium,FamilyTopup,FamilyTopupPremium,NIFamilyPremium,SelfTopup,SelfTopupPremium,NISelfPremium,DepChildOption,Child1Name,Child1DOB,Child1Gender,Child2Name,Child2DOB,Child2Gender,ChildPremium,TotalPremium,SBITopupFamily,SBIFamilyPremium,SBITopupSelf,SBISelfPremium,GrandTotalPremium,PaymentMode,BankName,AccountNo,IFSC,TransactionNo,PaidOn,NomName,NomDOB,NomRelation,ChqDeposited,AmountPaid,Agreememt,AddedDate,ModifiedTime,ReconDate,Remarks}))
+kmddata.shift()
+kmddata = kmddata.sort((a, b) => a.SRNo -b.SRNo);
+//premiumTable = kmddata.map(a=> ({srno: a.SRNo, option:a.Option, nib:a.BaseFamilyPremium+a.BaseSelfPremium + a.SelfTopupPremium + a.FamilyTopupPremium, sbt: a.SBIFamilyPremium + a.SBISelfPremium }))
+premiumTable = kmddata.map(a=> ({recon:  a.BankSlno, srno: a.SRNo, option:a.Option, nib:a.BaseFamilyPremium+a.BaseSelfPremium + a.SelfTopupPremium + a.FamilyTopupPremium, sbt: a.SBIFamilyPremium + a.SBISelfPremium }))
+
+report()
+bankrecon()
+document.getElementById('reconciledcount').innerHTML = kmddata.filter(a=> a.BankSlno>0).length
+document.getElementById('notyetcount').innerHTML = kmddata.filter(a=> a.BankSlno==='').length
+}
+
+reconurl='https://script.google.com/macros/s/AKfycbyeVnqWNYoEyYsRisXxp8agFGqL5dlDgq_f0EDBC4bj7xbVvgWUsw7yB_1c34E0asts/exec'
+async function getBankData() {
+response = await fetch(reconurl)
+recondata = await response.json()
+unreconciled = recondata.map(([trdate,det,slno,dummy1,amt,dummy2,dataslno,shdetails,mobile])=>({trdate,det,slno,dummy1,amt,dummy2,dataslno,shdetails,mobile}))
+unreconciled.shift()
+unreconciled.shift()
+
+}
+
+getBankData()
+getKmdData()
+    
+function report(){
+totable=''
+document.getElementById('recdate').innerHTML=`Bank Statement as on ${data[1][51]}<br>KMD Data as on ${data[2][51]}`
+kmddata.filter(a=> a.TotalPremiumReconciled>0).forEach(a=> {
+reconciled = a.TotalPremiumReconciled*1 >0 ? 'yes' : 'no'
+totable+= `<tr class=${reconciled} onclick='showsrno(${a.SRNo})'><td>${a.SRNo}<br>${a.RetName}` })
+document.getElementById('srnoTable').innerHTML= `<table table id='DataTable' border=1 id='myTable' width=100%><tr><td>SR No<br>Name ${totable} </table>`
+document.getElementById('myInput').style.display='block'
+}
+
+function reportunreconciled(){
+totable=''
+document.getElementById('recdate').innerHTML=`Bank Statement as on ${data[1][51]}<br>KMD Data as on ${data[2][51]}`
+kmddata.filter(a=> a.TotalPremiumReconciled===0).forEach(a=> {
+reconciled = a.TotalPremiumReconciled*1 >0 ? 'yes' : 'no'
+totable+= `<tr class=${reconciled} onclick='showsrno(${a.SRNo})'><td>${a.SRNo}<br>${a.RetName}` })
+document.getElementById('srnoTable').innerHTML= `<table table id='DataTable' border=1 id='myTable' width=100%><tr><td style='background:red; color:white; text-align:center;font-size:large; '>Payment Details Not found in Bank Statement  ${totable} </table>`
+document.getElementById('myInput').style.display='block'
+}
+
+
+function showsrno(sr){
+ThisSRNo = kmddata.filter(a=> a.SRNo === sr)
+ThisSRNo=ThisSRNo[0]
+spdetails = ThisSRNo.Option ==='Self+Spouse' ? `<tr><td>Spouse Name<td>${ThisSRNo.SpName}
+<tr><td>Gender/DOB<td>${ThisSRNo.SpGender}/${ThisSRNo.SpDOB}` : ''
+//----------------------------------------------
+fbase = ThisSRNo.BaseFamilyPremium>0 ? 
+`<tr><td colspan=2>Family Base Policy: Rs.${ThisSRNo.BaseFamily}
+ <tr><td colspan=2>Family Base Preimu: Rs.${ThisSRNo.BaseFamilyPremium}`: ""
+ftopup = ThisSRNo.FamilyTopupPremium>0 ?
+`<tr><td colspan=2>Family Super Topup Policy: Rs.${ThisSRNo.FamilyTopup}
+ <tr><td colspan=2>Family Super Topup Preimu: Rs.${ThisSRNo.FamilyTopupPremium}` : ""
+sbase = ThisSRNo.BaseSelfPremium>0 ?
+`<tr><td colspan=2>Self Base Policy: Rs.${ThisSRNo.BaseSelf}
+ <tr><td colspan=2>Self Base Preimu: Rs.${ThisSRNo.BaseSelfPremium}` :""
+stopup = ThisSRNo.SelfTopupPremium>0 ?
+`<tr><td colspan=2>Self Super Topup Policy: Rs.${ThisSRNo.SelfTopup}
+ <tr><td colspan=2>Self Super Topup Preimu: Rs.${ThisSRNo.SelfTopupPremium}` : ""
+sbifam = ThisSRNo.SBIFamilyPremium>0 ?
+`<tr><td colspan=2>SBI Family Super Topup Policy: Rs.${ThisSRNo.SBITopupFamily}
+ <tr><td colspan=2>SBI Family Super Topup Preimu: Rs.${ThisSRNo.SBIFamilyPremium}` : ""
+sbiself = ThisSRNo.SBISelfPremium>0 ?
+`<tr><td colspan=2>SBI Self Super Topup Policy: Rs.${ThisSRNo.SBITopupSelf}
+ <tr><td colspan=2>SBI Self Super Topup Preimu: Rs.${ThisSRNo.SBISelfPremium}` : ""
+//-----------------------------------------------
+myrep ='<table border=1><tr><td style="width:30%;">Data<td>Details'
+myrep +=`
+<tr><td>SR No: <td>${ThisSRNo.SRNo}
+<tr><td>Gender/DOB <td>${ThisSRNo.RetGender} / ${ThisSRNo.RetDOB}
+<tr><td  colspan=2>Address: ${ThisSRNo.Address}
+<tr><td>Email: <td>${ThisSRNo.Email}
+<tr><td>Mobile: <td>${ThisSRNo.Mobile}
+<tr><td>Option: <td>${ThisSRNo.Option}
+${spdetails}
+${fbase} 
+${ftopup} 
+${sbase }
+${stopup }
+${sbifam }
+${sbiself }
+<tr><td colspan=2>Total Premium:Rs.${ThisSRNo.GrandTotalPremium}
+<tr><td colspan=2>Nom. Name:${ThisSRNo.NomName}
+<tr><td colspan=2>Nom. DOB:${ThisSRNo.NomDOB}
+<tr><td colspan=2>Nom. Relation:${ThisSRNo.NomRelation}
+<tr><td colspan=2>Remarks:${ThisSRNo.Remarks}
+<tr><td colspan=2>Paid on: ${ThisSRNo.PaidOn} 
+`
+document.getElementById("nameHeader").innerHTML = ThisSRNo.RetName
+document.getElementById("modalData").innerHTML =myrep +'</table>'
+modal.style.display = "block";
+}
+
+var modal = document.getElementById("myModal");
+var span = document.getElementsByClassName("close")[0];
+window.onclick = function (event) {if (event.target == modal) {modal.style.display = "none";}}
+span.onclick = function () {modal.style.display = "none";}
+
+function bankrecon(){
+//bankDataTable=`<h1 align=center>FUNDS RECEIVED<BR>DATA NOT SUBMITTED</h1><h3 align=center>Ignore if Successfully Submitted after ${data[2][51]}</h3><table border=1 width=100%><tr><td>Date<br>Details / Amount`
+bankDataTable=`<h1 align=center>FUNDS RECEIVED<BR>DATA NOT SUBMITTED</h1><h3 align=center>Ignore if Successfully Submitted after ${data[2][51]}</h3><h3 align=center> No of Entries: ${unreconciled.length}</h3><table border=1 width=100%><tr><td>Date<br>Details / Amount`
+unreconciled.forEach(a=> bankDataTable += `<tr><td>${a.trdate}<br>${a.shdetails} -Rs. ${a.amt} - Ph: ${a.mobile}`)
+document.getElementById('srnoTable').innerHTML= bankDataTable + '</table>'
+document.getElementById('myInput').style.display='none'
+
+}
+function shhome(){scrollTo(0, 0)}
+let mybutton = document.getElementById("myBtn");
+window.onscroll = function() {scrollFunction2()};
+scrollFunction2=()=> (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) ? mybutton.style.display = "block" : mybutton.style.display = "none"; 
+
+
+function fiterName() {
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("myInput");
+                filter = input.value.toUpperCase().replaceAll(" ","");
+                table = document.getElementById("DataTable");
+                tr = table.getElementsByTagName("tr");
+                for (i = 0; i < tr.length; i++) {
+                    td = tr[i].getElementsByTagName("td")[0];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().replaceAll(" ","").indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                }
+            }
+function generateMis(){
+sbitable = [[3755,2209,'1L'],[6009,3534,'2L'],[8712,5125,'3L'],[11761,6918,'4L'],[15289,8994,'5L'],[19112,11243,'6L'],[22934,13491,'7L'],[26375,15515,'8L'],[30331,17842,'9L'],[34881,20518,'10L']]
+ptable=[[37509,30006,'2L'],[44617,35262,'2L+2L'],[46718,36193,'2L+3L'],[44891,34220,'3L'],[54100,40407,'3L+3L'],[55942,41645,'3L+4L'],[57717,48675,'4L'],[68768,56100,'4L+4L'],[73065,58988,'4L+5L'],[0,0,'No NIA']]
+matrixtable='<table border=1 width=100% class="mis"><tr class="bw"><td>NIA<td>Fam<td>Self<td>Tot<td>SBI<td>Fam<td>Self<td>Tot'
+for(i=0; i<sbitable.length; i++){
+n1=premiumTable.filter(a=> a.option ==='Self+Spouse' && a.nib ===ptable[i][0]).length
+n2=premiumTable.filter(a=> a.option ==='Only Self' && a.nib ===ptable[i][1]).length
+n3=n1+n2
+s1=premiumTable.filter(a=> a.option ==='Self+Spouse' && a.sbt ===sbitable[i][0]).length
+s2=premiumTable.filter(a=> a.option ==='Only Self' && a.sbt ===sbitable[i][1]).length
+s3=s1+s2
+matrixtable += `<tr><td>${ptable[i][2]}<td>${n1}<td>${n2}<td>${n3}<td>${sbitable[i][2]}<td>${s1}<td>${s2}<td>${s3}`
+}
+nt1=premiumTable.filter(a=> a.option === 'Self+Spouse').length
+nt2=premiumTable.filter(a=> a.option === 'Only Self').length
+nt3=nt1+nt2
+st1=premiumTable.filter(a=> a.option === 'Self+Spouse' && a.sbt>0).length
+st2=premiumTable.filter(a=> a.option === 'Only Self' && a.sbt>0).length
+st3 = st1+st2
+matrixtable += `<tr class="bw"><td>Tot<td>${nt1}<td>${nt2}<td>${nt3}<td>Tot<td>${st1}<td>${st2}<td>${st3}</table>`
+document.getElementById("nameHeader").innerHTML = 'MIS'
+document.getElementById("modalData").innerHTML =matrixtable
+modal.style.display = "block";
+}
+
+function sbiDistribution(){
+tt='<tr class="bw"><td><td>2+0<td>2+2<td>2+3<td>3+0<td>3+3<td>3+4<td>4+0<td>4+4<td>4+5<td>0+0<td>t'
+for (i=0; i<sbitable.length; i++)
+{t=0
+tt +=`<tr><td class='bw'>${sbitable[i][2]}`
+for (j=0; j<ptable.length; j++)
+{tt += `<td>${premiumTable.filter(a=> a.nib === ptable[j][0] && a.sbt === sbitable[i][0]).length} `
+t +=premiumTable.filter(a=> a.nib === ptable[j][0] && a.sbt === sbitable[i][0]).length
+}tt += `<td class='bw'>${t}`}
+document.getElementById("modalData").innerHTML =`<table border=1 width=100% class="mis"class="mis"class="mis">${tt}</table>`
+document.getElementById("nameHeader").innerHTML = 'SBI DISTRIBUTION FAMILY'
+}
+
+function sbiDistributionSelf(){
+tt='<tr class="bw"><td><td>2+0<td>2+2<td>2+3<td>3+0<td>3+3<td>3+4<td>4+0<td>4+4<td>4+5<td>0+0<td>t'
+for (i=0; i<sbitable.length; i++)
+{t=0
+tt +=`<tr><td class='bw'>${sbitable[i][2]}`
+for (j=0; j<ptable.length; j++)
+{tt += `<td>${premiumTable.filter(a=> a.nib === ptable[j][1] && a.sbt === sbitable[i][1]).length} `
+t +=premiumTable.filter(a=> a.nib === ptable[j][1] && a.sbt === sbitable[i][1]).length
+}tt += `<td class='bw'>${t}`}
+document.getElementById("modalData").innerHTML =`<table border=1 width=100% class="mis"class="mis"class="mis">${tt}</table>`
+document.getElementById("nameHeader").innerHTML = 'SBI DISTRIBUTION SELF'
+}
+
+</script>
+</body>
+</html>
