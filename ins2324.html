@@ -37,7 +37,7 @@ data = await response.json()
 kmddata= data.map(([BankSlno,TotalPremiumReconciled,SRNo,RetName,RetGender,RetDOB,Address,Email,Mobile,Option,SpName,SpGender,SpDOB,BaseFamily,BaseFamilyPremium,BaseSelf,BaseSelfPremium,FamilyTopup,FamilyTopupPremium,NIFamilyPremium,SelfTopup,SelfTopupPremium,NISelfPremium,DepChildOption,Child1Name,Child1DOB,Child1Gender,Child2Name,Child2DOB,Child2Gender,ChildPremium,TotalPremium,SBITopupFamily,SBIFamilyPremium,SBITopupSelf,SBISelfPremium,GrandTotalPremium,PaymentMode,BankName,AccountNo,IFSC,TransactionNo,PaidOn,NomName,NomDOB,NomRelation,ChqDeposited,AmountPaid,Agreememt,AddedDate,ModifiedTime,ReconDate,Remarks]
 ) => ({BankSlno,TotalPremiumReconciled,SRNo,RetName,RetGender,RetDOB,Address,Email,Mobile,Option,SpName,SpGender,SpDOB,BaseFamily,BaseFamilyPremium,BaseSelf,BaseSelfPremium,FamilyTopup,FamilyTopupPremium,NIFamilyPremium,SelfTopup,SelfTopupPremium,NISelfPremium,DepChildOption,Child1Name,Child1DOB,Child1Gender,Child2Name,Child2DOB,Child2Gender,ChildPremium,TotalPremium,SBITopupFamily,SBIFamilyPremium,SBITopupSelf,SBISelfPremium,GrandTotalPremium,PaymentMode,BankName,AccountNo,IFSC,TransactionNo,PaidOn,NomName,NomDOB,NomRelation,ChqDeposited,AmountPaid,Agreememt,AddedDate,ModifiedTime,ReconDate,Remarks}))
 kmddata.shift()
-kmddata = kmddata.sort((a, b) => a.SRNo -b.SRNo).filter(a=> a.Remakrs ==='Lot2';
+kmddata = kmddata.sort((a, b) => a.SRNo -b.SRNo).filter(a=> a.Remakrs ==='Lot2');
 reportunreconciled()
 document.getElementById('stmts').innerHTML=`KMD Data as on : ${data[2][51]}Bank Statement as on: ${data[1][51]}`
 }
