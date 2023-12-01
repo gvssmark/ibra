@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,7 +18,7 @@ body {margin:0 auto; max-width:360px; background:lightgrey}
 <body>
 
 <div id='inputdiv'>
-<h3>IBRA-INSURANCE DATA</h3>
+<h3>IBRA-INSURANCE 23-24 DATA</h3>
 <input type='number' id='mysrno'  class='myinput' placeholder="Your SR Number as given in data..." ></input><br>
 <input type='number' id='mymobile'class='myinput'  placeholder="10 digit Mobile Number as given in data..." ></input>
 <br>
@@ -39,7 +40,6 @@ kmddata= data.map(([BankSlno,TotalPremiumReconciled,SRNo,RetName,RetGender,RetDO
 kmddata.shift()
 kmddata = kmddata.sort((a, b) => a.SRNo -b.SRNo);
 reportunreconciled()
-document.getElementById('stmts').innerHTML=`KMD Data as on : ${data[2][51]}Bank Statement as on: ${data[1][51]}`
 }
 getKmdData()
 
@@ -118,10 +118,7 @@ bankrecon()
 getBankData()
  
 function bankrecon(){
-bankDataTable=`<h3 align=center>FUNDS RECEIVED<BR>DATA NOT SUBMITTED</h3><h3 align=center> No of Entries: ${unreconciled.length}</h3><table border=1 class='mod' width=100%><tr><td>Date<br>Details / Amount`
-unreconciled.forEach(a=> bankDataTable += `<tr><td>${a.trdate}<br>${a.shdetails} -Rs. ${a.amt} `)
-document.getElementById('tt').innerHTML= bankDataTable + '</table>'
-//document.getElementById('myInput').style.display='none'
+
 }
 
 
@@ -131,7 +128,7 @@ totable=''
 kmddata.filter(a=> a.TotalPremiumReconciled===0).forEach(a=> {
 reconciled = a.TotalPremiumReconciled*1 >0 ? 'yes' : 'no'
 totable+= `<tr class=${reconciled} ><td>${a.SRNo}<br>${a.RetName}` })
-document.getElementById('tt1').innerHTML= `<table class='mod'  border=1  width=100%><tr><td style='background:red; color:white; text-align:center;font-size:large; '>Payment Details Not found in Bank Statement  ${totable} </table>`
+
 //document.getElementById('myInput').style.display='block'
 }
 
