@@ -3,21 +3,19 @@
 <head>
     <meta name="viewport" content="width=device-width,  initial-scale=1.0">
 <style>
-.myinput {margin-top: 10px; font-size:18px; width:304px;;;margin-left:30px;height: 30px;background-color: cyan;border: 0px;
-outline: 0;display: block;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);}
-
+.myinput {margin-top: 10px; font-size:18px; width:300px; margin-left:30px; height: 30px; background-color: cyan; border: 0px; outline: 0; display: block; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);}
+.label {background:yellow; text-align:center; font-size:26px; width:300px; margin-left:30px;}
+.btn {background:red; color:white; font-size:26px; width:300px; margin-left:30px;}
 #inputdiv {margin:0 auto;}
 h3 {text-align:center; }
 body {margin:0 auto; max-width:360px; background:lightgrey}
 .trcolor {background:blue; color:white;}
-.btn {background:red; color:white; font-size:26px; width:304px;}
-.label {background:yellow;  text-align:center; font-size:26px;}
 </style>
 </head>
 <body>
 
 <div id='inputdiv'>
-<label for="period" class='myinput label'>Select Retirment Period</label>
+<label for="period" class='myinput label'>Select Retirement Period</label>
 
 <select name="period" id="period" class='myinput'>
   <option value="0">Retired prior to 1.11.1992</option>
@@ -28,7 +26,7 @@ body {margin:0 auto; max-width:360px; background:lightgrey}
   <option value="5">Retired on or after 1.11.2012</option>
   <option value="6">Retired on or after 1.11.2017</option>
 </select>
-<input type='number' id='basic'  class='myinput' placeholder="Basic  (including commutation)" value='2350'></input>
+<input type='number' id='basic' class='myinput' placeholder="Basic (including commutation)" value='2350'></input>
 
 
 <button onclick='showarr()' class ='myinput btn' >CALCULATE</button>
