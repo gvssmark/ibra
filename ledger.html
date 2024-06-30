@@ -2,6 +2,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +10,7 @@
 <title>IBRA-APTS</title>
 <style>
 body {font-size: small; ; align-items: center; font-family: "Lucida Console"}
-table, tr, td  {border:1px solid black;border-collapse: collapse;  margin-top:-15px;}
+table, tr, td  {width:100% ; border:1px solid black;border-collapse: collapse;  margin-top:-15px;}
 td {height:20px;}
 th{ background: red; color:white;position: sticky;top: 0;}
 a {color:black; text-decoration:none; }
@@ -29,6 +30,7 @@ a {color:black; text-decoration:none; }
 
 
 }
+
 td {width:auto;}
 </style>
 </head>
@@ -81,7 +83,7 @@ a.crac, amt: a.amt }));
         
            
            abc()
-   acts="<br><br><br><table id='actstable' align=center ><tr><td>AcNo<td >Ac Name<td >Balance"
+   acts="<br><br><br><table id='actstable' align=center ><tr><td  >AcNo<td >Ac Name<td >Balance"
 actDataReport.filter(a=> a.bal!=0).forEach( a => {acts += `<tr class='acrow'><td> ${a.acno} <td><a href='#${a.acno}'> ${a.acname} </a><td align=right>${a.bal}`})
 acts +="</table><br><br>"
 
