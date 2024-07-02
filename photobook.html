@@ -507,7 +507,7 @@ function nameclick(membershipNo) {
                 document.getElementById("front").innerHTML = toDisplay
                 document.getElementById("nameHeader").innerHTML = membData[0].name
 		phid= membData[0].photo.length >5 ? membData[0].photo :"1QX-GUIL2g6tf2QqMG3_gRZIaUeCTRR0X"
-		ph= "<img  src='https://drive.google.com/uc?export=view&id=" + phid +"' width='300' height='300'>"
+		ph= "<img  src='https://drive.google.com/thumbnail?id=" + phid +"' width='300' height='300'>"
 		document.getElementById("biophoto").innerHTML =ph
 		phid.length >5 ? document.getElementById("photo").style.display='none' :document.getElementById("photo").style.display='none'
                 modal.style.display = "block";
