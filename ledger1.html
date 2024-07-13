@@ -1,0 +1,262 @@
+
+<!DOCTYPE html>
+<html>
+<head><style>
+body {align-items:center}
+.mobileReport {border:1px solid black;   border-collapse: collapse; font-size:small; width:100%; margin:auto; }
+
+
+
+/* Combine common properties for different IDs */
+#acctsrep td:nth-child(3),
+#assetrep td:nth-child(3),
+#liabrep td:nth-child(3),
+#exprep td:nth-child(3),
+#incomerep td:nth-child(3),
+#bsrep td:nth-child(3),
+#ierep td:nth-child(3),
+#bsrep td:nth-child(6),
+#ierep td:nth-child(6) {
+    text-align: right;
+    width: 15%;
+	
+}
+
+#bsrep td:nth-child(1),
+#ierep td:nth-child(1),
+#bsrep td:nth-child(4),
+#ierep td:nth-child(4) {
+    text-align: center;
+    width: 5%;
+}
+
+#bsrep td:nth-child(2),
+#ierep td:nth-child(2) {
+    text-align: left;
+    width: 30%;
+}
+
+#bsrep td:nth-child(5),
+#ierep td:nth-child(5) {
+    text-align: left;
+    width: 30%;
+}
+#ledgerrep td:nth-child(5),td:nth-child(4) {text-align: right;}
+#ledgerrep tr:nth-child(1) {background;red}
+
+..mobileReport  td:nth-child(3) {text-align:right; width:15%;}
+..mobileReport  td:nth-child(6) {text-align:right; width:15%;}
+ tr:first-child {background:black; color:white}
+ ...tr:last-child {background:red; color:white}
+
+h2 {color:red; text-align:center}
+.tab {display:inline-block;  width:29%; border:1px solid black; padding: 5px;  text-align: center; font-size:small; 
+background-color: #333;  color: white;}
+.maindiv {margin:auto; width: 100%;  }
+#bsrep, #ierep {display:none}
+
+@media only screen and (min-width: 600px) {
+  body {width:600px;
+    background-color: lightblue;
+	margin:auto; 
+  }
+  ..tab {display:inline-block;  width:30%; border:1px solid black; padding: 5px;  text-align: center; font-size:small; 
+}
+
+#assetrep,#liabrep ,#exprep, #exprep, #incomerep, #bsrep, #ierep  { 1display:block}
+
+.acts, .bs, .ie, .bsie {display:none}
+
+ .bs tr:last-child {background:red; color:white} 
+ .ie tr:last-child {background:red; color:white}
+ 
+</style></head>
+<body>
+<h2 id='yr'></h2>
+<div class='maindiv'>
+<div onclick= 'shbs()'class='tab'>A & L</div>
+<div onclick='shpl()' class='tab'>P & L</div>
+<div onclick='shacts()'class='tab'>Accounts</div>
+
+</div>
+<p id='acctsrep' class='acts'>Accounts</p>
+<p id='ledgerrep' class='acts'>Ledger</p>
+<p id='assetrep' class='bs'>Assets</p>
+<p id='liabrep'  class='bs' >Liabilities</p>
+<p id='exprep'  class='ie'>Expenditure</p>
+<p id='incomerep'  class='ie'>Income</p>
+<p id='bsrep'  class='bsie'>Balance Sheet</p>
+<p id='ierep'  class='bsie'>Income & Expenditure</p>
+
+<script>
+reconurl = 'https://script.google.com/macros/s/AKfycbyqh7SlHldS9DbsK9IOISGVrYcXotyfixDo7S2kAyaYsYL-i13USXLcDvvgV-w9nK38Yw/exec'
+
+async function findata() {
+    response = await fetch(reconurl)
+    tdata = await response.json()
+    jrdata = tdata.sheet1Data.map(([trdt, jrnlno, dracc, cracc, trdetail, amt, drac, crac, dramt, cramt]) => ({trdt, jrnlno, dracc, cracc, trdetail, amt, drac, crac, dramt, cramt})).map(a=>  ({trdt: gdt(a.trdt), details:  a.trdetail, dr: a.drac*1, cr: a.crac*1, amt: a.amt})  )
+    jrdata1 = tdata.sheet1Data.map(([trdt, jrnlno, dracc, cracc, trdetail, amt, drac, crac, dramt, cramt]) => ({trdt, jrnlno, dracc, cracc, trdetail, amt, drac, crac, dramt, cramt})).map(a=>  ({trdt: ddmmyy(a.trdt), details:  a.trdetail, dr: a.drac*1, cr: a.crac*1, amt: a.amt})  )
+jrdatanew = tdata.sheet1Data.map(([trdt, jrnlno, dracc, cracc, trdetail, amt, drac, crac, dramt, cramt]) => ({trdt: gdt(trdt),details: trdetail,dr: drac * 1,cr: crac * 1,amt: amt}));
+f=filtdata(1001)
+console.clear()
+    console.table( f)
+    acdata = tdata.sheet2Data.map(([acno, mapgl, actype, acname, dispname, totdr, totcr, bal]) => ({acno: acno, acname: acname, bal: bal})).filter(a=> a.acno !== 2003).filter(a=> a.bal != 0).filter(a=> a.acno >0)
+    acdata1 = tdata.sheet2Data.map(([acno, mapgl, actype, acname, dispname, totdr, totcr, bal]) => ({acno, mapgl, actype, acname, dispname, totdr, totcr, bal})).filter(a=> a.acno !== 2003).filter(a=> a.bal != 0).filter(a=> a.acno >0)
+    bsdata = tdata.sheet3Data.map(([c0, c1, c2, c3, c4, c5, c6]) => ({c0, c1, c2, c3, c4, c5, c6})).filter(a => a.c3 !== '')
+    aldata = bsdata.filter(a=> a.c3==='al').map(({c0, c1, c2,  c4, c5, c6})=>({c0, c1, c2,  c4, c5, c6})) 
+    pldata = bsdata.filter(a=> a.c3==='ie').map(({c0, c1, c2,  c4, c5, c6})=>({c0, c1, c2,  c4, c5, c6})) 
+    liabdata =  aldata.map(({c0, c1, c2})=>({c0, c1, c2})).filter(a=> a.c0!=='')
+    assetdata  =  aldata.map(({c4, c5, c6})=>({c4, c5, c6})).filter(a=> a.c4!=='')
+    incomedata =  pldata.map(({c0, c1, c2})=>({c0, c1, c2})).filter(a=> a.c0!=='')
+    expdata =  pldata.map(({c4, c5, c6})=>({c4, c5, c6})).filter(a=> a.c4!=='')
+    makeTableHTML(aldata, 'bsrep')
+    makeTableHTML(pldata, 'ierep')
+    makeTableHTML(liabdata, 'liabrep')
+    makeTableHTML(assetdata, 'assetrep')
+    makeTableHTML(expdata, 'exprep')
+    makeTableHTML(incomedata, 'incomerep')
+	
+	//makeTableHTML(acdata, 'acctsrep')
+	acdatarep()
+	attachEventListeners()
+    document.getElementById('yr').innerHTML = `Accounts ${tdata.sheet1Data[0][0]}`
+}
+
+function makeTableHTML(arr, element) {
+    let newtable = `<table id=${element}Table class='mobileReport' border=1>${arr.map(obj => 
+        `<tr>${Object.values(obj).map(val => `<td >${val}</td>`).join('')}</tr>`
+    ).join('')}</table> <br>`
+    document.getElementById(element).innerHTML = newtable
+}
+
+findata()
+
+//jrdata.map(([trdt, jrnlno, dracc, cracc, trdetail, amt, drac, crac, dramt, cramt]) => ({trdt, jrnlno, dracc, cracc, trdetail, amt, drac, crac, dramt, cramt})).filter(o => {return (o.drac === '4003' || o.crac === '4003')})
+//
+// filtdata = (acno) =>jrdata.filter(o => {return (o.dr === acno || o.cr === acno)})
+
+//filtdata = (acno) =>jrdata.filter(o => {return (o.dr === acno || o.cr === acno)}).map(a=> ({tr: a.trdt, det: a.details, dr: a.dr, cr: a.cr, amt: a.amt, drcr: a.dr===acno ? 'Dr' : 'Cr'}))
+
+filtdata = (acno) =>jrdata.filter(o => {return (o.dr === acno || o.cr === acno)}).map(a=> ({tr: a.trdt, det: a.details,  amt: a.amt, drcr: a.dr===acno ? 'Dr' : 'Cr'}))
+//filtdata1 = (acno) =>jrdatanew.filter(o => {return (o.dr === acno || o.cr === acno)}).map(a=> ({tr: a.trdt, det: a.details,  amt: a.amt, drcr: a.dr===acno ? 'Dr' : 'Cr'}))
+filtdata1 = (acno) => jrdatanew.filter(o => o.dr === acno || o.cr === acno).map(a => ({tr: a.trdt,det: a.details,amt: a.amt, drcr: a.dr === acno ? 'Dr' : 'Cr', baltype: getFirstDigit(acno)}));
+
+
+getFirstDigit = (num) => {alplClass = parseInt(num.toString()[0], 10);
+                         return preceeding= alplClass === 1 || alplClass === 3 ? 'Debit' : 'Credit'
+                                                  }
+
+
+//console.table( filtdata(1001))
+
+
+
+
+function gdt (d){
+           mm  = (new Date(d).getMonth()*1+1).toString().padStart(2,0)
+           dd  = new Date(d).getDate().toString().padStart(2,0)
+           yyyy= new Date(d).getFullYear()
+           return dd+"/"+mm+"/"+yyyy
+}
+
+
+ddmmyy =(input) => new Date(input).toLocaleString().substring(0,10)
+
+
+console.table()
+
+
+function ledgerTable(acno) {
+filtered = filtdata1(acno)
+balance=0
+filtered = filtered.map(a=> {
+ if(a.baltype === 'Credit'){a.drcr === 'Cr' ? balance += a.amt :  balance -=a.amt } 
+ if(a.baltype === 'Debit' ){a.drcr === 'Cr' ? balance -= a.amt :  balance +=a.amt } 
+return { ...a, balance: balance }; // Add balance to the transaction
+})
+
+trdata=`<table width=100% class='actsReport mobileReport' border=1><tr><td colspan=5> ${acdata.filter(a=> a.acno===acno)[0].acname} <tr style='background:red; color:white'><td width=11%>Date<td>Details<td width=5%>DC<td width=15%>Amt<td width=15%>Bal`
+
+filtered.forEach(a=> {trdata += `<tr><td>${a.tr}<td>${a.det}<td>${a.drcr}<td>${a.amt}<td>${a.balance}`
+
+})    
+
+//console.log(`${trdata}</table>`)
+}
+
+
+function acdatarep(){
+acdatareptable = `<table id=acdataTable class='actsReport mobileReport'' border=1 width=100%><tr><td>Acno<td>Ac Name<td>Balance`
+acdata.forEach(a=> acdatareptable += `<tr id='${a.acno}' class='actablerow' ><td>${a.acno}<td>${a.acname}<td>${a.bal}`)
+document.getElementById('acctsrep').innerHTML = acdatareptable +'</table>'
+}
+
+
+
+function attachEventListeners() {
+     AccountElements = document.querySelectorAll('.actablerow');
+     AccountElements.forEach(a => {a.addEventListener('click', onClick);  });
+  }
+//attachEventListeners()
+
+function onClick(){
+//alert(this.id).
+//alert(document.getElementById(this.id).innerHTML)
+AccountElements.forEach(a=> a.style.backgroundColor='')
+AccountElements.forEach(a=> a.style.color='black')
+
+document.getElementById(this.id*1).style.backgroundColor='red'
+document.getElementById(this.id*1).style.color='white'
+
+
+ledgerTable(this.id*1)
+document.getElementById('ledgerrep').innerHTML = `${trdata}</table>`
+}
+
+function hideallclass(){
+
+document.getElementsByClassName('acts')[0].style.display='none'
+document.getElementsByClassName('acts')[1].style.display='none'
+
+document.getElementsByClassName('bs')[0].style.display='none'
+document.getElementsByClassName('bs')[1].style.display='none'
+
+document.getElementsByClassName('ie')[0].style.display='none'
+document.getElementsByClassName('ie')[1].style.display='none'
+
+document.getElementsByClassName('bsie')[0].style.display='none'
+document.getElementsByClassName('bsie')[1].style.display='none'
+
+
+
+}
+
+function shbs(){
+hideallclass()
+document.getElementsByClassName('bs')[0].style.display='block'
+document.getElementsByClassName('bs')[1].style.display='block'
+
+}
+
+function shpl(){
+hideallclass()
+document.getElementsByClassName('ie')[0].style.display='block'
+document.getElementsByClassName('ie')[1].style.display='block'
+
+}
+
+
+function shacts(){
+hideallclass()
+document.getElementsByClassName('acts')[0].style.display='block'
+document.getElementsByClassName('acts')[1].style.display='block'
+}
+</script>
+
+
+
+
+</body>
+</html>
+
+
