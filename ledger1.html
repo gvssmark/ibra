@@ -1,9 +1,8 @@
-
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IBRA-APTS</title>	
+	    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
 	<style>
 body {align-items:center}
 .mobileReport {border:1px solid black;   border-collapse: collapse; font-size:small; width:100%; margin:auto; }
@@ -45,6 +44,8 @@ body {align-items:center}
     width: 30%;
 }
 #ledgerrep td:nth-child(5),td:nth-child(4) {text-align: right;}
+#allledgerrep td:nth-child(5),td:nth-child(4) {text-align: right;}
+
 #ledgerrep tr:nth-child(1) {background;red}
 
 ..mobileReport  td:nth-child(3) {text-align:right; width:15%;}
@@ -79,16 +80,22 @@ background-color: #333;  color: white;}
 <div onclick= 'shbs()'class='tab'>A & L</div>
 <div onclick='shpl()' class='tab'>P & L</div>
 <div onclick='shacts()'class='tab'>Accounts</div>
+<div onclick='generateAllLedgers()'class='tab'>All Ledger</div>
+<div onclick='shbsie()'class='tab'>BD IE</div>
+<div onclick='printAll()'class='tab'>Print All</div>
 
 </div>
 <p id='acctsrep' class='acts'>Accounts</p>
 <p id='ledgerrep' class='acts'>Ledger</p>
+<p id='bsrep'  class='bsie'>Balance Sheet</p>
+<p id='ierep'  class='bsie'>Income & Expenditure</p>
+<p id='allledgerrep' class='acts'>all Ledgers</p>
+
 <p id='assetrep' class='bs'>Assets</p>
 <p id='liabrep'  class='bs' >Liabilities</p>
 <p id='exprep'  class='ie'>Expenditure</p>
 <p id='incomerep'  class='ie'>Income</p>
-<p id='bsrep'  class='bsie'>Balance Sheet</p>
-<p id='ierep'  class='bsie'>Income & Expenditure</p>
+
 
 <script>
 reconurl = 'https://script.google.com/macros/s/AKfycbyqh7SlHldS9DbsK9IOISGVrYcXotyfixDo7S2kAyaYsYL-i13USXLcDvvgV-w9nK38Yw/exec'
@@ -122,6 +129,7 @@ console.clear()
 	acdatarep()
 	attachEventListeners()
     document.getElementById('yr').innerHTML = `Accounts ${tdata.sheet1Data[0][0]}`
+	//generateAllLedgers()
 }
 
 function makeTableHTML(arr, element) {
@@ -177,13 +185,13 @@ filtered = filtered.map(a=> {
 return { ...a, balance: balance }; // Add balance to the transaction
 })
 
-trdata=`<table width=100% class='actsReport mobileReport' border=1><tr><td colspan=5> ${acdata.filter(a=> a.acno===acno)[0].acname} <tr style='background:red; color:white'><td width=11%>Date<td>Details<td width=5%>DC<td width=15%>Amt<td width=15%>Bal`
+trdata=`<table width=100% class='actsReport mobileReport' border=1><tr><td colspan=5><span style='font-size:large'> ${acno} - ${acdata.filter(a=> a.acno===acno)[0].acname}</span> <tr style='background:red; color:white'><td width=11%>Date<td>Details<td width=5%>DC<td width=15%>Amt<td width=15%>Bal`
 
 filtered.forEach(a=> {trdata += `<tr><td>${a.tr}<td>${a.det}<td>${a.drcr}<td>${a.amt}<td>${a.balance}`
 
 })    
 
-//console.log(`${trdata}</table>`)
+//console.log(`${trdata}</table><br><br><br>test`)
 }
 
 
@@ -219,6 +227,7 @@ function hideallclass(){
 
 document.getElementsByClassName('acts')[0].style.display='none'
 document.getElementsByClassName('acts')[1].style.display='none'
+document.getElementsByClassName('acts')[2].style.display='none'
 
 document.getElementsByClassName('bs')[0].style.display='none'
 document.getElementsByClassName('bs')[1].style.display='none'
@@ -250,9 +259,43 @@ document.getElementsByClassName('ie')[1].style.display='block'
 
 function shacts(){
 hideallclass()
+//generateAllLedgers()
 document.getElementsByClassName('acts')[0].style.display='block'
 document.getElementsByClassName('acts')[1].style.display='block'
+//document.getElementsByClassName('acts')[2].style.display='block'
+
 }
+
+function shbsie(){
+hideallclass()
+document.getElementsByClassName('bsie')[0].style.display='block'
+document.getElementsByClassName('bsie')[1].style.display='block'
+}
+function printAll(){
+//hideallclass()
+generateAllLedgers()
+hideallclass()
+
+
+document.getElementsByClassName('bsie')[0].style.display='block'
+document.getElementsByClassName('bsie')[1].style.display='block'
+document.getElementsByClassName('acts')[2].style.display='block'
+}
+
+
+function generateAllLedgers() {
+            ledgerContainer = document.getElementById('allledgerrep');
+            ledgerContainer.innerHTML = '';
+            acdata.forEach(account => {
+                 ledgerHTML = ledgerTable(account.acno);
+                 ledgerDiv = document.createElement('div');
+                ledgerDiv.className = 'ledger';
+                ledgerDiv.innerHTML = `${trdata}</table><br>`;
+                ledgerContainer.appendChild(ledgerDiv);
+            });
+			hideallclass()
+			document.getElementsByClassName('acts')[2].style.display='block'
+        }
 </script>
 
 
