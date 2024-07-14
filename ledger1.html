@@ -1,57 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
-	    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-
-	<style>
+<head> <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"><style>
 body {align-items:center}
 .mobileReport {border:1px solid black;   border-collapse: collapse; font-size:small; width:100%; margin:auto; }
+#acctsrep td:nth-child(3),#assetrep td:nth-child(3),#liabrep td:nth-child(3),#exprep td:nth-child(3),#incomerep td:nth-child(3),#bsrep td:nth-child(3),#ierep td:nth-child(3),#bsrep td:nth-child(6),
+#ierep td:nth-child(6) {    text-align: right;    width: 15%;	}
 
+#bsrep td:nth-child(1),#ierep td:nth-child(1),#bsrep td:nth-child(4),#ierep td:nth-child(4) {    text-align: center;    width: 5%;}
 
+#bsrep td:nth-child(2),#ierep td:nth-child(2) {    text-align: left;    width: 30%;}
 
-/* Combine common properties for different IDs */
-#acctsrep td:nth-child(3),
-#assetrep td:nth-child(3),
-#liabrep td:nth-child(3),
-#exprep td:nth-child(3),
-#incomerep td:nth-child(3),
-#bsrep td:nth-child(3),
-#ierep td:nth-child(3),
-#bsrep td:nth-child(6),
-#ierep td:nth-child(6) {
-    text-align: right;
-    width: 15%;
-	
-}
-
-#bsrep td:nth-child(1),
-#ierep td:nth-child(1),
-#bsrep td:nth-child(4),
-#ierep td:nth-child(4) {
-    text-align: center;
-    width: 5%;
-}
-
-#bsrep td:nth-child(2),
-#ierep td:nth-child(2) {
-    text-align: left;
-    width: 30%;
-}
-
-#bsrep td:nth-child(5),
-#ierep td:nth-child(5) {
-    text-align: left;
-    width: 30%;
-}
+#bsrep td:nth-child(5),#ierep td:nth-child(5) {    text-align: left;    width: 30%;}
 #ledgerrep td:nth-child(5),td:nth-child(4) {text-align: right;}
 #allledgerrep td:nth-child(5),td:nth-child(4) {text-align: right;}
 
 #ledgerrep tr:nth-child(1) {background;red}
-
-..mobileReport  td:nth-child(3) {text-align:right; width:15%;}
-..mobileReport  td:nth-child(6) {text-align:right; width:15%;}
  tr:first-child {background:black; color:white}
- ...tr:last-child {background:red; color:white}
 
 h2 {color:red; text-align:center}
 .tab {display:inline-block;  width:29%; border:1px solid black; padding: 5px;  text-align: center; font-size:small; 
@@ -83,14 +47,12 @@ background-color: #333;  color: white;}
 <div onclick='generateAllLedgers()'class='tab'>All Ledger</div>
 <div onclick='shbsie()'class='tab'>BD IE</div>
 <div onclick='printAll()'class='tab'>Print All</div>
-
 </div>
 <p id='acctsrep' class='acts'>Accounts</p>
 <p id='ledgerrep' class='acts'>Ledger</p>
 <p id='bsrep'  class='bsie'>Balance Sheet</p>
 <p id='ierep'  class='bsie'>Income & Expenditure</p>
 <p id='allledgerrep' class='acts'>all Ledgers</p>
-
 <p id='assetrep' class='bs'>Assets</p>
 <p id='liabrep'  class='bs' >Liabilities</p>
 <p id='exprep'  class='ie'>Expenditure</p>
@@ -124,12 +86,9 @@ console.clear()
     makeTableHTML(assetdata, 'assetrep')
     makeTableHTML(expdata, 'exprep')
     makeTableHTML(incomedata, 'incomerep')
-	
-	//makeTableHTML(acdata, 'acctsrep')
 	acdatarep()
 	attachEventListeners()
     document.getElementById('yr').innerHTML = `Accounts ${tdata.sheet1Data[0][0]}`
-	//generateAllLedgers()
 }
 
 function makeTableHTML(arr, element) {
@@ -140,27 +99,11 @@ function makeTableHTML(arr, element) {
 }
 
 findata()
-
-//jrdata.map(([trdt, jrnlno, dracc, cracc, trdetail, amt, drac, crac, dramt, cramt]) => ({trdt, jrnlno, dracc, cracc, trdetail, amt, drac, crac, dramt, cramt})).filter(o => {return (o.drac === '4003' || o.crac === '4003')})
-//
-// filtdata = (acno) =>jrdata.filter(o => {return (o.dr === acno || o.cr === acno)})
-
-//filtdata = (acno) =>jrdata.filter(o => {return (o.dr === acno || o.cr === acno)}).map(a=> ({tr: a.trdt, det: a.details, dr: a.dr, cr: a.cr, amt: a.amt, drcr: a.dr===acno ? 'Dr' : 'Cr'}))
-
 filtdata = (acno) =>jrdata.filter(o => {return (o.dr === acno || o.cr === acno)}).map(a=> ({tr: a.trdt, det: a.details,  amt: a.amt, drcr: a.dr===acno ? 'Dr' : 'Cr'}))
-//filtdata1 = (acno) =>jrdatanew.filter(o => {return (o.dr === acno || o.cr === acno)}).map(a=> ({tr: a.trdt, det: a.details,  amt: a.amt, drcr: a.dr===acno ? 'Dr' : 'Cr'}))
 filtdata1 = (acno) => jrdatanew.filter(o => o.dr === acno || o.cr === acno).map(a => ({tr: a.trdt,det: a.details,amt: a.amt, drcr: a.dr === acno ? 'Dr' : 'Cr', baltype: getFirstDigit(acno)}));
-
-
 getFirstDigit = (num) => {alplClass = parseInt(num.toString()[0], 10);
                          return preceeding= alplClass === 1 || alplClass === 3 ? 'Debit' : 'Credit'
-                                                  }
-
-
-//console.table( filtdata(1001))
-
-
-
+}
 
 function gdt (d){
            mm  = (new Date(d).getMonth()*1+1).toString().padStart(2,0)
@@ -168,13 +111,7 @@ function gdt (d){
            yyyy= new Date(d).getFullYear()
            return dd+"/"+mm+"/"+yyyy
 }
-
-
 ddmmyy =(input) => new Date(input).toLocaleString().substring(0,10)
-
-
-console.table()
-
 
 function ledgerTable(acno) {
 filtered = filtdata1(acno)
@@ -182,18 +119,10 @@ balance=0
 filtered = filtered.map(a=> {
  if(a.baltype === 'Credit'){a.drcr === 'Cr' ? balance += a.amt :  balance -=a.amt } 
  if(a.baltype === 'Debit' ){a.drcr === 'Cr' ? balance -= a.amt :  balance +=a.amt } 
-return { ...a, balance: balance }; // Add balance to the transaction
-})
-
+return { ...a, balance: balance }; })
 trdata=`<table width=100% class='actsReport mobileReport' border=1><tr><td colspan=5><span style='font-size:large'> ${acno} - ${acdata.filter(a=> a.acno===acno)[0].acname}</span> <tr style='background:red; color:white'><td width=11%>Date<td>Details<td width=5%>DC<td width=15%>Amt<td width=15%>Bal`
-
 filtered.forEach(a=> {trdata += `<tr><td>${a.tr}<td>${a.det}<td>${a.drcr}<td>${a.amt}<td>${a.balance}`
-
-})    
-
-//console.log(`${trdata}</table><br><br><br>test`)
-}
-
+})}
 
 function acdatarep(){
 acdatareptable = `<table id=acdataTable class='actsReport mobileReport'' border=1 width=100%><tr><td>Acno<td>Ac Name<td>Balance`
@@ -201,69 +130,48 @@ acdata.forEach(a=> acdatareptable += `<tr id='${a.acno}' class='actablerow' ><td
 document.getElementById('acctsrep').innerHTML = acdatareptable +'</table>'
 }
 
-
-
 function attachEventListeners() {
      AccountElements = document.querySelectorAll('.actablerow');
      AccountElements.forEach(a => {a.addEventListener('click', onClick);  });
   }
-//attachEventListeners()
 
 function onClick(){
-//alert(this.id).
-//alert(document.getElementById(this.id).innerHTML)
 AccountElements.forEach(a=> a.style.backgroundColor='')
 AccountElements.forEach(a=> a.style.color='black')
-
 document.getElementById(this.id*1).style.backgroundColor='red'
 document.getElementById(this.id*1).style.color='white'
-
-
 ledgerTable(this.id*1)
 document.getElementById('ledgerrep').innerHTML = `${trdata}</table>`
 }
 
 function hideallclass(){
-
 document.getElementsByClassName('acts')[0].style.display='none'
 document.getElementsByClassName('acts')[1].style.display='none'
 document.getElementsByClassName('acts')[2].style.display='none'
-
 document.getElementsByClassName('bs')[0].style.display='none'
 document.getElementsByClassName('bs')[1].style.display='none'
-
 document.getElementsByClassName('ie')[0].style.display='none'
 document.getElementsByClassName('ie')[1].style.display='none'
-
 document.getElementsByClassName('bsie')[0].style.display='none'
 document.getElementsByClassName('bsie')[1].style.display='none'
-
-
-
 }
 
 function shbs(){
 hideallclass()
 document.getElementsByClassName('bs')[0].style.display='block'
 document.getElementsByClassName('bs')[1].style.display='block'
-
 }
 
 function shpl(){
 hideallclass()
 document.getElementsByClassName('ie')[0].style.display='block'
 document.getElementsByClassName('ie')[1].style.display='block'
-
 }
-
 
 function shacts(){
 hideallclass()
-//generateAllLedgers()
 document.getElementsByClassName('acts')[0].style.display='block'
 document.getElementsByClassName('acts')[1].style.display='block'
-//document.getElementsByClassName('acts')[2].style.display='block'
-
 }
 
 function shbsie(){
@@ -271,17 +179,14 @@ hideallclass()
 document.getElementsByClassName('bsie')[0].style.display='block'
 document.getElementsByClassName('bsie')[1].style.display='block'
 }
+
 function printAll(){
-//hideallclass()
 generateAllLedgers()
 hideallclass()
-
-
 document.getElementsByClassName('bsie')[0].style.display='block'
 document.getElementsByClassName('bsie')[1].style.display='block'
 document.getElementsByClassName('acts')[2].style.display='block'
 }
-
 
 function generateAllLedgers() {
             ledgerContainer = document.getElementById('allledgerrep');
@@ -297,11 +202,5 @@ function generateAllLedgers() {
 			document.getElementsByClassName('acts')[2].style.display='block'
         }
 </script>
-
-
-
-
 </body>
 </html>
-
-
