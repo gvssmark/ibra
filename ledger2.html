@@ -45,23 +45,25 @@ td {background:white; color:black}
 }  
 
 #navtable td {width:25%; background:black; color:white; text-align:center}
+.ledgertr1 {background:black; color:white;}
+.ledgertr2{background:red; color:white}
+span {font-size:large}
+#navtable .actv {background:red}
 </style>
 </head>
 <body>
 
 <h3 id='yr'  >Accounts</h3>
-<table  id='navtable'><tr><td onclick='shal()'>AL<td  onclick='shpl()'>PL<td  onclick='shac()'>Accts<td onclick='printall()'>Print</table>
+<table  id='navtable' class='navtable'><tr><td class='actv' onclick='shal()'>AL<td  onclick='shpl()'>PL<td  onclick='shac()'>Accts<td onclick='printall()'>Print</table>
 <p id='assetP' class='al allps'>Assets</p>
 <p id='liabP' class='al allps'>Liabilites</p>
 <p id='incomeP' class='pl allps'>Income</p>
 <p id='expP' class='pl allps'>Expenditure</p>
 <p id='bs' class='bs allps toprint'>Balance Sheet</p>
 <p id='ie' class='bs allps toprint'>Profit & Loss</p>
-
-
 <p id='ac'  class='ac allps toprint'>Accounts</p>
 <p id='ledgerrep' class='ac allps' ></p>
-<p id='allledgerrep' class='ac allps toprint'>All Ledgers</p>
+<p id='allledgerrep' class='allps toprint'>All Ledgers</p>
 
 <script>
 ddmmyy = (input) => new Date(input).toLocaleString().substring(0, 10)
@@ -108,8 +110,8 @@ function attachEventListeners() {
 function onClick() {
     AccountElements.forEach(a => a.style.backgroundColor = '')
     AccountElements.forEach(a => a.style.color = 'black')
-    document.getElementById(this.id * 1).style.backgroundColor = 'red'
-    document.getElementById(this.id * 1).style.color = 'white'
+    document.getElementById(this.id).style.backgroundColor = 'red'
+    document.getElementById(this.id).style.color = 'white'
     ledgerTable(this.id * 1)
     document.getElementById('ledgerrep').innerHTML = `${trdata}</table>`
 }
@@ -121,12 +123,13 @@ function ledgerTable(acno) {
         if (a.baltype === 'Debit') { a.drcr === 'Cr' ? balance -= a.amt : balance += a.amt }
         return { ...a, balance: balance };
     })
-    trdata = `<table width=100% class='acledger' border=1><tr style='background:black; color:white;'><td colspan=5><span style='font-size:large'> ${acno} - ${acdata.filter(a => a.acno === acno)[0].acname}</span> <tr style='background:red; color:white'><td width=11%>Date<td>Details<td width=5%>DC<td width=15%>Amt<td width=15%>Bal`
+    trdata = `<table width=100% class='acledger' border=1><tr class=ledgertr1><td colspan=5><span> ${acno} - ${acdata.filter(a => a.acno === acno)[0].acname}</span> <tr class=ledgertr2><td width=11%>Date<td>Details<td width=5%>DC<td width=15%>Amt<td width=15%>Bal`
     filtered.forEach(a => { trdata += `<tr><td>${a.tr}<td>${a.det}<td>${a.drcr}<td>${a.amt}<td>${a.balance}` })
 }
 function hideallclass() {
  AllPs= document.querySelectorAll('.allps')
  AllPs.forEach(a=> a.style.display='none')
+ resetnavtable()
 }
 
 function makeTableHTML(arr, element, classname1) {
@@ -151,24 +154,32 @@ function generateAllLedgers() {
 function printall(){
 hideallclass()
 document.querySelectorAll('.toprint').forEach(a=> a.style.display='block')
+ntable[3].style.backgroundColor='red'
 window.print()
 }
 
 function shal(){
 hideallclass()
-document.getElementsByClassName('al')[0].style.display='block'
-document.getElementsByClassName('al')[1].style.display='block'
+document.querySelectorAll('.al').forEach(a=> a.style.display='block')
+ntable[0].style.backgroundColor='red'
 }
 
 function shpl(){
 hideallclass()
-document.getElementsByClassName('pl')[0].style.display='block'
-document.getElementsByClassName('pl')[1].style.display='block'
+document.querySelectorAll('.pl').forEach(a=> a.style.display='block')
+ntable[1].style.backgroundColor='red'
 }
 function shac(){
 hideallclass()
-document.getElementsByClassName('ac')[0].style.display='block'
-document.getElementsByClassName('ac')[1].style.display='block'
+document.querySelectorAll('.ac').forEach(a=> a.style.display='block')
+ntable[2].style.backgroundColor='red'
+}
+
+function resetnavtable(){
+ntable= document.querySelectorAll('.navtable td')
+
+//ntable= document.getElementById('navtable').children[0].children[0].cells
+for (item of ntable) {item.style.backgroundColor='black'}
 }
 
 </script>
