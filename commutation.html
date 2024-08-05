@@ -4,6 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 body {background:lightblue}
+input {height:20px; }
 #dataentry {display:none}
 #srnoinput {display:none}
 #nonmember {display:none}
@@ -34,13 +35,13 @@ body {background:lightblue}
 <div id='dataentry'>
 <form id='form' name='submit-to-google-sheet'>
 <table>
-<tr><td>SR No<td><input type='number' name='srno' required>
+<tr><td>SR No<td><input type='number' name='srno' id='inputsrno' disabled required>
 <tr><td>Name<td><input type='text' name='name' required>
 <tr><td>DOB<td><input type='date' name='dob' placeholder='DD-MM-YYYY' required >
 <tr><td>DOR<td><input type='date' name='dor' placeholder='dd-mm-yyyy'  required>
 <tr><td>DOC<td><input type='date' name='doc' placeholder='dd-mm-yyyy'  required>
-<tr><td>mobile<td><input type='number' name='mobile' required>
-<tr><td>remittance<td><input type='text' name='remittance' required>
+<tr><td>Mobile Number<td><input type="tel" name='mobile' pattern="[0-9]{10}" required>
+<tr><td>Remittance Ref No<td><input type='text' name='remittance' required>
 <tr><td colspan=2>
 <button  style="width:100%; background:yellow; font-size:large; color:red;;border:none; height:30px; border-radius:25px;  " type="submit" >Submit</button>
 </table>
@@ -52,7 +53,13 @@ body {background:lightblue}
 <div id='enteredData'>
 </div>
 
-<div id='nonmember'><h2>You are a Not a meber of IBRA.<br> Get Membership</h2></div>
+<div id='nonmember'><h2>You are a Not a member of IBRA.<br> Get Membership</h2>
+<ol><li>Please enrol as a member of IBRA.
+<li>Use the enclosed <a href='https://gvssmark.github.io/ibra/applications/MembershipForm.pdf'>application</a> to become IBRA member 
+<li>Submit the filled in application 
+<li>Try to input commutation details the next day.
+</ol>
+</div>
 
 <script>
 
@@ -74,6 +81,7 @@ tsrnodata.length >0 ? (tname.value = tsrnodata[0].name, document.getElementById(
 scriptURL='https://script.google.com/macros/s/AKfycbz0kZmxRywcgcJ_g-L5ffBQhhJ3NBRFjnAVB82kEnPYMVY0EQYUN1yFs5OZZnQ6_VFXuQ/exec'
 const form = document.forms['submit-to-google-sheet']
   form.addEventListener('submit', e => {
+  document.getElementById('inputsrno').disabled = false;
     e.preventDefault()
     fetch(scriptURL, { method: 'POST', body: new FormData(form)})
 form.reset();
