@@ -69,7 +69,7 @@ tname = document.getElementById('tempname')
 tsrnodata = membdata.filter(a=> a.srno === tsrno)
 submittedData = entereddata.filter(a=> a.srno === tsrno*1)
 submittedData.length >0 ? (document.getElementById('nonmember').style.display='block',
- document.getElementById('nonmember').innerHTML=`<h2>Data Already Submitted</h2>Name:${submittedData[0].name}<br>SR No:${submittedData[0].srno}<br>Date of Commutation  :${ddmmyy(submittedData[0].doc)}<br>Remittance:${submittedData[0].remittance}<br>Mobile:${submittedData[0].mobile} <br> All Dates in DD/MM/YYYY format<h3>For any corrections contact</h3>
+ document.getElementById('nonmember').innerHTML=`<h2>Data Already Submitted</h2>Name:${submittedData[0].name}<br>SR No:${submittedData[0].srno}<br>Date of Commutation  :${ddmmyy(submittedData[0].doc)}<br>Remittance:${submittedData[0].remittance}<br>Mobile:${submittedData[0].mobile} <h3>For any corrections contact</h3>
 `, srnoinpudisplay.style.display='none'):
 tsrnodata.length >0 ? (tname.value = tsrnodata[0].name, document.getElementById('form').srno.value =tsrnodata[0].srno, document.getElementById('form').name.value =tsrnodata[0].name )
 : tname.value = 'NonMember'
