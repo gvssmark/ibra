@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta name="viewport"       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
-  <title>IBRA COMMUTATION DATA</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+<title>IBRA COMMUTATION DATA</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <style>
 body {background:lightblue}
 input {height:20px; }
@@ -16,8 +16,6 @@ input {height:20px; }
 .pulsing-2:after {  animation-delay: -1s;}
 @keyframes pl2 {    100% {box-shadow: 0 0 0 40px #0000}}
 </style>
-
-
 </head>
 <body>
 <br>
@@ -25,98 +23,114 @@ input {height:20px; }
 
 <div id='srnoinput'>
 <table>
-<tr><td>PPO No<td><input type='number' id='tempsrno' onfocusout="checksrno()">
-<tr><td><td><lable  id='tempname'>
+<tr><td>Sr No<td><input type='number' id='tempsrno' onfocusout="checksrno()">
+<tr><td><td><label id='tempname'>
 <tr><td colspan=2>
-<button  onclick='srnoinputvalid()'style="width:100%; background:blue; font-size:large; color:red;;border:none; height:30px; border-radius:25px;  " type="submit" >Submit</button>
-
+<button onclick='srnoinputvalid()' style="width:100%; background:blue; font-size:large; color:red; border:none; height:30px; border-radius:25px;" type="submit">Submit</button>
 </table>
 </div>
-
 
 <div id='dataentry'>
 <form id='form' name='submit-to-google-sheet'>
 <table>
-<tr><td>PPO No<td><input type='number' name='srno' id='inputsrno' disabled required>
+<tr><td>PPO(id) No<td><input type='number' name='ppo' required>
+<tr><td>SR No<td><input type='number' name='srno' id='inputsrno' disabled required>
 <tr><td>Name<td><input type='text' name='name' required>
-<tr><td>Date of Commutation<td><input type='date' name='doc' placeholder='dd-mm-yyyy'  required min='2009-07-31' max='2014-07-31'>
+<tr><td>Date of Retirement<td><input type='date' name='dor' id='dordate' placeholder='dd-mm-yyyy' required min='2000-01-01' max='2014-07-31'>
+<tr><td>Date of Commutation<td><input type='date' name='doc' id='docdate' placeholder='dd-mm-yyyy' required  min='2009-07-31' max='2014-07-31'>
 <tr><td>Mobile Number<td><input type="tel" name='mobile' pattern="[0-9]{10}" required>
 <tr><td>Remittance Ref No<td><input type='text' name='remittance' required>
 <tr><td colspan=2>
-<button  style="width:100%; background:yellow; font-size:large; color:red;;border:none; height:30px; border-radius:25px;  " type="submit" >Submit</button>
+<button style="width:100%; background:yellow; font-size:large; color:red; border:none; height:30px; border-radius:25px;" type="submit">Submit</button>
 </table>
-
 </form>
 </div>
 
+<div id='enteredData'></div>
 
-<div id='enteredData'>
-</div>
-
-<div id='nonmember'><h2>You are a Not a member of IBRA.<br> Get Membership</h2>
-<ol><li>Please enrol as a member of IBRA.
-<li>Use the enclosed <a href='https://gvssmark.github.io/ibra/applications/MembershipForm.pdf'>application</a> to become IBRA member 
-<li>Submit the filled in application 
+<div id='nonmember'><h2>You are Not a member of IBRA.<br> Get Membership</h2>
+<ol>
+<li>Please enrol as a member of IBRA.
+<li>Use the enclosed <a href='https://gvssmark.github.io/ibra/applications/MembershipForm.pdf'>application</a> to become an IBRA member.
+<li>Submit the filled in application.
 <li>Try to input commutation details the next day.
 </ol>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
 
-ddmmyy = (input) => new Date(input).toLocaleString().substring(0, 10)
 
-function checksrno(){
-tsrno = document.getElementById('tempsrno').value *1
-tname = document.getElementById('tempname')
-tsrnodata = membdata.filter(a=> a.srno === tsrno)
-submittedData = entereddata.filter(a=> a.srno === tsrno*1)
-submittedData.length >0 ? (document.getElementById('nonmember').style.display='block',
- document.getElementById('nonmember').innerHTML=`<h2>Data Already Submitted</h2>Name:${submittedData[0].name}<br>SR No:${submittedData[0].srno}<br>Date of Commutation  :${ddmmyy(submittedData[0].doc)}<br>Remittance:${submittedData[0].remittance}<br>Mobile:${submittedData[0].mobile} <h3>For any corrections contact</h3>
-`, srnoinpudisplay.style.display='none'):
-tsrnodata.length >0 ? (tname.value = tsrnodata[0].name, document.getElementById('form').srno.value =tsrnodata[0].srno, document.getElementById('form').name.value =tsrnodata[0].name )
-: tname.value = 'NonMember'
+ddmmyy = (input) => new Date(input).toLocaleString().substring(0, 10);
 
+function checksrno() {
+    tsrno = document.getElementById('tempsrno').value * 1;
+    tname = document.getElementById('tempname');
+    tsrnodata = membdata.filter(a => a.srno === tsrno);
+    submittedData = entereddata.filter(a => a.srno === tsrno * 1);
+
+    if (submittedData.length > 0) {
+        document.getElementById('nonmember').style.display = 'block';
+        document.getElementById('nonmember').innerHTML = `<h2>Data Already Submitted</h2>
+        PPO(id) No: ${submittedData[0].ppo}<br>
+        SR No: ${submittedData[0].srno}<br>
+        Name: ${submittedData[0].name}<br>
+        Date of Retirement: ${submittedData[0].dor}<br>
+        Date of Commutation: ${ddmmyy(submittedData[0].doc)}<br>
+        Remittance: ${submittedData[0].remittance}<br>
+        Mobile: ${submittedData[0].mobile}<h3>For any corrections contact</h3>`;
+        srnoinpudisplay.style.display = 'none';
+    } else if (tsrnodata.length > 0) {
+        tname.value = tsrnodata[0].name;
+        document.getElementById('form').srno.value = tsrnodata[0].srno;
+        document.getElementById('form').name.value = tsrnodata[0].name;
+    } else {
+        tname.value = 'NonMember';
+    }
 }
 
-scriptURL='https://script.google.com/macros/s/AKfycbz0kZmxRywcgcJ_g-L5ffBQhhJ3NBRFjnAVB82kEnPYMVY0EQYUN1yFs5OZZnQ6_VFXuQ/exec'
-const form = document.forms['submit-to-google-sheet']
-  form.addEventListener('submit', e => {
-  document.getElementById('inputsrno').disabled = false;
-    e.preventDefault()
-    fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-form.reset();
- srnoinpudisplay.style.display='none'
- shdataentry.style.display='none'
- document.getElementById('nonmember').style.display='block'
- document.getElementById('nonmember').innerHTML='<h2>Data Submitted</h2>'
-  })
-  
-  
+scriptURL = 'https://script.google.com/macros/s/AKfycbz0kZmxRywcgcJ_g-L5ffBQhhJ3NBRFjnAVB82kEnPYMVY0EQYUN1yFs5OZZnQ6_VFXuQ/exec';
+const form = document.forms['submit-to-google-sheet'];
+form.addEventListener('submit', e => {
+    document.getElementById('inputsrno').disabled = false;
+    e.preventDefault();
+    fetch(scriptURL, { method: 'POST', body: new FormData(form) });
+    form.reset();
+    srnoinpudisplay.style.display = 'none';
+    shdataentry.style.display = 'none';
+    document.getElementById('nonmember').style.display = 'block';
+    document.getElementById('nonmember').innerHTML = '<h2>Data Submitted</h2>';
+});
+
 async function findata() {
-reconurl = 'https://script.google.com/macros/s/AKfycbxEGE1W_F919JV_0KWkHct9rxZCc_UmFS5uBVR85SDjm_7am__SNIYR4aKQ4ipKhO9b/exec'
-response = await fetch(reconurl)
-tdata = await response.json()
-membdata = tdata.sheet2Data.map(([srno,name,membno]) => ({srno,name,membno})).filter(a=> a.srno>0)
-entereddata = tdata.sheet1Data.map(([srno,name, dob,dor, doc, mobile, remittance, membno]) => ({srno,name, dob,dor, doc, mobile, remittance, membno}))
-srnoinpudisplay = document.getElementById('srnoinput')
+    reconurl = 'https://script.google.com/macros/s/AKfycbxEGE1W_F919JV_0KWkHct9rxZCc_UmFS5uBVR85SDjm_7am__SNIYR4aKQ4ipKhO9b/exec';
+    response = await fetch(reconurl);
+    tdata = await response.json();
+    membdata = tdata.sheet2Data.map(([srno, name, membno]) => ({ srno, name, membno })).filter(a => a.srno > 0);
+    entereddata = tdata.sheet1Data.map(([srno, ppo, name, dob, dor, doc, mobile, remittance, membno]) => ({ srno, ppo, name, dob, dor, doc, mobile, remittance, membno }));
+    srnoinpudisplay = document.getElementById('srnoinput');
 
-            
-membdata.length>0 ? (document.getElementById('loader').style.display="none",srnoinpudisplay.style.display='block') :  srnoinpudisplay.style.display='none' 
+    if (membdata.length > 0) {
+        document.getElementById('loader').style.display = "none";
+        srnoinpudisplay.style.display = 'block';
+    } else {
+        srnoinpudisplay.style.display = 'none';
+    }
 }
 
-findata()
+findata();
 
-function srnoinputvalid(){
-shdataentry = document.getElementById('dataentry')
-tname.value !== 'NonMember' ? (shdataentry.style.display='block', document.getElementById('srnoinput').style.display='none') : (shdataentry.style.display='none', 
-srnoinpudisplay.style.display='none',  
-document.getElementById('nonmember').style.display='block' )
+function srnoinputvalid() {
+    shdataentry = document.getElementById('dataentry');
+    if (tname.value !== 'NonMember') {
+        shdataentry.style.display = 'block';
+        document.getElementById('srnoinput').style.display = 'none';
+    } else {
+        shdataentry.style.display = 'none';
+        srnoinpudisplay.style.display = 'none';
+        document.getElementById('nonmember').style.display = 'block';
+    }
 }
-
-
 </script>
-
-
 </body>
 </html>
-
