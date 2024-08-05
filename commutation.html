@@ -37,9 +37,7 @@ input {height:20px; }
 <table>
 <tr><td>SR No<td><input type='number' name='srno' id='inputsrno' disabled required>
 <tr><td>Name<td><input type='text' name='name' required>
-<tr><td>Date of Birth<td><input type='date' name='dob' placeholder='DD-MM-YYYY' required >
-<tr><td>Date of Retirment<td><input type='date' name='dor' placeholder='dd-mm-yyyy'  required>
-<tr><td>Date of Commutation<td><input type='date' name='doc' placeholder='dd-mm-yyyy'  required>
+<tr><td>Date of Commutation<td><input type='date' name='doc' placeholder='dd-mm-yyyy'  required min='2009-08-31' max='2014-08-31'>
 <tr><td>Mobile Number<td><input type="tel" name='mobile' pattern="[0-9]{10}" required>
 <tr><td>Remittance Ref No<td><input type='text' name='remittance' required>
 <tr><td colspan=2>
@@ -71,7 +69,7 @@ tname = document.getElementById('tempname')
 tsrnodata = membdata.filter(a=> a.srno === tsrno)
 submittedData = entereddata.filter(a=> a.srno === tsrno*1)
 submittedData.length >0 ? (document.getElementById('nonmember').style.display='block',
- document.getElementById('nonmember').innerHTML=`<h2>Data Already Submitted</h2>Name:${submittedData[0].name}<br>SR No:${submittedData[0].srno}<br>DOB :${ddmmyy(submittedData[0].dob)}<br>DOR :${ddmmyy(submittedData[0].dob)}<br>DOC  :${ddmmyy(submittedData[0].doc)}<br>Remittance:${submittedData[0].remittance}<br>Mobile:${submittedData[0].mobile} <br> All Dates in DD/MM/YYYY format<h3>For any corrections contact</h3>
+ document.getElementById('nonmember').innerHTML=`<h2>Data Already Submitted</h2>Name:${submittedData[0].name}<br>SR No:${submittedData[0].srno}<br>Date of Commutation  :${ddmmyy(submittedData[0].doc)}<br>Remittance:${submittedData[0].remittance}<br>Mobile:${submittedData[0].mobile} <br> All Dates in DD/MM/YYYY format<h3>For any corrections contact</h3>
 `, srnoinpudisplay.style.display='none'):
 tsrnodata.length >0 ? (tname.value = tsrnodata[0].name, document.getElementById('form').srno.value =tsrnodata[0].srno, document.getElementById('form').name.value =tsrnodata[0].name )
 : tname.value = 'NonMember'
