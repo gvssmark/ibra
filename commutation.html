@@ -85,6 +85,9 @@ function checksrno() {
         tname.value = tsrnodata[0].name;
         document.getElementById('form').srno.value = tsrnodata[0].srno;
         document.getElementById('form').name.value = tsrnodata[0].name;
+        document.getElementById('form').ppo.value =tsrnodata[0].srno+'0'
+
+      
     } else {
         tname.value = 'NonMember';
     }
