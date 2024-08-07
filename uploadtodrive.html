@@ -8,7 +8,13 @@
         const reader = new FileReader();
         reader.onload = function(e) {
           const data = e.target.result;
-          window.parent.postMessage({ action: 'uploadFile', data: data, fileName: file.name, mimeType: file.type }, '*');
+          const message = {
+            action: 'uploadFile',
+            data: data,
+            fileName: file.name,
+            mimeType: file.type
+          };
+          window.parent.postMessage(message, '*');
         };
         reader.readAsDataURL(file);
       }
