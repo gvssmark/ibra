@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      function uploadFile() {
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const data = e.target.result;
+          google.script.run.withSuccessHandler(updateStatus)
+                           .uploadFileToDrive(data, file.name, file.type);
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function updateStatus(status) {
+        document.getElementById('status').innerText = status;
+      }
+    </script>
+  </head>
+  <body>
+    <form id="uploadForm" onsubmit="event.preventDefault(); uploadFile();">
+      <input type="file" id="fileInput" accept="image/*,.pdf" required>
+      <button type="submit">Upload File</button>
+    </form>
+    <p id="status"></p>
+  </body>
+</html>
