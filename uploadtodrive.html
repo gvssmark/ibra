@@ -8,15 +8,16 @@
         const reader = new FileReader();
         reader.onload = function(e) {
           const data = e.target.result;
-          google.script.run.withSuccessHandler(updateStatus)
-                           .uploadFileToDrive(data, file.name, file.type);
+          window.parent.postMessage({ action: 'uploadFile', data: data, fileName: file.name, mimeType: file.type }, '*');
         };
         reader.readAsDataURL(file);
       }
 
-      function updateStatus(status) {
-        document.getElementById('status').innerText = status;
-      }
+      window.addEventListener('message', function(event) {
+        if (event.data.action === 'updateStatus') {
+          document.getElementById('status').innerText = event.data.status;
+        }
+      });
     </script>
   </head>
   <body>
