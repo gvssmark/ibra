@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta name="viewport" content="width=device-width,  initial-scale=1.0">
+ 
+<style>
+body {font-size:small; background:lightblue}
+.reconciled {background:lightgreen}
+.notreconciled {background:lightpink}
+.tableHeading {background:black; color:white}
+h1 {text-align:center}
+#bkstmt {text-align: center}
+
+</style>
+</head>
+<body>
+
+<h1>Commutation Data</h1>
+<p id='bkstmt'>Bank Statement as on</p>
+<table align=center><tr><td class=reconciled>Reconciled<td class=notreconciled>Not Reconciled</table>
+<p id='report'></p>
+
+<script>
+async function findata() {
+url = 'https://script.google.com/macros/s/AKfycbxZ5vD2rVq7yb-0pRfPasUAbVb63ErrSBE5R_0iQw-7OS0l2fRn4L41jnNoLjjvp3z9/exec'
+response = await fetch(url);
+    tdata = await response.json();
+    commdata = tdata.sheet1Data.map(([srno, ppo, name, dob,dor,doc,mobile,remittance, bankslno]) => ({ srno, ppo, name,  dob: ddmmyy(dob),dor : ddmmyy(dor),doc: ddmmyy(doc),mobile,remittance, bankslno })).filter(a => a.srno > 0).sort((a,b)=> a.srno - b.srno)
+;
+    recondata = tdata.sheet2Data.map(([slno, details, amt, srno]) => ({ slno, details, amt, srno }))
+    
+    bankreconciled = recondata.filter(a => a.srno*1>  0);
+
+    banknotreconciled  = recondata.filter(a => a.srno*1 ===  0);
+
+    
+    //entereddata = tdata.sheet1Data.map(([slno, details, amt, srno]) => ({ slno, details, amt, srno }));
+    //srnoinpudisplay = document.getElementById('srnoinput');
+
+//    if (membdata.length > 0) {
+  //      document.getElementById('loader').style.display = "none";
+    //    srnoinpudisplay.style.display = 'block';
+    //} else {
+      //  srnoinpudisplay.style.display = 'none';
+    //}
+//console.table(commdata)
+//console.table(recondata)
+//console.table(bankreconciled)
+//console.table(banknotreconciled)
+comdatareport ='<table><tr class=tableHeading><td>SLNo<td>SR No<td>Name<td>Mobile'
+commdata.forEach((a, i) => comdatareport += `<tr class=${reconciled(a.bankslno)}><td>${i + 1}<td>${a.srno}<td>${a.name}<br>DOR:${a.dor} DOC:${a.doc}<td>${a.mobile} `);
+//console.log(comdatareport)
+
+document.getElementById('report').innerHTML = comdatareport +'</table><br><br>'
+document.getElementById('bkstmt').innerHTML ='Bank Statement as on : ' + tdata.sheet2Data[0][9]
+tdata.sheet2Data[0][9]
+
+}
+
+findata();
+reconciled =(a) => a>0 ? 'reconciled' : 'notreconciled'
+
+ddmmyy = (input) => new Date(input).toLocaleString().substring(0, 10)
+
+</script>
+
+
+</body>
+</html>
+
