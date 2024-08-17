@@ -108,7 +108,7 @@ form.addEventListener('submit', e => {
 });
 
 async function findata() {
-    reconurl = 'https://script.google.com/macros/s/AKfycbxEGE1W_F919JV_0KWkHct9rxZCc_UmFS5uBVR85SDjm_7am__SNIYR4aKQ4ipKhO9b/exec';
+    reconurl = 'https://script.google.com/macros/s/AKfycbxEGE1W_F919JV_0KWkHct9rxZCc_UmFS5uBVR85SDjm_7am__SNIYR4aKQ4ipKhO9b/exec/gvss';
     response = await fetch(reconurl);
     tdata = await response.json();
     membdata = tdata.sheet2Data.map(([srno, name, membno]) => ({ srno, name, membno })).filter(a => a.srno > 0);
