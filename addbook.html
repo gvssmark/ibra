@@ -1,3 +1,4 @@
+
 <html>
 <head>
     <meta name="viewport" content="width=device-width, maximum-scale=1 , initial-scale=1.0">
@@ -33,6 +34,7 @@ close:hover,.close:focus {color: #000;text-decoration: none;cursor: pointer;}
 .ibeab {background: pink;}
 button a {color:black; }
 button {background:yellow; border:0; width:170px; padding:5px; border-radius:15px; box-shadow: 3px 5px #888888; margin-left:5px}
+img {border-radius:50px}
 </style>
 </head>
 
@@ -95,9 +97,24 @@ button {background:yellow; border:0; width:170px; padding:5px; border-radius:15p
                 <span class="close">&times;</span>
                 <h4 align=center id="nameHeader"></h4>
                 <p id="modalData"> </p>
+                <div id='photo' style=' margin-top:-266px; float:right'>
+                </div>
             </div>
         </div>
         <script>
+        async function getPhotoIds() {
+photidurl='https://script.google.com/macros/s/AKfycbw_h5LMGCyIraesAhh6xlkeP8RUz3HO4ga4Q8XZaJhJRpnuQqp3TWUUZyodZPxpeA7A/exec'
+response = await fetch(photidurl)
+pdata = await response.json()
+photodata= pdata.map(([mno,photoid]) => ({mno,photoid}))
+photodata.shift()
+//memphoto = photodata.filter(a=> a.membno*1  === 494)[0].photoid
+//console.log(memphoto)
+//document.getElementById('membphoto').innerHTML = `<img  src='https://drive.google.com/thumbnail?id=${memphoto}'>`
+}
+
+getPhotoIds()
+
             url = 'https://script.google.com/macros/s/AKfycbzI9SDFOzYLYKRKJTlse0XpsEiF8XfbyxwUUH22evlGkEPDIt2V/exec'
             async function getMyData() {
                 response = await fetch(url)
@@ -168,6 +185,8 @@ function hmodal(){modal.style.display = "none"}
                 toDisplay = "<table border=1><tr>"
                 document.getElementById("myInput").value = ""
                 membno = membershipNo * 1 - 1;
+                memphotoid = photodata.filter(a=> a.mno  ===  membershipNo)
+                memphoto = memphotoid.length>0 ? `<img  src='https://drive.google.com/thumbnail?id=${memphotoid[0].photoid}' height=100 width=100'>`  : ""
                 membData = tempData.filter(a => a.id === membershipNo * 1)
                 toDisplay += "<tr><td colspan=2><b>Membership No</b> " + membData[0].id
                 toDisplay += "<tr><td colspan='2'><b>Address: </b><br>" + membData[0].add1 + "<br>"
@@ -193,6 +212,8 @@ function hmodal(){modal.style.display = "none"}
                 document.getElementById("modalData").innerHTML = toDisplay + "<table>"
                 document.getElementById("nameHeader").innerHTML = membData[0].name
                 modal.style.display = "block";
+                document.getElementById('photo').innerHTML = memphoto
+                
             }
 
             function fiterName() {
