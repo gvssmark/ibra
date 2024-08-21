@@ -35,6 +35,7 @@ close:hover,.close:focus {color: #000;text-decoration: none;cursor: pointer;}
 button a {color:black; }
 button {background:yellow; border:0; width:170px; padding:5px; border-radius:15px; box-shadow: 3px 5px #888888; margin-left:5px}
 img {border-radius:50px}
+#whatsapp {margin-top:-100px; float:right}
 </style>
 </head>
 
@@ -98,7 +99,8 @@ img {border-radius:50px}
                 <h4 align=center id="nameHeader"></h4>
                 <p id="modalData"> </p>
                 <div id='photo' style=' margin-top:-266px; float:right'>
-                </div>
+				</div>
+				<div id='whatsapp'>    xxxx             </div>
             </div>
         </div>
         <script>
@@ -213,6 +215,7 @@ function hmodal(){modal.style.display = "none"}
                 document.getElementById("nameHeader").innerHTML = membData[0].name
                 modal.style.display = "block";
                 document.getElementById('photo').innerHTML = memphoto
+				if (isMobileDevice) {document.getElementById('whatsapp').innerHTML =`<a aria-label="Chat on WhatsApp" href="https://wa.me/91${membData[0].mobile1}"> <img alt="Chat on WhatsApp" src="images/WhatsApp.jpg" height=50px /><a />`}
                 
             }
 
@@ -243,6 +246,16 @@ function hmodal(){modal.style.display = "none"}
                     this.className += " active";
                 });
             }
+let details = navigator.userAgent;
+/* Creating a regular expression containing some mobile devices keywords to search it in the details string */
+let regexp = /android|iphone|kindle|ipad/i;
+/* Using test() method to search regexp in details; it returns a boolean value */
+let isMobileDevice = regexp.test(details);
+if (isMobileDevice) {
+  console.log("You are using a Mobile Device");
+} else {
+  console.log("You are using Desktop");
+}
         </script>
 </body>
 </html>
