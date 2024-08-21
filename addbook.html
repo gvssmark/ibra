@@ -100,31 +100,25 @@ img {border-radius:50px}
                 <p id="modalData"> </p>
                 <div id='photo' style=' margin-top:-266px; float:right'>
 				</div>
-				<div id='whatsapp'>                </div>
+				<div id='whatsapp'> </div>
             </div>
         </div>
         <script>
-        async function getPhotoIds() {
-photidurl='https://script.google.com/macros/s/AKfycbw_h5LMGCyIraesAhh6xlkeP8RUz3HO4ga4Q8XZaJhJRpnuQqp3TWUUZyodZPxpeA7A/exec'
-response = await fetch(photidurl)
-pdata = await response.json()
-photodata= pdata.map(([mno,photoid]) => ({mno,photoid}))
-photodata.shift()
-//memphoto = photodata.filter(a=> a.membno*1  === 494)[0].photoid
-//console.log(memphoto)
-//document.getElementById('membphoto').innerHTML = `<img  src='https://drive.google.com/thumbnail?id=${memphoto}'>`
-}
-
-getPhotoIds()
-
-            url = 'https://script.google.com/macros/s/AKfycbzI9SDFOzYLYKRKJTlse0XpsEiF8XfbyxwUUH22evlGkEPDIt2V/exec'
+		
+		photidurl='https://script.google.com/macros/s/AKfycbw_h5LMGCyIraesAhh6xlkeP8RUz3HO4ga4Q8XZaJhJRpnuQqp3TWUUZyodZPxpeA7A/exec'
+        url = 'https://script.google.com/macros/s/AKfycbzI9SDFOzYLYKRKJTlse0XpsEiF8XfbyxwUUH22evlGkEPDIt2V/exec'
             async function getMyData() {
                 response = await fetch(url)
                 data = await response.json()
                 tempData = data["user"]
-                activeMembers = tempData.filter(a => a.name !== "")
-                    .sort(function (a, b) { return a.name.localeCompare(b.name) });
-                activeMembers.forEach(function (element) { element.IBorEAB = (element.area.substr(-3).toUpperCase() === 'EAB' ? "EAB" : "IB"), element.pentype = (element.fampen.length > 0 ? "fam" : "ser") })
+                activeMembers = tempData.filter(a => a.name !== "").sort(function (a, b) { return a.name.localeCompare(b.name) });
+
+				photoresponse = await fetch(photidurl)
+				pdata = await photoresponse.json()
+				photodata= pdata.map(([mno,photoid]) => ({mno,photoid}))
+				photodata.shift()					
+								
+activeMembers.forEach(function (element) { element.IBorEAB = (element.area.substr(-3).toUpperCase() === 'EAB' ? "EAB" : "IB"), element.pentype = (element.fampen.length > 0 ? "fam" : "ser") })
 familyPensioners = activeMembers.filter(a => a.fampen !== "").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB }));
 vsp = activeMembers.filter(a => a.area.substr(0, 3) === "VSP").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1 }));
 vij = activeMembers.filter(a => a.area.substr(0, 3) === "VIJ").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1  }));
@@ -156,8 +150,8 @@ famPensionersCount = array.filter(a => a.fampen.length > 0).length
 eabcount = array.filter(a => a.ibeab === 'EAB').length
 regions = ["All Members", "Visakhapatnam Area", "Godavari Area", "Vijayawada Area", "Seema Area", "Hyderabad Area", "Other States", "e Allahabad", "SR No Sorted"]
 document.getElementById('regionHeading').innerHTML = "Memebers in " + regions[n] + " <span class='badge'>" + array.length + "</span><span class='badge1'>" + famPensionersCount + "</span> <span class='eabbadge'>" + eabcount + "</span>"
-inThisRegion = "<table id='regionTable'  border=1><tr><td>Name / Mobile / SR No / Memb No "
-array.forEach(function (a) { inThisRegion += "<tr align=center onClick='nameclick(this.id)' id=" + a.id + "><td class='" + (a.fampen.length > 0 ? "fam" : "ser") + "'>" +"<span class='pname'>"+ a.name +"</span>"+ (a.fampen.length > 0 ? " <span class='smallbadge'> &nbsp;</span><br>Family Pension of:  " + a.fampen : " ") + (a.ibeab === 'EAB' ? "<span class='smalleabbadge'>&nbsp;" : "") + "</span> <br> Mobile: " +a.mobile +" / SR No: " + a.srno +" / Memb No: " +a.id+ "</td></tr>" })
+inThisRegion = "<table id='regionTable'  border=1><tr><td>Name / Mobile / SR No / Memb No /Photo "
+array.forEach(function (a) { inThisRegion += "<tr align=center onClick='nameclick(this.id)' id=" + a.id + "><td class='" + (a.fampen.length > 0 ? "fam" : "ser") + "'>" +"<span class='pname'>"+ a.name +"</span>"+ (a.fampen.length > 0 ? " <span class='smallbadge'> &nbsp;</span><br>Family Pension of:  " + a.fampen : " ") + (a.ibeab === 'EAB' ? "<span class='smalleabbadge'>&nbsp;" : "") + "</span> <br> Mobile: " +a.mobile +" / SR: " + a.srno +" / Memb: " +a.id+" / Photo: " +isPhoto(a.id)+ "</td></tr>" })
                 inThisRegion += "</table><br><br><br>"
                 document.getElementById('paraInThisRegion').innerHTML = ""
                 document.getElementById('paraInThisRegion').innerHTML = inThisRegion
@@ -165,6 +159,7 @@ array.forEach(function (a) { inThisRegion += "<tr align=center onClick='nameclic
             }
 
             isInsured = (srno) => insdata.filter(a => a.SRNO === srno).length;
+			isPhoto = (srno) => photodata.filter(a=> a.mno === srno.toString()).length >0 ? 'Yes' : 'No'
             myVar = ""
             var modal = document.getElementById("myModal");
             var span = document.getElementsByClassName("close")[0];
@@ -178,8 +173,6 @@ array.forEach(function (a) { inThisRegion += "<tr align=center onClick='nameclic
 
 function hmodal(){modal.style.display = "none"}
 
-            
-           // modal.addEventListener("ontouchstart",modal.style.display = "none")
             span.onclick = function () {
                 modal.style.display = "none";
             }
@@ -215,7 +208,7 @@ function hmodal(){modal.style.display = "none"}
                 document.getElementById("nameHeader").innerHTML = membData[0].name
                 modal.style.display = "block";
                 document.getElementById('photo').innerHTML = memphoto
-				if (isMobileDevice) {document.getElementById('whatsapp').innerHTML =`<a aria-label="Chat on WhatsApp" href="https://wa.me/91${membData[0].mobile1}"> <img alt="Chat on WhatsApp" src="images/WhatsApp.jpg" height=50px /><a />`}
+				if (isMobileDevice) {document.getElementById('whatsapp').innerHTML =`<a aria-label="Chat on WhatsApp" href="https://wa.me/91${membData[0].mobile1}"> <img alt="Chat on WhatsApp" src="WhatsApp.jpg" height=50px /><a />`}
                 
             }
 
@@ -247,15 +240,9 @@ function hmodal(){modal.style.display = "none"}
                 });
             }
 let details = navigator.userAgent;
-/* Creating a regular expression containing some mobile devices keywords to search it in the details string */
 let regexp = /android|iphone|kindle|ipad/i;
-/* Using test() method to search regexp in details; it returns a boolean value */
 let isMobileDevice = regexp.test(details);
-if (isMobileDevice) {
-  console.log("You are using a Mobile Device");
-} else {
-  console.log("You are using Desktop");
-}
+
         </script>
 </body>
 </html>
