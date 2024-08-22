@@ -179,6 +179,13 @@ array.forEach(function (a) { inThisRegion += "<tr align=center onClick='nameclic
         modal.style.display = "none";
     }
 });
+
+      window.addEventListener('touchend', function (event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+});
+		
            // modal.addEventListener("touchstart",hmodal)
 
 function hmodal(){modal.style.display = "none"}
