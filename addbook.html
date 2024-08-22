@@ -9,9 +9,11 @@
     <meta name="theme-color" content="#317EFB" />
     <link rel="apple-touch-icon" href="images/ibra512.png">
     <style>
+h1 {text-align:center}
+ .spinner {border: 100px solid rgba(0, 0, 0, 0.1);border-top: 100px solid orange;border-radius: 50%;width: 40px;height: 40px;animation: spin 1s linear infinite;margin: 0 auto;background:red;}
+@keyframes spin {0% { transform: rotate(0deg); }100% { transform: rotate(360deg); }}
 body {overscroll-behavior: contain; }
-      
-  .pname {font-family: "Poppins", sans-serif;text-shadow: 3px 3px 3px #ababab;font-size:25px;}
+.pname {font-family: "Poppins", sans-serif;text-shadow: 3px 3px 3px #ababab;font-size:25px;}
 element.style {display: block;margin-left: 5px;margin-right: 5px;}
 a {text-decoration:none}
 body {background: powderblue;font-size: small;margin: 0px auto;width:360px;box-sizing: border-box;}
@@ -36,10 +38,14 @@ button a {color:black; }
 button {background:yellow; border:0; width:170px; padding:5px; border-radius:15px; box-shadow: 3px 5px #888888; margin-left:5px}
 img {border-radius:50px}
 #whatsapp {margin-top:-100px; float:right}
+#page1 {display:none;}
 </style>
 </head>
 
 <body>
+<div id='spin'><h1>IBRA ADDRESS BOOK <br>Loading ...</h1>
+<div  class="spinner"></div>
+</div>
   <div id='page1' >      
   <h3 align=center>Indian Bank Retirees' Association</h3>
         <h4 align=center>Members Address Book</h4>
@@ -117,7 +123,7 @@ img {border-radius:50px}
 				pdata = await photoresponse.json()
 				photodata= pdata.map(([mno,photoid]) => ({mno,photoid}))
 				photodata.shift()					
-								
+	photodata.length >0 ? (document.getElementById('spin').style.display='none', document.getElementById('page1').style.display='block' ):''							
 activeMembers.forEach(function (element) { element.IBorEAB = (element.area.substr(-3).toUpperCase() === 'EAB' ? "EAB" : "IB"), element.pentype = (element.fampen.length > 0 ? "fam" : "ser") })
 familyPensioners = activeMembers.filter(a => a.fampen !== "").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB }));
 vsp = activeMembers.filter(a => a.area.substr(0, 3) === "VSP").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1 }));
@@ -209,7 +215,7 @@ function hmodal(){modal.style.display = "none"}
                 modal.style.display = "block";
                 document.getElementById('photo').innerHTML = memphoto
 				if (isMobileDevice) {document.getElementById('whatsapp').innerHTML =`<a aria-label="Chat on WhatsApp" href="https://wa.me/91${membData[0].mobile1}"> <img alt="Chat on WhatsApp" src="images/WhatsApp.jpg" height=50px /><a />`}
-                
+                //document.getElementById('whatsapp').innerHTML =`<a aria-label="Chat on WhatsApp" href="https://wa.me/91${membData[0].mobile1}"> <img alt="Chat on WhatsApp" src="images/WhatsApp.jpg" height=50px /><a />`
             }
 
             function fiterName() {
