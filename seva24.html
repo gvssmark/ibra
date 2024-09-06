@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,16 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SEVA 24 Data Collection</title>
     <style>
-@media screen and (min-width: 800px) {
-  body {
-    background-color: lavender;
-    width: 400px; 
-    margin: auto;
-  }
-  div.static {
-    width: 100%; /* Make it fit within the body (400px) */
-  }
-}
+
 
 body {
   font-family: Arial, sans-serif;
@@ -23,20 +15,16 @@ body {
   margin: 0 auto;
 }
 
+table {width:110%}
 div.static {
-  position: fixed;
-  width: 90%; /* Default to 90% for smaller screens */
+  position: sticky;
+  width: 100%; /* Default to 90% for smaller screens */
   background: red;
   color: white;
   top: 0;
 }
-	input {width:90%}
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
+	
+       
         label {
             display: block;
             margin-top: 10px;
@@ -75,11 +63,13 @@ div.static {
 		
 		.loader {
   border: 16px solid #f3f3f3;
+  position: sticky; 
   border-radius: 50%;
   border-top: 16px solid #3498db;
-  width: 25px;
-  height: 25px;
-  margin:auto;
+  width: 50px;
+  height: 50px;
+  margin:auto; 
+  
   -webkit-animation: spin 2s linear infinite; /* Safari */
   animation: spin 2s linear infinite;
 }
@@ -120,8 +110,8 @@ input  {width:95%}
 SB A/c. No. 473583196
 IFSC IDIB000H013, 
 Hyderabad Main branch.
-<li>LAST DATE FOR JOINING SEVA WILL BE 27/9/23 for SEVA FROM 30/9/23 to 7/10/23.
-<li>LAST DATE FOR SEVA FROM 8/10/23 to 14/10/23 will be 2/10/23.
+<li>LAST DATE FOR JOINING SEVA WILL BE 15/09/24 for SEVA FROM 17/9/24 to 24/09/24.
+<li>LAST DATE FOR SEVA FROM 25/09/24 to 02/10/24 will be 22/09/24.
 <li>For one date / Occasion you can add maximum of two names.
 </ol> 
 
@@ -318,7 +308,7 @@ url = 'https://script.google.com/macros/s/AKfycbyi2vgM3Ne0sPSA8q1lrg40XQBTujspdp
                 if (data.length>1){document.getElementById('buttons').style.display='block'
 				document.getElementById('loader').style.display='none'}
 				data = data.map(([dt, spons, sponsgotra, cospon, cosponsgotra,mobile,pd1name,pd1gotra,pd1relation,pd1othrelation,pd2name,pd2gotra,pd2relation,pd2othrelation]) => ({ dt: ddmmyy(dt), spons, sponsgotra, cospon, cosponsgotra,mobile,pd1name,pd1gotra,pd1relation,pd1othrelation,pd2name,pd2gotra,pd2relation,pd2othrelation })).filter(a => a.mobile > 0).sort((a,b)=> a.mobile - b.mobile)
-datareport='<br><br><br><br><table id="regionTable">'
+datareport='<table id="regionTable">'
 data.forEach(a=> datareport+= `<tr><td><h3> ${a.mobile} </h3> 
 Date: ${a.dt} <br>
 Sponsor: ${a.spons}  <br>
