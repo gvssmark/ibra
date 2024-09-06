@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEVA 24 Data Collection</title>
+    <style>
+@media screen and (min-width: 800px) {
+  body {
+    background-color: lavender;
+    width: 400px; 
+    margin: auto;
+  }
+  div.static {
+    width: 100%; /* Make it fit within the body (400px) */
+  }
+}
+
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+div.static {
+  position: fixed;
+  width: 90%; /* Default to 90% for smaller screens */
+  background: red;
+  color: white;
+  top: 0;
+}
+	input {width:90%}
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:disabled {
+            background-color: #cccccc;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .hidden {
+            display: none;
+        }
+        .instruction-page {
+            text-align: center;
+        }
+        .report-section {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+        li {text-align:left;}
+		
+		.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 25px;
+  height: 25px;
+  margin:auto;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+#buttons {display:none}
+input  {width:95%}
+
+
+    </style>
+</head>
+<body>
+
+    <div id="instructionPage" class="instruction-page">
+        <h1>Welcome to SEVA 24</h1>
+		<div id='loader' class="loader"></div>
+        <div id='home'>
+<div style='background:black; color:white; height:100'><h2 align=center>ॐ पितृ दैवतायै नम:</h2></div>
+<h3>Important Instructions</h3>
+
+
+
+<ol>
+<li>Sponsorship will be restricted to a max of 75 to 100 sponsors on first cum first serve basis.
+<li>Sponsors will have to submit the details in this form, filled up in English only.
+<li>Each sponsoror can sponsor a maximum of 3 or 4 occasions only & on each occasion names of a couple ( like Grandmother / Grandfather , Mother /Father , Father in Law / Mother in Law ). 
+<li>In case of a single deceased , a second name can be provided.
+<li>CONTRIBUTION PER SPONSOR PER OCCASION WILL BE Rs 2000/- which can be remitted to the following a/c of Smt B Visalakshi. 
+SB A/c. No. 473583196
+IFSC IDIB000H013, 
+Hyderabad Main branch.
+<li>LAST DATE FOR JOINING SEVA WILL BE 27/9/23 for SEVA FROM 30/9/23 to 7/10/23.
+<li>LAST DATE FOR SEVA FROM 8/10/23 to 14/10/23 will be 2/10/23.
+<li>For one date / Occasion you can add maximum of two names.
+</ol> 
+
+</div>
+<div id='buttons'>    
+    <p>Please select one of the following options:</p>
+        <button id="dataEntryBtn">Data Entry</button>
+        <button id="reportBtn">Report</button>
+    </div>
+	</div>
+
+    <form name="submit-to-google-sheet" id="sevaForm" class="hidden">
+        <h1>SEVA 24 Data Entry</h1>
+        <div class="form-group">
+            <label for="dateOfSeva">Date of Seva (17 Sept, 2024 – 2 Oct, 2024)</label>
+            <input type="date" id="dateOfSeva" name="Date of Seva" min="2024-09-17" max="2024-10-02" required>
+        </div>
+        <div class="form-group">
+            <label for="sponsorName">Name of the Sponsor</label>
+            <input type="text" id="sponsorName" name="Name of Sponsor" required>
+        </div>
+        <div class="form-group">
+            <label for="sponsorGotra">Gotra of Sponsor</label>
+            <input type="text" id="sponsorGotra" name="Gotra of Sponsor" required>
+        </div>
+        <div class="form-group">
+            <label for="coSponsorName">Name of Co-Sponsor</label>
+            <input type="text" id="coSponsorName" name="Name of Co-Sponsor">
+        </div>
+        <div class="form-group">
+            <label for="coSponsorGotra">Gotra of Co-Sponsor</label>
+            <input type="text" id="coSponsorGotra" name="Gotra of Co-Sponsor">
+        </div>
+        <div class="form-group">
+            <label for="mobileNumber">Mobile Number of the Sponsor</label>
+            <input type="tel" id="mobileNumber" name="Mobile Number" pattern="[0-9]{10}" title="Enter a 10-digit mobile number" required>
+        </div>
+        <div class="form-group">
+            <label for="pitruDevata1Name">Pitru Devata 1 Name</label>
+            <input type="text" id="pitruDevata1Name" name="Pitru Devata 1 Name" required>
+        </div>
+        <div class="form-group">
+            <label for="pitruDevata1Gotra">Pitru Devata 1 Gotra</label>
+            <input type="text" id="pitruDevata1Gotra" name="Pitru Devata 1 Gotra" required>
+        </div>
+        <div class="form-group">
+            <label for="pitruDevata1Relationship">Pitru Devata 1 Relationship</label>
+            <select id="pitruDevata1Relationship" name="Pitru Devata 1 Relationship" required>
+                <option value="">Select Relationship</option>
+                <option value="Father">Father</option>
+                <option value="Mother">Mother</option>
+                <option value="Maternal Grand Father">Maternal Grand Father</option>
+                <option value="Maternal Grand Mother">Maternal Grand Mother</option>
+                <option value="Paternal Grand Father">Paternal Grand Father</option>
+                <option value="Paternal Grand Mother">Paternal Grand Mother</option>
+                <option value="Any other Specify">Any other Specify</option>
+            </select>
+            <input type="text" id="otherRelationship1" name="Other Relationship 1" class="hidden" placeholder="Specify Relationship">
+        </div>
+        <div class="form-group">
+            <label for="pitruDevata2Name">Pitru Devata 2 Name</label>
+            <input type="text" id="pitruDevata2Name" name="Pitru Devata 2 Name">
+        </div>
+        <div class="form-group">
+            <label for="pitruDevata2Gotra">Pitru Devata 2 Gotra</label>
+            <input type="text" id="pitruDevata2Gotra" name="Pitru Devata 2 Gotra">
+        </div>
+        <div class="form-group">
+            <label for="pitruDevata2Relationship">Pitru Devata 2 Relationship</label>
+            <select id="pitruDevata2Relationship" name="Pitru Devata 2 Relationship">
+                <option value="">Select Relationship</option>
+                <option value="Father">Father</option>
+                <option value="Mother">Mother</option>
+                <option value="Maternal Grand Father">Maternal Grand Father</option>
+                <option value="Maternal Grand Mother">Maternal Grand Mother</option>
+                <option value="Paternal Grand Father">Paternal Grand Father</option>
+                <option value="Paternal Grand Mother">Paternal Grand Mother</option>
+                <option value="Any other Specify">Any other Specify</option>
+            </select>
+            <input type="text" id="otherRelationship2" name="Other Relationship 2" class="hidden" placeholder="Specify Relationship">
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="reportSection" class="report-section hidden">
+	<div class='static'>
+        <h1>SEVA 24 Report</h1>
+		<input type="text" id='myInput' placeholder="Search here..." onkeyup="fiterName()">
+		</div>
+        <div id="reportData"></div>
+    </div>
+
+    <div id="result"></div>
+
+    <script>
+        const instructionPage = document.getElementById('instructionPage');
+        const sevaForm = document.getElementById('sevaForm');
+        const reportSection = document.getElementById('reportSection');
+        const reportDataDiv = document.getElementById('reportData');
+        const resultDiv = document.getElementById('result');
+        const dataEntryBtn = document.getElementById('dataEntryBtn');
+        const reportBtn = document.getElementById('reportBtn');
+
+        dataEntryBtn.addEventListener('click', () => {
+            instructionPage.classList.add('hidden');
+            sevaForm.classList.remove('hidden');
+
+			
+        });
+
+        reportBtn.addEventListener('click', () => {
+            instructionPage.classList.add('hidden');
+            reportSection.classList.remove('hidden');
+            //fetchReportData();
+        });
+
+        const pitruDevata1Relationship = document.getElementById('pitruDevata1Relationship');
+        const otherRelationship1 = document.getElementById('otherRelationship1');
+        const pitruDevata2Relationship = document.getElementById('pitruDevata2Relationship');
+        const otherRelationship2 = document.getElementById('otherRelationship2');
+
+        pitruDevata1Relationship.addEventListener('change', function() {
+            if (this.value === 'Any other Specify') {
+                otherRelationship1.classList.remove('hidden');
+                otherRelationship1.required = true;
+            } else {
+                otherRelationship1.classList.add('hidden');
+                otherRelationship1.required = false;
+            }
+        });
+
+        pitruDevata2Relationship.addEventListener('change', function() {
+            if (this.value === 'Any other Specify') {
+                otherRelationship2.classList.remove('hidden');
+                otherRelationship2.required = true;
+            } else {
+                otherRelationship2.classList.add('hidden');
+                otherRelationship2.required = false;
+            }
+        });
+
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbytzFhmFLKbTpwiMhtvPUGyi26GTFg2i9cIPkbLQKrEfRd4Mb-ezKptfrf7nm-fSzUM/exec';
+        const form = document.forms['submit-to-google-sheet'];
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            formData.append('Other Relationship 1', otherRelationship1.value);
+            formData.append('Other Relationship 2', otherRelationship2.value);
+            formData.append('spreadsheetId', '1Tw4N6dPv7x1MENAVQKykBYu7zedrRF3s_R863XGHxYM'); 
+            formData.append('sheetName', 'SEVA24_Data');
+            fetch(scriptURL, { method: 'POST', body: formData })
+                .then(response => response.json())
+                .then(result => {
+                    console.log('Success:', result);
+                    displayData();
+                    form.reset();
+                })
+                .catch(error => console.error('Error:', error));
+				sevaForm.style.display='none';
+        });
+
+        function displayData() {
+            const formElements = form.elements;
+            let resultHTML = '<h3>Captured Data</h3><ul>';
+            for (let i = 0; i < formElements.length; i++) {
+                if (formElements[i].name && formElements[i].value) {
+                    resultHTML += `<li><strong>${formElements[i].name}:</strong> ${formElements[i].value}</li>`;
+                }
+            }
+            resultHTML += '</ul>';
+            resultDiv.innerHTML = resultHTML;
+        }
+		
+		            
+
+url = 'https://script.google.com/macros/s/AKfycbyi2vgM3Ne0sPSA8q1lrg40XQBTujspdpRUEeJFgKteEypEVeEEjqqHecvNgQOCn56Dyg/exec'
+            async function getMyData() {
+                response = await fetch(url)
+                data = await response.json()
+                if (data.length>1){document.getElementById('buttons').style.display='block'
+				document.getElementById('loader').style.display='none'}
+				data = data.map(([dt, spons, sponsgotra, cospon, cosponsgotra,mobile,pd1name,pd1gotra,pd1relation,pd1othrelation,pd2name,pd2gotra,pd2relation,pd2othrelation]) => ({ dt: ddmmyy(dt), spons, sponsgotra, cospon, cosponsgotra,mobile,pd1name,pd1gotra,pd1relation,pd1othrelation,pd2name,pd2gotra,pd2relation,pd2othrelation })).filter(a => a.mobile > 0).sort((a,b)=> a.mobile - b.mobile)
+datareport='<br><br><br><br><table id="regionTable">'
+data.forEach(a=> datareport+= `<tr><td><h3> ${a.mobile} </h3> 
+Date: ${a.dt} <br>
+Sponsor: ${a.spons}  <br>
+Gotra: ${a.sponsgotra}  <br>
+CoSponsor: ${a.cospon}  <br>
+Gotra: ${a.cosponsgotra} <br>
+Pitru1: ${a.pd1name} <br>
+Pitru1 Gotra: ${a.pd1gotra} <br>
+Pitru1 Relation: ${a.pd1relation ==='Any other Specify' ? a.pd1othrelation : a.pd1relation} <br>
+Pitru2: ${a.pd2name} <br>
+Pitru2 Gotra: ${a.pd2gotra} <br>
+Pitru2 Relation: ${a.pd2relation ==='Any other Specify' ? a.pd2othrelation : a.pd2relation} <br>
+
+`)
+reportDataDiv.innerHTML=datareport
+				console.log(data)
+				
+				}
+		getMyData()		
+ddmmyy = (input) => new Date(input).toDateString()
+
+
+function fiterName() {
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("myInput");
+                filter = input.value.toUpperCase().replaceAll(" ","");
+                table = document.getElementById("regionTable");
+                tr = table.getElementsByTagName("tr");
+                for (i = 0; i < tr.length; i++) {
+                    td = tr[i].getElementsByTagName("td")[0];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().replaceAll(" ","").indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                }
+            }
+        
+    </script>
+</body>
+</html>
+
