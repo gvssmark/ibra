@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +16,7 @@ body {
   margin: 0 auto;
 }
 
-table {width:110%}
+table {width:100%;  border-bottom: 1px solid red}
 div.static {
   position: sticky;
   width: 100%; /* Default to 90% for smaller screens */
@@ -86,7 +87,8 @@ div.static {
 }
 #buttons {display:none}
 input  {width:95%}
-
+.one {color:red}
+.two {color:blue}
 
     </style>
 </head>
@@ -106,11 +108,9 @@ input  {width:95%}
 <li>Sponsors will have to submit the details in this form, filled up in English only.
 <li>Each sponsoror can sponsor a maximum of 3 or 4 occasions only & on each occasion names of a couple ( like Grandmother / Grandfather , Mother /Father , Father in Law / Mother in Law ). 
 <li>In case of a single deceased , a second name can be provided.
-<li>CONTRIBUTION PER SPONSOR PER OCCASION WILL BE Rs 2000/- which can be remitted to the following a/c of Smt B Visalakshi. 
-SB A/c. No. 473583196
-IFSC IDIB000H013, 
-Hyderabad Main branch.
-<li>LAST DATE FOR JOINING SEVA WILL BE 15/09/24 for SEVA FROM 17/9/24 to 24/09/24.
+<li>CONTRIBUTION PER SPONSOR PER OCCASION WILL BE Rs 2500/- which can be remitted to the following a/c of <br>Sri P Veerabhadra Rao & Sri AV Subba Rao <br>Indian Bank , Prakashnagar , Rajahmundry <br>IFSC code IDIB000P121 <br> 
+SB A/c. No. 7280105456 
+<li>LAST DATE FOR JOINING SEVA WILL BE 15/09/24 for SEVA FROM 18/09/24 to 24/09/24.
 <li>LAST DATE FOR SEVA FROM 25/09/24 to 02/10/24 will be 22/09/24.
 <li>For one date / Occasion you can add maximum of two names.
 </ol> 
@@ -123,42 +123,43 @@ Hyderabad Main branch.
     </div>
 	</div>
 
-    <form name="submit-to-google-sheet" id="sevaForm" class="hidden">
+    <form name="submit-to-google-sheet" id="sevaForm" class="hidden"   >
         <h1>SEVA 24 Data Entry</h1>
         <div class="form-group">
-            <label for="dateOfSeva">Date of Seva (17 Sept, 2024 – 2 Oct, 2024)</label>
-            <input type="date" id="dateOfSeva" name="Date of Seva" min="2024-09-17" max="2024-10-02" required>
+            <label for="mobileNumber">Mobile Number of the Sponsor*</label>
+            <input type="tel" id="mobileNumber" name="Mobile Number" pattern="[0-9]{10}" title="Enter a 10-digit mobile number" required>
         </div>
         <div class="form-group">
-            <label for="sponsorName">Name of the Sponsor</label>
+            <label for="sponsorName">Full Name of the Sponsor*</label>
             <input type="text" id="sponsorName" name="Name of Sponsor" required>
         </div>
         <div class="form-group">
-            <label for="sponsorGotra">Gotra of Sponsor</label>
+            <label for="sponsorGotra">Gotra of Sponsor*</label>
             <input type="text" id="sponsorGotra" name="Gotra of Sponsor" required>
         </div>
         <div class="form-group">
-            <label for="coSponsorName">Name of Co-Sponsor</label>
+            <label for="coSponsorName">Full Name of the Co-Sponsor</label>
             <input type="text" id="coSponsorName" name="Name of Co-Sponsor">
         </div>
         <div class="form-group">
             <label for="coSponsorGotra">Gotra of Co-Sponsor</label>
             <input type="text" id="coSponsorGotra" name="Gotra of Co-Sponsor">
         </div>
+        
         <div class="form-group">
-            <label for="mobileNumber">Mobile Number of the Sponsor</label>
-            <input type="tel" id="mobileNumber" name="Mobile Number" pattern="[0-9]{10}" title="Enter a 10-digit mobile number" required>
+            <label for="dateOfSeva">Date of Seva (18 Sept, 2024 – 2 Oct, 2024)*</label>
+            <input type="date" id="dateOfSeva" name="Date of Seva" min="2024-09-18" max="2024-10-02" required>
         </div>
         <div class="form-group">
-            <label for="pitruDevata1Name">Pitru Devata 1 Name</label>
+            <label for="pitruDevata1Name">Pitru Devata 1 Full Name*</label>
             <input type="text" id="pitruDevata1Name" name="Pitru Devata 1 Name" required>
         </div>
         <div class="form-group">
-            <label for="pitruDevata1Gotra">Pitru Devata 1 Gotra</label>
+            <label for="pitruDevata1Gotra">Pitru Devata 1 Gotra*</label>
             <input type="text" id="pitruDevata1Gotra" name="Pitru Devata 1 Gotra" required>
         </div>
         <div class="form-group">
-            <label for="pitruDevata1Relationship">Pitru Devata 1 Relationship</label>
+            <label for="pitruDevata1Relationship">Pitru Devata 1 Relationship*</label>
             <select id="pitruDevata1Relationship" name="Pitru Devata 1 Relationship" required>
                 <option value="">Select Relationship</option>
                 <option value="Father">Father</option>
@@ -178,7 +179,11 @@ Hyderabad Main branch.
             <input type="text" id="otherRelationship1" name="Other Relationship 1" class="hidden" placeholder="Specify Relationship">
         </div>
         <div class="form-group">
-            <label for="pitruDevata2Name">Pitru Devata 2 Name</label>
+            <label for="dateOfSeva">Date of Seva (18 Sept, 2024 – 2 Oct, 2024)</label>
+            <input type="date" id="dateOfSeva2" name="Date of Seva2" min="2024-09-18" max="2024-10-02" >
+        </div>
+        <div class="form-group">
+            <label for="pitruDevata2Name">Pitru Devata 2  Full Name</label>
             <input type="text" id="pitruDevata2Name" name="Pitru Devata 2 Name">
         </div>
         <div class="form-group">
@@ -270,6 +275,8 @@ Hyderabad Main branch.
         const form = document.forms['submit-to-google-sheet'];
 
         form.addEventListener('submit', e => {
+		
+		
             e.preventDefault();
             const formData = new FormData(form);
             formData.append('Other Relationship 1', otherRelationship1.value);
@@ -286,6 +293,12 @@ Hyderabad Main branch.
                 .catch(error => console.error('Error:', error));
 				sevaForm.style.display='none';
         });
+        
+       
+        
+    //return true;  // Allow submission if the condition is not met
+
+
 
         function displayData() {
             const formElements = form.elements;
@@ -307,20 +320,21 @@ url = 'https://script.google.com/macros/s/AKfycbyi2vgM3Ne0sPSA8q1lrg40XQBTujspdp
                 data = await response.json()
                 if (data.length>1){document.getElementById('buttons').style.display='block'
 				document.getElementById('loader').style.display='none'}
-				data = data.map(([dt, spons, sponsgotra, cospon, cosponsgotra,mobile,pd1name,pd1gotra,pd1relation,pd1othrelation,pd2name,pd2gotra,pd2relation,pd2othrelation]) => ({ dt: ddmmyy(dt), spons, sponsgotra, cospon, cosponsgotra,mobile,pd1name,pd1gotra,pd1relation,pd1othrelation,pd2name,pd2gotra,pd2relation,pd2othrelation })).filter(a => a.mobile > 0).sort((a,b)=> a.mobile - b.mobile)
+				data = data.map(([dt, spons, sponsgotra, cospon, cosponsgotra,mobile,pd1name,pd1gotra,pd1relation,pd1othrelation,pd2name,pd2gotra,pd2relation,pd2othrelation,dt2]) => ({ dt: ddmmyy(dt), spons, sponsgotra, cospon, cosponsgotra,mobile,pd1name,pd1gotra,pd1relation,pd1othrelation,pd2name,pd2gotra,pd2relation,pd2othrelation,dt2: ddmmyy(dt2) })).filter(a => a.mobile > 0).sort((a,b)=> a.mobile - b.mobile)
 datareport='<table id="regionTable">'
 data.forEach(a=> datareport+= `<tr><td><h3> ${a.mobile} </h3> 
-Date: ${a.dt} <br>
 Sponsor: ${a.spons}  <br>
 Gotra: ${a.sponsgotra}  <br>
 CoSponsor: ${a.cospon}  <br>
-Gotra: ${a.cosponsgotra} <br>
+Gotra: ${a.cosponsgotra} <br><br>
+<span class='one'><u>Date: ${a.dt}</u> <br>
 Pitru1: ${a.pd1name} <br>
 Pitru1 Gotra: ${a.pd1gotra} <br>
-Pitru1 Relation: ${a.pd1relation ==='Any other Specify' ? a.pd1othrelation : a.pd1relation} <br>
-Pitru2: ${a.pd2name} <br>
-Pitru2 Gotra: ${a.pd2gotra} <br>
-Pitru2 Relation: ${a.pd2relation ==='Any other Specify' ? a.pd2othrelation : a.pd2relation} <br>
+Pitru1 Relation: ${a.pd1relation ==='Any other Specify' ? a.pd1othrelation : a.pd1relation} <br><br></span>
+<span class='two'><u>Date: ${a.dt2 =='Invalid Date' ?  'Not Opted' : a.dt2}</u> <br>
+Pitru2: ${a.pd2name !='' ? a.pd2name :  'Not Opted' } <br>
+Pitru2 Gotra: ${a.pd2gotra !='' ? a.pd2gotra : 'Not Opted' } <br>
+Pitru2 Relation: ${a.pd2relation ==='Any other Specify' ? a.pd2othrelation : a.pd2relation} <br></span>
 
 `)
 reportDataDiv.innerHTML=datareport
@@ -350,7 +364,38 @@ function fiterName() {
                 }
             }
         
-    </script>
+    
+    const dateOfSeva2 = document.getElementById('dateOfSeva2');
+    const pitruDevata2Name = document.getElementById('pitruDevata2Name');
+    const pitruDevata2Gotra = document.getElementById('pitruDevata2Gotra');
+   // const pitruDevata2Relationship = document.getElementById('pitruDevata2Relationship');
+
+    function checkSecondPitruFields() {
+        if (
+            dateOfSeva2.value ||
+            pitruDevata2Name.value ||
+            pitruDevata2Gotra.value ||
+            pitruDevata2Relationship.value
+        ) {
+            dateOfSeva2.required = true;
+            pitruDevata2Name.required = true;
+            pitruDevata2Gotra.required = true;
+            pitruDevata2Relationship.required = true;
+        } else {
+            dateOfSeva2.required = false;
+            pitruDevata2Name.required = false;
+            pitruDevata2Gotra.required = false;
+            pitruDevata2Relationship.required = false;
+        }
+    }
+
+    // Attach event listeners to these fields to trigger the check function
+    dateOfSeva2.addEventListener('input', checkSecondPitruFields);
+    pitruDevata2Name.addEventListener('input', checkSecondPitruFields);
+    pitruDevata2Gotra.addEventListener('input', checkSecondPitruFields);
+    pitruDevata2Relationship.addEventListener('change', checkSecondPitruFields);
+</script>
+
 </body>
 </html>
 
