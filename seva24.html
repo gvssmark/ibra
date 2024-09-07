@@ -89,6 +89,7 @@ div.static {
 input  {width:95%}
 .one {color:red}
 .two {color:blue}
+.required {background:cyan}
 
     </style>
 </head>
@@ -113,7 +114,6 @@ SB A/c. No. 7280105456
 <li>LAST DATE FOR JOINING SEVA WILL BE 15/09/24 for SEVA FROM 18/09/24 to 24/09/24.
 <li>LAST DATE FOR SEVA FROM 25/09/24 to 02/10/24 will be 22/09/24.
 <li>For one date / Occasion you can add maximum of two names.
-	
 </ol> 
 
 </div>
@@ -128,15 +128,15 @@ SB A/c. No. 7280105456
         <h1>SEVA 24 Data Entry</h1>
         <div class="form-group">
             <label for="mobileNumber">Mobile Number of the Sponsor*</label>
-            <input type="tel" id="mobileNumber" name="Mobile Number" pattern="[0-9]{10}" title="Enter a 10-digit mobile number" required>
+            <input type="tel" class='required' id="mobileNumber" name="Mobile Number" pattern="[0-9]{10}" title="Enter a 10-digit mobile number" required>
         </div>
         <div class="form-group">
             <label for="sponsorName">Full Name of the Sponsor*</label>
-            <input type="text" id="sponsorName" name="Name of Sponsor" required>
+            <input type="text" class='required' id="sponsorName" name="Name of Sponsor" required>
         </div>
         <div class="form-group">
             <label for="sponsorGotra">Gotra of Sponsor*</label>
-            <input type="text" id="sponsorGotra" name="Gotra of Sponsor" required>
+            <input type="text" class='required'  id="sponsorGotra" name="Gotra of Sponsor" required>
         </div>
         <div class="form-group">
             <label for="coSponsorName">Full Name of the Co-Sponsor</label>
@@ -149,19 +149,19 @@ SB A/c. No. 7280105456
         
         <div class="form-group">
             <label for="dateOfSeva">Date of Seva (18 Sept, 2024 – 2 Oct, 2024)*</label>
-            <input type="date" id="dateOfSeva" name="Date of Seva" min="2024-09-18" max="2024-10-02" required>
+            <input type="date" class='required' id="dateOfSeva" name="Date of Seva" min="2024-09-18" max="2024-10-02" required>
         </div>
         <div class="form-group">
             <label for="pitruDevata1Name">Pitru Devata 1 Full Name*</label>
-            <input type="text" id="pitruDevata1Name" name="Pitru Devata 1 Name" required>
+            <input type="text" class='required' id="pitruDevata1Name" name="Pitru Devata 1 Name" required>
         </div>
         <div class="form-group">
             <label for="pitruDevata1Gotra">Pitru Devata 1 Gotra*</label>
-            <input type="text" id="pitruDevata1Gotra" name="Pitru Devata 1 Gotra" required>
+            <input type="text" class='required' id="pitruDevata1Gotra" name="Pitru Devata 1 Gotra" required>
         </div>
         <div class="form-group">
             <label for="pitruDevata1Relationship">Pitru Devata 1 Relationship*</label>
-            <select id="pitruDevata1Relationship" name="Pitru Devata 1 Relationship" required>
+            <select class='required' id="pitruDevata1Relationship" name="Pitru Devata 1 Relationship" required>
                 <option value="">Select Relationship</option>
                 <option value="Father">Father</option>
                 <option value="Mother">Mother</option>
@@ -382,11 +382,23 @@ function fiterName() {
             pitruDevata2Name.required = true;
             pitruDevata2Gotra.required = true;
             pitruDevata2Relationship.required = true;
+			
+			dateOfSeva2.classList.add('required')
+			pitruDevata2Name.classList.add('required')
+			pitruDevata2Gotra.classList.add('required')
+			pitruDevata2Relationship.classList.add('required')
+			
         } else {
             dateOfSeva2.required = false;
             pitruDevata2Name.required = false;
             pitruDevata2Gotra.required = false;
             pitruDevata2Relationship.required = false;
+
+			dateOfSeva2.classList.remove('required')
+			pitruDevata2Name.classList.remove('required')
+			pitruDevata2Gotra.classList.remove('required')
+			pitruDevata2Relationship.classList.remove('required')
+
         }
     }
 
