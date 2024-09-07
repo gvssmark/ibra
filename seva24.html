@@ -128,6 +128,7 @@ SB A/c. No. 7280105456
 
     <form name="submit-to-google-sheet" id="sevaForm" class="hidden"   >
         <h1>SEVA 24 Data Entry</h1>
+        <fieldset><legend>Sponsor</legend>
         <div class="form-group">
             <label for="mobileNumber">Mobile Number of the Sponsor*</label>
             <input type="tel" class='required' id="mobileNumber" name="Mobile Number" pattern="[0-9]{10}" title="Enter a 10-digit mobile number" required>
@@ -148,7 +149,8 @@ SB A/c. No. 7280105456
             <label for="coSponsorGotra">Gotra of Co-Sponsor</label>
             <input type="text" id="coSponsorGotra" name="Gotra of Co-Sponsor">
         </div>
-        
+        </fieldset>
+         <fieldset><legend>Pitru 1</legend>
         <div class="form-group">
             <label for="dateOfSeva">Date of Seva (18 Sept, 2024 – 2 Oct, 2024)*</label>
             <input type="date" class='required' id="dateOfSeva" name="Date of Seva" min="2024-09-18" max="2024-10-02" required>
@@ -181,6 +183,8 @@ SB A/c. No. 7280105456
             </select>
             <input type="text" id="otherRelationship1" name="Other Relationship 1" class="hidden" placeholder="Specify Relationship">
         </div>
+        <fieldset>
+         <fieldset><legend>Pitru2</legend>
         <div class="form-group">
             <label for="dateOfSeva">Date of Seva (18 Sept, 2024 – 2 Oct, 2024)</label>
             <input type="date" id="dateOfSeva2" name="Date of Seva2" min="2024-09-18" max="2024-10-02" >
@@ -214,6 +218,7 @@ SB A/c. No. 7280105456
             </select>
             <input type="text" id="otherRelationship2" name="Other Relationship 2" class="hidden" placeholder="Specify Relationship">
         </div>
+        </fieldset>
         <button type="submit">Submit</button>
     </form>
 
