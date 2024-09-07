@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,7 +17,8 @@ body {
   margin: 0 auto;
 }
 
-table {width:100%;  border-bottom: 1px solid red}
+table {width:100%;  }
+table td {border-bottom: 2px solid red}
 div.static {
   position: sticky;
   width: 100%; /* Default to 90% for smaller screens */
@@ -323,7 +325,7 @@ url = 'https://script.google.com/macros/s/AKfycbyi2vgM3Ne0sPSA8q1lrg40XQBTujspdp
 				document.getElementById('loader').style.display='none'}
 				data = data.map(([dt, spons, sponsgotra, cospon, cosponsgotra,mobile,pd1name,pd1gotra,pd1relation,pd1othrelation,pd2name,pd2gotra,pd2relation,pd2othrelation,dt2]) => ({ dt: ddmmyy(dt), spons, sponsgotra, cospon, cosponsgotra,mobile,pd1name,pd1gotra,pd1relation,pd1othrelation,pd2name,pd2gotra,pd2relation,pd2othrelation,dt2: ddmmyy(dt2) })).filter(a => a.mobile > 0).sort((a,b)=> a.mobile - b.mobile)
 datareport='<table id="regionTable">'
-data.forEach(a=> datareport+= `<tr><td><h3> ${a.mobile} </h3> 
+data.forEach(a=> {datareport+= `<tr><td><h3> ${a.mobile} </h3> 
 Sponsor: ${a.spons}  <br>
 Gotra: ${a.sponsgotra}  <br>
 CoSponsor: ${a.cospon}  <br>
@@ -331,14 +333,16 @@ Gotra: ${a.cosponsgotra} <br><br>
 <span class='one'><u>Date: ${a.dt}</u> <br>
 Pitru1: ${a.pd1name} <br>
 Pitru1 Gotra: ${a.pd1gotra} <br>
-Pitru1 Relation: ${a.pd1relation ==='Any other Specify' ? a.pd1othrelation : a.pd1relation} <br><br></span>
-<span class='two'><u>Date: ${a.dt2 =='Invalid Date' ?  'Not Opted' : a.dt2}</u> <br>
+Pitru1 Relation: ${a.pd1relation ==='Any other Specify' ? a.pd1othrelation : a.pd1relation} </span>`
+
+if(a.dt2 !=='Invalid Date'){
+datareport+= `<br><span class='two'><u>Date: ${a.dt2 =='Invalid Date' ?  'Not Opted' : a.dt2}</u> <br>
 Pitru2: ${a.pd2name !='' ? a.pd2name :  'Not Opted' } <br>
 Pitru2 Gotra: ${a.pd2gotra !='' ? a.pd2gotra : 'Not Opted' } <br>
 Pitru2 Relation: ${a.pd2relation ==='Any other Specify' ? a.pd2othrelation : a.pd2relation} <br></span>
 
-`)
-reportDataDiv.innerHTML=datareport
+`}})
+reportDataDiv.innerHTML=datareport+'</table>'
 				console.log(data)
 				
 				}
