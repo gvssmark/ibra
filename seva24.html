@@ -351,16 +351,18 @@ Sponsor: ${a.spons}  <br>
 Gotra: ${a.sponsgotra}  <br>
 CoSponsor: ${a.cospon}  <br>
 Gotra: ${a.cosponsgotra} <br><br>
+<h3>Pitru Devata 1 Details </h3>
 <span class='one'><u>Date: ${a.dt}</u> <br>
-Pitru1: ${a.pd1name} <br>
-Pitru1 Gotra: ${a.pd1gotra} <br>
-Pitru1 Relation: ${a.pd1relation ==='Any other Specify' ? a.pd1othrelation : a.pd1relation} </span>`
+Name: ${a.pd1name} <br>
+Gotra: ${a.pd1gotra} <br>
+Relation: ${a.pd1relation ==='Any other Specify' ? a.pd1othrelation : a.pd1relation} </span>`
 
 if(a.dt2 !=='Invalid Date'){
-datareport+= `<br><br>  <span class='two'><u>Date: ${a.dt2 =='Invalid Date' ?  'Not Opted' : a.dt2}</u> <br>
-Pitru2: ${a.pd2name !='' ? a.pd2name :  'Not Opted' } <br>
-Pitru2 Gotra: ${a.pd2gotra !='' ? a.pd2gotra : 'Not Opted' } <br>
-Pitru2 Relation: ${a.pd2relation ==='Any other Specify' ? a.pd2othrelation : a.pd2relation} <br></span>
+datareport+= `<br> <h3>Pitru Devata 2Details </h3>
+ <span class='two'><u>Date: ${a.dt2 =='Invalid Date' ?  'Not Opted' : a.dt2}</u> <br>
+Name: ${a.pd2name !='' ? a.pd2name :  'Not Opted' } <br>
+Gotra: ${a.pd2gotra !='' ? a.pd2gotra : 'Not Opted' } <br>
+Relation: ${a.pd2relation ==='Any other Specify' ? a.pd2othrelation : a.pd2relation} <br></span>
 
 `}})
 reportDataDiv.innerHTML=datareport+'</table>'
