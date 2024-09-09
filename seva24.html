@@ -371,7 +371,8 @@ reportDataDiv.innerHTML=datareport+'</table>'
 				
 				}
 		getMyData()		
-ddmmyy = (input) => new Date(input).toDateString()
+ ddmmyy = (input) => new Date(input).toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }).substring(0,10)
+
 
 
 function fiterName() {
