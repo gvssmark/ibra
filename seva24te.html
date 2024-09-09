@@ -66,10 +66,10 @@
         if (a.cospon !== '') {
           cosp = `సహకర్త: ${a.t4} <br>గోత్రం: ${a.t5}<br>`;
         }
-        datareport += `${cosp}<span class='one'>తేది: ${a.t6} </span><br>
+        datareport += `${cosp}<span class='one'>తేది: ${a.dt} </span><br>
 			పితృ దేవత: ${a.t7} <br>గోత్రం: ${a.t8} <br>సంబంధం: ${a.pd1relation === 'Any other Specify' ? a.t9 : a.t9}<br>`;
         if (a.pd2name !== '') {
-          datareport += `<span class='two'>తేది: ${a.t10}</span> <br>
+          datareport += `<span class='two'>తేది: ${a.dt2}</span> <br>
           పితృ దేవత: ${a.t11} <br>
 			గోత్రం: ${a.t12} <br>
           సంబంధం: ${a.pd2relation === 'Any other Specify' ? a.t13 : a.t13}`;
