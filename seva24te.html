@@ -48,10 +48,8 @@
 
   getMyData();
 
-  function ddmmyy(input) {
-    const date = new Date(input);
-    return isNaN(date.getTime()) ? '' : date.toDateString();
-  }
+   ddmmyy = (input) => new Date(input).toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }).substring(0,10)
+
 
   function toProperCase(str) {
     return str ? str.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase()) : '';
