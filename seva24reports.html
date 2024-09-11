@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href='https://fonts.googleapis.com/css?family=Anek Telugu' rel='stylesheet'>
+  <title>Mahalayam Reports 2024</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 15px;
+      margin: 0;
+      padding-top: 120px; /* Adjust based on the height of the fixed heading and menu */
+    }
+    
+    /* Fixed Header and Menu */
+    .header, .menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: yellow;
+      z-index: 100;
+      padding: 10px 0;
+      text-align: center;
+      border-bottom: 1px solid #ccc;
+	  
+    }
+
+    .header {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .menu {
+      margin-top: 48px;
+    }
+
+    .menu button {
+      margin-right: 10px;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .report {
+      display: none;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    table, th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+	
+	
+	h2 {
+  position: sticky;
+  top: 100px; /* Adjust the value based on the fixed header/menu height */
+  background-color: white;
+  z-index: 90;
+  margin: 0;
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Fixed Table Heading */
+table th {
+  position: sticky;
+  top: 135px; /* Adjust based on the fixed header/menu and report heading */
+  background-color: #f2f2f2;
+  z-index: 100;
+  border-bottom: 2px solid #000;
+  padding: 8px;
+  text-align: left;
+}
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    Mahalayam Reports 2024
+  </div>
+
+  <div class="menu">
+    <button onclick="showReport('mobileReport')">Mobile Number Report</button>
+    <button onclick="showReport('purohitReport')">Purohit Report</button>
+    <button onclick="showReport('bannerReport')">Banner Report</button>
+    <button onclick="showReport('mobileSummary')">Mobile Summary</button>
+    <button onclick="showReport('dateSummary')">Date-wise Summary</button>
+  </div>
+
+  <div id="mobileReport" class="report">
+    <h2>Mobile Number Report</h2>
+    <table id="mobileReportTable"></table>
+  </div>
+
+  <div id="purohitReport" class="report">
+    <h2>Purohit Report</h2>
+    <table id="purohitReportTable"></table>
+  </div>
+
+  <div id="bannerReport" class="report">
+    <h2>Banner Report</h2>
+    <table id="bannerReportTable"></table>
+  </div>
+
+  <div id="mobileSummary" class="report">
+    <h2>Mobile Summary</h2>
+    <table id="mobileSummaryTable"></table>
+  </div>
+
+  <div id="dateSummary" class="report">
+    <h2>Date-wise Summary</h2>
+    <table id="dateSummaryTable"></table>
+  </div>
+
+  <script>
+  
+   const url = 'https://script.google.com/macros/s/AKfycbyi2vgM3Ne0sPSA8q1lrg40XQBTujspdpRUEeJFgKteEypEVeEEjqqHecvNgQOCn56Dyg/exec';
+  async function getMyData() {
+    const response = await fetch(url);
+     data1 = await response.json();
+    data = data1.map(([dt, spons, sponsgotra, cospon, cosponsgotra, mobile, pd1name, pd1gotra, pd1relation, pd1othrelation, pd2name, pd2gotra, pd2relation, pd2othrelation, dt2,
+	t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13]) => ({
+      	  mobile:t1.toString(), sponsor:t2, sponsorGotra: t3, cosponsor:t4, cosponsorGotra:t5, pitru1Date:t6, pitru1Name:t7,pitru1Gotra:t8, pitru1Relation:t9, pitru2Date:t10,pitru2Name: t11, pitru2Gotra:t12, pitru2Relation: t13
+    })).filter(a => a.mobile > 0).sort((a, b) => a.mobile - b.mobile);
+    
+    
+    const unqmobile = Array.from(new Set(data.map(a => a.mobile)));
+   // report(unqmobile, data);
+  }
+
+  getMyData();
+  
+  function ddmmyy(input) {
+    const date = new Date(input);
+    return isNaN(date.getTime()) ? '' : date.toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }).substring(0,10);
+  }
+  
+   // const data = [
+   //  {mobile: '1234567890', sponsor: 'Srinivas', sponsorGotra: 'Kashyap', cosponsor: 'Venkat', cosponsorGotra: 'Bharadwaj', pitru1Date: '2024-09-10', pitru1Name: 'Dev', pitru1Gotra: 'Kashyap', pitru1Relation: 'Father', pitru2Date: '2024-09-15', pitru2Name: 'Shyam', pitru2Gotra: 'Bharadwaj', pitru2Relation: 'Grandfather'},
+  //  {mobile: '9876543210', sponsor: 'Ram', sponsorGotra: 'Vashishta', cosponsor: '', cosponsorGotra: '', pitru1Date: '2024-09-11', pitru1Name: 'Krishna', pitru1Gotra: 'Vashishta', pitru1Relation: 'Father', pitru2Date: '', pitru2Name: '', pitru2Gotra: '', pitru2Relation: ''},
+   //    ];
+
+    function generateArrays() {
+      const array1 = data.map(d => ({
+        mobile: d.mobile, sponsor: d.sponsor, sponsorGotra: d.sponsorGotra, cosponsor: d.cosponsor, cosponsorGotra: d.cosponsorGotra, pitruDate: new Date(d.pitru1Date), pitruName: d.pitru1Name, pitruGotra: d.pitru1Gotra, pitruRelation: d.pitru1Relation
+      }));
+      
+      const array2 = data.filter(d => d.pitru2Name).map(d => ({
+        mobile: d.mobile, sponsor: d.sponsor, sponsorGotra: d.sponsorGotra, cosponsor: d.cosponsor, cosponsorGotra: d.cosponsorGotra, pitruDate: new Date(d.pitru2Date), pitruName: d.pitru2Name, pitruGotra: d.pitru2Gotra, pitruRelation: d.pitru2Relation
+      }));
+
+      const joinedArray = [...array1, ...array2].sort((a, b) => a.mobile.localeCompare(b.mobile) && a.pitruDate - b.pitruDate);
+      return {array1, array2, joinedArray};
+    }
+
+    function showReport(reportId) {
+      const reports = document.querySelectorAll('.report');
+      reports.forEach(report => report.style.display = 'none');
+      document.getElementById(reportId).style.display = 'block';
+      switch(reportId) {
+        case 'mobileReport': generateMobileReport(); break;
+        case 'purohitReport': generatePurohitReport(); break;
+        case 'bannerReport': generateBannerReport(); break;
+        case 'mobileSummary': generateMobileSummary(); break;
+        case 'dateSummary': generateDateSummary(); break;
+      }
+    }
+
+    function generateMobileReport() {
+      const { joinedArray } = generateArrays();
+      const table = document.getElementById('mobileReportTable');
+      table.innerHTML = `<tr><th>Mobile</th><th>Sponsor</th><th>Sponsor Gotra</th><th>Cosponsor</th><th>Cosponsor Gotra</th><th>Date</th><th>Pitru Name</th><th>Pitru Gotra</th><th>Pitru Relation</th></tr>`;
+      joinedArray.forEach(row => {
+        table.innerHTML += `<tr><td>${row.mobile}</td><td>${row.sponsor}</td><td>${row.sponsorGotra}</td><td>${row.cosponsor}</td><td>${row.cosponsorGotra}</td><td>${row.pitruDate.toLocaleDateString()}</td><td>${row.pitruName}</td><td>${row.pitruGotra}</td><td>${row.pitruRelation}</td></tr>`;
+      });
+    }
+
+    function generatePurohitReport() {
+      const { joinedArray } = generateArrays();
+      const table = document.getElementById('purohitReportTable');
+      table.innerHTML = `<tr><th>Date</th><th>Sponsor</th><th>Sponsor Gotra</th><th>Cosponsor</th><th>Cosponsor Gotra</th><th>Pitru Name</th><th>Pitru Gotra</th><th>Pitru Relation</th></tr>`;
+      joinedArray.forEach(row => {
+        table.innerHTML += `<tr><td>${row.pitruDate.toLocaleDateString()}</td><td>${row.sponsor}</td><td>${row.sponsorGotra}</td><td>${row.cosponsor}</td><td>${row.cosponsorGotra}</td><td>${row.pitruName}</td><td>${row.pitruGotra}</td><td>${row.pitruRelation}</td></tr>`;
+      });
+    }
+
+    function generateBannerReport() {
+      const { joinedArray } = generateArrays();
+      const table = document.getElementById('bannerReportTable');
+      table.innerHTML = `<tr><th>Date</th><th>Sponsor</th><th>Cosponsor</th><th>Pitru Name</th></tr>`;
+      joinedArray.forEach(row => {
+        table.innerHTML += `<tr><td>${row.pitruDate.toLocaleDateString()}</td><td>${row.sponsor}</td><td>${row.cosponsor}</td><td>${row.pitruName}</td></tr>`;
+      });
+    }
+
+    function generateMobileSummary() {
+      const { array1 } = generateArrays();
+      const summary = array1.reduce((acc, row) => {
+        const sponsorCount = acc[row.mobile] ? acc[row.mobile].count + 1 : 1;
+        acc[row.mobile] = {mobile: row.mobile, sponsor: row.sponsor, count: sponsorCount};
+        return acc;
+      }, {});
+
+      const table = document.getElementById('mobileSummaryTable');
+      table.innerHTML = `<tr><th>Mobile</th><th>Sponsor</th><th>Count</th></tr>`;
+      Object.values(summary).forEach(row => {
+        table.innerHTML += `<tr><td>${row.mobile}</td><td>${row.sponsor}</td><td>${row.count}</td></tr>`;
+      });
+    }
+
+    function generateDateSummary() {
+      const { joinedArray } = generateArrays();
+      const summary = joinedArray.reduce((acc, row) => {
+        const dateStr = row.pitruDate.toLocaleDateString();
+        acc[dateStr] = (acc[dateStr] || 0) + 1;
+        return acc;
+      }, {});
+
+      const table = document.getElementById('dateSummaryTable');
+      table.innerHTML = `<tr><th>Date</th><th>Count</th></tr>`;
+      Object.keys(summary).forEach(date => {
+        table.innerHTML += `<tr><td>${date}</td><td>${summary[date]}</td></tr>`;
+      });
+    }
+
+    // Load the default report on page load
+    //showReport('mobileReport');
+	
+	
+	 // Parse DD/MM/YYYY into Date object
+    function parseDate(input) {
+      if (!input) return null;
+      const parts = input.split('/');
+      return new Date(parts[2], parts[1] - 1, parts[0]);
+    }
+	
+  </script>
+
+</body>
+</html>
