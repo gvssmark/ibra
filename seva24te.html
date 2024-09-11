@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,7 +23,7 @@
   const url = 'https://script.google.com/macros/s/AKfycbyi2vgM3Ne0sPSA8q1lrg40XQBTujspdpRUEeJFgKteEypEVeEEjqqHecvNgQOCn56Dyg/exec';
   async function getMyData() {
     const response = await fetch(url);
-    let data = await response.json();
+     data = await response.json();
     data = data.map(([dt, spons, sponsgotra, cospon, cosponsgotra, mobile, pd1name, pd1gotra, pd1relation, pd1othrelation, pd2name, pd2gotra, pd2relation, pd2othrelation, dt2,
 	t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13]) => ({
       dt: ddmmyy(dt),
@@ -48,11 +49,16 @@
 
   getMyData();
 
-   ddmmyy = (input) => new Date(input).toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }).substring(0,10)
+ function ddmmyy(input) {
+    const date = new Date(input);
+    return isNaN(date.getTime()) ? '' : date.toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }).substring(0,10);
+  }
+   //ddmmyy = (input) => new Date(input).toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }).substring(0,10)
 
 
   function toProperCase(str) {
-    return str ? str.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase()) : '';
+   // return str ? str.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase()) : '';
+    console.log(str)
   }
 
   function report(unqmobile, data) {
@@ -66,17 +72,23 @@
         if (a.cospon !== '') {
           cosp = `సహకర్త: ${a.t4} <br>గోత్రం: ${a.t5}<br>`;
         }
-        datareport += `${cosp}<span class='one'>తేది: ${a.dt} </span><br>
+        
+        datareport += `${cosp}
+        <span class='one'>తేది: ${a.dt} </span><br>
 			పితృ దేవత: ${a.t7} <br>గోత్రం: ${a.t8} <br>సంబంధం: ${a.pd1relation === 'Any other Specify' ? a.t9 : a.t9}<br>`;
-        if (a.pd2name !== '') {
-          datareport += `<span class='two'>తేది: ${a.dt2}</span> <br>
+            
+        if (a.t11 !== '') {
+          pd2 = `<span class='two'>తేది: ${a.dt2}</span> <br>
           పితృ దేవత: ${a.t11} <br>
 			గోత్రం: ${a.t12} <br>
-          సంబంధం: ${a.pd2relation === 'Any other Specify' ? a.t13 : a.t13}`;
+          సంబంధం: ${a.t13}`;
         }
-        datareport += `<hr>`;
+        
+        datareport += `${pd2} <hr>`;
       });
       datareport += `</p></div>`;  // Close the panel after all entries for the same mobile
+      cosp=''
+      pd2=''
     }
     document.getElementById('reportData').innerHTML = datareport;
     // Attach click event to accordion buttons after report is rendered
