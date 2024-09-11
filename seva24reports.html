@@ -101,27 +101,27 @@ table th {
   </div>
 
   <div id="mobileReport" class="report">
-    <h2>Mobile Number Report</h2>
+    <h2>Mobile Number Report-Total <span id='total1'></span></h2>
     <table id="mobileReportTable"></table>
   </div>
 
   <div id="purohitReport" class="report">
-    <h2>Purohit Report</h2>
+    <h2>Purohit Report-Total <span id='total2'></span></h2>
     <table id="purohitReportTable"></table>
   </div>
 
   <div id="bannerReport" class="report">
-    <h2>Banner Report</h2>
+    <h2>Banner Report-Total <span id='total3'></span></h2>
     <table id="bannerReportTable"></table>
   </div>
 
   <div id="mobileSummary" class="report">
-    <h2>Mobile Summary</h2>
+    <h2>Mobile Summary -Total <span id='total4'></span></h2>
     <table id="mobileSummaryTable"></table>
   </div>
 
   <div id="dateSummary" class="report">
-    <h2>Date-wise Summary</h2>
+    <h2>Date-wise Summary-Total  <span id='total5'></span></h2>
     <table id="dateSummaryTable"></table>
   </div>
 
@@ -139,6 +139,7 @@ table th {
     
     const unqmobile = Array.from(new Set(data.map(a => a.mobile)));
    // report(unqmobile, data);
+   showReport('mobileReport');
   }
 
   getMyData();
@@ -163,6 +164,14 @@ table th {
       }));
 
       const joinedArray = [...array1, ...array2].sort((a, b) => a.mobile -b.mobile || a.pitruDate - b.pitruDate);
+	  totalrecords = joinedArray.length
+	 // console.log(totalrecords)
+	  document.getElementById('total1').innerHTML = totalrecords
+	  document.getElementById('total2').innerHTML = totalrecords
+	  document.getElementById('total3').innerHTML = totalrecords
+	  document.getElementById('total4').innerHTML = totalrecords
+	  document.getElementById('total5').innerHTML = totalrecords
+	  
       return {array1, array2, joinedArray};
     }
 
@@ -207,9 +216,10 @@ table th {
     }
 
     function generateMobileSummary() {
-      const { array1 } = generateArrays();
+	      const { array1 } = generateArrays();
       const summary = array1.reduce((acc, row) => {
-        const sponsorCount = acc[row.mobile] ? acc[row.mobile].count + 1 : 1;
+    
+    const sponsorCount = acc[row.mobile] ? acc[row.mobile].count + 1 : 1;
         acc[row.mobile] = {mobile: row.mobile, sponsor: row.sponsor, count: sponsorCount};
         return acc;
       }, {});
