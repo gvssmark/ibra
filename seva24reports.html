@@ -133,7 +133,7 @@ table th {
      data1 = await response.json();
     data = data1.map(([dt, spons, sponsgotra, cospon, cosponsgotra, mobile, pd1name, pd1gotra, pd1relation, pd1othrelation, pd2name, pd2gotra, pd2relation, pd2othrelation, dt2,
 	t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13]) => ({
-      	  mobile:t1.toString(), sponsor:t2, sponsorGotra: t3, cosponsor:t4, cosponsorGotra:t5, pitru1Date:t6, pitru1Name:t7,pitru1Gotra:t8, pitru1Relation:t9, pitru2Date:t10,pitru2Name: t11, pitru2Gotra:t12, pitru2Relation: t13
+      	  mobile:t1, sponsor:t2, sponsorGotra: t3, cosponsor:t4, cosponsorGotra:t5, pitru1Date:t6, pitru1Name:t7,pitru1Gotra:t8, pitru1Relation:t9, pitru2Date:t10,pitru2Name: t11, pitru2Gotra:t12, pitru2Relation: t13
     })).filter(a => a.mobile > 0).sort((a, b) => a.mobile - b.mobile);
     
     
@@ -162,7 +162,7 @@ table th {
         mobile: d.mobile, sponsor: d.sponsor, sponsorGotra: d.sponsorGotra, cosponsor: d.cosponsor, cosponsorGotra: d.cosponsorGotra, pitruDate: new Date(d.pitru2Date), pitruName: d.pitru2Name, pitruGotra: d.pitru2Gotra, pitruRelation: d.pitru2Relation
       }));
 
-      const joinedArray = [...array1, ...array2].sort((a, b) => a.mobile.localeCompare(b.mobile) && a.pitruDate - b.pitruDate);
+      const joinedArray = [...array1, ...array2].sort((a, b) => a.mobile -b.mobile || a.pitruDate - b.pitruDate);
       return {array1, array2, joinedArray};
     }
 
@@ -184,7 +184,7 @@ table th {
       const table = document.getElementById('mobileReportTable');
       table.innerHTML = `<tr><th>Mobile</th><th>Sponsor</th><th>Sponsor Gotra</th><th>Cosponsor</th><th>Cosponsor Gotra</th><th>Date</th><th>Pitru Name</th><th>Pitru Gotra</th><th>Pitru Relation</th></tr>`;
       joinedArray.forEach(row => {
-        table.innerHTML += `<tr><td>${row.mobile}</td><td>${row.sponsor}</td><td>${row.sponsorGotra}</td><td>${row.cosponsor}</td><td>${row.cosponsorGotra}</td><td>${row.pitruDate.toLocaleDateString()}</td><td>${row.pitruName}</td><td>${row.pitruGotra}</td><td>${row.pitruRelation}</td></tr>`;
+        table.innerHTML += `<tr><td>${row.mobile}</td><td>${row.sponsor}</td><td>${row.sponsorGotra}</td><td>${row.cosponsor}</td><td>${row.cosponsorGotra}</td><td>${row.pitruDate.toLocaleDateString('en-gB', { timeZone: 'Asia/Kolkata' })}</td><td>${row.pitruName}</td><td>${row.pitruGotra}</td><td>${row.pitruRelation}</td></tr>`;
       });
     }
 
@@ -192,8 +192,8 @@ table th {
       const { joinedArray } = generateArrays();
       const table = document.getElementById('purohitReportTable');
       table.innerHTML = `<tr><th>Date</th><th>Sponsor</th><th>Sponsor Gotra</th><th>Cosponsor</th><th>Cosponsor Gotra</th><th>Pitru Name</th><th>Pitru Gotra</th><th>Pitru Relation</th></tr>`;
-      joinedArray.forEach(row => {
-        table.innerHTML += `<tr><td>${row.pitruDate.toLocaleDateString()}</td><td>${row.sponsor}</td><td>${row.sponsorGotra}</td><td>${row.cosponsor}</td><td>${row.cosponsorGotra}</td><td>${row.pitruName}</td><td>${row.pitruGotra}</td><td>${row.pitruRelation}</td></tr>`;
+      joinedArray.sort((a, b) => a.pitruDate - b.pitruDate).forEach(row => {
+        table.innerHTML += `<tr><td>${row.pitruDate.toLocaleDateString('en-gB', { timeZone: 'Asia/Kolkata' })}</td><td>${row.sponsor}</td><td>${row.sponsorGotra}</td><td>${row.cosponsor}</td><td>${row.cosponsorGotra}</td><td>${row.pitruName}</td><td>${row.pitruGotra}</td><td>${row.pitruRelation}</td></tr>`;
       });
     }
 
@@ -201,8 +201,8 @@ table th {
       const { joinedArray } = generateArrays();
       const table = document.getElementById('bannerReportTable');
       table.innerHTML = `<tr><th>Date</th><th>Sponsor</th><th>Cosponsor</th><th>Pitru Name</th></tr>`;
-      joinedArray.forEach(row => {
-        table.innerHTML += `<tr><td>${row.pitruDate.toLocaleDateString()}</td><td>${row.sponsor}</td><td>${row.cosponsor}</td><td>${row.pitruName}</td></tr>`;
+      joinedArray.sort((a, b) => a.pitruDate - b.pitruDate).forEach(row => {
+        table.innerHTML += `<tr><td>${row.pitruDate.toLocaleDateString('en-gB', { timeZone: 'Asia/Kolkata' })}</td><td>${row.sponsor}</td><td>${row.cosponsor}</td><td>${row.pitruName}</td></tr>`;
       });
     }
 
@@ -223,7 +223,7 @@ table th {
 
     function generateDateSummary() {
       const { joinedArray } = generateArrays();
-      const summary = joinedArray.reduce((acc, row) => {
+      const summary = joinedArray.sort((a, b) => a.pitruDate - b.pitruDate).reduce((acc, row) => {
         const dateStr = row.pitruDate.toLocaleDateString();
         acc[dateStr] = (acc[dateStr] || 0) + 1;
         return acc;
