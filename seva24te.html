@@ -57,7 +57,7 @@
 
 
   function toProperCase(str) {
-   // return str ? str.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase()) : '';
+    return str ? str.toString().replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase()) : '';
    // console.log(str)
   }
 
