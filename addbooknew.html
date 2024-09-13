@@ -37,7 +37,7 @@ close:hover,.close:focus {color: #000;text-decoration: none;cursor: pointer;}
 button a {color:black; }
 button {background:yellow; border:0; width:170px; padding:5px; border-radius:15px; box-shadow: 3px 5px #888888; margin-left:5px}
 img {border-radius:50px}
-#whatsapp {margin-top:-100px; float:right}
+#whatsapp { float:right; margin:1px; margin-top:-230px;}
 #page1 {display:none;}
 
 
@@ -156,8 +156,11 @@ img {border-radius:50px}
     </div>
     <div class="modal-body">
         <p id='modalData'>This is the modal content. You can add any additional text or elements here.</p>
+		<div id='whatsapp'>xxxx </div>
     </div>
+	
   </div>
+  
 </div>
 		
         <!--<div id="myModal" class="modal">
@@ -297,8 +300,8 @@ function hmodal(){modal.style.display = "none"}
                 document.getElementById("nameHeader").innerHTML = membData[0].name
                 modal.style.display = "block";
                 document.getElementById('photo').src = memphoto
-				if (isMobileDevice) {document.getElementById('whatsapp').innerHTML =`<a aria-label="Chat on WhatsApp" href="https://wa.me/91${membData[0].mobile1}"> <img alt="Chat on WhatsApp" src="images/WhatsApp.jpg" height=50px /><a />`}
-                //document.getElementById('whatsapp').innerHTML =`<a aria-label="Chat on WhatsApp" href="https://wa.me/91${membData[0].mobile1}"> <img alt="Chat on WhatsApp" src="images/WhatsApp.jpg" height=50px /><a />`
+		if (isMobileDevice) {document.getElementById('whatsapp').innerHTML =`<a aria-label="Chat on WhatsApp" href="https://wa.me/91${membData[0].mobile1}"> <img alt="Chat on WhatsApp" src="images/WhatsApp.jpg" height=50px /><a />`}
+               // document.getElementById('whatsapp').innerHTML =`<a aria-label="Chat on WhatsApp" href="https://wa.me/91${membData[0].mobile1}"> <img alt="Chat on WhatsApp" src="images/WhatsApp.jpg" height=50px /><a />`
             }
 
             function fiterName() {
