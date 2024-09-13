@@ -16,13 +16,13 @@ body {overscroll-behavior: contain; }
 .pname {font-family: "Poppins", sans-serif;text-shadow: 3px 3px 3px #ababab;font-size:25px;}
 element.style {display: block;margin-left: 5px;margin-right: 5px;}
 a {text-decoration:none}
-body {background: powderblue;font-size: small;margin: 0px auto;width:360px;box-sizing: border-box;}
+body {background: powderblue;;margin: 0px auto;width:360px;box-sizing: border-box;}
 .active, .btn:hover {background-color: red;color: white;}
 #regionTable td:hover {background-color: red;color: white;}
 ul {list-style-type: none;margin: 0;padding: 0;overflow: hidden;background-color: #333;}
 li {float: left;font-size:small; }
 .list {display: block;color: white;text-align: center;padding: 2px 6px;text-decoration: none;}
-table {border-collapse: collapse;;width: 100%;margin-left: 1px;margin-right: 1px;border: 1px soild black;font-size: small}
+table {border-collapse: collapse;;width: 100%;margin-left: 1px;margin-right: 1px;border: 1px soild black; }
 #myInput {width: 300px;;margin-left:30px;height: 30px;border-radius: 15px;background-color: cyan;border: 0px;outline: 0;display: none;}
 .modal {display: none;position: fixed;z-index: 1;padding-top: 1px;left: inherit;top: 0;width: 360px;height: 100%;overflow: auto;background-color: rgb(0, 0, 0);background-color: rgba(0, 0, 0, 0.4);}
 .modal-content {background-color: #99ffcc;margin: auto;padding: 2px;padding-bottom: 2px;border: 1px solid #888;width: 95%;border-radius: 15px;margin-top: 53px;}
@@ -300,8 +300,8 @@ function hmodal(){modal.style.display = "none"}
                 document.getElementById("nameHeader").innerHTML = membData[0].name
                 modal.style.display = "block";
                 document.getElementById('photo').src = memphoto
-		if (isMobileDevice) {document.getElementById('whatsapp').innerHTML =`<a aria-label="Chat on WhatsApp" href="https://wa.me/91${membData[0].mobile1}"> <img alt="Chat on WhatsApp" src="images/WhatsApp.jpg" height=50px /><a />`}
-               // document.getElementById('whatsapp').innerHTML =`<a aria-label="Chat on WhatsApp" href="https://wa.me/91${membData[0].mobile1}"> <img alt="Chat on WhatsApp" src="images/WhatsApp.jpg" height=50px /><a />`
+				//if (isMobileDevice) {document.getElementById('whatsapp').innerHTML =`<a aria-label="Chat on WhatsApp" href="https://wa.me/91${membData[0].mobile1}"> <img alt="Chat on WhatsApp" src="images/WhatsApp.jpg" height=50px /><a />`}
+                document.getElementById('whatsapp').innerHTML =`<a aria-label="Chat on WhatsApp" href="https://wa.me/91${membData[0].mobile1}"> <img alt="Chat on WhatsApp" src="images/WhatsApp.jpg" height=50px /><a />`
             }
 
             function fiterName() {
