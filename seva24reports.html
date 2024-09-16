@@ -223,7 +223,7 @@ table th {
       const table = document.getElementById('mobileSummaryTable');
       table.innerHTML = `<tr><th>Mobile</th><th>Sponsor</th><th>Count</th><th>Amount</th></tr>`;
       Object.values(summary).forEach(row => {
-        table.innerHTML += `<tr><td>${row.mobile}</td><td>${row.sponsor}</td><td>${row.count}</td><td>${row.count}</td><td>${row.count%2>0 ? (row.count+1)*1250 : (row.count)*1250 }</td></tr>`;
+        table.innerHTML += `<tr><td>${row.mobile}</td><td>${row.sponsor}</td><td>${row.count}</td><td>${row.count%2>0 ? (row.count+1)*1250 : (row.count)*1250 }</td></tr>`;
       });
     }
 
