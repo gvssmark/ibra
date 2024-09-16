@@ -216,8 +216,8 @@ table th {
     }
 
     function generateMobileSummary() {
-	      const { array1 } = generateArrays();
-      const summary = array1.reduce((acc, row) => {
+	      const { joinedArray } = generateArrays();
+      const summary = joinedArray.reduce((acc, row) => {
     
     const sponsorCount = acc[row.mobile] ? acc[row.mobile].count + 1 : 1;
         acc[row.mobile] = {mobile: row.mobile, sponsor: row.sponsor, count: sponsorCount};
