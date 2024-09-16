@@ -89,7 +89,7 @@ table th {
 <body>
 
   <div class="header">
-    Mahalayam Reports 2024
+    Mahalayam Reports 2024 <span id='total1'></span>
   </div>
 
   <div class="menu">
@@ -101,27 +101,27 @@ table th {
   </div>
 
   <div id="mobileReport" class="report">
-    <h2>Mobile Number Report-Total <span id='total1'></span></h2>
+    <h2>Mobile Number Report</h2>
     <table id="mobileReportTable"></table>
   </div>
 
   <div id="purohitReport" class="report">
-    <h2>Purohit Report-Total <span id='total2'></span></h2>
+    <h2>Purohit Report</h2>
     <table id="purohitReportTable"></table>
   </div>
 
   <div id="bannerReport" class="report">
-    <h2>Banner Report-Total <span id='total3'></span></h2>
+    <h2>Banner Report</h2>
     <table id="bannerReportTable"></table>
   </div>
 
   <div id="mobileSummary" class="report">
-    <h2>Mobile Summary -Total <span id='total4'></span></h2>
+    <h2>Mobile Summary</h2>
     <table id="mobileSummaryTable"></table>
   </div>
 
   <div id="dateSummary" class="report">
-    <h2>Date-wise Summary-Total  <span id='total5'></span></h2>
+    <h2>Date-wise Summary</h2>
     <table id="dateSummaryTable"></table>
   </div>
 
@@ -166,11 +166,7 @@ table th {
       const joinedArray = [...array1, ...array2].sort((a, b) => a.mobile -b.mobile || a.pitruDate - b.pitruDate);
 	  totalrecords = joinedArray.length
 	 // console.log(totalrecords)
-	  document.getElementById('total1').innerHTML = totalrecords
-	  document.getElementById('total2').innerHTML = totalrecords
-	  document.getElementById('total3').innerHTML = totalrecords
-	  document.getElementById('total4').innerHTML = totalrecords
-	  document.getElementById('total5').innerHTML = totalrecords
+	  document.getElementById('total1').innerHTML = `Total ` + totalrecords
 	  
       return {array1, array2, joinedArray};
     }
@@ -225,9 +221,9 @@ table th {
       }, {});
 
       const table = document.getElementById('mobileSummaryTable');
-      table.innerHTML = `<tr><th>Mobile</th><th>Sponsor</th><th>Count</th></tr>`;
+      table.innerHTML = `<tr><th>Mobile</th><th>Sponsor</th><th>Count</th><th>Amount</th></tr>`;
       Object.values(summary).forEach(row => {
-        table.innerHTML += `<tr><td>${row.mobile}</td><td>${row.sponsor}</td><td>${row.count}</td></tr>`;
+        table.innerHTML += `<tr><td>${row.mobile}</td><td>${row.sponsor}</td><td>${row.count}</td><td>${row.count}</td><td>${row.count%2>0 ? (row.count+1)*1250 : (row.count)*1250 }</td></tr>`;
       });
     }
 
