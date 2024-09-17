@@ -216,10 +216,11 @@ table th {
 
     function generateBannerReport() {
       const { joinedArray } = generateArrays();
-	    cosp = row.cosponsor.length>0 ? `,${row.cosponsor}` : ""
+	    
       const table = document.getElementById('bannerReportTable');
       table.innerHTML = `<tr><th>Date</th><th>Sponsor</th><th>Pitru Name</th></tr>`;
       joinedArray.sort((a, b) => a.pitruDate - b.pitruDate).forEach(row => {
+	      cosp = row.cosponsor.length>0 ? `,${row.cosponsor}` : ""
         table.innerHTML += `<tr><td>${row.pitruDate.toLocaleDateString('en-gB', { timeZone: 'Asia/Kolkata' })}</td><td>${row.sponsor} ${cosp}</td><td>${row.pitruName}</td></tr>`;
       });
     }
