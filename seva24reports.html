@@ -136,6 +136,18 @@ table th {
       	  mobile:t1, sponsor:t2, sponsorGotra: t3, cosponsor:t4, cosponsorGotra:t5, pitru1Date:t6, pitru1Name:t7,pitru1Gotra:t8, pitru1Relation:t9, pitru2Date:t10,pitru2Name: t11, pitru2Gotra:t12, pitru2Relation: t13
     })).filter(a => a.mobile > 0).sort((a, b) => a.mobile - b.mobile);
     
+	  arr1 = data.map(d => ({
+        mobile: d.mobile, sponsor: d.sponsor, sponsorGotra: d.sponsorGotra, cosponsor: d.cosponsor, cosponsorGotra: d.cosponsorGotra, pitruDate: new Date(d.pitru1Date), pitruName: d.pitru1Name, pitruGotra: d.pitru1Gotra, pitruRelation: d.pitru1Relation
+      }));
+      
+      arr2 = data.filter(d => d.pitru2Name).map(d => ({
+        mobile: d.mobile, sponsor: d.sponsor, sponsorGotra: d.sponsorGotra, cosponsor: d.cosponsor, cosponsorGotra: d.cosponsorGotra, pitruDate: new Date(d.pitru2Date), pitruName: d.pitru2Name, pitruGotra: d.pitru2Gotra, pitruRelation: d.pitru2Relation
+      }));
+
+      Arr3 = [...array1, ...array2].sort((a, b) => a.mobile -b.mobile || a.pitruDate - b.pitruDate);
+	  totalrecords = Arr3.length
+	 // console.log(totalrecords)
+	  document.getElementById('total1').innerHTML = `Total ` + totalrecords 
     
     const unqmobile = Array.from(new Set(data.map(a => a.mobile)));
    // report(unqmobile, data);
@@ -204,10 +216,11 @@ table th {
 
     function generateBannerReport() {
       const { joinedArray } = generateArrays();
+	    cosp = row.cosponsor.length>0 ? `,${row.cosponsor}` : ""
       const table = document.getElementById('bannerReportTable');
-      table.innerHTML = `<tr><th>Date</th><th>Sponsor</th><th>Cosponsor</th><th>Pitru Name</th></tr>`;
+      table.innerHTML = `<tr><th>Date</th><th>Sponsor</th><th>Pitru Name</th></tr>`;
       joinedArray.sort((a, b) => a.pitruDate - b.pitruDate).forEach(row => {
-        table.innerHTML += `<tr><td>${row.pitruDate.toLocaleDateString('en-gB', { timeZone: 'Asia/Kolkata' })}</td><td>${row.sponsor}</td><td>${row.cosponsor}</td><td>${row.pitruName}</td></tr>`;
+        table.innerHTML += `<tr><td>${row.pitruDate.toLocaleDateString('en-gB', { timeZone: 'Asia/Kolkata' })}</td><td>${row.sponsor} ${cosp}</td><td>${row.pitruName}</td></tr>`;
       });
     }
 
