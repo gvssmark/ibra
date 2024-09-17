@@ -144,8 +144,8 @@ table th {
         mobile: d.mobile, sponsor: d.sponsor, sponsorGotra: d.sponsorGotra, cosponsor: d.cosponsor, cosponsorGotra: d.cosponsorGotra, pitruDate: new Date(d.pitru2Date), pitruName: d.pitru2Name, pitruGotra: d.pitru2Gotra, pitruRelation: d.pitru2Relation
       }));
 
-      Arr3 = [...array1, ...array2].sort((a, b) => a.mobile -b.mobile || a.pitruDate - b.pitruDate);
-	  totalrecords = Arr3.length
+      arr3 = [...arr1, ...arr2].sort((a, b) => a.mobile -b.mobile || a.pitruDate - b.pitruDate);
+	  totalrecords = arr3.length
 	 // console.log(totalrecords)
 	  document.getElementById('total1').innerHTML = `Total ` + totalrecords 
     
