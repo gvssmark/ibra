@@ -85,10 +85,11 @@
         }
         
         datareport += `${pd2} <hr>`;
+	      pd2=''
       });
       datareport += `</p></div>`;  // Close the panel after all entries for the same mobile
       cosp=''
-      pd2=''
+      
     }
     document.getElementById('reportData').innerHTML = datareport;
     // Attach click event to accordion buttons after report is rendered
