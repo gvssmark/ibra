@@ -89,12 +89,27 @@ img {border-radius:50px}
 
 .tableheader {text-align:center}
 
-
-
+  
+.a {float: left; position: fixed;    top: 34px;    right: 10px;    width: 38px;    height: 38px;
+    background: red;    border-radius: 50%;    font-size: xx-large;    color: white;  text-align: center;
+}
+#wlf {display:none;}
+ .responsive-iframe {position: absolute;top: 70px;left: 0;width: 100%;height: 100%;border: none;}
+.c {border-radius:15px;   height:40px; width:45vw;  padding-top:15px; text-align:center; color:white; font-size:large; line-height:20px;}
+.adbk {background:red;float:left;}
+.welf {background:blue;  float:right;  }
+#wlf {display:none;}
 </style>
 </head>
 
 <body>
+
+<div id='wlf'>
+<div class='a' onclick=' hideWelfare() '>A</div>
+
+<iframe src="https://gvssmark.github.io/ibra/welfare.html" class="responsive-iframe"  ></iframe>
+</div>
+
 <div id='spin'><h1>IBRA ADDRESS BOOK <br>Loading ...</h1>
 <div  class="spinner"></div>
 </div>
@@ -130,7 +145,11 @@ img {border-radius:50px}
         <span class='smallbadge'>&nbsp;</span> &nbsp;indicates a Family Pensioner<br>
         <span class='smalleabbadge'>&nbsp;</span> &nbsp;indicates an eAB Retiree<br><br>
         Members are requested to verify the correctness of their address and suggest changes if any.<br><br>
-<table><tr><td><button style='display:none' id='addbtn' onclick='shregions()'>Show Address Book</button>        <td> <button > <a href="https://gvssmark.github.io/ibra/welfare.html" target="_blank">Welfare Schemes</a></button></table>
+		
+<div >
+<div class='adbk c' onclick='shregions()'>Show Address Book</div>
+<div class='welf c' onclick='showhideWelfare()'>Welfare Measures</div>
+</div>
         </div>
 
   
@@ -149,6 +168,7 @@ img {border-radius:50px}
             </ul>
             <h4 id='regionHeading' align=center style="margin-top:3px;margin-top: 0px;margin-bottom: 0px;"></h4>
             <input type="text" id='myInput' placeholder="Search here..." onkeyup="fiterName()">
+			<div onclick='showhideWelfare()' class='a'>W</div>
         </div>
         <p id='paraInThisRegion' style="margin-top:85px; margin-left:1px; width:100%;"></p>
 		
@@ -168,8 +188,22 @@ img {border-radius:50px}
   
 </div>
 		
-        
+    
+    
         <script>
+		
+		embeded = document.getElementById('wlf')
+function showhideWelfare() {
+embeded.style.display='block'
+document.getElementById('regions').style.display='none'
+document.getElementById('page1').style.display='none'
+
+}
+
+function hideWelfare(){document.getElementById("regions").style.display = "block"
+embeded.style.display='none'
+}
+		
 		
 function ddmmyy(input) {
     const date = new Date(input);
@@ -183,7 +217,7 @@ function ddmmyy(input) {
  data = tdata.map(([id,name,add1,add2,add3,district,place,pincode,fixed,mobile1,mobile2,state,email,srno,sbac,doj,dor,spouse,area,blank,dob,fampen,pensionbr,scanned])=>
 ({id,name,add1,add2,add3,district,place,pincode,fixed,mobile1,mobile2,state,email,srno,sbac,doj:ddmmyy(doj),dor:ddmmyy(dor),spouse,area,blank,dob:ddmmyy(dob),fampen,pensionbr,scanned}))
 activeMembers =data.filter(a => a.name !== "").sort(function (a, b) { return a.name.localeCompare(b.name) });
-console.log(activeMembers)
+//console.log(activeMembers)
 
 				photoresponse = await fetch(photidurl)
 				pdata = await photoresponse.json()
@@ -203,7 +237,8 @@ blank = activeMembers.filter(a => a.area === "BLANK").map(a => ({ id: a.id, name
 allMembNoWise = activeMembers.map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1  })).sort(function (a, b) { return a.srno - b.srno })
 allmemb = activeMembers.map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1  }));
 selectedRegion(allmemb,0)
-if(activeMembers.length>0){document.getElementById("addbtn").style.display = "block"}}
+//if(activeMembers.length>0){document.getElementById("addbtn").style.display = "block"}
+}
 
 penbrTemp = ""
 
