@@ -1,4 +1,5 @@
 
+
 <html>
 <head>
     <meta name="viewport" content="width=device-width, maximum-scale=1 , initial-scale=1.0">
@@ -17,14 +18,15 @@ body {overscroll-behavior: contain; }
 .pname {font-family: "Poppins", sans-serif;text-shadow: 3px 3px 3px #ababab;font-size:25px;}
 element.style {display: block;margin-left: 5px;margin-right: 5px;}
 a {text-decoration:none}
-body {background: powderblue;;margin: 0px auto;width:360px;box-sizing: border-box;}
+body {background: powderblue;;margin: 0px auto;width:100%;box-sizing: border-box;}
 .active, .btn:hover {background-color: red;color: white;}
 #regionTable td:hover { color: red;}
-ul {list-style-type: none;margin: 0;padding: 0;overflow: hidden;background-color: #333;}
-li {float: left;font-size:small; }
+ul {list-style-type: none;margin: 0;padding: 0;overflow: hidden;background-color: #333;     display: flex; justify-content:center;
+}
+li {font-size:small;        }
 .list {display: block;color: white;text-align: center;padding: 2px 6px;text-decoration: none;}
 table {border-collapse: collapse;;width: 100%;margin-left: 1px;margin-right: 1px;border: 1px soild black; }
-#myInput {width: 300px;;margin-left:30px;height: 30px;border-radius: 15px;background-color: cyan;border: 0px;outline: 0;display: none;}
+#myInput {width: 300px;;margin-left:30px;height: 30px;border-radius: 15px;background-color: cyan;border: 0px;outline: 0;display: none; margin: auto;  display: block;}
 .badge {display: inline-block;padding: 0;width: 25px;height: 25px;line-height: 25px;font-size: x-small;font-weight: lighter !important;color: #fff !important;text-align: center;white-space: nowrap;vertical-align: baseline;background-color: #d73d33;border-radius: 50px;top: -3px;}
 .badge1 {display: inline-block;padding: 0;width: 25px;height: 25px;line-height: 25px;font-size: small;font-weight: lighter !important;color: black !important;text-align: center;white-space: nowrap;vertical-align: baseline;background-color: yellow;border-radius: 50px;top: -3px;}
 .eabbadge {display: inline-block;padding: 0;width: 25px;height: 25px;line-height: 25px;font-size: small;font-weight: lighter !important;color: black !important;text-align: center;white-space: nowrap;vertical-align: baseline;background-color: pink;border-radius: 50px;top: -3px;}
@@ -46,7 +48,7 @@ img {border-radius:50px}
             z-index: 1; 
             margin: 0 auto;
             top: 0;
-            width: 360px; 
+            width: 100%; 
             height: 100%; 
             background-color: rgba(0, 0, 0, 0.5); 
         }
@@ -54,7 +56,7 @@ img {border-radius:50px}
         .modal-content {
             position: relative;
             background-color: #fff;
-            margin: 25% auto;
+            margin: 10% auto;
             padding: 00px;
             width: 95%; 
             border-radius: 10px; 
@@ -83,6 +85,9 @@ img {border-radius:50px}
         }
        
         p {margin:10px; font-family:monospace}
+
+
+.tableheader {text-align:center}
 
 
 
@@ -130,7 +135,7 @@ img {border-radius:50px}
 
   
   <div id="regions" style="display:none; ">
-        <div style="background:powderblue; top:0; ; height:83px; overflow:auto; position:fixed; width: 360px;  ">
+        <div style="background:#e6b0da; top:0; ; height:83px; overflow:auto; position:fixed; text-align:center;  width: 100%; margin:auto  ">
             <ul>
                 <li onclick="selectedRegion(allmemb,0)" class="list active">All</li>
                 <li onclick="selectedRegion(vsp,1)" class="list">VSP</li>
@@ -145,7 +150,7 @@ img {border-radius:50px}
             <h4 id='regionHeading' align=center style="margin-top:3px;margin-top: 0px;margin-bottom: 0px;"></h4>
             <input type="text" id='myInput' placeholder="Search here..." onkeyup="fiterName()">
         </div>
-        <p id='paraInThisRegion' style="margin-top:85px; margin-left:1px; width:360px;"></p>
+        <p id='paraInThisRegion' style="margin-top:85px; margin-left:1px; width:100%;"></p>
 		
 		<div id="myModal" class="modal">
   <div class="modal-content">
@@ -217,7 +222,7 @@ famPensionersCount = array.filter(a => a.fampen.length > 0).length
 eabcount = array.filter(a => a.ibeab === 'EAB').length
 regions = ["All Members", "Visakhapatnam Area", "Godavari Area", "Vijayawada Area", "Seema Area", "Hyderabad Area", "Other States", "e Allahabad", "SR No Sorted"]
 document.getElementById('regionHeading').innerHTML = "Memebers in " + regions[n] + " <span class='badge'>" + array.length + "</span><span class='badge1'>" + famPensionersCount + "</span> <span class='eabbadge'>" + eabcount + "</span>"
-inThisRegion = "<table id='regionTable'  border=1><tr><td>Name / Mobile / SR No / Memb No /Photo "
+inThisRegion = "<table id='regionTable'  border=1><tr class='tableheader'><td>Name / Mobile / SR No / Memb No /Photo "
 array.forEach(function (a) { inThisRegion += "<tr align=center onClick='nameclick(this.id)' id=" + a.id + "><td class='" + (a.fampen.length > 0 ? "fam" : "ser") + "'>" +"<span class='pname'>"+ a.name +"</span>"+ (a.fampen.length > 0 ? " <span class='smallbadge'> &nbsp;</span><br>Family Pension of:  " + a.fampen : " ") + (a.ibeab === 'EAB' ? "<span class='smalleabbadge'>&nbsp;" : "") + "</span> <br> Mobile: " +a.mobile +" / SR: " + a.srno +" / Memb: " +a.id+" / Photo: " +isPhoto(a.id)+ "</td></tr>" })
                 inThisRegion += "</table><br><br><br>"
                 document.getElementById('paraInThisRegion').innerHTML = ""
