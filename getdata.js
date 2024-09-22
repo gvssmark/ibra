@@ -12,5 +12,5 @@ activeMembers =data.filter(a => a.name !== "").sort(function (a, b) { return a.n
 console.log(activeMembers)                        
 }
 
-getMyData()
+
 
