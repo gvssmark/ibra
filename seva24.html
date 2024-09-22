@@ -130,7 +130,7 @@ input  {width:95%}
 SB A/c. No. 7280105456 
 <li>FOR SEVA FROM 18/09/24 to 24/09/24 is closed.
 <li>FOR SEVA FROM 25/09/24 to 01/10/24 is closed.
-<li>FOR SEVA ON 02/10/24 IS OPEN UPTO 28/10/2024 19:00 hrs.
+<li>FOR SEVA ON 02/10/24 IS OPEN UPTO 28/09/2024 19:00 hrs.
 <li>For one date / Occasion you can add maximum of two names.
 <li>Share Payment details to Sri Subba Rao - 9849599749 	
 </ol> 
@@ -437,6 +437,20 @@ function fiterName() {
     pitruDevata2Name.addEventListener('input', checkSecondPitruFields);
     pitruDevata2Gotra.addEventListener('input', checkSecondPitruFields);
     pitruDevata2Relationship.addEventListener('change', checkSecondPitruFields);
+
+	    
+    function checkDateTime() {
+            // Set the cutoff date and time in IST
+            const cutoffDate = new Date('2024-09-28T19:00:00+05:30');
+            const currentDate = new Date();
+            if (currentDate > cutoffDate) {
+                document.getElementById('sevaForm').style.display = 'none';
+                alert('Data entry is closed.');
+            }
+        }
+
+        window.onload = checkDateTime;
+    
 </script>
 
 </body>
