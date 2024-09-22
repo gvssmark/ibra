@@ -1,4 +1,4 @@
-<script>
+
 url='https://script.google.com/macros/s/AKfycbwIVAlRrCTt6z_Ej4W6PHhopFqCq1JvEsSoN2RPqgWY7VXLW0P2pteA1jgVFaWePc2S/exec'
             async function getMyData() {
               
@@ -13,4 +13,4 @@ console.log(activeMembers)
 }
 
 getMyData()
-</script>
+
