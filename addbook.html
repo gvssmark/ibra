@@ -1,3 +1,4 @@
+
 <html>
 <head>
     <meta name="viewport" content="width=device-width, maximum-scale=1 , initial-scale=1.0">
@@ -185,7 +186,12 @@ array.forEach(function (a) { inThisRegion += "<tr align=center onClick='nameclic
     }
 });
 		
-           // modal.addEventListener("touchstart",hmodal)
+   function ddmmyy(input) {
+    const date = new Date(input);
+    return isNaN(date.getTime()) ? 'Not Available' : date.toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }).substring(0,10);
+  }
+   
+   // modal.addEventListener("touchstart",hmodal)
 
 function hmodal(){modal.style.display = "none"}
 
@@ -199,6 +205,13 @@ function hmodal(){modal.style.display = "none"}
                 memphotoid = photodata.filter(a=> a.mno  ===  membershipNo)
                 memphoto = memphotoid.length>0 ? `<img  src='https://drive.google.com/thumbnail?id=${memphotoid[0].photoid}' height=100 width=100'>`  : ""
                 membData = tempData.filter(a => a.id === membershipNo * 1)
+                dob =ddmmyy(membData[0].dob)
+                doj=ddmmyy(membData[0].blank1)
+                dor=ddmmyy(membData[0].blank2)
+                spname=membData[0].blank3
+                
+               ptype=  membData[0].fampen != "" ? "Family Pension" : "Service Penaion" 
+                
                 toDisplay += "<tr><td colspan=2><b>Membership No</b> " + membData[0].id
                 toDisplay += "<tr><td colspan='2'><b>Address: </b><br>" + membData[0].add1 + "<br>"
                 if (membData[0].add2.length > 0) { toDisplay += membData[0].add2 + "<br>" }
@@ -216,10 +229,21 @@ function hmodal(){modal.style.display = "none"}
                 if (membData[0].fampen != "") {
                     toDisplay += "<tr bgcolor=yellow><td colspan=2><b>Family Pension of :</b>" + membData[0].fampen
                 }
+                
                 toDisplay += "<tr><td colspan=2><b>Pension Acc: </b> " + membData[0].sbac
                 whichBank = membData[0].IBorEAB === 'IB' ? "Indian Bank" : "e Allahabad Bank"
                 toDisplay += "<tr><td colspan=2><b>Retired from : </b> " + whichBank
                 toDisplay += "<tr><td colspan=2><b>Region : </b> " + membData[0].area.substr(0, 3)
+                
+                toDisplay += "<tr><td colspan=2><b>DOB : </b> " + dob
+toDisplay += "<tr><td colspan=2><b>DOJ : </b> " + doj
+toDisplay += "<tr><td colspan=2><b>DOR : </b> " + dor
+toDisplay += "<tr><td colspan=2><b>Spouse Name : </b> " + spname
+toDisplay += "<tr><td colspan=2><b>Pension Type : </b> " + ptype
+                
+                
+                
+                
                 document.getElementById("modalData").innerHTML = toDisplay + "<table>"
                 document.getElementById("nameHeader").innerHTML = membData[0].name
                 modal.style.display = "block";
@@ -262,3 +286,5 @@ let isMobileDevice = regexp.test(details);
         </script>
 </body>
 </html>
+
+
