@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<style>
+
+input[type="date"]:not(.has-value):before{
+  color: lightgray;
+  content: attr(placeholder);
+}
+</style>
+<body>
+
+
+<input type="date" placeholder="MY PLACEHOLDER" onchange="this.className=(this.value!=''?'has-value':'')">
+</body>
+</html>
