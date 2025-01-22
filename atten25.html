@@ -34,15 +34,37 @@
       color: red;
       font-size: 14px;
     }
+    /* Loader styles */
+    .loader {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #3498db;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+      display: none; /* Hidden by default */
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .loader-container {
+      text-align: center;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
 <form name="submit-to-google-sheet" id="attend25">
   <h2>IBRA Attendance Form</h2>
+  <div class="loader-container">
+    <div class="loader" id="loader"></div>
+  </div>
   <label for="srNo">SR No:</label>
   <input type="number" id="srNo" placeholder="Enter SR No" name="SRNo" required />
   <label for="membershipNo">Membership Number:</label>
-  <input type="text" id="membershipNo" name="Mebership No" readonly />
+  <input type="text" id="membershipNo" name="Membership No" readonly />
   <label for="name">Name:</label>
   <input type="text" id="name" name="Name" readonly />
   <label for="attendanceDate">Attendance (Date-Time):</label>
@@ -57,6 +79,7 @@
   const dataFetchURL = 'https://script.google.com/macros/s/AKfycbxhKiIJzTPokink9zUovt3N8qrhGnOUD8Eu9V34QWGKxxbqm6xE_ucZzv-Od1rAyZXP/exec';
 
   const form = document.forms['submit-to-google-sheet'];
+  const loader = document.getElementById('loader');
   const srNoInput = document.getElementById('srNo');
   const membershipNoInput = document.getElementById('membershipNo');
   const nameInput = document.getElementById('name');
@@ -70,6 +93,8 @@
   // Fetch data from Google Sheets
   async function fetchData() {
     try {
+      toggleFormAccessibility(false);
+      showLoader(true);
       const response = await fetch(dataFetchURL);
       const data = await response.json();
       memberData = data['Data-data'].slice(1); // Remove headers
@@ -77,10 +102,24 @@
     } catch (error) {
       console.error('Error fetching data:', error);
       messageElement.textContent = 'Error fetching data. Please try again later.';
+    } finally {
+      showLoader(false);
+      toggleFormAccessibility(true);
     }
   }
 
-  // Validate SR No
+  // Show or hide loader
+  function showLoader(visible) {
+    loader.style.display = visible ? 'block' : 'none';
+  }
+
+  // Enable or disable form inputs and buttons
+  function toggleFormAccessibility(enable) {
+    const formElements = form.querySelectorAll('input, button');
+    formElements.forEach(element => element.disabled = !enable);
+  }
+
+  // Rest of the code...
   srNoInput.addEventListener('blur', () => {
     const srNo = parseInt(srNoInput.value, 10);
     if (isNaN(srNo)) {
@@ -106,19 +145,19 @@
     }
   });
 
-  // Handle form submission
   form.addEventListener('submit', async e => {
     e.preventDefault();
 
     const formData = new FormData(form);
     formData.append('spreadsheetId', '1t9eFaGHPBvsqpzWFnEFI_NlMRdnWVqti1TwW3kraCvQ');
     formData.append('sheetName', 'Attendance');
-    formData.append('MebershipNo', membershipNoInput.value);
+    formData.append('Membership No', membershipNoInput.value);
 
     try {
+      toggleFormAccessibility(false);
+      showLoader(true);
       const response = await fetch(scriptURL, { method: 'POST', body: formData });
       const result = await response.json();
-      console.log('Success:', result);
       displayMessage('Attendance marked successfully!', 'green');
       form.reset();
       resetInputs();
@@ -126,17 +165,18 @@
     } catch (error) {
       console.error('Error:', error);
       displayMessage('Error marking attendance. Please try again.');
+    } finally {
+      showLoader(false);
+      toggleFormAccessibility(true);
     }
   });
 
-  // Reset form inputs
   function resetForm() {
     form.reset();
     resetInputs();
     displayMessage('');
   }
 
-  // Reset input fields and disable OK button
   function resetInputs() {
     membershipNoInput.value = '';
     nameInput.value = '';
@@ -144,7 +184,6 @@
     okButton.disabled = true;
   }
 
-  // Display a message to the user
   function displayMessage(message, color = 'red') {
     messageElement.textContent = message;
     messageElement.style.color = color;
