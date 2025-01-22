@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IBRA Attendance Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 20px;
+      max-width: 400px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input, button {
+      width: 95%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+    p {
+      color: red;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+<form name="submit-to-google-sheet" id="attend25">
+  <h2>IBRA Attendance Form</h2>
+  <label for="srNo">SR No:</label>
+  <input type="number" id="srNo" placeholder="Enter SR No" name="SRNo" required />
+  <label for="membershipNo">Membership Number:</label>
+  <input type="text" id="membershipNo" name="Mebership No" readonly />
+  <label for="name">Name:</label>
+  <input type="text" id="name" name="Name" readonly />
+  <label for="attendanceDate">Attendance (Date-Time):</label>
+  <input type="text" id="attendanceDate" name="Attendance" readonly />
+  <button id="okButton" disabled>OK</button>
+  <button type="button" onclick="resetForm()">Cancel</button>
+  <p id="message"></p>
+</form>
+
+<script>
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbytzFhmFLKbTpwiMhtvPUGyi26GTFg2i9cIPkbLQKrEfRd4Mb-ezKptfrf7nm-fSzUM/exec';
+  const dataFetchURL = 'https://script.google.com/macros/s/AKfycbxhKiIJzTPokink9zUovt3N8qrhGnOUD8Eu9V34QWGKxxbqm6xE_ucZzv-Od1rAyZXP/exec';
+
+  const form = document.forms['submit-to-google-sheet'];
+  const srNoInput = document.getElementById('srNo');
+  const membershipNoInput = document.getElementById('membershipNo');
+  const nameInput = document.getElementById('name');
+  const attendanceDateInput = document.getElementById('attendanceDate');
+  const okButton = document.getElementById('okButton');
+  const messageElement = document.getElementById('message');
+
+  let memberData = [];
+  let attendanceData = [];
+
+  // Fetch data from Google Sheets
+  async function fetchData() {
+    try {
+      const response = await fetch(dataFetchURL);
+      const data = await response.json();
+      memberData = data['Data-data'].slice(1); // Remove headers
+      attendanceData = data['Attendance-data'].slice(1); // Remove headers
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      messageElement.textContent = 'Error fetching data. Please try again later.';
+    }
+  }
+
+  // Validate SR No
+  srNoInput.addEventListener('blur', () => {
+    const srNo = parseInt(srNoInput.value, 10);
+    if (isNaN(srNo)) {
+      displayMessage('Please enter a valid SR No.');
+      return;
+    }
+
+    const member = memberData.find(row => row[0] === srNo);
+    const alreadyMarked = attendanceData.some(row => row[0] === srNo);
+
+    if (!member) {
+      displayMessage('You are not a member.');
+      resetInputs();
+    } else if (alreadyMarked) {
+      displayMessage('Attendance already marked.');
+      resetInputs();
+    } else {
+      membershipNoInput.value = member[2];
+      nameInput.value = member[1];
+      attendanceDateInput.value = new Date().toLocaleString();
+      okButton.disabled = false;
+      displayMessage('');
+    }
+  });
+
+  // Handle form submission
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    formData.append('spreadsheetId', '1t9eFaGHPBvsqpzWFnEFI_NlMRdnWVqti1TwW3kraCvQ');
+    formData.append('sheetName', 'Attendance');
+    formData.append('MebershipNo', membershipNoInput.value);
+
+    try {
+      const response = await fetch(scriptURL, { method: 'POST', body: formData });
+      const result = await response.json();
+      console.log('Success:', result);
+      displayMessage('Attendance marked successfully!', 'green');
+      form.reset();
+      resetInputs();
+      await fetchData(); // Refresh data
+    } catch (error) {
+      console.error('Error:', error);
+      displayMessage('Error marking attendance. Please try again.');
+    }
+  });
+
+  // Reset form inputs
+  function resetForm() {
+    form.reset();
+    resetInputs();
+    displayMessage('');
+  }
+
+  // Reset input fields and disable OK button
+  function resetInputs() {
+    membershipNoInput.value = '';
+    nameInput.value = '';
+    attendanceDateInput.value = '';
+    okButton.disabled = true;
+  }
+
+  // Display a message to the user
+  function displayMessage(message, color = 'red') {
+    messageElement.textContent = message;
+    messageElement.style.color = color;
+  }
+
+  // Fetch data on page load
+  fetchData();
+</script>
+</body>
+</html>
