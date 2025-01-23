@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -78,7 +79,9 @@
 
 <script>
   const scriptURL = 'https://script.google.com/macros/s/AKfycbytzFhmFLKbTpwiMhtvPUGyi26GTFg2i9cIPkbLQKrEfRd4Mb-ezKptfrf7nm-fSzUM/exec';
-  const dataFetchURL = 'https://script.google.com/macros/s/AKfycbxhKiIJzTPokink9zUovt3N8qrhGnOUD8Eu9V34QWGKxxbqm6xE_ucZzv-Od1rAyZXP/exec';
+  const dataData = 'https://script.google.com/macros/s/AKfycbyrOAeTWWte70yEzUu4xHXh327c8Q1UQbQzVaF33x_m9zn7QweP1xESUNwgvpk6BLMx/exec';
+  const dataAttendance = 'https://script.google.com/macros/s/AKfycbwLjKAtHQ67ygaT1BPd-scEKliEw54Z2wURryDjfvPoKO6psEMWMROfOqbxLRh8r_qU4w/exec';
+  
 
   const form = document.forms['submit-to-google-sheet'];
   const loader = document.getElementById('loader');
@@ -94,34 +97,34 @@
 
   // Fetch data from Google Sheets
   async function fetchData() {
-    try {
-      toggleFormAccessibility(false);
+  toggleFormAccessibility(false);
       showLoader(true);
-      const response = await fetch(dataFetchURL);
-      const data = await response.json();
-      memberData = data['Data-data'].slice(1); // Remove headers
-      attendanceData = data['Attendance-data'].slice(1); // Remove headers
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      messageElement.textContent = 'Error fetching data. Please try again later.';
-    } finally {
+     const response = await fetch(dataAttendance);
+       attendanceData = await response.json();
+      attendanceData = attendanceData.slice(1)
       showLoader(false);
       toggleFormAccessibility(true);
-    }
+   
   }
 
-  // Show or hide loader
+async function getMemberData() {
+showLoader(true);
+                membData = await fetch(dataData)
+				memberData = await membData.json()
+                memberData=memberData.slice(1)
+                showLoader(false);
+                }
+      getMemberData()
+      
   function showLoader(visible) {
     loader.style.display = visible ? 'block' : 'none';
   }
 
-  // Enable or disable form inputs and buttons
   function toggleFormAccessibility(enable) {
     const formElements = form.querySelectorAll('input, button');
     formElements.forEach(element => element.disabled = !enable);
   }
 
-  // Rest of the code...
   srNoInput.addEventListener('blur', () => {
     const srNo = parseInt(srNoInput.value, 10);
     if (isNaN(srNo)) {
@@ -131,6 +134,7 @@
 
     const member = memberData.find(row => row[0] === srNo);
     const alreadyMarked = attendanceData.some(row => row[0] === srNo);
+    
 
     if (!member) {
       displayMessage('You are not a member.');
