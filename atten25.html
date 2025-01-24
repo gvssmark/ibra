@@ -56,11 +56,13 @@
     }
 
     #srNo {font-size: 1.5em;}
+	  #c {background:red; color:white; border-radius:25%; font-size:large; padding:5px; margin-top:-90px;  float:right; xposition:fixed;}
   </style>
 </head>
 <body>
 <form name="submit-to-google-sheet" id="attend25">
   <h2>IBRA Attendance Form</h2>
+	<div id='c'></div>
   <div class="loader-container">
     <div class="loader" id="loader"></div>
   </div>
@@ -102,6 +104,7 @@
      const response = await fetch(dataAttendance);
        attendanceData = await response.json();
       attendanceData = attendanceData.slice(1)
+	  document.getElementById('c').innerHTML = attendanceData.length
       showLoader(false);
       toggleFormAccessibility(true);
    
