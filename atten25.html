@@ -1,64 +1,21 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
   <title>IBRA Attendance Form</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      padding: 20px;
-      max-width: 400px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    label {
-      display: block;
-      margin-top: 10px;
-    }
-    input, button {
-      width: 95%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      
-    }
-    button:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
-    }
-    p {
-      color: red;
-      font-size: 14px;
-    }
-    /* Loader styles */
-    .loader {
-      border: 4px solid #f3f3f3;
-      border-top: 4px solid #3498db;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      animation: spin 1s linear infinite;
-      margin: 0 auto 20px;
-      display: none; /* Hidden by default */
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    .loader-container {
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    #srNo, #mobileNo {font-size: 1.5em; letter-spacing: 2px;}
-	  #c {background:red; width:25px; text-align:center; color:white; border-radius:50%; font-size:large; padding:5px; margin-top:-50px;  float:right; position:static;}
+    body {font-family: Arial, sans-serif; margin: 20px; padding: 20px; max-width: 400px; border: 1px solid #ccc; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);    }
+    label {display: block; margin-top: 10px;    }
+    input {width: 95%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;}
+    button {width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;}
+    button:disabled {background-color: #ccc;cursor: not-allowed;}
+    p {color: red; font-size: 14px;}
+    .loader {border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto 20px; display: none; }
+    @keyframes spin {0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); }}
+    .loader-container {text-align: center; margin-top: 20px;}
+    #srNo, #mobileNo, #name {font-size: 1.5em; letter-spacing: 2px;}
+    #c {background:red; width:25px; text-align:center; color:white; border-radius:50%; font-size:large; padding:5px; margin-top:-50px;  float:right; position:static;}
   </style>
 </head>
 <body>
@@ -70,18 +27,14 @@
   </div>
   <label for="srNo">SR No:</label>
   <input type="number" id="srNo" placeholder="Enter SR No" name="SRNo" pattern="\d*" required />
-  
   <label for="name">Name:</label>
-  <input type="text" id="name" name="Name" readonly />
-  <label for="membershipNo">Membership Number:</label>
-  <input type="text" id="membershipNo" name="Membership No" readonly />
-  
+  <input type="text" id="name" name="Name" readonly style='background:black; color:white' placeholder='Name' />
+  <!-- <label for="membershipNo">Membership Number:</label> -->
+  <input type="text" id="membershipNo" name="Membership No" readonly style='display:none' />
   <label for="mobileNo">Mobile Number:</label>
-  <input type="tel" id="mobileNo" name="Mobile" pattern="[6-9][0-9]{9}" required  onclick="this.select()"
-/>
-  
-  <label for="attendanceDate">Attendance (Date-Time):</label>
-  <input type="text" id="attendanceDate" name="Attendance" readonly />
+  <input type="tel" id="mobileNo" name="Mobile" pattern="[6-9][0-9]{9}" required  onclick="this.select()"/>
+  <!-- <label for="attendanceDate">Attendance (Date-Time):</label> -->
+  <input type="text" id="attendanceDate" name="Attendance" readonly  style='display:none'/>
   <button id="okButton" disabled>OK</button>
   <button type="button" onclick="resetForm()">Cancel</button>
   <p id="message"></p>
@@ -91,48 +44,38 @@
   const scriptURL = 'https://script.google.com/macros/s/AKfycbytzFhmFLKbTpwiMhtvPUGyi26GTFg2i9cIPkbLQKrEfRd4Mb-ezKptfrf7nm-fSzUM/exec';
   const dataData = 'https://script.google.com/macros/s/AKfycbyrOAeTWWte70yEzUu4xHXh327c8Q1UQbQzVaF33x_m9zn7QweP1xESUNwgvpk6BLMx/exec';
   const dataAttendance = 'https://script.google.com/macros/s/AKfycbwLjKAtHQ67ygaT1BPd-scEKliEw54Z2wURryDjfvPoKO6psEMWMROfOqbxLRh8r_qU4w/exec';
-  
-
   const form = document.forms['submit-to-google-sheet'];
   const loader = document.getElementById('loader');
   const srNoInput = document.getElementById('srNo');
   const membershipNoInput = document.getElementById('membershipNo');
   const mobileNoInput = document.getElementById('mobileNo');
-  
   const nameInput = document.getElementById('name');
   const attendanceDateInput = document.getElementById('attendanceDate');
   const okButton = document.getElementById('okButton');
   const messageElement = document.getElementById('message');
-
   let memberData = [];
   let attendanceData = [];
-
   // Fetch data from Google Sheets
   async function fetchData() {
   toggleFormAccessibility(false);
       showLoader(true);
      const response = await fetch(dataAttendance);
        attendanceData = await response.json();
-      attendanceData = attendanceData.slice(1)
-	  document.getElementById('c').innerHTML = attendanceData.length
+     attendanceData = attendanceData.slice(1)
+  document.getElementById('c').innerHTML = attendanceData.length
       showLoader(false);
       toggleFormAccessibility(true);
-   
   }
 
 async function getMemberData() {
 showLoader(true);
                 membData = await fetch(dataData)
-				memberData = await membData.json()
+		memberData = await membData.json()
                 memberData=memberData.slice(1)
                 showLoader(false);
                 }
       getMemberData()
-      
-  function showLoader(visible) {
-    loader.style.display = visible ? 'block' : 'none';
-  }
-
+  function showLoader(visible) {loader.style.display = visible ? 'block' : 'none';}
   function toggleFormAccessibility(enable) {
     const formElements = form.querySelectorAll('input, button');
     formElements.forEach(element => element.disabled = !enable);
@@ -144,18 +87,11 @@ showLoader(true);
       displayMessage('Please enter a valid SR No.');
       return;
     }
-
     const member = memberData.find(row => row[0] === srNo);
     const alreadyMarked = attendanceData.some(row => row[0] === srNo);
-    
-
-    if (!member) {
-      displayMessage('You are not a member.');
-      resetInputs();
-    } else if (alreadyMarked) {
-      displayMessage('Attendance already marked.');
-      resetInputs();
-    } else {
+    if (!member) {displayMessage('You are not a member.'); resetInputs();} 
+    else if (alreadyMarked) {displayMessage('Attendance already marked.');resetInputs();} 
+    else {
       membershipNoInput.value = member[2];
       nameInput.value = member[1];
       mobileNoInput.value = member[3]
@@ -167,12 +103,10 @@ showLoader(true);
 
   form.addEventListener('submit', async e => {
     e.preventDefault();
-
     const formData = new FormData(form);
     formData.append('spreadsheetId', '1t9eFaGHPBvsqpzWFnEFI_NlMRdnWVqti1TwW3kraCvQ');
     formData.append('sheetName', 'Attendance');
     formData.append('Membership No', membershipNoInput.value);
-
     try {
       toggleFormAccessibility(false);
       showLoader(true);
@@ -190,25 +124,21 @@ showLoader(true);
       toggleFormAccessibility(true);
     }
   });
-
   function resetForm() {
     form.reset();
     resetInputs();
     displayMessage('');
   }
-
   function resetInputs() {
     membershipNoInput.value = '';
     nameInput.value = '';
     attendanceDateInput.value = '';
     okButton.disabled = true;
   }
-
   function displayMessage(message, color = 'red') {
     messageElement.textContent = message;
     messageElement.style.color = color;
   }
-
   // Fetch data on page load
   fetchData();
 </script>
