@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,6 +27,7 @@
       margin-top: 5px;
       border: 1px solid #ccc;
       border-radius: 5px;
+      
     }
     button:disabled {
       background-color: #ccc;
@@ -55,7 +57,7 @@
       margin-top: 20px;
     }
 
-    #srNo {font-size: 1.5em;}
+    #srNo, #mobileNo {font-size: 1.5em; letter-spacing: 2px;}
 	  #c {background:red; width:25px; text-align:center; color:white; border-radius:50%; font-size:large; padding:5px; margin-top:-50px;  float:right; position:static;}
   </style>
 </head>
@@ -68,10 +70,16 @@
   </div>
   <label for="srNo">SR No:</label>
   <input type="number" id="srNo" placeholder="Enter SR No" name="SRNo" pattern="\d*" required />
-  <label for="membershipNo">Membership Number:</label>
-  <input type="text" id="membershipNo" name="Membership No" readonly />
+  
   <label for="name">Name:</label>
   <input type="text" id="name" name="Name" readonly />
+  <label for="membershipNo">Membership Number:</label>
+  <input type="text" id="membershipNo" name="Membership No" readonly />
+  
+  <label for="mobileNo">Mobile Number:</label>
+  <input type="text" id="mobileNo" name="Mobile" pattern="[6-9]{1}[0-9]{9}"   onclick="this.select()"
+/>
+  
   <label for="attendanceDate">Attendance (Date-Time):</label>
   <input type="text" id="attendanceDate" name="Attendance" readonly />
   <button id="okButton" disabled>OK</button>
@@ -89,6 +97,8 @@
   const loader = document.getElementById('loader');
   const srNoInput = document.getElementById('srNo');
   const membershipNoInput = document.getElementById('membershipNo');
+  const mobileNoInput = document.getElementById('mobileNo');
+  
   const nameInput = document.getElementById('name');
   const attendanceDateInput = document.getElementById('attendanceDate');
   const okButton = document.getElementById('okButton');
@@ -148,6 +158,7 @@ showLoader(true);
     } else {
       membershipNoInput.value = member[2];
       nameInput.value = member[1];
+      mobileNoInput.value = member[3]
       attendanceDateInput.value = new Date().toLocaleString();
       okButton.disabled = false;
       displayMessage('');
