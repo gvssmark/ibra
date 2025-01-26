@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,6 +17,7 @@
     .loader-container {text-align: center; margin-top: 20px;}
     #srNo, #mobileNo, #name {font-size: 1.5em; letter-spacing: 2px;}
     #c {background:red; width:25px; text-align:center; color:white; border-radius:50%; font-size:large; padding:5px; margin-top:-50px;  float:right; position:static;}
+    #lblMobileNo, #mobileNo {display:block} 
   </style>
 </head>
 <body>
@@ -27,20 +29,21 @@
   </div>
   <label for="srNo">SR No:</label>
   <input type="number" id="srNo" placeholder="Enter SR No" name="SRNo" pattern="\d*" required />
-  <label for="name">Name:</label>
+  <label for="name" id='lblName'>Name:</label>
   <input type="text" id="name" name="Name" readonly style='background:black; color:white' placeholder='Name' />
   <!-- <label for="membershipNo">Membership Number:</label> -->
   <input type="text" id="membershipNo" name="Membership No" readonly style='display:none' />
-  <label for="mobileNo">Mobile Number:</label>
+  <label for="mobileNo" id='lblMobileNo'>Mobile Number:</label>
   <input type="tel" id="mobileNo" name="Mobile" pattern="[6-9][0-9]{9}" required  onclick="this.select()"/>
   <!-- <label for="attendanceDate">Attendance (Date-Time):</label> -->
-  <input type="text" id="attendanceDate" name="Attendance" readonly  style='display:none'/>
+  <input type="text" id="attendanceDate" name="Attendance" readonly  style='display:none'/><br><br>
   <button id="okButton" disabled>OK</button>
   <button type="button" onclick="resetForm()">Cancel</button>
   <p id="message"></p>
 </form>
 
 <script>
+
   const scriptURL = 'https://script.google.com/macros/s/AKfycbytzFhmFLKbTpwiMhtvPUGyi26GTFg2i9cIPkbLQKrEfRd4Mb-ezKptfrf7nm-fSzUM/exec';
   const dataData = 'https://script.google.com/macros/s/AKfycbyrOAeTWWte70yEzUu4xHXh327c8Q1UQbQzVaF33x_m9zn7QweP1xESUNwgvpk6BLMx/exec';
   const dataAttendance = 'https://script.google.com/macros/s/AKfycbwLjKAtHQ67ygaT1BPd-scEKliEw54Z2wURryDjfvPoKO6psEMWMROfOqbxLRh8r_qU4w/exec';
@@ -53,6 +56,10 @@
   const attendanceDateInput = document.getElementById('attendanceDate');
   const okButton = document.getElementById('okButton');
   const messageElement = document.getElementById('message');
+  const lblNameText = document.getElementById('lblName');
+  const lblMobileNoText = document.getElementById('lblMobileNo');
+  
+  
   let memberData = [];
   let attendanceData = [];
   // Fetch data from Google Sheets
@@ -82,24 +89,48 @@ showLoader(true);
   }
 
   srNoInput.addEventListener('blur', () => {
-    const srNo = parseInt(srNoInput.value, 10);
-    if (isNaN(srNo)) {
-      displayMessage('Please enter a valid SR No.');
-      return;
-    }
-    const member = memberData.find(row => row[0] === srNo);
-    const alreadyMarked = attendanceData.some(row => row[0] === srNo);
-    if (!member) {displayMessage('You are not a member.'); resetInputs();} 
-    else if (alreadyMarked) {displayMessage('Attendance already marked.');resetInputs();} 
-    else {
-      membershipNoInput.value = member[2];
-      nameInput.value = member[1];
-      mobileNoInput.value = member[3]
-      attendanceDateInput.value = new Date().toLocaleString();
-      okButton.disabled = false;
-      displayMessage('');
-    }
-  });
+  const srNo = parseInt(srNoInput.value, 10);
+  if (isNaN(srNo)) {
+    displayMessage('Please enter a valid SR No.');
+    return;
+  }
+
+  const member = memberData.find(row => row[0] === srNo);
+  const alreadyMarked = attendanceData.some(row => row[0] === srNo);
+
+  if (!member) {
+    
+    lblNameText.innerHTML = 'Message';
+    nameInput.value = 'You are not a member.'; // Use value
+    nameInput.style.backgroundColor='red'
+    //displayMessage('You are not a member.');
+    lblMobileNoText.style.display='none'
+    mobileNoInput.style.display='none'
+    //resetInputs(); // Ensure this is necessary
+  } else if (alreadyMarked) {
+   
+    lblNameText.innerHTML = 'Message';
+    nameInput.style.backgroundColor='red'
+    nameInput.value = 'Attendance already marked.'; // Use value
+    //displayMessage('Attendance already marked.');
+    lblMobileNoText.style.display='none'
+    mobileNoInput.style.display='none'
+
+//resetInputs();
+  } else {
+      lblMobileNoText.style.display='block'
+    mobileNoInput.style.display='block'
+nameInput.style.backgroundColor='green'
+    lblNameText.innerHTML = 'Name';
+    membershipNoInput.value = member[2];
+    nameInput.value = member[1]; // Correctly set the value
+    mobileNoInput.value = member[3];
+    attendanceDateInput.value = new Date().toLocaleString();
+    okButton.disabled = false;
+    displayMessage('');
+  }
+});
+
 
   form.addEventListener('submit', async e => {
     e.preventDefault();
@@ -121,6 +152,10 @@ showLoader(true);
       displayMessage('Error marking attendance. Please try again.');
     } finally {
       showLoader(false);
+      lblMobileNoText.style.display='block'
+    mobileNoInput.style.display='block'
+nameInput.style.backgroundColor='white'
+lblNameText.innerHTML = 'Name';
       toggleFormAccessibility(true);
     }
   });
@@ -128,8 +163,14 @@ showLoader(true);
     form.reset();
     resetInputs();
     displayMessage('');
+    lblMobileNoText.style.display='block'
+    mobileNoInput.style.display='block'
+nameInput.style.backgroundColor='white'
+lblNameText.innerHTML = 'Name';
+    
   }
   function resetInputs() {
+  lblNameText.innerHTML = 'Name'
     membershipNoInput.value = '';
     nameInput.value = '';
     attendanceDateInput.value = '';
