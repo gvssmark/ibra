@@ -24,7 +24,7 @@
     h2 {text-align:center;}
     input::placeholder{font-size:small; color:red; text-align:right}
     #report{display:none}
-    
+    table {border-collapse: collapse;
   </style>
 </head>
 <body>
@@ -235,6 +235,7 @@ time=new Date(attendanceData[i][4]).toLocaleTimeString(navigator.language, {hour
 
 function showHideReport(){
 var x = document.getElementById('report');
+	x.style.backgroundColor='white'
   if (x.style.display === 'none') {
     x.style.display = 'block';
   } else {
