@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,8 +21,8 @@
     #lblMobileNo, #mobileNo {display:block} 
     h2 {text-align:center;}
     input::placeholder{font-size:small; color:red; text-align:right}
-    #report{display:none}
-    table {border-collapse: collapse;
+    #report{display:none; }
+    table {border-collapse: collapse; width:96%; margin:10px;}
   </style>
 </head>
 <body>
@@ -219,7 +217,7 @@ lblNameText.innerHTML = 'Name';
   function generateReport() {
   attendanceData.sort((a, b) => a[0] - b[0]);
 
-  let header = `<table border=1><tr><td>Sl No</td><td>SR No</td><td>Name</td><td>Memb No</td><td>Mobile No<td>Time</td></tr>`;
+  let header = `<h2>IBRA Attendance Report</h2><table border=1><tr><td>Sl No</td><td>SR No</td><td>Name</td><td>Memb No</td><td>Mobile No<td>Time</td></tr>`;
 
   for (let i = 0; i < attendanceData.length; i++) {
 time=new Date(attendanceData[i][4]).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'})
@@ -228,18 +226,20 @@ time=new Date(attendanceData[i][4]).toLocaleTimeString(navigator.language, {hour
 
   }
 
-  header += `</table>`;
+  header += `</table><br><br>`;
   
   document.getElementById('report').innerHTML = header
 }
 
 function showHideReport(){
 var x = document.getElementById('report');
-	x.style.backgroundColor='white'
+x.style.backgroundColor='white'
   if (x.style.display === 'none') {
+  form.style.display = 'none';
     x.style.display = 'block';
   } else {
     x.style.display = 'none';
+    form.style.display = 'block';
   }
 }
   
