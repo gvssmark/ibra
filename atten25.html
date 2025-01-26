@@ -220,8 +220,8 @@ lblNameText.innerHTML = 'Name';
   let header = `<h2>IBRA Attendance Report</h2><table border=1><tr><td>Sl No</td><td>SR No</td><td>Name</td><td>Memb No</td><td>Mobile No<td>Time</td></tr>`;
 
   for (let i = 0; i < attendanceData.length; i++) {
-time=new Date(attendanceData[i][4]).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'})
-    
+//time=new Date(attendanceData[i][4]).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'})
+time=new Date(attendanceData[i][4]).toLocaleTimeString("en-GB").substr(0,5)    
     header += `<tr><td>${i + 1}</td><td>${attendanceData[i][0]}</td><td>${attendanceData[i][1]}</td><td>${attendanceData[i][2]}</td><td>${attendanceData[i][3]}</td><td>${time}</td></tr>`;
 
   }
