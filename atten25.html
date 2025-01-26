@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,6 +22,8 @@
     #c {background:red; width:50px; height:50px;  text-align:center; color:white; border-radius:50%; font-size:large;  margin-top:-65px;  float:right; position:static; text-align: center; line-height: 50px; }
     #lblMobileNo, #mobileNo {display:block} 
     h2 {text-align:center;}
+    input::placeholder{font-size:small; color:red; text-align:right}
+    #report{display:none}
     
   </style>
 </head>
@@ -28,7 +31,7 @@
 
 
 <h2>IBRA Attendance </h2>
-  <div id='c'>0</div>
+  <div id='c' onclick='showHideReport()'>0</div>
 	
 <form name="submit-to-google-sheet" id="attend25">
  
@@ -36,11 +39,11 @@
   <label for="srNo">SR No:</label>
   <input type="number" id="srNo" placeholder="Enter SR No" name="SRNo" pattern="\d*" required />
   <label for="name" id='lblName'>Name:</label>
-  <input type="text" id="name" name="Name" readonly  placeholder='Name' style='color:white' />
+  <input type="text" id="name" name="Name" readonly style='color:white' placeholder='Name' />
   <label for="membershipNo" id='lblMembershipNo' >Membership Number:</label>
-  <input type="text" id="membershipNo" name="Membership No" readonly placeholder='Membership No'  />
+  <input type="text" id="membershipNo" name="Membership No" readonly placeholder='Membership' />
   <label for="mobileNo" id='lblMobileNo'>Mobile Number:</label>
-  <input type="tel" id="mobileNo" name="Mobile" pattern="[6-9][0-9]{9}" placeholder='Mobile Number' required  onclick="this.select()"/>
+  <input type="tel" id="mobileNo" name="Mobile" pattern="[6-9][0-9]{9}" placeholder='Mobile' required  onclick="this.select()"/>
   <!-- <label for="attendanceDate">Attendance (Date-Time):</label> -->
   <input type="text" id="attendanceDate" name="Attendance" readonly  style='display:none'/><br><br>
   
@@ -52,6 +55,11 @@
 
 <div class="loader-container">
     <div class="loader" id="loader"></div>
+  </div>
+  
+  <div id='report'>
+  
+  
   </div>
  
 <script>
@@ -85,6 +93,7 @@
   document.getElementById('c').innerHTML = attendanceData.length
       showLoader(false);
       toggleFormAccessibility(true);
+      generateReport();
   }
 
 async function getMemberData() {
@@ -205,6 +214,34 @@ lblNameText.innerHTML = 'Name';
   }
   // Fetch data on page load
   fetchData();
+  
+  
+  function generateReport() {
+  attendanceData.sort((a, b) => a[0] - b[0]);
+
+  let header = `<table border=1><tr><td>Sl No</td><td>SR No</td><td>Name</td><td>Memb No</td><td>Mobile No<td>Time</td></tr>`;
+
+  for (let i = 0; i < attendanceData.length; i++) {
+time=new Date(attendanceData[i][4]).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'})
+    
+    header += `<tr><td>${i + 1}</td><td>${attendanceData[i][0]}</td><td>${attendanceData[i][1]}</td><td>${attendanceData[i][2]}</td><td>${attendanceData[i][3]}</td><td>${time}</td></tr>`;
+
+  }
+
+  header += `</table>`;
+  
+  document.getElementById('report').innerHTML = header
+}
+
+function showHideReport(){
+var x = document.getElementById('report');
+  if (x.style.display === 'none') {
+    x.style.display = 'block';
+  } else {
+    x.style.display = 'none';
+  }
+}
+  
 </script>
 </body>
 </html>
