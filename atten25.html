@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,10 +16,11 @@
     .loader {border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto 20px; display: none; }
     @keyframes spin {0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); }}
     .loader-container {text-align: center; margin-top: 20px; position:static;}
-    #srNo, #mobileNo, #name {font-size: 1.5em; letter-spacing: 2px;}
+    #srNo, #mobileNo, #name, #membershipNo {font-size: 1.5em; letter-spacing: 2px;}
     #c {background:red; width:25px; text-align:center; color:white; border-radius:50%; font-size:large; padding:5px; margin-top:-50px;  float:right; position:static;}
     #lblMobileNo, #mobileNo {display:block} 
     h2 {text-align:center;}
+    
   </style>
 </head>
 <body>
@@ -34,8 +36,8 @@
   <input type="number" id="srNo" placeholder="Enter SR No" name="SRNo" pattern="\d*" required />
   <label for="name" id='lblName'>Name:</label>
   <input type="text" id="name" name="Name" readonly style='background:black; color:white' placeholder='Name' />
-  <!-- <label for="membershipNo">Membership Number:</label> -->
-  <input type="text" id="membershipNo" name="Membership No" readonly style='display:none' />
+  <label for="membershipNo" id='lblMembershipNo' >Membership Number:</label>
+  <input type="text" id="membershipNo" name="Membership No" readonly  />
   <label for="mobileNo" id='lblMobileNo'>Mobile Number:</label>
   <input type="tel" id="mobileNo" name="Mobile" pattern="[6-9][0-9]{9}" required  onclick="this.select()"/>
   <!-- <label for="attendanceDate">Attendance (Date-Time):</label> -->
@@ -59,6 +61,7 @@
   const form = document.forms['submit-to-google-sheet'];
   const loader = document.getElementById('loader');
   const srNoInput = document.getElementById('srNo');
+  const lblMembershipNoText = document.getElementById('lblMembershipNo');
   const membershipNoInput = document.getElementById('membershipNo');
   const mobileNoInput = document.getElementById('mobileNo');
   const nameInput = document.getElementById('name');
@@ -116,6 +119,8 @@ showLoader(true);
     lblMobileNoText.style.display='none'
     mobileNoInput.style.display='none'
     //resetInputs(); // Ensure this is necessary
+    lblMembershipNoText.style.display='none'
+    membershipNoInput.style.display='none'
   } else if (alreadyMarked) {
    
     lblNameText.innerHTML = 'Message';
@@ -124,6 +129,8 @@ showLoader(true);
     //displayMessage('Attendance already marked.');
     lblMobileNoText.style.display='none'
     mobileNoInput.style.display='none'
+    lblMembershipNoText.style.display='none'
+    membershipNoInput.style.display='none'
 
 //resetInputs();
   } else {
@@ -136,6 +143,8 @@ nameInput.style.backgroundColor='green'
     mobileNoInput.value = member[3];
     attendanceDateInput.value = new Date().toLocaleString();
     okButton.disabled = false;
+    lblMembershipNoText.style.display='block'
+    membershipNoInput.style.display='block'
     displayMessage('');
   }
 });
@@ -174,6 +183,10 @@ lblNameText.innerHTML = 'Name';
     displayMessage('');
     lblMobileNoText.style.display='block'
     mobileNoInput.style.display='block'
+    lblMembershipNoText.style.display='block'
+    membershipNoInput.style.display='block'
+        
+
 nameInput.style.backgroundColor='white'
 lblNameText.innerHTML = 'Name';
     
