@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,27 +7,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>IBRA Attendance Form</title>
   <style>
-    body {background-image: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);); font-family: Arial, sans-serif; margin: 20px; padding: 20px; max-width: 400px; border: 1px solid black; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);    }
-    label {display: block; margin-top: 10px;    }
+  body {background:grey;}
+    form {background-image: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);); font-family: Arial, sans-serif; margin: 20px; padding: 20px; max-width: 400px;  border: 1px solid black; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);    }
+    label {display: block; margin-top: 10px; color:blue;    }
     input {width: 95%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;}
-    button {width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;}
+    button {width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; display:flex}
     button:disabled {background-color: #ccc;cursor: not-allowed;}
     p {color: red; font-size: 14px;}
     .loader {border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto 20px; display: none; }
     @keyframes spin {0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); }}
-    .loader-container {text-align: center; margin-top: 20px;}
-    #srNo, #mobileNo, #name {font-size: 1.4em; letter-spacing: 2px;}
+    .loader-container {text-align: center; margin-top: 20px; position:static;}
+    #srNo, #mobileNo, #name {font-size: 1.5em; letter-spacing: 2px;}
     #c {background:red; width:25px; text-align:center; color:white; border-radius:50%; font-size:large; padding:5px; margin-top:-50px;  float:right; position:static;}
     #lblMobileNo, #mobileNo {display:block} 
+    h2 {text-align:center;}
   </style>
 </head>
 <body>
+
+
+<h2>IBRA Attendance </h2>
+  <div id='c'>0</div>
+	
 <form name="submit-to-google-sheet" id="attend25">
-  <h2>IBRA Attendance Form</h2>
-	<div id='c'>0</div>
-  <div class="loader-container">
-    <div class="loader" id="loader"></div>
-  </div>
+ 
+  
   <label for="srNo">SR No:</label>
   <input type="number" id="srNo" placeholder="Enter SR No" name="SRNo" pattern="\d*" required />
   <label for="name" id='lblName'>Name:</label>
@@ -36,12 +41,18 @@
   <label for="mobileNo" id='lblMobileNo'>Mobile Number:</label>
   <input type="tel" id="mobileNo" name="Mobile" pattern="[6-9][0-9]{9}" required  onclick="this.select()"/>
   <!-- <label for="attendanceDate">Attendance (Date-Time):</label> -->
-  <input type="text" id="attendanceDate" name="Attendance" readonly  style='display:none'/><br><br>
+  <input type="text" id="attendanceDate" name="Attendance" readonly  style='display:none'/><br>
+  
   <button id="okButton" disabled>OK</button>
   <button type="button" onclick="resetForm()">Cancel</button>
+  
   <p id="message"></p>
 </form>
 
+<div class="loader-container">
+    <div class="loader" id="loader"></div>
+  </div>
+ 
 <script>
 
   const scriptURL = 'https://script.google.com/macros/s/AKfycbytzFhmFLKbTpwiMhtvPUGyi26GTFg2i9cIPkbLQKrEfRd4Mb-ezKptfrf7nm-fSzUM/exec';
