@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>IBRA Attendance Form</title>
+  <style>
+    body { background: grey; }
+    form { 
+      background-image: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+      font-family: Arial, sans-serif; 
+      margin: 20px auto; 
+      padding: 20px; 
+      max-width: 400px;  
+      border: 1px solid black; 
+      border-radius: 10px; 
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  
+    }
+    label { display: block; margin-top: 10px; color: blue; }
+    input { width: 95%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; outline: none; font-size: 1.5em; letter-spacing: 2px;}
+    button { width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; font-size: large; color: white; }
+    button:disabled { background-color: #ccc; cursor: not-allowed; }
+    p { color: red; font-size: 14px; }
+    h2 { text-align: center; }
+    input::placeholder { font-size: small; color: red; text-align: right; }
+    .loader { display: none; border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px auto; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    #name {text-transform: capitalize; color:white}
+     #report{display:none; }
+      table {border-collapse: collapse; width:96%; margin:10px;}
+	  
+  </style>
+</head>
+<body>
+
+<h2 onclick='showHideReport()'>IBRA Attendance</h2>
+
+<form name="submit-to-google-sheet" id="attend25">
+  <label for="srNo">SR No:</label>
+  <input type="number" id="srNo" placeholder="Enter SR No" name="SRNo" pattern="\d*" required />
+
+  <label for="name">Name:</label>
+  <input type="text" id="name" name="Name" placeholder="Name" readonly required onclick="this.select()" autocomplete="off"/>
+
+  <label for="membershipNo">Membership Number:</label>
+  <input type="text" id="membershipNo" name="Membership No" readonly placeholder="Membership No" />
+
+  <label for="mobileNo">Mobile Number:</label>
+  <input type="tel" id="mobileNo" name="Mobile" pattern="[6-9][0-9]{9}" placeholder="Mobile" required  onclick="this.select()" autocomplete="off"/>
+
+  <input type="text" id="attendanceDate" name="Attendance" readonly style="display: none;" />
+
+  <button id="okButton" style="background: green;" disabled>OK</button>
+  <button type="button" style="background: red;" onclick="resetForm()">Cancel</button>
+
+  <p id="message"></p>
+</form>
+
+<div class="loader" id="loader"></div>
+ <div id='report'>
+<script>
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbytzFhmFLKbTpwiMhtvPUGyi26GTFg2i9cIPkbLQKrEfRd4Mb-ezKptfrf7nm-fSzUM/exec';
+  const dataData = 'https://script.google.com/macros/s/AKfycbyrOAeTWWte70yEzUu4xHXh327c8Q1UQbQzVaF33x_m9zn7QweP1xESUNwgvpk6BLMx/exec';
+  const dataAttendance = 'https://script.google.com/macros/s/AKfycbwLjKAtHQ67ygaT1BPd-scEKliEw54Z2wURryDjfvPoKO6psEMWMROfOqbxLRh8r_qU4w/exec';
+
+  const form = document.forms['submit-to-google-sheet'];
+  const loader = document.getElementById('loader');
+  const srNoInput = document.getElementById('srNo');
+  const nameInput = document.getElementById('name');
+  const membershipNoInput = document.getElementById('membershipNo');
+  const mobileNoInput = document.getElementById('mobileNo');
+  const attendanceDateInput = document.getElementById('attendanceDate');
+  const okButton = document.getElementById('okButton');
+  const messageElement = document.getElementById('message');
+
+  let memberData = [];
+  let attendanceData = [];
+
+  async function fetchData() {
+    toggleFormAccessibility(false);
+    showLoader(true);
+    const response = await fetch(dataAttendance);
+    attendanceData = await response.json();
+    attendanceData = attendanceData.slice(1);
+    showLoader(false);
+    toggleFormAccessibility(true);
+    generateReport();
+  }
+
+  async function getMemberData() {
+    showLoader(true);
+    const membData = await fetch(dataData);
+    memberData = await membData.json();
+    memberData = memberData.slice(1);
+    showLoader(false);
+  }
+
+  getMemberData();
+
+  function showLoader(visible) { loader.style.display = visible ? 'block' : 'none'; }
+
+  function toggleFormAccessibility(enable) {
+    const formElements = form.querySelectorAll('input, button');
+    formElements.forEach(element => element.disabled = !enable);
+  }
+
+  srNoInput.addEventListener('blur', () => {
+    const srNo = parseInt(srNoInput.value, 10);
+    if (isNaN(srNo)) {
+        displayMessage('Please enter a valid SR No.','blue');
+        return;
+    }
+
+    const member = memberData.find(row => row[0] === srNo);
+    let alreadyMarked = false;
+    const currentDateTime = new Date().toLocaleString(); // Capture the current date & time
+
+    if (!member) {
+        // Non-Member Logic
+        nameInput.value = 'Not a Member';
+        nameInput.style.backgroundColor = 'blue';
+        nameInput.readOnly = false
+
+        membershipNoInput.value = '0';
+        mobileNoInput.value = '';
+        attendanceDateInput.value = currentDateTime; // Set attendance date
+
+        // Check if non-member is already marked by mobile number
+        alreadyMarked = attendanceData.some(row => row[0] === srNo);
+        
+        if (alreadyMarked) {
+            nameInput.value = 'Already Marked';
+            nameInput.style.backgroundColor = 'red';
+            okButton.disabled = true;
+        } else {
+            okButton.disabled = false;
+        }
+    } else {
+        // Member Logic
+        alreadyMarked = attendanceData.some(row => row[0] === srNo);
+
+        if (alreadyMarked) {
+            nameInput.value = 'Already Marked';
+            nameInput.style.backgroundColor = 'red';
+            okButton.disabled = true;
+        } else {
+        nameInput.readOnly = true
+            nameInput.value = titleCase(member[1]);
+            nameInput.style.backgroundColor = 'green';
+            membershipNoInput.value = member[2];
+            mobileNoInput.value = member[3];
+            attendanceDateInput.value = currentDateTime; // Set attendance date
+            okButton.disabled = false;
+        }
+    }
+});
+
+
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+
+    if (nameInput.value === 'Not a Member' || nameInput.value.trim() === '') {
+      displayMessage('Please enter your name before submitting.', 'blue');
+      return;
+    }
+
+    const formData = new FormData(form);
+formData.append('spreadsheetId', '1t9eFaGHPBvsqpzWFnEFI_NlMRdnWVqti1TwW3kraCvQ');
+    formData.append('sheetName', 'Attendance');
+	attendanceDateInput.value = new Date().toLocaleString();
+
+    try {
+      toggleFormAccessibility(false);
+      showLoader(true);
+      const response = await fetch(scriptURL, { method: 'POST', body: formData });
+      const result = await response.json();
+	  form.reset();
+      resetInputs();
+      await fetchData();
+      displayMessage('Attendance marked successfully!', 'blue') ;
+    } catch (error) {
+      console.error('Error:', error);
+      displayMessage('Error marking attendance. Please try again.');
+    } finally {
+      showLoader(false);
+      toggleFormAccessibility(true);
+    }
+  });
+
+  function resetForm() {
+    form.reset();
+    resetInputs();
+    displayMessage('');
+  }
+
+  function resetInputs() {
+    nameInput.value = '';
+    nameInput.style.backgroundColor = 'white';
+    membershipNoInput.value = '';
+    mobileNoInput.value = '';
+    attendanceDateInput.value = '';
+    okButton.disabled = true;
+  }
+
+  function displayMessage(message, color = 'red') {
+    attendanceMarked =` --- Attendance So far: ${attendanceData.length}`
+    messageElement.textContent = message + attendanceMarked ;
+    messageElement.style.color = color;
+	
+  }
+
+  fetchData();
+
+function generateReport() {
+  attendanceData.sort((a, b) => a[0] - b[0]);
+
+  let header = `<h2>IBRA Attendance Report</h2><table border=1><tr><td>Sl No</td><td>SR No</td><td>Name</td><td>Memb No</td><td>Mobile No<td>Time</td></tr>`;
+
+  for (let i = 0; i < attendanceData.length; i++) {
+//time=new Date(attendanceData[i][4]).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'})
+time=new Date(attendanceData[i][4]).toLocaleTimeString("en-GB").substr(0,5)    
+    header += `<tr><td>${i + 1}</td><td>${attendanceData[i][0]}</td><td>${titleCase(attendanceData[i][1])}</td><td>${attendanceData[i][2]}</td><td>${attendanceData[i][3]}</td><td>${time}</td></tr>`;
+
+  }
+
+  header += `</table><br><br>`;
+  
+  document.getElementById('report').innerHTML = header
+}
+
+function showHideReport(){
+var x = document.getElementById('report');
+x.style.backgroundColor='white'
+  if (x.style.display === 'none') {
+  form.style.display = 'none';
+    x.style.display = 'block';
+  } else {
+    x.style.display = 'none';
+    form.style.display = 'block';
+  }
+}
+
+function titleCase(str) {
+  return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+}
+</script>
+
+</body>
+</html>
