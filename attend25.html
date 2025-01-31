@@ -29,6 +29,24 @@
      #report{display:none; }
       table {border-collapse: collapse; width:96%; margin:10px;}
 	  
+	  
+	  
+	#message1{      width: 50px;
+    height: 50px;
+    background: blue;
+    color: white;
+    line-height: 50px;
+    text-align: center;
+    border-radius: 50%;
+    /* margin: auto; */
+    font-size: large;
+    position: sticky;
+    /* right: 35px; */
+    float: right;
+    /* bottom: 26px; */
+    /* margin-right: 0px; */
+    margin-top: -34px;}
+	  
   </style>
 </head>
 <body>
@@ -53,11 +71,13 @@
   <button id="okButton" style="background: green;" disabled>OK</button>
   <button type="button" style="background: red;" onclick="resetForm()">Cancel</button>
 
-  <p id="message"></p>
+  <p id="message">Information:</p>
+  <div id="message1">0</div>
+  
 </form>
 
 <div class="loader" id="loader"></div>
- <div id='report'>
+ <div id='report'></div>
 <script>
   const scriptURL = 'https://script.google.com/macros/s/AKfycbytzFhmFLKbTpwiMhtvPUGyi26GTFg2i9cIPkbLQKrEfRd4Mb-ezKptfrf7nm-fSzUM/exec';
   const dataData = 'https://script.google.com/macros/s/AKfycbyrOAeTWWte70yEzUu4xHXh327c8Q1UQbQzVaF33x_m9zn7QweP1xESUNwgvpk6BLMx/exec';
@@ -85,6 +105,7 @@
     showLoader(false);
     toggleFormAccessibility(true);
     generateReport();
+	countatt()
   }
 
   async function getMemberData() {
@@ -105,6 +126,7 @@
   }
 
   srNoInput.addEventListener('blur', () => {
+  
     const srNo = parseInt(srNoInput.value, 10);
     if (isNaN(srNo)) {
         displayMessage('Please enter a valid SR No.','blue');
@@ -179,6 +201,7 @@ formData.append('spreadsheetId', '1t9eFaGHPBvsqpzWFnEFI_NlMRdnWVqti1TwW3kraCvQ')
       resetInputs();
       await fetchData();
       displayMessage('Attendance marked successfully!', 'blue') ;
+	  
     } catch (error) {
       console.error('Error:', error);
       displayMessage('Error marking attendance. Please try again.');
@@ -204,11 +227,13 @@ formData.append('spreadsheetId', '1t9eFaGHPBvsqpzWFnEFI_NlMRdnWVqti1TwW3kraCvQ')
   }
 
   function displayMessage(message, color = 'red') {
-    attendanceMarked =` --- Attendance So far: ${attendanceData.length}`
-    messageElement.textContent = message + attendanceMarked ;
+    
+    messageElement.textContent = message  ;
     messageElement.style.color = color;
 	
   }
+
+function countatt(){document.getElementById('message1').innerHTML = attendanceData.length}
 
   fetchData();
 
