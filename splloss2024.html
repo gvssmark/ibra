@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pension Calculator</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size:x-small;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: right;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        
+        input[type="number"] {
+    width: 100px;
+    padding: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    margin: 5px;
+}
+
+input[type="number"]:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+label {
+    font-weight: bold;
+    margin-right: 10px;
+    display: inline-block;
+    width: 120px;
+}
+
+button {
+    padding: 8px 15px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+        .inputs {background:yellow;}
+        .inputs td {text-align:center;}
+        .inputs input {width:100%}
+        .inputs {max-width:400px; margin:auto;}
+        
+    </style>
+    <script>
+        const bpsfrom = [[201211,201711,202211],['bps10','bps11','bps12']];
+        const splAllRates = [
+            ["Scale",'bps10','bps11','bps12'],
+            [1,7.75,16.4,26.5], [2,7.75,16.4,28.3], [3,7.75,16.4,28.3],
+            [4,10,19,30.5], [5,10,19,30.5], [6,11,20,31.5],
+            [7,11,20,31.5], [8,7.75,16.4,26.5], [9,7.75,16.4,26.5],
+            [10,7.75,16.4,26.5]
+        ];
+        
+        bps10 = [
+[10,2012,0,0,0,0,0,0,0,0,0,0,6.7,6.7],
+[10,2013,6.7,13.4,13.4,13.4,13.4,13.4,13.4,19.2,19.2,19.2,19.2,19.2],
+[10,2014,19.2,26.5,26.5,26.5,26.5,26.5,26.5,28.2,28.2,28.2,28.2,28.2],
+[10,2015,28.2,33.3,33.3,33.3,33.3,33.3,33.3,36.4,36.4,36.4,36.4,36.4],
+[10,2016,36.4,42.6,42.6,42.6,42.6,42.6,42.6,45.5,45.5,45.5,45.5,45.5],
+[10,2017,45.5,46.9,46.9,46.9,46.9,46.9,46.9,47.8,47.8,47.8,47.8,47.8],
+[10,2018,47.8,52.7,52.7,52.7,52.7,52.7,52.7,54.1,54.1,54.1,54.1,54.1],
+[10,2019,54.1,61.1,61.1,61.1,61.1,61.1,61.1,68.1,68.1,68.1,68.1,68.1],
+[10,2020,68.1,75.9,75.9,75.9,75.9,75.9,75.9,77.5,77.5,77.5,77.5,77.5],
+[10,2021,77.5,85.2,85.2,85.2,85.2,85.2,85.2,87.5,87.5,87.5,87.5,87.5],
+[10,2022,87.5,94.9,94.9,94.9,94.9,94.9,94.9,100.4,100.4,100.4,100.4,100.4],
+[10,2023,100.4,106.6,106.6,106.6,106.6,106.6,106.6,111,111,111,111,111],
+[10,2024,111,117.1,117.1,117.1,117.1,117.1,117.1,119.4,119.4,119.4,119.4,119.4],
+[10,2025,119.4,119.4,119.4,119.4,119.4,119.4,119.4,119.4,119.4,119.4,119.4,119.4],]
+
+bps11 =[
+[11,2017,0,0,0,0,0,0,0,0,0,0,0,0],
+[11,2018,0,3.43,3.43,3.43,3.43,3.43,3.43,4.41,4.41,4.41,4.41,4.41],
+[11,2019,4.41,9.31,9.31,9.31,9.31,9.31,9.31,14.21,14.21,14.21,14.21,14.21],
+[11,2020,14.21,19.67,19.67,19.67,19.67,19.67,19.67,20.79,20.79,20.79,20.79,20.79],
+[11,2021,20.79,26.18,26.18,26.18,26.18,26.18,26.18,29.79,29.79,29.79,29.79,29.79],
+[11,2022,29.79,32.97,32.97,32.97,32.97,32.97,32.97,36.82,36.82,36.82,36.82,36.82],
+[11,2023,36.82,41.16,41.16,41.16,41.16,41.16,41.16,44.24,44.24,44.24,44.24,44.24],
+[11,2024,44.24,48.51,48.51,48.51,48.51,48.51,48.51,50.12,50.12,50.12,50.12,50.12],
+[11,2025,50.12,50.12,50.12,50.12,50.12,50.12,50.12,50.12,50.12,50.12,50.12,50.12],]
+
+
+bps12 =[ 
+[12,2022,0,0,0,0,0,0,0,0,0,0,0,0],
+[12,2023,0,9.4,9.4,9.4,9.4,9.4,9.4,12.07,12.07,12.07,12.07,12.07],
+[12,2024,12.07,15.74,15.74,15.74,15.74,15.74,15.74,18.74,18.74,18.74,18.74,18.74],
+[12,2025,18.74,18.74,18.74,18.74,18.74,18.74,18.74,18.74,18.74,18.74,18.74,18.74],]
+
+        
+        const daRates = {bps10, bps11, bps12};
+        
+        function getBps(month, year) {
+    let inputDate = year * 100 + month; // Convert to YYYYMM format for comparison
+if (inputDate >= 202211) return 'bps12';  // BPS 11 from Nov 2017 onwards
+    if (inputDate >= 201711) return 'bps11';  // BPS 11 from Nov 2017 onwards
+    if (inputDate >= 201211) return 'bps10';  // BPS 10 from Aug 2012 to Oct 2017
+
+    return null;  // No valid BPS found
+}
+un
+        
+  /*      function getBps(month, year) {
+            let period = year * 100 + month;
+            for (let i = 0; i < bpsfrom[0].length; i++) {
+                if (period >= bpsfrom[0][i]) return bpsfrom[1][i];
+            }
+            return null;
+        } */
+        
+        function getSplAllowance(scale, bps) {
+            for (let row of splAllRates) {
+                if (row[0] === scale) return row[bpsfrom[1].indexOf(bps) + 1];
+            }
+            return 0;
+        }
+        
+        function getDA(bps, year, month) {
+            let data = daRates[bps];
+            for (let row of data) {
+                if (row[1] === year) return row[month+1];
+            }
+            return 0;
+        }
+        
+        function calculatePension() {
+    let month = parseInt(document.getElementById("month").value);
+    let year = parseInt(document.getElementById("year").value);
+    let scale = parseInt(document.getElementById("scale").value);
+    let basicPay = parseFloat(document.getElementById("basicPay").value);
+
+    // Get the correct BPS period
+    let bps = getBps(month, year);
+
+    // If BPS is null, show error
+    if (!bps) {
+        alert("No valid BPS found for the selected period.");
+        return;
+    }
+
+    // Get Special Allowance Rate for the scale in this BPS period
+    let splAllowance = getSplAllowance(scale, bps);
+
+    // Calculate pension based on Basic Pay and Special Allowance
+    let pension = (basicPay * splAllowance) / 2 / 100;
+
+    let resultHTML = `<table><tr><th>Year</th><th>Details</th><th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th><th>May</th><th>Jun</th><th>Jul</th><th>Aug</th><th>Sep</th><th>Oct</th><th>Nov</th><th>Dec</th></tr>`;
+    let totalPension = 0, totalDA = 0;
+
+    for (let y = year; y <= 2024; y++) {
+        let pensionRow = `<tr><td rowspan='3'>${y}</td><td>Pension</td>`;
+        let daRow = `<tr><td>DA</td>`;
+        let totalRow = `<tr style='border-bottom:2px solid red;'><td>Total</td>`;
+
+        for (let m = 1; m <= 12; m++) {
+            if (y === year && m < month) {
+                pensionRow += `<td></td>`;
+                daRow += `<td></td>`;
+                totalRow += `<td></td>`;
+            } else {
+                let da = getDA(bps, y, m);
+                let daPension = pension * da / 100;
+                totalPension += pension;
+                totalDA += daPension;
+                pensionRow += `<td>${pension.toFixed(2)}</td>`;
+                daRow += `<td>${daPension.toFixed(2)}</td>`;
+                totalRow += `<td>${(pension + daPension).toFixed(2)}</td>`;
+            }
+        }
+        resultHTML += pensionRow + "</tr>" + daRow + "</tr>" + totalRow + "</tr>";
+    }
+
+    resultHTML += `<tr><td colspan='2'><b>Grand Total</b></td><td colspan='12'>Pension: Rs. ${totalPension.toFixed(2)}, DA: Rs. ${totalDA.toFixed(2)}, Total: Rs. ${(totalPension + totalDA).toFixed(2)}</td></tr>`;
+    resultHTML += "</table>";
+
+    // Display results
+    document.getElementById("values").innerHTML = `BPS: ${bps} - Special Allowance Rate: ${splAllowance}% - Special Allowance: ${pension*2} - Pension on Special Allowance: ${pension}`;
+    document.getElementById("result").innerHTML = resultHTML;
+}
+
+    </script>
+</head>
+<body>
+    <h3>Loss on a/c Special Allowance Not Included for Pension</h3>
+    <table class='inputs'  ><tr><td>
+    <label>Pension Start Month: <select name="mt" id="month" >
+  <option value="01">Jan</option>
+  <option value="02">Feb</option>
+  <option value="03">Mar</option>
+  <option value="04">Apr</option>
+  <option value="05">May</option>
+  <option value="06" >Jun</option>
+  <option value="07">Jul</option>
+  <option value="08" selected>Aug</option>
+  <option value="09">Sep</option>
+  <option value="10">Oct</option>
+  <option value="11" >Nov</option>
+  <option value="12">Dec</option>
+</select></label><br>
+    <td><label>Year: <select name="yr" id="year" >
+  <option value="2012">2012</option>
+  <option value="2013" selected>2013</option>
+  <option value="2014">2014</option>
+  <option value="2015">2015</option>
+  <option value="2016">2016</option>
+  <option value="2017">2017</option>
+  <option value="2018" >2018</option>
+  <option value="2019">2019</option>
+  <option value="2020">2020</option>
+  <option value="2021">2021</option>
+  <option value="2022">2022</option>
+  <option value="2023">2023</option>
+  <option value="2024">2024</option>
+  <option value="2025">2025</option>
+  
+</select></label><br>
+    <tr><td><label>Scale: <select name="sc" id="scale" >
+  <option value="1">Scale 1</option>
+  <option value="2">Scale 2</option>
+  <option value="3">Scale 3</option>
+  <option value="4" selected >Scale 4</option>
+  <option value="5">Scale 5</option>
+  <option value="6">Scale 6</option>
+  <option value="7">Scale 7</option>
+  <option value="8">Clerk</option>
+  <option value="9">Substaff</option>
+  <option value="10">PPTS</option>
+</select></label><br>
+    <td><label>Basic Pay (Rs.): <input type="number" id="basicPay"  value=59710></label><br>
+    <tr><td colspan=2><button onclick="calculatePension()">Calculate</button></table>
+    <h3>Calculation Upto Dec 2024:</h3>
+    <p id='values'></p>
+    <div id="result"></div>
+</body>
+</html>
