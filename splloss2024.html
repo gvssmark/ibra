@@ -195,8 +195,8 @@ if (inputDate >= 202211) return 'bps12';  // BPS 11 from Nov 2017 onwards
     resultHTML += "</table>";
 
     // Display results
-    document.getElementById("values").innerHTML = `BPS: ${bps} - Special Allowance Rate: ${splAllowance}% - Special Allowance: ${pension*2} - Pension on Special Allowance: ${pension}`;
-    document.getElementById("result").innerHTML = resultHTML.toUpperCase()
+    document.getElementById("values").innerHTML = `BPS: ${bps} - Special Allowance Rate: ${splAllowance}% - Special Allowance: ${pension*2} - Pension on Special Allowance: ${pension}`.toUpperCase();
+    document.getElementById("result").innerHTML = resultHTML
 ;
 }
 
