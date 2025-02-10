@@ -174,7 +174,7 @@ if (inputDate >= 202211) return 'bps12';  // BPS 11 from Nov 2017 onwards
         let totalRow = `<tr style='border-bottom:2px solid red;'><td>Total</td>`;
 
         for (let m = 1; m <= 12; m++) {
-            if (y === year && m < month) {
+            if (y === year && m <= month) {
                 pensionRow += `<td></td>`;
                 daRow += `<td></td>`;
                 totalRow += `<td></td>`;
