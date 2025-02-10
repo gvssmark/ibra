@@ -61,7 +61,8 @@ button:hover {
         .inputs input {width:100%}
         .inputs {max-width:400px; margin:auto;}
         h3 {text-align:center; }
-        
+        p {max-wdith:1050px; margin:auto; }
+        #result {max-wdith:1050px; margin:auto;}
     </style>
     <script>
         const bpsfrom = [[201211,201711,202211],['bps10','bps11','bps12']];
@@ -118,7 +119,7 @@ if (inputDate >= 202211) return 'bps12';  // BPS 11 from Nov 2017 onwards
 
     return null;  // No valid BPS found
 }
-un
+
         
   /*      function getBps(month, year) {
             let period = year * 100 + month;
@@ -195,7 +196,8 @@ un
 
     // Display results
     document.getElementById("values").innerHTML = `BPS: ${bps} - Special Allowance Rate: ${splAllowance}% - Special Allowance: ${pension*2} - Pension on Special Allowance: ${pension}`;
-    document.getElementById("result").innerHTML = resultHTML;
+    document.getElementById("result").innerHTML = resultHTML.toUpperCase()
+;
 }
 
     </script>
