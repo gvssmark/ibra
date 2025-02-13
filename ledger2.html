@@ -1,10 +1,11 @@
+
 <!DOCTYPE html>
 <html>
 <head>
  <meta name="viewport" content="width=device-width,  initial-scale=1.0">
  <title>IBRA-Accounts</title>
 <style>
-body {width:90vw;   align-items:center; box-sizing: border-box; background:lightblue;  justify-content: center; margin:auto;   }
+body { width:90vw; align-items:center; box-sizing: border-box; background:lightblue;  justify-content: center; margin:auto;   }
 table { width:90vw ; border-collapse:collapse; align:center}
 h3 {text-align:center; top:0; position:sticky; background:lightblue; margin-top:0 }
 td { border:1px solid grey;  }
@@ -30,14 +31,14 @@ td { border:1px solid grey;  }
 .acledger td:nth-child(4) { text-align: right; width: 15%; }
 .acledger td:nth-child(3) { text-align: right; width: 5%; }
 .pr td {width:25%}
-@media only screen and (min-width: 600px) {
-  body {width:600px;    background-color: lightblue;    margin:auto;   }
-  table {width:90%;margin:auto; }
-  .col2 tr:last-child{ background:lightblue; color:black}
-  }
+
 @media print {
 h3 {display:block; }
 
+
+
+  
+  
 td {background:white; color:black}
   #bs, #ie, {display: block; }
   #ac  { page-break-before: always; display: block;}
@@ -114,7 +115,7 @@ function onClick() {
     document.getElementById(this.id).style.backgroundColor = 'red'
     document.getElementById(this.id).style.color = 'white'
     ledgerTable(this.id * 1)
-    document.getElementById('ledgerrep').innerHTML = `${trdata}</table>`
+    document.getElementById('ledgerrep').innerHTML = `${trdata}</table><br><br><br><br>`
 }
 function ledgerTable(acno) {
     filtered = filtdata(acno)
@@ -136,7 +137,7 @@ function hideallclass() {
 function makeTableHTML(arr, element, classname1) {
     let newtable = `<table id=${element}Table class='${classname1}' >${arr.map(obj => 
         `<tr>${Object.values(obj).map(val => `<td>${val}</td>`).join('')}</tr>`
-    ).join('')}</table>`
+    ).join('')}</table><br><br><br>`
     document.getElementById(element).innerHTML = newtable
 }
 
@@ -147,7 +148,7 @@ function generateAllLedgers() {
 		ledgerTable(account.acno);
         ledgerDiv = document.createElement('div');
         ledgerDiv.className = 'ledger';
-        ledgerDiv.innerHTML = `${trdata}</table><br>`;
+        ledgerDiv.innerHTML = `${trdata}</table><br><br><br><br>`;
         ledgerContainer.appendChild(ledgerDiv);
     });
 }
