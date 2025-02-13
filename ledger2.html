@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,7 +37,7 @@ td { border:1px solid grey;  }
 @media print {
 h3 {display:block; }
 
-
+#navtable {display:none}
 
   
   
@@ -116,7 +117,7 @@ function onClick() {
     document.getElementById(this.id).style.backgroundColor = 'red'
     document.getElementById(this.id).style.color = 'white'
     ledgerTable(this.id * 1)
-    document.getElementById('ledgerrep').innerHTML = `${trdata}</table><br><br><br><br>`
+    document.getElementById('ledgerrep').innerHTML = `${trdata}</table><br><br>`
 }
 function ledgerTable(acno) {
     filtered = filtdata(acno)
@@ -149,7 +150,7 @@ function generateAllLedgers() {
 		ledgerTable(account.acno);
         ledgerDiv = document.createElement('div');
         ledgerDiv.className = 'ledger';
-        ledgerDiv.innerHTML = `${trdata}</table><br><br><br><br>`;
+        ledgerDiv.innerHTML = `${trdata}</table><br>`;
         ledgerContainer.appendChild(ledgerDiv);
     });
 }
