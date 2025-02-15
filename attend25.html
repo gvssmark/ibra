@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -72,7 +73,7 @@
   <button id="okButton" style="background: green;" disabled>OK</button>
   <button type="button" style="background: red;" onclick="resetForm()">Cancel</button>
 
-  <p id="message">Information:</p>
+  <p id="message">&nbsp</p>
   <div id="message1">0</div>
   
 </form>
@@ -103,6 +104,14 @@
 
   let memberData = [];
   let attendanceData = [];
+  
+  
+  srNoInput.addEventListener('click', myFunction)
+
+function myFunction() {
+displayMessage('New Data','blue')
+  //alert('focused')
+}
 
   async function fetchData() {
     toggleFormAccessibility(false);
@@ -195,7 +204,7 @@
       return;
     }
 nameInput.value = titleCase(nameInput.value)
-    const formData = new FormData(form);
+     formData = new FormData(form);
 formData.append('spreadsheetId', ShId);
     formData.append('sheetName', ShName);
 	attendanceDateInput.value = new Date().toLocaleString();
@@ -204,6 +213,7 @@ formData.append('spreadsheetId', ShId);
       toggleFormAccessibility(false);
       showLoader(true);
       const response = await fetch(scriptURL, { method: 'POST', body: formData });
+      console.log(formData)
       const result = await response.json();
 	  form.reset();
       resetInputs();
