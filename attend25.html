@@ -194,7 +194,7 @@
       displayMessage('Please enter your name before submitting.', 'blue');
       return;
     }
-
+nameInput.value = titleCase(nameInput.value)
     const formData = new FormData(form);
 formData.append('spreadsheetId', ShId);
     formData.append('sheetName', ShName);
