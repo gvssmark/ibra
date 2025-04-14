@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>New Emp Id Collection</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    label { display: block; margin-top: 10px; }
+    input { padding: 6px; width: 100%; max-width: 300px; margin-top: 4px; }
+    button { margin-top: 15px; padding: 10px 15px; }
+    .hidden { display: none; }
+    .loader {
+      display: none;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #3498db;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    #status { margin-top: 10px; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+<h2>New Emp Id Collection</h2>
+
+<div class="loader" id="loader"></div>
+
+<form id="empForm" onsubmit="submitData(event)">
+  <label for="srno">SR Number:</label>
+  <input type="number" id="srno" required autofocus oninput="validateSRNo()" />
+
+  <div id="nameDisplay" class="hidden">
+    <label>Name:</label>
+    <div id="name"></div>
+  </div>
+
+  <div id="empIdSection" class="hidden">
+    <label for="newEmpId">New Emp Id:</label>
+    <input type="number" id="newEmpId" required />
+    <button type="submit">Submit</button>
+  </div>
+
+  <div id="status"></div>
+</form>
+
+<script>
+const scriptURL = 'https://script.google.com/macros/s/AKfycbytzFhmFLKbTpwiMhtvPUGyi26GTFg2i9cIPkbLQKrEfRd4Mb-ezKptfrf7nm-fSzUM/exec';
+  const MasterDataUrl = 'https://script.google.com/macros/s/AKfycbyrOAeTWWte70yEzUu4xHXh327c8Q1UQbQzVaF33x_m9zn7QweP1xESUNwgvpk6BLMx/exec';
+  const ShId = '1rdcR9ZZeI3VWPPNntHLnGF_YdElsqcwUSxSuBH4zUbU';
+  const ShName = 'NewEmpId';
+  const NewEmpIdUrl = `https://script.google.com/macros/s/AKfycbwo-TtPn3DAjHSPCXDwPFerT36QyfPPvUTi7uQEvcmjJso_aWpaKefUsgx_vpJOowHUgg/exec?sheetid=${ShId}&sheetname=${ShName}`;
+console.log(NewEmpIdUrl)
+  let MasterData = [];
+  let NewEmpIdData = [];
+
+  const loader = document.getElementById('loader');
+  const srnoInput = document.getElementById('srno');
+  const nameDiv = document.getElementById('name');
+  const nameDisplay = document.getElementById('nameDisplay');
+  const empIdSection = document.getElementById('empIdSection');
+  const statusDiv = document.getElementById('status');
+
+  function showLoader(visible) {
+    loader.style.display = visible ? 'block' : 'none';
+  }
+
+  async function getMemberData() {
+    showLoader(true);
+    const membData = await fetch(MasterDataUrl);
+    const raw = await membData.json();
+    MasterData = raw.slice(1).map(([srno, name]) => ({ srno: Number(srno), name }));
+    showLoader(false);
+  }
+
+  async function fetchNewEmpIdData() {
+    showLoader(true);
+    const response = await fetch(NewEmpIdUrl);
+    const raw = await response.json();
+    NewEmpIdData = raw.slice(1).map(([srno, name, newEmpId, date]) => ({ srno: Number(srno), name, newEmpId, date }));
+    showLoader(false);
+  }
+
+  getMemberData();
+  fetchNewEmpIdData();
+
+  function validateSRNo() {
+    const srno = Number(srnoInput.value.trim());
+    const member = MasterData.find(m => m.srno === srno);
+    const alreadyExists = NewEmpIdData.find(m => m.srno === srno);
+
+    nameDisplay.classList.add('hidden');
+    empIdSection.classList.add('hidden');
+    statusDiv.textContent = '';
+
+    if (member) {
+      nameDiv.textContent = member.name;
+      nameDisplay.classList.remove('hidden');
+
+      if (alreadyExists) {
+        statusDiv.textContent = "Entry already exists. Duplicate not allowed.";
+      } else {
+        empIdSection.classList.remove('hidden');
+        document.getElementById('newEmpId').focus();
+      }
+    } else if (srno) {
+      statusDiv.textContent = "SR No not found in MasterData. Not a member.";
+    }
+  }
+
+  async function submitData(e) {
+  e.preventDefault();
+  const srno = Number(srnoInput.value.trim());
+  const member = MasterData.find(m => m.srno === srno);
+  const newEmpId = document.getElementById('newEmpId').value.trim();
+
+  if (!member || !newEmpId) return;
+
+  const exists = NewEmpIdData.find(m => m.srno === srno);
+  if (exists) {
+    statusDiv.textContent = "Duplicate entry. Not submitted.";
+    return;
+  }
+
+  const payload = new URLSearchParams();
+  payload.append('spreadsheetId', ShId);
+  payload.append('sheetName', ShName);
+  payload.append("srno", srno);
+  payload.append("name", member.name);
+  payload.append("newEmpId", newEmpId);
+  payload.append("date", new Date().toISOString());
+  
+
+  showLoader(true);
+  try {
+    await fetch(scriptURL, {
+      method: 'POST',
+      body: payload,
+    });
+
+    statusDiv.textContent = "Submitted successfully!";
+    NewEmpIdData.push({ srno, name: member.name, newEmpId, date: new Date().toISOString() });
+    document.getElementById('empForm').reset();
+    nameDisplay.classList.add('hidden');
+    empIdSection.classList.add('hidden');
+    srnoInput.focus();
+  } catch (err) {
+    statusDiv.textContent = "Error submitting data.";
+    console.error(err);
+  }
+  showLoader(false);
+}
+
+</script>
+
+</body>
+</html>
