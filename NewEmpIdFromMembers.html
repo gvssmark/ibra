@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<style>
+.loader {
+  display: none;
+  border: 4px solid red;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+table, td { border:1px solid black; border-collapse: collapse; }
+span { font-size:x-small; color:red }
+body { font-family: Arial, sans-serif; margin: 20px; }
+label { display: block; margin-top: 10px; }
+input { padding: 6px; width: 100%; max-width: 300px; margin-top: 4px; }
+.hidden { display: none; }
+</style>
+<body>
+<h2>New Emp Id Collection <span id='count'></span></h2>
+<form id="empForm" onsubmit="submitData(event)">
+  <label for="srno">SR Number:</label>
+  <input type="number" id="srno" required autofocus onblur="validateSRNo()" />
+
+  <div id="nameDisplay" class="hidden">
+    <label>Name:</label>
+    <div id="name"></div>
+  </div>
+
+  <div id="empIdSection" class="hidden">
+    <label for="newEmpId">New Emp Id:</label>
+    <input type="number" id="newEmpId" required />
+    <button type="submit" id="submitBtn">Submit</button>
+  </div>
+
+  <div id="alreadyFurnished" style="color: red;"></div>
+</form>
+
+<div class="loader" id="loader"></div>
+<br>
+<div id='report'></div>
+
+<script>
+const MasterDataUrl = 'https://script.google.com/macros/s/AKfycbyrOAeTWWte70yEzUu4xHXh327c8Q1UQbQzVaF33x_m9zn7QweP1xESUNwgvpk6BLMx/exec';
+const ShId = '1rdcR9ZZeI3VWPPNntHLnGF_YdElsqcwUSxSuBH4zUbU';
+const ShName = 'NewEmpId';
+const NewEmpIdUrl = `https://script.google.com/macros/s/AKfycbwo-TtPn3DAjHSPCXDwPFerT36QyfPPvUTi7uQEvcmjJso_aWpaKefUsgx_vpJOowHUgg/exec?sheetid=${ShId}&sheetname=${ShName}`;
+
+let MasterData = [];
+let NewEmpIdData = [];
+
+function showLoader(visible) {
+  loader.style.display = visible ? 'block' : 'none';
+}
+
+async function fetchNewEmpIdData() {
+  showLoader(true);
+  const response = await fetch(NewEmpIdUrl);
+  const raw = await response.json();
+  NewEmpIdData = raw.slice(1).map(([srno, name, newEmpId, date]) => ({
+    srno: Number(srno), name, newEmpId, date
+  }));
+  document.getElementById('count').innerText = `${NewEmpIdData.length} of 1782`;
+
+  let tdata = '<table border=1>';
+  NewEmpIdData.sort((a, b) => (a.srno - b.srno)).forEach((a, i) => {
+    tdata += `<tr><td>${i + 1}</td><td>${a.srno}</td><td>${a.name}</td><td>${a.newEmpId}</td></tr>`;
+  });
+  tdata += '</table>';
+  document.getElementById('report').innerHTML = tdata;
+  showLoader(false);
+}
+
+async function getMemberData() {
+  showLoader(true);
+  const membData = await fetch(MasterDataUrl);
+  const raw = await membData.json();
+  MasterData = raw.slice(1).map(([srno, name, c, d, e, f, state]) => ({
+    srno: Number(srno), name, state: state?.toLowerCase() || ''
+  }));
+  await fetchNewEmpIdData();
+  showLoader(false);
+}
+
+getMemberData();
+
+function validateSRNo() {
+  const srnoInput = document.getElementById("srno");
+  const srno = Number(srnoInput.value);
+  const nameDisplay = document.getElementById("nameDisplay");
+  const nameDiv = document.getElementById("name");
+  const empIdSection = document.getElementById("empIdSection");
+  const submitBtn = document.getElementById("submitBtn");
+  const alreadyFurnished = document.getElementById("alreadyFurnished");
+  const newEmpIdInput = document.getElementById("newEmpId");
+
+  nameDisplay.classList.add("hidden");
+  empIdSection.classList.add("hidden");
+  alreadyFurnished.innerText = "";
+  submitBtn.disabled = true;
+
+  const empData = NewEmpIdData.find(e => e.srno === srno);
+  if (empData) {
+    nameDisplay.classList.remove("hidden");
+    nameDiv.innerText = empData.name;
+    empIdSection.classList.remove("hidden");
+    newEmpIdInput.value = empData.newEmpId;
+    newEmpIdInput.disabled = true;
+    submitBtn.disabled = true;
+    alreadyFurnished.innerText = "Already Furnished";
+    return;
+  }
+
+  const master = MasterData.find(e => e.srno === srno);
+  if (master) {
+    nameDisplay.classList.remove("hidden");
+    nameDiv.innerText = master.name;
+    empIdSection.classList.remove("hidden");
+    newEmpIdInput.value = "";
+    newEmpIdInput.disabled = false;
+    submitBtn.disabled = false;
+  }
+}
+
+function submitData(e) {
+  e.preventDefault();
+  const srno = Number(document.getElementById("srno").value);
+  const newEmpId = document.getElementById("newEmpId").value;
+  const master = MasterData.find(e => e.srno === srno);
+
+  if (!master) return;
+
+  const name = master.name;
+  const state = master.state;
+  const apStates = ['ap', 'ts'];
+  const mobile = apStates.includes(state) ? '+919848269562' : '+919652888824';
+
+  const msg = `SR No: ${srno}%0AName: ${encodeURIComponent(name)}%0ANew Emp Id: ${newEmpId}`;
+  const waLink = `https://wa.me/${mobile}?text=${msg}`;
+  window.open(waLink, '_blank');
+
+  alert("WhatsApp message opened. Please confirm and send.");
+}
+</script>
+</body>
+</html>
