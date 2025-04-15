@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html>
+  <head>
+  <title>New Emp Id Collection</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <style>
 .loader {
   display: none;
@@ -22,11 +25,12 @@ label { display: block; margin-top: 10px; }
 input { padding: 6px; width: 100%; max-width: 300px; margin-top: 4px; }
 .hidden { display: none; }
 </style>
+  </head>
 <body>
 <h2>New Emp Id Collection <span id='count'></span></h2>
 <form id="empForm" onsubmit="submitData(event)">
   <label for="srno">SR Number:</label>
-  <input type="number" id="srno" required autofocus onblur="validateSRNo()" />
+  <input type="number" id="srno" required autofocus onblur="validateSRNo()" pattern="\d*" />
 
   <div id="nameDisplay" class="hidden">
     <label>Name:</label>
@@ -35,7 +39,7 @@ input { padding: 6px; width: 100%; max-width: 300px; margin-top: 4px; }
 
   <div id="empIdSection" class="hidden">
     <label for="newEmpId">New Emp Id:</label>
-    <input type="number" id="newEmpId" required />
+    <input type="number" id="newEmpId" required  pattern="\d*"/>
     <button type="submit" id="submitBtn">Submit</button>
   </div>
 
