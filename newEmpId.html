@@ -82,7 +82,7 @@ console.log(NewEmpIdUrl)
     const raw = await membData.json();
     MasterData = raw.slice(1).map(([srno, name]) => ({ srno: Number(srno), name }));
     showLoader(false);
-    mastercount = MasterData.length
+    
   }
 
   async function fetchNewEmpIdData() {
@@ -92,6 +92,7 @@ console.log(NewEmpIdUrl)
     NewEmpIdData = raw.slice(1).map(([srno, name, newEmpId, date]) => ({ srno: Number(srno), name, newEmpId, date }));
     showLoader(false);
     newempidcount = NewEmpIdData.length
+    mastercount = MasterData.length
     document.getElementById('count').innerHTML = newempidcount + " of " + mastercount
     tdata='<table border=1>'
 NewEmpIdData.sort((a,b)=> (a.srno-b.srno)).forEach((a,i)=> tdata+= `<tr> <td>${i+1} <td> ${a.srno} <td> ${a.name} <td> ${a.newEmpId}` )
