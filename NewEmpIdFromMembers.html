@@ -142,7 +142,7 @@ function submitData(e) {
 
   const name = master.name;
   const state = master.state;
-  const apStates = ['ap', 'ts'];
+  const apStates = ['AP', 'UP'];
   const mobile = apStates.includes(state) ? '+919848269562' : '+919652888824';
 
   const msg = `SR No: ${srno}%0AName: ${encodeURIComponent(name)}%0ANew Emp Id: ${newEmpId}`;
