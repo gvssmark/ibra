@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,11 +25,15 @@
       100% { transform: rotate(360deg); }
     }
     #status { margin-top: 10px; font-weight: bold; }
+    table, td {border:1px solid black;
+ border-collapse: collapse;}
+ #report {display:none}
+ span {font-size:x-small; color:red}
   </style>
 </head>
 <body>
 
-<h2>New Emp Id Collection</h2>
+<h2 onclick='showhide()'>New Emp Id Collection <span id='count'></span></h2>
 
 <div class="loader" id="loader"></div>
 
@@ -49,7 +54,7 @@
 
   <div id="status"></div>
 </form>
-
+<div id='report'></div>
 <script>
 const scriptURL = 'https://script.google.com/macros/s/AKfycbytzFhmFLKbTpwiMhtvPUGyi26GTFg2i9cIPkbLQKrEfRd4Mb-ezKptfrf7nm-fSzUM/exec';
   const MasterDataUrl = 'https://script.google.com/macros/s/AKfycbyrOAeTWWte70yEzUu4xHXh327c8Q1UQbQzVaF33x_m9zn7QweP1xESUNwgvpk6BLMx/exec';
@@ -77,6 +82,7 @@ console.log(NewEmpIdUrl)
     const raw = await membData.json();
     MasterData = raw.slice(1).map(([srno, name]) => ({ srno: Number(srno), name }));
     showLoader(false);
+    mastercount = MasterData.length
   }
 
   async function fetchNewEmpIdData() {
@@ -85,6 +91,13 @@ console.log(NewEmpIdUrl)
     const raw = await response.json();
     NewEmpIdData = raw.slice(1).map(([srno, name, newEmpId, date]) => ({ srno: Number(srno), name, newEmpId, date }));
     showLoader(false);
+    newempidcount = NewEmpIdData.length
+    document.getElementById('count').innerHTML = newempidcount + " of " + mastercount
+    tdata='<table border=1>'
+NewEmpIdData.sort((a,b)=> (a.srno-b.srno)).forEach((a,i)=> tdata+= `<tr> <td>${i+1} <td> ${a.srno} <td> ${a.name} <td> ${a.newEmpId}` )
+tdata += '</table>'
+document.getElementById('report').innerHTML = tdata
+
   }
 
   getMemberData();
@@ -155,6 +168,17 @@ console.log(NewEmpIdUrl)
     console.error(err);
   }
   showLoader(false);
+}
+
+function showhide(){
+
+ var x = document.getElementById("report");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+
 }
 
 </script>
