@@ -1,3 +1,4 @@
+var activeMembers;
 url='https://script.google.com/macros/s/AKfycbwIVAlRrCTt6z_Ej4W6PHhopFqCq1JvEsSoN2RPqgWY7VXLW0P2pteA1jgVFaWePc2S/exec'
 async function getMyData() {response = await fetch(url)
 const ddmmyy = input => !isNaN(new Date(input).getTime()) ? new Date(input).toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }).substring(0,10) : '';
