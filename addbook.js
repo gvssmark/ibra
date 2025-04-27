@@ -15,4 +15,3 @@ console.table(activeMembers[0])
 //if(activeMembers.length>0){document.getElementById("loader").style.display = "none"}}
 activeMembers.length>0 ? document.getElementById("loader").style.display = "none" : ""
 }
-getMyData()
