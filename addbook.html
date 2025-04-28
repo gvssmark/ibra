@@ -1,4 +1,5 @@
 
+
 <html>
 <head>
     <meta name="viewport" content="width=device-width, maximum-scale=1 , initial-scale=1.0">
@@ -112,12 +113,17 @@ img {border-radius:50px}
         <script>
 		
 		photidurl='https://script.google.com/macros/s/AKfycbw_h5LMGCyIraesAhh6xlkeP8RUz3HO4ga4Q8XZaJhJRpnuQqp3TWUUZyodZPxpeA7A/exec'
-        url = 'https://script.google.com/macros/s/AKfycbzI9SDFOzYLYKRKJTlse0XpsEiF8XfbyxwUUH22evlGkEPDIt2V/exec'
+        url = 'https://script.google.com/macros/s/AKfycbwIVAlRrCTt6z_Ej4W6PHhopFqCq1JvEsSoN2RPqgWY7VXLW0P2pteA1jgVFaWePc2S/exec'
             async function getMyData() {
                 response = await fetch(url)
                 data = await response.json()
-                tempData = data["user"]
-                activeMembers = tempData.filter(a => a.name !== "").sort(function (a, b) { return a.name.localeCompare(b.name) });
+data = data.map(([id,name,add1,add2,add3,district,place,pincode,fixed,mobile1,mobile2,state,email,srno,sbac,doj,dor,spname,area,blank1,dob,fampen,pensionbr,scanned,newempid,dod,blank2,blank3,blank4
+])=>({id,name,add1,add2,add3,district,place,pincode,fixed,mobile1,mobile2,state,email,srno,sbac,doj:ddmmyy(doj),dor:ddmmyy(dor),spname,area,blank1,dob:ddmmyy(dob),fampen,pensionbr,scanned,newempid,dod:ddmmyy(dod),blank2,blank3,blank4
+}))
+activeMembers = data.filter(a => a.name !== "").sort(function (a, b) { return a.name.localeCompare(b.name) });
+activeMembers.forEach(function (element) { 
+element.IBorEAB = (element.area.substr(-3).toUpperCase() === 'EAB' ? "EAB" : "IB"), 
+element.pentype = (element.fampen.length > 0 ? "fam" : "ser") })
 
 				photoresponse = await fetch(photidurl)
 				pdata = await photoresponse.json()
@@ -204,11 +210,11 @@ function hmodal(){modal.style.display = "none"}
                 membno = membershipNo * 1 - 1;
                 memphotoid = photodata.filter(a=> a.mno  ===  membershipNo)
                 memphoto = memphotoid.length>0 ? `<img  src='https://drive.google.com/thumbnail?id=${memphotoid[0].photoid}' height=100 width=100'>`  : ""
-                membData = tempData.filter(a => a.id === membershipNo * 1)
-                dob =ddmmyy(membData[0].dob)
-                doj=ddmmyy(membData[0].blank1)
-                dor=ddmmyy(membData[0].blank2)
-                spname=membData[0].blank3
+                membData = activeMembers.filter(a => a.id === membershipNo * 1)
+                dob =membData[0].dob
+                doj=membData[0].doj
+                dor=membData[0].dor
+                spname=membData[0].spname
                 
                ptype=  membData[0].fampen != "" ? "Family Pension" : "Service Pension" 
                 
@@ -223,11 +229,11 @@ function hmodal(){modal.style.display = "none"}
                 if (membData[0].mobile1 > 0) { toDisplay += "<a href=tel:" + membData[0].mobile1 + "><mark style='background:red; color:white'>" + membData[0].mobile1 + "</mark></a>" }
                 if (membData[0].mobile2 > 0) { toDisplay += " / " + membData[0].mobile2 }
                 toDisplay += "<tr><td colspan=2><b>Email: </b>" + membData[0].email
-                toDisplay += "<tr><td colspan=2><b>S R No: </b>" + membData[0].srno
-                toDisplay += "<tr><td colspan=2><b>Application Scanned:</b>" + membData[0].scanned
-                toDisplay += "<tr><td colspan=2><b>Pension Br:</b>" + membData[0].pensionbr
+                toDisplay += "<tr><td colspan=2><b>S R No: </b>" + membData[0].srno + " /  <b>New Emp Id: </b>" + membData[0].newempid
+                toDisplay += "<tr><td colspan=2><b>Application Scanned: </b>" + membData[0].scanned
+                toDisplay += "<tr><td colspan=2><b>Pension Br: </b>" + membData[0].pensionbr
                 if (membData[0].fampen != "") {
-                    toDisplay += "<tr bgcolor=yellow><td colspan=2><b>Family Pension of :</b>" + membData[0].fampen
+                    toDisplay += "<tr bgcolor=yellow><td colspan=2><b>Family Pension of :</b>" + membData[0].fampen + " (DOD of Ser Pensioner: " + membData[0].dod + " )"
                 }
                 
                 toDisplay += "<tr><td colspan=2><b>Pension Acc: </b> " + membData[0].sbac
