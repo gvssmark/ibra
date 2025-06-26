@@ -1,0 +1,266 @@
+<!-- Full updated HTML with all logic, inputs, and PDF download -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tax Calculator with Section 89(1) Relief</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 700px;
+      margin: auto;
+      padding: 20px;
+      background: #f9f9f9;
+    }
+    b {color: red}
+    label { font-weight: bold; }
+    input, select {
+      padding: 8px;
+      margin: 6px 0 12px;
+      width: 100%;
+    }
+    .row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .row > div {
+      flex: 1 1 45%;
+    }
+    button {
+      padding: 10px 20px;
+      background: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+      margin-right: 10px;
+    }
+    button:hover { background: #0056b3; }
+    .output {
+      background: #fff;
+      padding: 10px;
+      margin-top: 20px;
+      border: 1px solid #ccc;
+    }
+    @media (max-width: 600px) {
+      .row > div {
+        flex: 1 1 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h2>Income Tax Calculator (Section 89(1) Relief)</h2>
+
+  <label>Name:</label>
+  <input type="text" id="name" placeholder="Enter full name" />
+
+  <label>Date of Birth:</label>
+  <input type="date" id="dob" value="1955-10-09" />
+
+  <div class="row">
+    <div>
+      <label>2022-23 Regime:</label>
+      <select id="regime22">
+        <option value="old" selected>Old</option>
+        <option value="new">New</option>
+      </select>
+    </div>
+    <div>
+      <label>Income 2022-23:</label>
+      <input type="number" id="income22" value="459770" />
+    </div>
+  </div>
+
+  <div class="row">
+    <div>
+      <label>2023-24 Regime:</label>
+      <select id="regime23">
+        <option value="old">Old</option>
+        <option value="new" selected>New</option>
+      </select>
+    </div>
+    <div>
+      <label>Income 2023-24:</label>
+      <input type="number" id="income23" value="634960" />
+    </div>
+  </div>
+
+  <div class="row">
+    <div>
+      <label>2024-25 Regime:</label>
+      <select id="regime24">
+        <option value="old">Old</option>
+        <option value="new" selected>New</option>
+      </select>
+    </div>
+    <div>
+      <label>Income 2024-25 <b>(excluding arrears)</b>:</label>
+      <input type="number" id="income24" value="878680" />
+    </div>
+  </div>
+
+  <label>Total Arrears (received in 2024-25):</label>
+  <input type="number" id="arrears" value="20800" />
+
+  <button onclick="calculateTax()">Calculate</button>
+  <button onclick="downloadPDF()">Download PDF</button>
+
+  <div class="output" id="result"></div>
+
+  <script>
+    function getAgeOnDate(dob, compareDateStr) {
+      const dobDate = new Date(dob);
+      const compareDate = new Date(compareDateStr);
+      let age = compareDate.getFullYear() - dobDate.getFullYear();
+      if (
+        compareDate.getMonth() < dobDate.getMonth() ||
+        (compareDate.getMonth() === dobDate.getMonth() && compareDate.getDate() < dobDate.getDate())
+      ) {
+        age--;
+      }
+      return age;
+    }
+
+    function getCategory(age) {
+      if (age >= 80) return "Super Senior Citizen";
+      if (age >= 60) return "Senior Citizen";
+      return "General";
+    }
+
+    function calculateOldRegimeTax(income, category) {
+      let tax = 0;
+      if (category === "Super Senior Citizen") {
+        if (income <= 500000) return 0;
+        tax += Math.min(income - 500000, 500000) * 0.2;
+        if (income > 1000000) tax += (income - 1000000) * 0.3;
+      } else if (category === "Senior Citizen") {
+        if (income <= 300000) return 0;
+        tax += Math.min(income - 300000, 200000) * 0.05;
+        if (income > 500000) tax += Math.min(income - 500000, 500000) * 0.2;
+        if (income > 1000000) tax += (income - 1000000) * 0.3;
+      } else {
+        if (income <= 250000) return 0;
+        tax += Math.min(income - 250000, 250000) * 0.05;
+        if (income > 500000) tax += Math.min(income - 500000, 500000) * 0.2;
+        if (income > 1000000) tax += (income - 1000000) * 0.3;
+      }
+      return tax;
+    }
+
+    function calculateNewRegimeTax(income, fy) {
+      const slabs = fy === "2022-23" ? [[0,250000,0],[250001,500000,0.05],[500001,750000,0.10],[750001,1000000,0.15],[1000001,1250000,0.20],[1250001,1500000,0.25],[1500001,Infinity,0.30]]
+        : fy === "2023-24" ? [[0,300000,0],[300001,600000,0.05],[600001,900000,0.10],[900001,1200000,0.15],[1200001,1500000,0.20],[1500001,Infinity,0.30]]
+        : [[0,300000,0],[300001,700000,0.05],[700001,1000000,0.10],[1000001,1200000,0.15],[1200001,1500000,0.20],[1500001,Infinity,0.30]];
+
+      let tax = 0;
+      for (let [min, max, rate] of slabs) {
+        if (income > min) {
+          const taxable = Math.min(income, max) - min;
+          tax += taxable * rate;
+        }
+      }
+      return tax;
+    }
+
+    function applyRebateAndCess(tax, income, regime) {
+      let rebate = 0;
+      if (regime === "old" && income <= 500000) rebate = Math.min(tax, 12500);
+      if (regime === "new" && income <= 700000) rebate = Math.min(tax, 25000);
+      const afterRebate = Math.max(tax - rebate, 0);
+      const cess = afterRebate * 0.04;
+      return { finalTax: afterRebate + cess, rebate, cess };
+    }
+
+    function computeTotalTax(income, regime, category, fy) {
+      const baseTax = regime === "old" ? calculateOldRegimeTax(income, category) : calculateNewRegimeTax(income, fy);
+      return applyRebateAndCess(baseTax, income, regime);
+    }
+
+    function calculateTax() {
+      const name = document.getElementById('name').value || 'N/A';
+      const dob = document.getElementById('dob').value;
+      const income22 = parseFloat(document.getElementById('income22').value || 0);
+      const income23 = parseFloat(document.getElementById('income23').value || 0);
+      const income24 = parseFloat(document.getElementById('income24').value || 0);
+      const regime22 = document.getElementById('regime22').value;
+      const regime23 = document.getElementById('regime23').value;
+      const regime24 = document.getElementById('regime24').value;
+      const arrears = parseFloat(document.getElementById('arrears').value || 0);
+
+      const age2023 = getAgeOnDate(dob, "2023-03-31");
+      const age2024 = getAgeOnDate(dob, "2024-03-31");
+      const age2025 = getAgeOnDate(dob, "2025-03-31");
+
+      const cat2023 = getCategory(age2023);
+      const cat2024 = getCategory(age2024);
+      const cat2025 = getCategory(age2025);
+
+      const arrear22 = arrears * 0.25;
+      const arrear23 = arrears * 0.75;
+
+      const t22 = computeTotalTax(income22, regime22, cat2023, "2022-23");
+      const t23 = computeTotalTax(income23, regime23, cat2024, "2023-24");
+      const t24 = computeTotalTax(income24, regime24, cat2025, "2024-25");
+
+      const t22w = computeTotalTax(income22 + arrear22, regime22, cat2023, "2022-23");
+      const t23w = computeTotalTax(income23 + arrear23, regime23, cat2024, "2023-24");
+      const t24w = computeTotalTax(income24 + arrears, regime24, cat2025, "2024-25");
+
+      const taxOldTotal = t22.finalTax + t23.finalTax;
+      const taxOldWithArrears = t22w.finalTax + t23w.finalTax;
+      const relief = (t24w.finalTax - t24.finalTax) - (taxOldWithArrears - taxOldTotal);
+
+      const html = `
+        <h3>Inputs</h3>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Date of Birth:</strong> ${dob}</p>
+        <p><strong>2022-23:</strong> Regime = ${regime22}, Income = ₹${income22}</p>
+        <p><strong>2023-24:</strong> Regime = ${regime23}, Income = ₹${income23}</p>
+        <p><strong>2024-25:</strong> Regime = ${regime24}, Income = ₹${income24}</p>
+        <p><strong>Total Arrears Received:</strong> ₹${arrears}</p>
+        <hr/>
+        <p><strong>Age on 31-Mar-2023:</strong> ${age2023} (${cat2023})</p>
+        <p><strong>Age on 31-Mar-2024:</strong> ${age2024} (${cat2024})</p>
+        <p><strong>Age on 31-Mar-2025:</strong> ${age2025} (${cat2025})</p>
+        <p><strong>Arrear Split:</strong> FY22-23 = ₹${arrear22.toFixed(2)}, FY23-24 = ₹${arrear23.toFixed(2)}</p>
+        <hr/>
+        <h4>Tax Without Arrears</h4>
+        <ul>
+          <li>2022–23: ₹${t22.finalTax.toFixed(2)}</li>
+          <li>2023–24: ₹${t23.finalTax.toFixed(2)}</li>
+          <li>2024–25: ₹${t24.finalTax.toFixed(2)}</li>
+        </ul>
+        <h4>Tax With Arrears</h4>
+        <ul>
+          <li>2022–23: ₹${t22w.finalTax.toFixed(2)}</li>
+          <li>2023–24: ₹${t23w.finalTax.toFixed(2)}</li>
+          <li>2024–25: ₹${t24w.finalTax.toFixed(2)}</li>
+        </ul>
+        <h3>Relief under Section 89(1):</h3>
+        <p><strong>₹${relief.toFixed(2)}</strong></p>
+      `;
+
+      document.getElementById("result").innerHTML = html;
+    }
+
+    async function downloadPDF() {
+      const { jsPDF } = window.jspdf;
+      const resultElement = document.getElementById("result");
+      const canvas = await html2canvas(resultElement);
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF();
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save("Tax_Calculation_Report.pdf");
+    }
+  </script>
+</body>
+</html>
