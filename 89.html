@@ -67,6 +67,7 @@
 </head>
 <body>
   <h2>Income Tax Calculator (Section 89(1) Relief)</h2>
+  <div id='inputs'>
 <p>Do not include arrears in any financial year</p>
   <table border=1 width=100%>
 <tr><td>DOB<td colspan=2><input type="date" id="dob" value="1955-10-09" />
@@ -92,6 +93,7 @@
 
   <button id='calc' onclick="calculateTax()">Calculate</button>
   <button id='print' onclick="printdoc()">Download PDF</button>
+  </div>
   <div class="output" id="result"></div>
 
   <script>
@@ -232,10 +234,9 @@
 function printdoc(){
 
   
-document.getElementById("calc").style.display='none'
-document.getElementById("print").style.display='none'
-
+document.getElementById("inputs").style.display='none'
 window.print()
+document.getElementById("inputs").style.display='block'
 }
     
     
