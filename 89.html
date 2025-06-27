@@ -90,8 +90,8 @@
 
 </table>
 
-  <button onclick="calculateTax()">Calculate</button>
-  <button onclick="window.print()">Download PDF</button>
+  <button id='calc' onclick="calculateTax()">Calculate</button>
+  <button id='print' onclick="printdoc()">Download PDF</button>
   <div class="output" id="result"></div>
 
   <script>
@@ -229,7 +229,16 @@
 
       document.getElementById("result").innerHTML = html;
     }
+function printdoc(){
 
+  
+document.getElementById("calc").style.display='none'
+document.getElementById("print").style.display='none'
+
+window.print()
+document.getElementById("calc").style.display='block'
+document.getElementById("print").style.display='block'
+}
     
   </script>
 </body>
