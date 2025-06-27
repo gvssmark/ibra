@@ -73,22 +73,22 @@
 <p><b>Do not include arrears in any financial year</b></p>
   <table border=1 width=100%>
 <tr><td>DOB<td colspan=2><input type="date" id="dob" value="1955-10-09" />
-<tr><td>Name<td colspan=2><input type="text" id="name" placeholder="Enter full name" />
+<tr><td>Name<td colspan=2><input type="text" id="name" placeholder="GVSS MARKANDEYULU" onclick="this.select()" />
 
 <tr><td>Year<td>Regime<td>Taxable Income
 <tr><td>2022-23<td><select id="regime22">
         <option value="old" selected>Old</option>
         <option value="new">New</option>
-      </select><td><input type="number" id="income22" value="459770" pattern="\d*" />
+      </select><td><input type="number" id="income22" value="459770" pattern="\d*"  onclick="this.select()"/>
 <tr><td>2023-24<td><select id="regime23">
         <option value="old" selected>Old</option>
         <option value="new">New</option>
-      </select><td><input type="number" id="income23" value="634960" pattern="\d*" />
+      </select><td><input type="number" id="income23" value="634960" pattern="\d*" onclick="this.select()" />
 <tr><td>2024-25<td><select id="regime24">
         <option value="old" selected>Old</option>
         <option value="new">New</option>
-      </select><td><input type="number" id="income24" value="878680" pattern="\d*" />
-<tr><td>Arrears<td colspan=2><input type="number" id="arrears" value="20800" pattern="\d*" />
+      </select><td><input type="number" id="income24" value="878680" pattern="\d*" onclick="this.select()" />
+<tr><td>Arrears<td colspan=2><input type="number" id="arrears" value="20800" pattern="\d*" onclick="this.select()" />
 
 
 </table>
