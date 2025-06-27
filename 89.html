@@ -6,6 +6,8 @@
   <meta charset="UTF-8" />
   <title>Tax Calculator with Section 89(1) Relief</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
   
   <style>
     body {
@@ -77,16 +79,16 @@
 <tr><td>2022-23<td><select id="regime22">
         <option value="old" selected>Old</option>
         <option value="new">New</option>
-      </select><td><input type="number" id="income22" value="459770" />
+      </select><td><input type="number" id="income22" value="459770" pattern="\d*" />
 <tr><td>2023-24<td><select id="regime23">
         <option value="old" selected>Old</option>
         <option value="new">New</option>
-      </select><td><input type="number" id="income23" value="634960" />
+      </select><td><input type="number" id="income23" value="634960" pattern="\d*" />
 <tr><td>2024-25<td><select id="regime24">
         <option value="old" selected>Old</option>
         <option value="new">New</option>
-      </select><td><input type="number" id="income24" value="878680" />
-<tr><td>Arrears<td colspan=2><input type="number" id="arrears" value="20800" />
+      </select><td><input type="number" id="income24" value="878680" pattern="\d*" />
+<tr><td>Arrears<td colspan=2><input type="number" id="arrears" value="20800" pattern="\d*" />
 
 
 </table>
