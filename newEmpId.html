@@ -118,7 +118,7 @@ document.getElementById('report').innerHTML = tdata
     const srno = Number(srnoInput.value.trim());
     const member = MasterData.find(m => m.srno === srno);
     const alreadyExists = NewEmpIdData.find(m => m.srno === srno);
-
+    existingNewId = NewEmpIdData.find(m => m.srno === 30349).newEmpId
     nameDisplay.classList.add('hidden');
     empIdSection.classList.add('hidden');
     statusDiv.textContent = '';
@@ -128,7 +128,7 @@ document.getElementById('report').innerHTML = tdata
       nameDisplay.classList.remove('hidden');
 
       if (alreadyExists) {
-        statusDiv.textContent = "Entry already exists. Duplicate not allowed.";
+        statusDiv.textContent = `Entry already (${existingNewId}) exists. Duplicate not allowed. `;
       } else {
         empIdSection.classList.remove('hidden');
         document.getElementById('newEmpId').focus();
