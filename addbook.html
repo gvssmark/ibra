@@ -1,5 +1,6 @@
 
 
+
 <html>
 <head>
     <meta name="viewport" content="width=device-width, maximum-scale=1 , initial-scale=1.0">
@@ -11,15 +12,15 @@
     <link rel="apple-touch-icon" href="images/ibra512.png">
     <style>
 h1 {text-align:center}
- .spinner {border: 100px solid black;border-top: 100px solid orange;border-radius: 50%;width: 40px;height: 40px;animation: spin 4s linear infinite;margin: 0 auto;background:red;}
+ .spinner {border: 1px solid black;border-top: 1px solid orange;border-radius: 50%;width: 50px;height: 50px;animation: spin 4s linear infinite;margin: 0 auto;background:red;}
 @keyframes spin {0% { transform: rotate(0deg); }100% { transform: rotate(360deg); }}
 body {overscroll-behavior: contain; }
 .pname {font-family: "Poppins", sans-serif;text-shadow: 3px 3px 3px #ababab;font-size:25px;}
 element.style {display: block;margin-left: 5px;margin-right: 5px;}
 a {text-decoration:none}
-body {background: powderblue;font-size: small;margin: 0px auto;width:360px;box-sizing: border-box;}
+body {background: wheat;font-size: small;margin: 0px auto;width:360px;box-sizing: border-box;}
 .active, .btn:hover {background-color: red;color: white;}
-#regionTable td:hover {background-color: red;color: white;}
+#regionTable td:hover {background-color: #9999997d;color: white;}
 ul {list-style-type: none;margin: 0;padding: 0;overflow: hidden;background-color: #333;}
 li {float: left;font-size:small; }
 .list {display: block;color: white;text-align: center;padding: 2px 6px;text-decoration: none;}
@@ -40,6 +41,7 @@ button {background:yellow; border:0; width:170px; padding:5px; border-radius:15p
 img {border-radius:50px}
 #whatsapp {margin-top:-100px; float:right}
 #page1 {display:none;}
+.newempid {color:blue}
 </style>
 </head>
 
@@ -86,15 +88,15 @@ img {border-radius:50px}
   <div id="regions" style="display:none; ">
         <div style="background:powderblue; top:0; ; height:83px; overflow:auto; position:fixed; width: 360px;  ">
             <ul>
-                <li onclick="selectedRegion(allmemb,0)" class="list active">All</li>
-                <li onclick="selectedRegion(vsp,1)" class="list">VSP</li>
-                <li onclick="selectedRegion(god,2)" class="list">GOD</li>
-                <li onclick="selectedRegion(vij,3)" class="list">VIJ</li>
-                <li onclick="selectedRegion(seema,4)" class="list">SEEMA</li>
-                <li onclick="selectedRegion(hyd,5)" class="list">HYD</li>
-                <li onclick="selectedRegion(oth,6)" class="list">OTH</li>
-                <li onclick="selectedRegion(eab,7)" class="list">eAB</li>
-                <li onclick="selectedRegion(allMembNoWise,8)" class="list">SR No</li>
+                <li onclick="selectedRegion('allmemb',0)" class="list active">All</li>
+                <li onclick="selectedRegion('VSP',1)" class="list">VSP</li>
+                <li onclick="selectedRegion('GOD',2)" class="list">GOD</li>
+                <li onclick="selectedRegion('VIJ',3)" class="list">VIJ</li>
+                <li onclick="selectedRegion('SEE',4)" class="list">SEEMA</li>
+                <li onclick="selectedRegion('HYD',5)" class="list">HYD</li>
+                <li onclick="selectedRegion('OTH',6)" class="list">OTH</li>
+                <li onclick="selectedRegion('EAB',7)" class="list">eAB</li>
+                <li onclick="selectedRegion('allMembNoWise',8)" class="list">SR No</li>
             </ul>
             <h4 id='regionHeading' align=center style="margin-top:3px;margin-top: 0px;margin-bottom: 0px;"></h4>
             <input type="text" id='myInput' placeholder="Search here..." onkeyup="fiterName()">
@@ -117,6 +119,7 @@ img {border-radius:50px}
             async function getMyData() {
                 response = await fetch(url)
                 data = await response.json()
+                data.shift();
 data = data.map(([id,name,add1,add2,add3,district,place,pincode,fixed,mobile1,mobile2,state,email,srno,sbac,doj,dor,spname,area,blank1,dob,fampen,pensionbr,scanned,newempid,dod,blank2,blank3,blank4
 ])=>({id,name,add1,add2,add3,district,place,pincode,fixed,mobile1,mobile2,state,email,srno,sbac,doj:ddmmyy(doj),dor:ddmmyy(dor),spname,area,blank1,dob:ddmmyy(dob),fampen,pensionbr,scanned,newempid,dod:ddmmyy(dod),blank2,blank3,blank4
 }))
@@ -131,18 +134,16 @@ element.pentype = (element.fampen.length > 0 ? "fam" : "ser") })
 				photodata.shift()					
 	photodata.length >0 ? (document.getElementById('spin').style.display='none', document.getElementById('page1').style.display='block' ):''							
 activeMembers.forEach(function (element) { element.IBorEAB = (element.area.substr(-3).toUpperCase() === 'EAB' ? "EAB" : "IB"), element.pentype = (element.fampen.length > 0 ? "fam" : "ser") })
+
 familyPensioners = activeMembers.filter(a => a.fampen !== "").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB }));
-vsp = activeMembers.filter(a => a.area.substr(0, 3) === "VSP").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1 }));
-vij = activeMembers.filter(a => a.area.substr(0, 3) === "VIJ").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1  }));
-god = activeMembers.filter(a => a.area.substr(0, 3) === "GOD").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1  }));
-seema = activeMembers.filter(a => a.area.substr(0, 5) === "SEEMA").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno , mobile: a.mobile1 }));
-hyd = activeMembers.filter(a => a.area.substr(0, 3) === "HYD").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno , mobile: a.mobile1 }));
-oth = activeMembers.filter(a => a.area.substr(0, 3) === "OTH").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1  }));
-eab = activeMembers.filter(a => a.area.substr(-3).toUpperCase() === "EAB").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno , mobile: a.mobile1 }));
+
 blank = activeMembers.filter(a => a.area === "BLANK").map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1  }));
-allMembNoWise = activeMembers.map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1  })).sort(function (a, b) { return a.srno - b.srno })
-allmemb = activeMembers.map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1  }));
-selectedRegion(allmemb,0)
+
+allMembNoWise = activeMembers.map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1, newempid: a.newempid  })).sort(function (a, b) { return a.srno - b.srno })
+
+allmemb = activeMembers.map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1, newempid: a.newempid  }));
+
+selectedRegion('allmemb',0)
 if(activeMembers.length>0){document.getElementById("addbtn").style.display = "block"}}
 
 penbrTemp = ""
@@ -155,15 +156,58 @@ document.getElementById("page1").style.display = "none"
 }
 
 function selectedRegion(array, n) {
+
+tany = activeMembers.filter(a => a.area.includes(array)).map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno , mobile: a.mobile1, newempid: a.newempid }))
+
+tarr  = array === 'allmemb' ? allmemb : array === 'allMembNoWise' ? allMembNoWise : tany
+
+
+//astring = array === 'allMembNoWise' ? 'allMembNoWise' : array.toUpperCase(); 
+
+
+//tarr = activeMembers.filter(a => a.area.substr(0, 3) === astring.toUpperCase()).map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1 }));
+
+
 document.getElementById("myInput").value = "";
 document.getElementById("myInput").style.display = "block"
 document.documentElement.scrollTop = 0;
-famPensionersCount = array.filter(a => a.fampen.length > 0).length
-eabcount = array.filter(a => a.ibeab === 'EAB').length
+famPensionersCount = tarr.filter(a => a.fampen.length > 0).length
+eabcount = tarr.filter(a => a.ibeab === 'EAB').length
 regions = ["All Members", "Visakhapatnam Area", "Godavari Area", "Vijayawada Area", "Seema Area", "Hyderabad Area", "Other States", "e Allahabad", "SR No Sorted"]
-document.getElementById('regionHeading').innerHTML = "Memebers in " + regions[n] + " <span class='badge'>" + array.length + "</span><span class='badge1'>" + famPensionersCount + "</span> <span class='eabbadge'>" + eabcount + "</span>"
-inThisRegion = "<table id='regionTable'  border=1><tr><td>Name / Mobile / SR No / Memb No /Photo "
-array.forEach(function (a) { inThisRegion += "<tr align=center onClick='nameclick(this.id)' id=" + a.id + "><td class='" + (a.fampen.length > 0 ? "fam" : "ser") + "'>" +"<span class='pname'>"+ a.name +"</span>"+ (a.fampen.length > 0 ? " <span class='smallbadge'> &nbsp;</span><br>Family Pension of:  " + a.fampen : " ") + (a.ibeab === 'EAB' ? "<span class='smalleabbadge'>&nbsp;" : "") + "</span> <br> Mobile: " +a.mobile +" / SR: " + a.srno +" / Memb: " +a.id+" / Photo: " +isPhoto(a.id)+ "</td></tr>" })
+document.getElementById('regionHeading').innerHTML = "Memebers in " + regions[n] + " <span class='badge'>" + tarr.length + "</span><span class='badge1'>" + famPensionersCount + "</span> <span class='eabbadge'>" + eabcount + "</span>"
+
+inThisRegion = "<table id='regionTable'  border=1><tr><td>Name / Mobile / SR No/<span class='newempid'>NewEmpId</span> / Memb No /Photo "
+
+//tarr.forEach(function (a) { inThisRegion += "<tr align=center onClick='nameclick(this.id)' id=" + a.id + "><td class='" + (a.fampen.length > 0 ? "fam" : "ser") + "'>" +"<span class='pname'>"+ a.name +"</span>"+ (a.fampen.length > 0 ? " <span class='smallbadge'> &nbsp;</span><br>Family Pension of:  " + a.fampen : " ") + (a.ibeab === 'EAB' ? "<span class='smalleabbadge'>&nbsp;" : "") + "</span> <br> Mobile: " +a.mobile +" / SR: " + a.srno + " / Memb: " +a.id+ "/"+ a.newempid + "/"+ isPhoto(a.id)+ "  </td></tr>" })
+
+
+/*tarr.forEach(function (a) {
+  inThisRegion += `<tr align="center" onClick="nameclick(this.id)" id="${a.id}">
+      <td class="${a.fampen.length > 0 ? "fam" : "ser"}">
+        <span class="pname">${a.name}</span>
+        ${a.fampen.length > 0 ? ` <span class="smallbadge"> &nbsp;</span><br>Family Pension of: ${a.fampen}` : ``}
+        ${a.ibeab === 'EAB' ? `<span class="smalleabbadge">&nbsp;</span>` : ``}
+        <br> Mobile: ${a.mobile} / SR: ${a.srno}/ ${a.newempid} / Memb: ${a.id} / ${isPhoto(a.id)}
+      </td>
+    </tr>
+  `;
+}); */
+
+tarr.forEach(function (a) {
+  inThisRegion += `<b>
+    <tr align="center" onClick="nameclick(this.id)" id="${a.id}">
+      <td class="${a.fampen.length > 0 ? "fam" : "ser"}">
+        <span class="pname">${a.name}</span>
+        ${a.fampen.length > 0 ? `<span class="smallbadge">&nbsp;</span><br>Family Pension of: ${a.fampen}` : ``}
+        ${a.ibeab === 'EAB' ? `<span class="smalleabbadge">&nbsp;</span>` : ``}
+        <br> Mobile: ${a.mobile} / SR: ${a.srno} /<span class=newempid>${a.newempid}</span> / Memb: ${a.id} / ${isPhoto(a.id)}
+      </td>
+    </tr></b>
+  `;
+});
+
+
+
                 inThisRegion += "</table><br><br><br>"
                 document.getElementById('paraInThisRegion').innerHTML = ""
                 document.getElementById('paraInThisRegion').innerHTML = inThisRegion
@@ -171,7 +215,7 @@ array.forEach(function (a) { inThisRegion += "<tr align=center onClick='nameclic
             }
 
             isInsured = (srno) => insdata.filter(a => a.SRNO === srno).length;
-			isPhoto = (srno) => photodata.filter(a=> a.mno === srno.toString()).length >0 ? 'Yes' : 'No'
+			isPhoto = (srno) => photodata.filter(a=> a.mno === srno.toString()).length >0 ? '<span>&#128104;</span>' : ''
             myVar = ""
             var modal = document.getElementById("myModal");
             var span = document.getElementsByClassName("close")[0];
