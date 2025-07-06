@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fixed Layout</title>
+  <style>
+* {box-sizing: border-box;margin: 0;padding: 0;}
+body, html {height: 100%;font-family: sans-serif;background: #f1f1f1;}
+.header {position: fixed;top: 0;width: 100%;background: #4CAF50;color: white;padding: 10px;text-align: center;z-index: 1000;     height:40px;}
+.footer {position: fixed;bottom: 0;width: 100%;background: #333;color: white;padding: 10px;text-align: center;z-index: 1000;height:40px;}
+.middle {position: absolute;top: 40px;bottom: 50px;width: 100%;overflow-y: scroll;padding: 20px;background: #f1f1f1;scrollbar-width: none;  -ms-overflow-style: none;}
+.middle::-webkit-scrollbar {display: none;}
+  </style>
+</head>
+<body>
+  <div class="header">Fixed Header</div>
+  <div class="middle">HTML Template with header and footer </div>
+  <div class="footer">Fixed Footer</div>
+</body>
+</html>
