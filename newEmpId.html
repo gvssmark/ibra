@@ -1,9 +1,9 @@
-
 <!DOCTYPE html>
 <html>
 <head>
   <title>New Emp Id Collection</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; }
     label { display: block; margin-top: 10px; }
@@ -25,28 +25,25 @@
       100% { transform: rotate(360deg); }
     }
     #status { margin-top: 10px; font-weight: bold; }
-    table, td {border:1px solid black;
- border-collapse: collapse;}
- #report {display:none}
- span {font-size:x-small; color:red}
+    table, td {border:1px solid black; border-collapse: collapse;}
+    #report {display:none}
+    span {font-size:x-small; color:red}
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  
-
-
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
   </style>
 </head>
 <body>
 
 <h2 onclick='showhide()'>New Emp Id Collection <span id='count'></span></h2>
 
-<div class="loader" id="loader"></div>
+
 
 <form id="empForm" onsubmit="submitData(event)">
   <label for="srno">SR Number:</label>
-  <input type="number"  id="srno" required autofocus oninput="validateSRNo()" pattern="\d*" />
+  <input type="number" disabled id="srno" required autofocus oninput="validateSRNo()" />
 
   <div id="nameDisplay" class="hidden">
     <label>Name:</label>
@@ -55,20 +52,21 @@ input::-webkit-inner-spin-button {
 
   <div id="empIdSection" class="hidden">
     <label for="newEmpId">New Emp Id:</label>
-    <input type="number" id="newEmpId"  pattern="\d*" required />
+    <input type="number" id="newEmpId" required />
     <button type="submit">Submit</button>
   </div>
 
   <div id="status"></div>
 </form>
 <div id='report'></div>
+<div class="loader" id="loader"></div>
 <script>
-const scriptURL = 'https://script.google.com/macros/s/AKfycbytzFhmFLKbTpwiMhtvPUGyi26GTFg2i9cIPkbLQKrEfRd4Mb-ezKptfrf7nm-fSzUM/exec';
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbytzFhmFLKbTpwiMhtvPUGyi26GTFg2i9cIPkbLQKrEfRd4Mb-ezKptfrf7nm-fSzUM/exec';
   const MasterDataUrl = 'https://script.google.com/macros/s/AKfycbyrOAeTWWte70yEzUu4xHXh327c8Q1UQbQzVaF33x_m9zn7QweP1xESUNwgvpk6BLMx/exec';
   const ShId = '1rdcR9ZZeI3VWPPNntHLnGF_YdElsqcwUSxSuBH4zUbU';
   const ShName = 'NewEmpId';
   const NewEmpIdUrl = `https://script.google.com/macros/s/AKfycbwo-TtPn3DAjHSPCXDwPFerT36QyfPPvUTi7uQEvcmjJso_aWpaKefUsgx_vpJOowHUgg/exec?sheetid=${ShId}&sheetname=${ShName}`;
-console.log(NewEmpIdUrl)
+
   let MasterData = [];
   let NewEmpIdData = [];
 
@@ -85,42 +83,53 @@ console.log(NewEmpIdUrl)
 
   async function getMemberData() {
     showLoader(true);
-    const membData = await fetch(MasterDataUrl);
-    const raw = await membData.json();
-    MasterData = raw.slice(1).map(([srno, name]) => ({ srno: Number(srno), name }));
-    mastercount = MasterData.length
-     fetchNewEmpIdData();
+    try {
+      const membData = await fetch(MasterDataUrl);
+      const raw = await membData.json();
+      MasterData = raw.slice(1).map(([srno, name]) => ({ srno: Number(srno), name }));
+      await fetchNewEmpIdData();
+    } catch (err) {
+      statusDiv.textContent = 'Error loading master data.';
+      console.error(err);
+    }
     showLoader(false);
-      
-f
-    
   }
 
   async function fetchNewEmpIdData() {
     showLoader(true);
-    const response = await fetch(NewEmpIdUrl);
-    const raw = await response.json();
-    NewEmpIdData = raw.slice(1).map(([srno, name, newEmpId, date]) => ({ srno: Number(srno), name, newEmpId, date }));
-    newempidcount = NewEmpIdData.length
-    mastercount = MasterData.length
-    document.getElementById('count').innerHTML = newempidcount + " of " + mastercount
-    showLoader(false);
-    
-    tdata='<table border=1>'
-NewEmpIdData.sort((a,b)=> (a.srno-b.srno)).forEach((a,i)=> tdata+= `<tr> <td>${i+1} <td> ${a.srno} <td> ${a.name} <td> ${a.newEmpId}` )
-tdata += '</table>'
-document.getElementById('report').innerHTML = tdata
+    try {
+      const response = await fetch(NewEmpIdUrl);
+      const raw = await response.json();
+      NewEmpIdData = raw.slice(1).map(([srno, name, newEmpId, date]) => (
+        { srno: Number(srno), name, newEmpId, date }
+      ));
+      let newempidcount = NewEmpIdData.length;
+      let mastercount = MasterData.length
+      document.getElementById('count').textContent = newempidcount + ' of ' + mastercount;
 
+      let tdata = '<table border=1>';
+      NewEmpIdData.sort((a, b) => (a.srno - b.srno)).forEach((a, i) => (
+        tdata += `<tr><td>${i + 1} <td>${a.srno} <td>${a.name} <td>${a.newEmpId}`
+      ));
+      tdata += '</table>';
+      document.getElementById('report').innerHTML = tdata;
+    } catch (err) {
+      statusDiv.textContent = 'Error loading Emp Id data.';
+      console.error(err);
+    }
+    showLoader(false);
+    srnoInput.disabled=false
+    
   }
 
   getMemberData();
-  fetchNewEmpIdData();
 
   function validateSRNo() {
     const srno = Number(srnoInput.value.trim());
     const member = MasterData.find(m => m.srno === srno);
-    const alreadyExists = NewEmpIdData.find(m => m.srno === srno);
-    existingNewId = NewEmpIdData.find(m => m.srno === srno).newEmpId
+    const alreadyExistsEntry = NewEmpIdData.find(m => m.srno === srno);
+    const existingNewId = alreadyExistsEntry ? alreadyExistsEntry.newEmpId : null;
+
     nameDisplay.classList.add('hidden');
     empIdSection.classList.add('hidden');
     statusDiv.textContent = '';
@@ -129,71 +138,72 @@ document.getElementById('report').innerHTML = tdata
       nameDiv.textContent = member.name;
       nameDisplay.classList.remove('hidden');
 
-      if (alreadyExists) {
-        statusDiv.textContent = `Entry already (${existingNewId}) exists. Duplicate not allowed. `;
+      if (alreadyExistsEntry) {
+        statusDiv.textContent = `Entry already (${existingNewId}) exists. Duplicate not allowed.`;
       } else {
         empIdSection.classList.remove('hidden');
-        document.getElementById('newEmpId').focus();
+        setTimeout(() => { // ensure element is visible before focusing
+          document.getElementById('newEmpId').focus();
+        }, 10);
       }
     } else if (srno) {
       statusDiv.textContent = "SR No not found in MasterData. Not a member.";
+    } else {
+      statusDiv.textContent = "";
     }
   }
 
   async function submitData(e) {
-  e.preventDefault();
-  const srno = Number(srnoInput.value.trim());
-  const member = MasterData.find(m => m.srno === srno);
-  const newEmpId = document.getElementById('newEmpId').value.trim();
+    e.preventDefault();
+    const srno = Number(srnoInput.value.trim());
+    const member = MasterData.find(m => m.srno === srno);
+    const newEmpId = document.getElementById('newEmpId').value.trim();
 
-  if (!member || !newEmpId) return;
+    if (!member || !newEmpId) return;
 
-  const exists = NewEmpIdData.find(m => m.srno === srno);
-  if (exists) {
-    statusDiv.textContent = "Duplicate entry. Not submitted.";
-    return;
+    const exists = NewEmpIdData.find(m => m.srno === srno);
+    if (exists) {
+      statusDiv.textContent = "Duplicate entry. Not submitted.";
+      return;
+    }
+
+    const payload = new URLSearchParams();
+    payload.append('spreadsheetId', ShId);
+    payload.append('sheetName', ShName);
+    payload.append("srno", srno);
+    payload.append("name", member.name);
+    payload.append("newEmpId", newEmpId);
+    payload.append("date", new Date().toISOString());
+
+    showLoader(true);
+    try {
+      await fetch(scriptURL, {
+        method: 'POST',
+        body: payload,
+      });
+      statusDiv.textContent = "Submitted successfully!";
+      // Update local data and UI immediately for feedback
+      NewEmpIdData.push({ srno, name: member.name, newEmpId, date: new Date().toISOString() });
+      document.getElementById('empForm').reset();
+      nameDisplay.classList.add('hidden');
+      empIdSection.classList.add('hidden');
+      srnoInput.focus();
+      fetchNewEmpIdData(); // Refresh list
+    } catch (err) {
+      statusDiv.textContent = "Error submitting data.";
+      console.error(err);
+    }
+    showLoader(false);
   }
 
-  const payload = new URLSearchParams();
-  payload.append('spreadsheetId', ShId);
-  payload.append('sheetName', ShName);
-  payload.append("srno", srno);
-  payload.append("name", member.name);
-  payload.append("newEmpId", newEmpId);
-  payload.append("date", new Date().toISOString());
-  
-
-  showLoader(true);
-  try {
-    await fetch(scriptURL, {
-      method: 'POST',
-      body: payload,
-    });
-
-    statusDiv.textContent = "Submitted successfully!";
-    NewEmpIdData.push({ srno, name: member.name, newEmpId, date: new Date().toISOString() });
-    document.getElementById('empForm').reset();
-    nameDisplay.classList.add('hidden');
-    empIdSection.classList.add('hidden');
-    srnoInput.focus();
-  } catch (err) {
-    statusDiv.textContent = "Error submitting data.";
-    console.error(err);
+  function showhide() {
+    var x = document.getElementById("report");
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
   }
-  showLoader(false);
-}
-
-function showhide(){
-
- var x = document.getElementById("report");
-  if (x.style.display === "none") {
-    x.style.display = "block";
-  } else {
-    x.style.display = "none";
-  }
-
-}
-
 </script>
 
 </body>
