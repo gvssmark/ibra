@@ -46,7 +46,7 @@ input::-webkit-inner-spin-button {
 
 <form id="empForm" onsubmit="submitData(event)">
   <label for="srno">SR Number:</label>
-  <input type="number" disabled id="srno" required autofocus oninput="validateSRNo()" pattern="\d*" />
+  <input type="number"  id="srno" required autofocus oninput="validateSRNo()" pattern="\d*" />
 
   <div id="nameDisplay" class="hidden">
     <label>Name:</label>
@@ -91,8 +91,8 @@ console.log(NewEmpIdUrl)
     mastercount = MasterData.length
      fetchNewEmpIdData();
     showLoader(false);
-        srnoInput.disabled = false;
-
+      
+f
     
   }
 
