@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEVA 25 Data Collection</title>
+    <style>
+fieldset {
+  background-color: #eeeeee;
+}
+input[type="date"]
+{
+    display:block;
+    min-width:95%;
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+
+    
+}
+legend {
+  background-color: black;
+  color: white;
+  padding: 5px 10px;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  delpadding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  background :powderblue
+}
+
+h3 {color:red; text-align:center;}
+table {width:100%;  }
+table td {border-bottom: 2px solid red}
+div.static {
+  position: sticky;
+  width: 100%; /* Default to 90% for smaller screens */
+  background: yellow;
+  color: red;
+  top: 0;
+}
+	
+       
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            font-size: 12px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:disabled {
+            background-color: #cccccc;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .hidden {
+            display: none;
+        }
+        .instruction-page {
+            text-align: center;
+        }
+        .report-section {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+        li {text-align:left;}
+		
+		.loader {
+  border: 16px solid #f3f3f3;
+  position: sticky; 
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 50px;
+  height: 50px;
+  margin:auto; 
+  
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+#buttons {display:none}
+input  {width:95%}
+.one {color:red}
+.two {color:blue}
+.required {background:#9AFEFF}
+.red {color:red; font-size:small}
+
+fieldset {display:none;}
+#tabbed td {background:green; color:white; text-align:center;height:30px; }
+
+    </style>
+</head>
+<body>
+
+    <div id="instructionPage" class="instruction-page">
+        <h2>Welcome to SEVA 25</h2>
+		
+        <div id='home'>
+<div style='background:black; color:white; height:100'><h2 align=center>ॐ पितृ दैवतायै नम:</h2></div>
+<h3>Important Instructions</h3>
+
+
+
+<ol>
+<li>Sponsorship will be restricted to a max of 150 to 200 sponsors on first cum first serve basis.
+<li>Sponsors will have to submit the details in this form, filled up in English only.
+<li>Each sponsoror can sponsor a maximum of 3 or 4 occasions only & on each occasion names of a couple ( like Grandmother / Grandfather , Mother /Father , Father in Law / Mother in Law ). 
+<li>In case of a single deceased , a second name can be provided.
+<li>CONTRIBUTION PER SPONSOR PER OCCASION WILL BE Rs 2500/- which can be remitted to the following a/c of <br>Sri P Veerabhadra Rao & Sri AV Subba Rao <br>Indian Bank , Prakashnagar , Rajahmundry <br>IFSC code IDIB000P121 <br> 
+SB A/c. No. 7280105456 
+<li>FOR SEVA FROM 08/09/25 to 21/09/25 Last Date is 2 days from last date.
+<li>For one date / Occasion you can add maximum of two names.
+<li>Share Payment details to Sri Subba Rao - 9849599749 <li class='red'>DATA SUBMIT BUTTON IS ON PITRU 2 TAB
+</ol> 
+
+</div>
+<div id='loader' class="loader"></div>
+<div id='buttons'>    
+    <p>Please select one of the following options:</p>
+        <button id="dataEntryBtn">Data Entry</button>
+        <button id="reportBtn">Report</button>
+    </div>
+	</div>
+
+    <form name="submit-to-google-sheet" id="sevaForm" class="hidden"   >
+        <h3>SEVA 25 Data Entry</h3>
+        <table id='tabbed'><tr><td onclick='showtab(0)'>Sponsor<td onclick='showtab(1)'>Pitru 1 <td  onclick='showtab(2)'>Pitru 2</table>
+        <fieldset><legend>Sponsor</legend>
+        <div class="form-group">
+            <label for="mobileNumber">Mobile Number of the Sponsor*</label>
+            <input type="tel" class='required' id="mobileNumber" name="Mobile Number" pattern="[0-9]{10}" title="Enter a 10-digit mobile number" required>
+        </div>
+        <div class="form-group">
+            <label for="sponsorName">Full Name of the Sponsor*</label>
+            <input type="text" class='required' id="sponsorName" name="Name of Sponsor" required>
+        </div>
+        <div class="form-group">
+            <label for="sponsorGotra">Gotra of Sponsor*</label>
+            <input type="text" class='required'  id="sponsorGotra" name="Gotra of Sponsor" required>
+        </div>
+        <div class="form-group">
+            <label for="coSponsorName">Full Name of the Co-Sponsor</label>
+            <input type="text" id="coSponsorName" name="Name of Co-Sponsor">
+        </div>
+        <div class="form-group">
+            <label for="coSponsorGotra">Gotra of Co-Sponsor</label>
+            <input type="text" id="coSponsorGotra" name="Gotra of Co-Sponsor">
+        </div>
+        </fieldset>
+         <fieldset><legend>Pitru Devata 1 Details </legend>
+        <div class="form-group">
+            <label for="dateOfSeva">Date of Seva*</label>
+            <input type="date" class='required' id="dateOfSeva" name="Date of Seva" min="2025-09-08" max="2025-09-21" required>
+        </div>
+        <div class="form-group">
+            <label for="pitruDevata1Name">Full Name(s)* <span class='red'> (Father/Grand Father/Great Grand Father format. Maximum of 3 Names. Separate them by "/")</span></label>
+            <input type="text" class='required' id="pitruDevata1Name" name="Pitru Devata 1 Name" required>
+        </div>
+        <div class="form-group">
+            <label for="pitruDevata1Gotra">Gotra*</label>
+            <input type="text" class='required' id="pitruDevata1Gotra" name="Pitru Devata 1 Gotra" required>
+        </div>
+        <div class="form-group">
+            <label for="pitruDevata1Relationship">Relationship*</label>
+            <select class='required' id="pitruDevata1Relationship" name="Pitru Devata 1 Relationship" required>
+                <option value="">Select Relationship</option>
+                <option value="Father">Father(తండ్రి)</option>
+                <option value="Mother">Mother(తల్లి)</option>
+                <option value="Paternal Grand Father">Paternal Grand Father(తండ్రి తండ్రి)</option>
+                <option value="Paternal Grand Mother">Paternal Grand Mother(తండ్రి తల్లి)</option>
+                <option value="Maternal Grand Father">Maternal Grand Father(తల్లి తండ్రి)</option>
+                <option value="Maternal Grand Mother">Maternal Grand Mother(తల్లి తల్లి)</option>
+                <option value="Father-in-Law">Father-in-law(మామగారు)</option>
+                <option value="Mother-in-Law">Mother-in-law(అత్తగారు)</option>
+                <option value="Brother">Brother(సోదరుడు)</option>
+                <option value="Sister">Sister(సోదరి)</option>
+                <option value="Brother-in-law">Brother-in-law(బావ)</option>
+                <option value="Sister-in-law">Sister-in-law(వదిన)</option>
+                <option value="Any other Specify">Any other Specify(ఇతరులు)</option>
+            </select>
+            <input type="text" id="otherRelationship1" name="Other Relationship 1" class="hidden" placeholder="Specify Relationship">
+        </div>
+        </fieldset>
+         <fieldset><legend>Pitru Devata 2 Details </legend>
+          Optional. But will be mandatory if filled 
+        <div class="form-group">
+            <label for="dateOfSeva">Date of Seva</label>
+            <input type="date" id="dateOfSeva2" style='background:white' name="Date of Seva2"  min="2025-09-08" max="2025-09-21" >
+        </div>
+        <div class="form-group">
+            <label for="pitruDevata2Name">Full Name(s)* <span class='red'> (Father/Grand Father/Great Grand Father format. Maximum of 3 Names. Separate them by "/")</span></label>
+            <input type="text" id="pitruDevata2Name" name="Pitru Devata 2 Name">
+        </div>
+        <div class="form-group">
+            <label for="pitruDevata2Gotra">Gotra</label>
+            <input type="text" id="pitruDevata2Gotra" name="Pitru Devata 2 Gotra">
+        </div>
+        <div class="form-group">
+            <label for="pitruDevata2Relationship">Relationship</label>
+            <select id="pitruDevata2Relationship" name="Pitru Devata 2 Relationship">
+                <option value="">Select Relationship</option>
+                <option value="Father">Father(తండ్రి)</option>
+                <option value="Mother">Mother(తల్లి)</option>
+				<option value="Paternal Grand Father">Paternal Grand Father(తండ్రి తండ్రి)</option>
+                <option value="Paternal Grand Mother">Paternal Grand Mother(తండ్రి తల్లి)</option>
+                <option value="Maternal Grand Father">Maternal Grand Father(తల్లి తండ్రి)</option>
+                <option value="Maternal Grand Mother">Maternal Grand Mother(తల్లి తల్లి)</option>
+                <option value="Father-in-Law">Father-in-law(మామగారు)</option>
+                <option value="Mother-in-Law">Mother-in-law(అత్తగారు)</option>
+                <option value="Brother">Brother(సోదరుడు)</option>
+                <option value="Sister">Sister(సోదరి)</option>
+                <option value="Brother-in-law">Brother-in-law(బావ)</option>
+                <option value="Sister-in-law">Sister-in-law(వదిన)</option>
+                <option value="Any other Specify">Any other Specify(ఇతరులు)</option>
+
+            </select>
+            <input type="text" id="otherRelationship2" name="Other Relationship 2" class="hidden" placeholder="Specify Relationship">
+        </div>
+        <button type="submit">Check All tabs before Submit</button>
+        </fieldset><br>
+        
+    </form>
+
+    <div id="reportSection" class="report-section hidden">
+	<div class='static'>
+        <h3>SEVA 25 Report</h3>
+		<input type="text" id='myInput' placeholder="Search here..." onkeyup="fiterName()">
+		</div>
+        <div id="reportData"></div>
+    </div>
+
+    <div id="result"></div>
+
+    <script>
+    
+today = new Date()
+fixedmindate= new Date(2025,08,05)
+newmindate = today >= fixedmindate ? new Date(today.getTime() + (86400000)*2).toISOString().split("T")[0] : "2025-09-08"
+document.getElementById('dateOfSeva').min = newmindate
+document.getElementById('dateOfSeva2').min = newmindate
+
+        const instructionPage = document.getElementById('instructionPage');
+        const sevaForm = document.getElementById('sevaForm');
+        const reportSection = document.getElementById('reportSection');
+        const reportDataDiv = document.getElementById('reportData');
+        const resultDiv = document.getElementById('result');
+        const dataEntryBtn = document.getElementById('dataEntryBtn');
+        const reportBtn = document.getElementById('reportBtn');
+
+        dataEntryBtn.addEventListener('click', () => {
+            instructionPage.classList.add('hidden');
+            sevaForm.classList.remove('hidden');
+
+			
+        });
+
+        reportBtn.addEventListener('click', () => {
+            instructionPage.classList.add('hidden');
+            reportSection.classList.remove('hidden');
+            //fetchReportData();
+            reportdata()
+            
+        });
+
+        const pitruDevata1Relationship = document.getElementById('pitruDevata1Relationship');
+        const otherRelationship1 = document.getElementById('otherRelationship1');
+        const pitruDevata2Relationship = document.getElementById('pitruDevata2Relationship');
+        const otherRelationship2 = document.getElementById('otherRelationship2');
+
+        pitruDevata1Relationship.addEventListener('change', function() {
+            if (this.value === 'Any other Specify') {
+                otherRelationship1.classList.remove('hidden');
+                otherRelationship1.required = true;
+            } else {
+                otherRelationship1.classList.add('hidden');
+                otherRelationship1.required = false;
+            }
+        });
+
+        pitruDevata2Relationship.addEventListener('change', function() {
+            if (this.value === 'Any other Specify') {
+                otherRelationship2.classList.remove('hidden');
+                otherRelationship2.required = true;
+            } else {
+                otherRelationship2.classList.add('hidden');
+                otherRelationship2.required = false;
+            }
+        });
+
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbytzFhmFLKbTpwiMhtvPUGyi26GTFg2i9cIPkbLQKrEfRd4Mb-ezKptfrf7nm-fSzUM/exec';
+        const form = document.forms['submit-to-google-sheet'];
+
+        form.addEventListener('submit', e => {
+		
+		
+            e.preventDefault();
+            const formData = new FormData(form);
+			formData.append('Other Relationship 1', otherRelationship1.value);
+            formData.append('Other Relationship 2', otherRelationship2.value);
+            formData.append('spreadsheetId', '1Tw4N6dPv7x1MENAVQKykBYu7zedrRF3s_R863XGHxYM'); 
+            formData.append('sheetName', 'SEVA25_Data');
+            fetch(scriptURL, { method: 'POST', body: formData })
+                .then(response => response.json())
+                .then(result => {
+                    console.log('Success:', result);
+                    displayData();
+                     reportdata()
+                    form.reset();
+                })
+                .catch(error => console.error('Error:', error));
+				sevaForm.style.display='none';
+        });
+        
+       
+        
+    //return true;  // Allow submission if the condition is not met
+
+
+
+        function displayData() {
+        //fetchSheetData()
+        //reportdata()
+            const formElements = form.elements;
+       
+       let resultHTML = '<h3>Captured Data</h3><ul>';
+            for (let i = 0; i < formElements.length; i++) {
+                if (formElements[i].name && formElements[i].value) {
+                    resultHTML += `<li><strong>${formElements[i].name}:</strong> ${formElements[i].value}</li>`;
+                }
+            }
+            resultHTML += '</ul>';
+            resultDiv.innerHTML = resultHTML +"<br> Refresh and Check Report";
+            //resultDiv.innerHTML = reptable;
+            
+            
+        }
+		
+//report		            
+
+ async function fetchSheetData() {
+    const sheetId = '1Tw4N6dPv7x1MENAVQKykBYu7zedrRF3s_R863XGHxYM'
+    const sheetName = 'SEVA25_Data'
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbwwDCH5iSKySNxSoz1wKf5ILKfvRt1fnFaILJ3Z40E-gOSl_AnTcGabtVS9bVDMfLSP/exec'
+    const downloadBtn = document.getElementById("downloadBtn");
+    const url = `${scriptUrl}?sheetId=${encodeURIComponent(sheetId)}&sheetName=${encodeURIComponent(sheetName)}`;
+      const response = await fetch(url);
+       result = await response.json();
+  
+  document.getElementById('loader').style.display='none'
+  document.getElementById('buttons').style.display='block'
+  
+ jsondata = result.data.map(([spname, spgotra, cospname, cospgotre,mobile, dtseva1, p1name, p1gotra, p1relation, p1othrelation, dtseva2, p2name, p2gotra, p2relation, p2othrelation])=>({spname, spgotra, cospname, cospgotre,mobile, dtseva1, p1name, p1gotra, p1relation, p1othrelation, dtseva2, p2name, p2gotra, p2relation, p2othrelation}))
+
+
+  }
+
+
+fetchSheetData()
+
+	
+ ddmmyy = (input) => new Date(input).toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }).substring(0,10)
+
+
+
+function fiterName() {
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("myInput");
+                filter = input.value.toUpperCase().replaceAll(" ","");
+                table = document.getElementById("regionTable");
+                tr = table.getElementsByTagName("tr");
+                for (i = 0; i < tr.length; i++) {
+                    td = tr[i].getElementsByTagName("td")[0];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().replaceAll(" ","").indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                }
+            }
+        
+    
+    const fields = [
+  document.getElementById('dateOfSeva2'),
+  document.getElementById('pitruDevata2Name'),
+  document.getElementById('pitruDevata2Gotra'),
+  document.getElementById('pitruDevata2Relationship')
+];
+
+function checkSecondPitruFields() {
+  const shouldRequire = fields.some(field => field.value);
+
+  fields.forEach(field => {
+    field.required = shouldRequire;
+    field.classList.toggle('required', shouldRequire);
+  });
+}
+
+
+    // Attach event listeners to these fields to trigger the check function
+    dateOfSeva2.addEventListener('input', checkSecondPitruFields);
+    pitruDevata2Name.addEventListener('input', checkSecondPitruFields);
+    pitruDevata2Gotra.addEventListener('input', checkSecondPitruFields);
+    pitruDevata2Relationship.addEventListener('change', checkSecondPitruFields);
+
+	    
+    function checkDateTime() {
+            // Set the cutoff date and time in IST
+            const cutoffDate = new Date('2025-09-18T19:00:00+05:30');
+            const currentDate = new Date();
+            if (currentDate > cutoffDate) {
+                document.getElementById('sevaForm').style.display = 'none';
+                alert('Data entry is closed.');
+            }
+        }
+
+        window.onload = checkDateTime;
+ fsets = document.getElementsByTagName('fieldset') 
+ tbd = document.getElementById('tabbed').getElementsByTagName('td')
+
+function showtab(no){
+fsets[0].style.display='none'
+fsets[1].style.display='none'
+fsets[2].style.display='none'
+tbd[0].style.background='green'
+tbd[1].style.background='green'
+tbd[2].style.background='green'
+
+fsets[no].style.display='block' 
+tbd[no].style.background='blue'
+ }         
+fsets[0].style.display='block'        
+tbd[0].style.background='blue'
+
+
+
+function reportdata(){
+//document.getElementById('loader').style.display='block'
+fetchSheetData()
+jsondata.shift()
+reptable =`<table id='regionTable'>`
+
+jsondata.forEach(a => {
+  reptable += `
+    <tr>
+      <td>
+        Mobile: <span class='red'>${a.mobile || ''}</span><br>
+        Sponsor: ${a.spname || ''}<br>
+        Gotra: ${a.spgotra || ''}<br>
+        Co-Sponsor: ${a.cospname || ''}<br>
+        Co-Spon Gotra: ${a.cospgotra || ''}<br>
+        <hr>
+        Seva 1 Date: ${ddmmyy(a.dtseva1) || ''}<br>
+        Pitru 1 Name: ${a.p1name || ''}<br>
+        Pitru 1 Gotra: ${a.p1gotra || ''}<br>
+        Pitru 1 Relation: ${a.p1relation || ''}<br>
+        Pitru 1 Other Relation: ${a.p1othrelation || ''}<br>
+  `;
+
+  if (a.p2name !== undefined && a.p2name !== "") {
+    reptable += `
+      <hr>
+      Seva 2 Date: ${ddmmyy(a.dtseva2) || ''}<br>
+      Pitru 2 Name: ${a.p2name || ''}<br>
+      Pitru 2 Gotra: ${a.p2gotra || ''}<br>
+      Pitru 2 Relation: ${a.p2relation || ''}<br>
+      Pitru 2 Other Relation: ${a.p2othrelation || ''}<br>
+    `;
+  }
+
+  reptable += `</td></tr>`;
+});
+
+document.getElementById('reportData').innerHTML = reptable;
+
+
+
+
+}
+    
+</script>
+
+</body>
+</html>
+
