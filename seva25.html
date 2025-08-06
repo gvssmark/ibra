@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -112,6 +113,8 @@ input  {width:95%}
 fieldset {display:none;}
 #tabbed td {background:green; color:white; text-align:center;height:30px; }
 
+.next {font-size:large; color:white; text-align:center; background:black; margin: auto; padding:10px 15px; border-radius:15px}
+
     </style>
 </head>
 <body>
@@ -170,6 +173,7 @@ SB A/c. No. 7280105456
             <label for="coSponsorGotra">Gotra of Co-Sponsor</label>
             <input type="text" id="coSponsorGotra" name="Gotra of Co-Sponsor">
         </div>
+        <span class='next' onclick='showtab(1)'>Next: Provide Pitru 1 Details</span>
         </fieldset>
          <fieldset><legend>Pitru Devata 1 Details </legend>
         <div class="form-group">
@@ -204,6 +208,7 @@ SB A/c. No. 7280105456
             </select>
             <input type="text" id="otherRelationship1" name="Other Relationship 1" class="hidden" placeholder="Specify Relationship">
         </div>
+        <span class='next' onclick='showtab(2)'>Next: Provide Pitru 2 Details</span>
         </fieldset>
          <fieldset><legend>Pitru Devata 2 Details </legend>
           Optional. But will be mandatory if filled 
