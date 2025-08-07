@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -139,13 +140,14 @@
       font-size: 0.95em;
     }
   }
+  h4 {text-align:center;}
 </style>
 </head>
 <body>
 
 <!-- Instructions Section -->
 <div id="instructionsSection" class="container">
-  <h2>Welcome to Seva Data Collection</h2>
+  <h4>Welcome to Seva Data Collection</h4>
   <p>
     Please use the buttons below to enter data or view the report.<br />
     <strong>Instructions:</strong><br />
@@ -153,7 +155,9 @@
     - Mobile number must start with 6,7,8, or 9 and be 10 digits.<br />
     - If "Other" is selected in relationship, specify the relationship.<br />
     - Date of Seva is between 8th Sep and 21st Sep 2025.<br />
-    - Optionally, add second Pitru details; if any second Pitru field is filled, all must be completed.<br />
+    - Provide 3 days time for processing.<br />
+    - Optionally, add second Pitru 2 details; if any second Pitru field is filled, all must be completed.<br />
+    -Data Entry is now open for <span id='entryclose'> </span> onwards. Will close on 18-Sep-2025 
   </p>
 </div>
 
@@ -193,8 +197,8 @@
     <div id="relationshipOtherDiv" class="field-group hidden">
       <input type="text" id="relationshipOtherInput" placeholder="Enter relationship" />
     </div>
-    <label>Date of Seva <span class="required">*</span>
-      <input type="date" name="date_of_seva" min="2025-09-08" max="2025-09-21" required />
+    <label>Date of Seva <span class="required">*</span> Min <span id='min1'>8-Sep-2025 </span> Max 21-Sep-2025
+      <input type="date" name="date_of_seva" id='date_of_seva' min="2025-09-08" max="2025-09-21" required />
     </label>
     <hr />
     <label>Name of Pitru2 (Optional)
@@ -214,7 +218,7 @@
     <div id="relationship2OtherDiv" class="field-group hidden">
       <input type="text" id="relationship2OtherInput" placeholder="Enter relationship" />
     </div>
-    <label>Date of Seva (Optional)
+    <label>Date of Seva (Optional) Min <span id='min2'>8-Sep-2025</span> Max 21-Sep-2025
       <input type="date" name="date_of_seva2" min="2025-09-08" max="2025-09-21" id="date_of_seva2" />
     </label>
     <button type="submit">Submit</button>
@@ -241,6 +245,20 @@
 </footer>
 
 <script>
+
+ ddmmyy = (input) => new Date(input).toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }).substring(0,10)
+ 
+ today = new Date()
+// today = new Date(2025,08,19)
+fixedmindate= new Date(2025,08,05)
+newmindate = today >= fixedmindate ? new Date(today.getTime() + (86400000)*4).toISOString().split("T")[0] : "2025-09-08"
+document.getElementById('date_of_seva').min = newmindate
+document.getElementById('date_of_seva2').min = newmindate
+document.getElementById('min1').innerHTML= newmindate
+document.getElementById('min2').innerHTML= newmindate
+document.getElementById('entryclose').innerHTML= newmindate
+
+
   const scriptURL = 'https://script.google.com/macros/s/AKfycbzT7quKfsC8YCJoTJbS7hDW7q76UHg4IWjd2OFKckl0B8NXnPFgw92NTP7_a9I-X8dn/exec';
   
   // Cached report data
@@ -382,16 +400,16 @@
     div.style.whiteSpace = 'pre-wrap';
 
     let content =
-`Timestamp: ${item.Timestamp || ''}
+`Timestamp: ${ddmmyy(item.Timestamp) || ''}
 Mobile: ${item.Mobile || ''}
 Sponsor Name: ${item["Sponsor Name"] || ''}
 Sponsor Gotra: ${item["Sponsor Gotra"] || ''}
-Co Sponsor Name: ${item["Co Sponsor Name"] || ''}
-Co Sponsor Gotra: ${item["Co Sponsor Gotra"] || ''}
+Co Sponsor Name: ${item["Co Sponsor Name"] || 'NIL'}
+Co Sponsor Gotra: ${item["Co Sponsor Gotra"] || 'NIL'}
 Pitru1 Name: ${item["Pitru1 Name"] || ''}
 Pitru1 Gotra: ${item["Pitru1 Gotra"] || ''}
 Relationship: ${item.Relationship || ''}
-Date of Seva: ${item["Date of Seva"] || ''}`;
+Date of Seva: ${ddmmyy(item["Date of Seva"]) || ''}`;
 
     if (item["Pitru2 Name"] || item["Pitru2 Gotra"] || item.Relationship2 || item["Date of Seva2"]) {
       content +=
@@ -399,7 +417,7 @@ Date of Seva: ${item["Date of Seva"] || ''}`;
 Pitru2 Name: ${item["Pitru2 Name"] || ''}
 Pitru2 Gotra: ${item["Pitru2 Gotra"] || ''}
 Relationship2: ${item.Relationship2 || ''}
-Date of Seva2: ${item["Date of Seva2"] || ''}`;
+Date of Seva2: ${ddmmyy(item["Date of Seva2"]) || ''}`;
     }
 
     div.textContent = content;
