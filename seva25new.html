@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Seva Data Collection</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f5f7fb;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 480px;
+      margin: 30px auto;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+      background: #fff;
+    }
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 18px;
+    }
+    label {
+      display: block;
+      margin-top: 16px;
+      margin-bottom: 6px;
+      font-weight: 500;
+      color: #34495e;
+    }
+    .required {
+      color: #e74c3c;
+      font-size: 0.95em;
+      margin-left: 4px;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 7px;
+      box-sizing: border-box;
+      font-size: 1em;
+    }
+    input[type="date"] {
+      color-scheme: light;
+    }
+    input:focus, select:focus {
+      border-color: #4787ff;
+      outline: none;
+    }
+    button {
+      width: 100%;
+      margin-top: 25px;
+      padding: 12px;
+      font-size: 1.05em;
+      background: linear-gradient(90deg, #4787ff 30%, #59caea 100%);
+      border: none;
+      border-radius: 7px;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover { background: #356be0; }
+    #responseMsg {
+      margin-top: 24px;
+      text-align: center;
+      font-weight: 600;
+    }
+    .field-group {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+    .hidden { display: none; }
+    hr { margin: 24px 0 12px 0; border-color:#cfd2d6; }
+    @media(max-width: 600px) {
+      .container { padding: 13px; }
+      h2 { font-size: 1.12em; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Seva Data Collection</h2>
+    <form id="dataForm" autocomplete="off">
+      <label>Mobile Number <span class="required">*</span>
+        <input type="tel" name="mobile" id="mobile" required pattern="^[6-9][0-9]{9}$" maxlength="10" placeholder="Enter 10 digit mobile number">
+      </label>
+      <label>Name of the sponsor <span class="required">*</span>
+        <input type="text" name="sponsor_name" required>
+      </label>
+      <label>Gotra of the sponsor <span class="required">*</span>
+        <input type="text" name="sponsor_gotra" required>
+      </label>
+      <label>Name of the co-sponsor (Optional)
+        <input type="text" name="co_sponsor_name" required>
+      </label>
+      <label>Gotra of co-sponsor (Optional)
+        <input type="text" name="co_sponsor_gotra">
+      </label>
+      <label>Name of Pitru1 <span class="required">*</span>
+        <input type="text" name="pitru1_name" required>
+      </label>
+      <label>Gotra of Pitru1 <span class="required">*</span>
+        <input type="text" name="pitru1_gotra" required>
+      </label>
+      <label>Relationship <span class="required">*</span>
+        <select name="relationship" id="relationship" required>
+          <option value="">Select</option>
+          <option value="father">Father</option>
+          <option value="mother">Mother</option>
+          <option value="other">Other</option>
+        </select>
+      </label>
+      <div id="relationshipOtherDiv" class="field-group hidden">
+        <input type="text" id="relationshipOtherInput" placeholder="Enter relationship" />
+      </div>
+      <label>Date of Seva <span class="required">*</span>
+        <input type="date" name="date_of_seva" min="2025-09-08" max="2025-09-21" required>
+      </label>
+      <hr>
+      <label>Name of Pitru2 (Optional)
+        <input type="text" name="pitru2_name" id="pitru2_name">
+      </label>
+      <label>Gotra of Pitru2 (Optional)
+        <input type="text" name="pitru2_gotra" id="pitru2_gotra">
+      </label>
+      <label>Relationship (Optional)
+        <select name="relationship2" id="relationship2">
+          <option value="">Select</option>
+          <option value="father">Father</option>
+          <option value="mother">Mother</option>
+          <option value="other">Other</option>
+        </select>
+      </label>
+      <div id="relationship2OtherDiv" class="field-group hidden">
+        <input type="text" id="relationship2OtherInput" placeholder="Enter relationship" />
+      </div>
+      <label>Date of Seva (Optional)
+        <input type="date" name="date_of_seva2" min="2025-09-08" max="2025-09-21" id="date_of_seva2">
+      </label>
+      <button type="submit">Submit</button>
+    </form>
+    <div id="responseMsg"></div>
+  </div>
+  <script>
+const scriptURL = 'https://script.google.com/macros/s/AKfycbzT7quKfsC8YCJoTJbS7hDW7q76UHg4IWjd2OFKckl0B8NXnPFgw92NTP7_a9I-X8dn/exec'; // Replace with your Apps Script web app URL
+
+    // "Other" logic for Pitru1
+    const relationship = document.getElementById('relationship');
+    const relationshipDiv = document.getElementById('relationshipOtherDiv');
+    const relationshipInput = document.getElementById('relationshipOtherInput');
+    relationship.addEventListener('change', function() {
+      if (this.value === 'other') {
+        relationshipDiv.classList.remove('hidden');
+        relationshipInput.required = true;
+      } else {
+        relationshipDiv.classList.add('hidden');
+        relationshipInput.required = false;
+        relationshipInput.value = '';
+      }
+    });
+
+    // "Other" logic for Pitru2
+    const relationship2 = document.getElementById('relationship2');
+    const relationship2Div = document.getElementById('relationship2OtherDiv');
+    const relationship2Input = document.getElementById('relationship2OtherInput');
+    relationship2.addEventListener('change', function() {
+      if (this.value === 'other') {
+        relationship2Div.classList.remove('hidden');
+        relationship2Input.required = true;
+      } else {
+        relationship2Div.classList.add('hidden');
+        relationship2Input.required = false;
+        relationship2Input.value = '';
+      }
+    });
+
+    document.getElementById('dataForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      // Mobile validation
+      const mobile = document.getElementById('mobile').value;
+      const mobilePattern = /^[6-9][0-9]{9}$/;
+      if (!mobilePattern.test(mobile)) {
+        showMsg('Enter valid 10-digit mobile number starting with 6/7/8/9', true);
+        return;
+      }
+      // Relationship 1
+      let relValue = relationship.value;
+      if (relValue === "other") {
+        relValue = relationshipInput.value.trim();
+        if (!relValue) {
+          showMsg('Please specify the relationship for Pitru1', true);
+          return;
+        }
+      }
+      // Pitru2 group
+      const pitru2 = this.pitru2_name.value.trim();
+      const pitru2_gotra = this.pitru2_gotra.value.trim();
+      let relValue2 = relationship2.value;
+      if (relValue2 === "other") {
+        relValue2 = relationship2Input.value.trim();
+        if (!relValue2) {
+          showMsg('Please specify the relationship for Pitru2', true);
+          return;
+        }
+      }
+      const date2 = this.date_of_seva2.value;
+
+      // If any pitru2 group field is filled, all mandatory
+      if ((pitru2 || pitru2_gotra || relValue2 || date2) && (!pitru2 || !pitru2_gotra || !relValue2 || !date2)) {
+        showMsg('If any optional second Pitru field is filled, you must enter name, gotra, relationship, and date.', true);
+        return;
+      }
+      // Assemble form data
+      const formData = new FormData();
+      formData.append('mobile', mobile);
+      formData.append('sponsor_name', this.sponsor_name.value.trim());
+      formData.append('sponsor_gotra', this.sponsor_gotra.value.trim());
+      formData.append('co_sponsor_name', this.co_sponsor_name.value.trim());
+      formData.append('co_sponsor_gotra', this.co_sponsor_gotra.value.trim());
+      formData.append('pitru1_name', this.pitru1_name.value.trim());
+      formData.append('pitru1_gotra', this.pitru1_gotra.value.trim());
+      formData.append('relationship', relValue);
+      formData.append('date_of_seva', this.date_of_seva.value);
+      formData.append('pitru2_name', pitru2);
+      formData.append('pitru2_gotra', pitru2_gotra);
+      formData.append('relationship2', relValue2);
+      formData.append('date_of_seva2', date2);
+
+      fetch(scriptURL, { method: 'POST', body: formData })
+        .then(response => response.text())
+        .then(data => {
+          showMsg("Submission Successful!", false);
+          this.reset();
+          relationshipDiv.classList.add('hidden');
+          relationship2Div.classList.add('hidden');
+        })
+        .catch(error => {
+          showMsg("Error! Try again later.", true);
+        });
+    });
+
+    function showMsg(msg, isError) {
+      const el = document.getElementById('responseMsg');
+      el.style.color = isError ? '#e74c3c' : '#27ae60';
+      el.innerText = msg;
+    }
+  </script>
+</body>
+</html>
