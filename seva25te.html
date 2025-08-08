@@ -1,0 +1,106 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href='https://fonts.googleapis.com/css?family=Anek Telugu' rel='stylesheet'>
+  <title>మహాలయ పక్షాలు 2025 </title>
+  <style>
+	  body {font-family: 'Anek Telugu';font-size: 18px;}
+    .one {background:black; color:white; padding:0px 10px}
+    .two {background:blue; color:white;  padding:0px 10px}
+    .accordion {font-family: 'Anek Telugu';font-size: 18px; background-color: #eee;color: #444;cursor: pointer;padding: 18px;width: 100%;border: none;text-align: left;outline: none; transition: background-color 0.4s ease;}
+    .active, .accordion:hover {background-color: #ccc;}
+    .panel {padding: 0 18px; display: none; background-color: white; overflow: hidden; }
+  </style>
+</head>
+<body>
+<h3>మహాలయ పక్షాలు 2025  - తెలుగు నివేదిక</h3>
+<p id='reportData'></p>
+
+<script>
+  async function getMyData() {
+
+   scriptUrl = 'https://script.google.com/macros/s/AKfycbwwDCH5iSKySNxSoz1wKf5ILKfvRt1fnFaILJ3Z40E-gOSl_AnTcGabtVS9bVDMfLSP/exec'
+sheetId ='1aCFMOAHetzhrq_XfQLtbNsaVW5mhUYMfSEf32AMjYYo'
+sheetName = 'Sheet1'
+ url = `${scriptUrl}?sheetId=${encodeURIComponent(sheetId)}&sheetName=${encodeURIComponent(sheetName)}`;
+      const response = await fetch(url);
+      result = await response.json();
+      result.data.shift()
+      
+    data = result.data.map(([t0,mobile,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13]) => ({	  t0,mobile,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13
+    })).filter(a => a.mobile > 0).sort((a, b) => a.mobile - b.mobile);
+    data.shift()
+    const unqmobile = Array.from(new Set(data.map(a => a.mobile)));
+   report(unqmobile, data);
+  }
+
+  getMyData();
+
+ function ddmmyy(input) {
+    const date = new Date(input);
+    return isNaN(date.getTime()) ? '' : date.toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }).substring(0,10);
+  }
+   //ddmmyy = (input) => new Date(input).toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }).substring(0,10)
+
+
+  function toProperCase(str) {
+    return str ? str.toString().replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase()) : '';
+   // console.log(str)
+  }
+
+  function report(unqmobile, data) {
+    let datareport = '';
+    for (let i = 0; i < unqmobile.length; i++) {
+      const amobile = data.filter(a => a.mobile === unqmobile[i]);
+      datareport += `<button class="accordion">${unqmobile[i]}-${amobile[0].t2}</button><div class="panel"><p>`;
+      amobile.forEach(a => {
+        let cosp = '';
+        datareport += `కర్త: ${a.t2}<br>గోత్రం: ${a.t3}<br>`;
+        if (a.cospon !== '') {
+          cosp = `సహకర్త: ${a.t4} <br>గోత్రం: ${a.t5}<br>`;
+        }
+        
+        datareport += `${cosp}
+        <span class='one'>తేది: ${ddmmyy(a.t9)} </span><br>
+			పితృ దేవత: ${a.t6} <br>గోత్రం: ${a.t7} <br>సంబంధం: ${a.t8}<br>`;
+            
+        if (a.t10 !== '') {
+          pd2 = `<span class='two'>తేది: ${ddmmyy(a.t13)}</span> <br>
+          పితృ దేవత: ${a.t10} <br>
+			గోత్రం: ${a.t11} <br>
+          సంబంధం: ${a.t12}`;
+        }
+        
+        datareport += `${pd2} <hr>`;
+	      pd2=''
+      });
+      datareport += `</p></div>`;  // Close the panel after all entries for the same mobile
+      cosp=''
+      
+    }
+    document.getElementById('reportData').innerHTML = datareport;
+    // Attach click event to accordion buttons after report is rendered
+    attachAccordionEvents();
+  }
+
+  function attachAccordionEvents() {
+    const accordions = document.getElementsByClassName("accordion");
+    for (let i = 0; i < accordions.length; i++) {
+      accordions[i].addEventListener("click", function() {
+        pnls = document.getElementsByClassName("panel");
+        [...pnls].forEach(a => a.style.display = 'none');
+        this.classList.toggle("active");
+        const panel = this.nextElementSibling;
+        panel.style.display = (panel.style.display === "block") ? "none" : "block";
+      });
+    }
+  }
+  
+</script>
+
+</body>
+</html>
