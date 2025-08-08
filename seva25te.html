@@ -27,7 +27,7 @@ sheetName = 'Sheet1'
       result = await response.json();
       result.data.shift()
       data = result.data.map(([timestamp,mobile,spname,spgotra,coname,cogotra, p1name, p1gotra,p1relation,p1date,  p2name, p2gotra,p2relation,p2date])=>({timestamp,mobile,spname,spgotra,coname,cogotra, p1name, p1gotra,p1relation,p1date,  p2name, p2gotra,p2relation,p2date})).filter(a => a.mobile > 0).sort((a, b) => a.mobile - b.mobile);
-    data.shift()
+    //data.shift()
     const unqmobile = Array.from(new Set(data.map(a => a.mobile)));
    report(unqmobile, data);
   }
