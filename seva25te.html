@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,10 +17,8 @@
 <body>
 <h3>మహాలయ పక్షాలు 2025  - తెలుగు నివేదిక</h3>
 <p id='reportData'></p>
-
 <script>
   async function getMyData() {
-
    scriptUrl = 'https://script.google.com/macros/s/AKfycbwwDCH5iSKySNxSoz1wKf5ILKfvRt1fnFaILJ3Z40E-gOSl_AnTcGabtVS9bVDMfLSP/exec'
 sheetId ='1aCFMOAHetzhrq_XfQLtbNsaVW5mhUYMfSEf32AMjYYo'
 sheetName = 'Sheet1'
@@ -30,60 +26,46 @@ sheetName = 'Sheet1'
       const response = await fetch(url);
       result = await response.json();
       result.data.shift()
-      
-    data = result.data.map(([t0,mobile,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13]) => ({	  t0,mobile,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13
-    })).filter(a => a.mobile > 0).sort((a, b) => a.mobile - b.mobile);
+      data = result.data.map(([timestamp,mobile,spname,spgotra,coname,cogotra, p1name, p1gotra,p1relation,p1date,  p2name, p2gotra,p2relation,p2date])=>({timestamp,mobile,spname,spgotra,coname,cogotra, p1name, p1gotra,p1relation,p1date,  p2name, p2gotra,p2relation,p2date})).filter(a => a.mobile > 0).sort((a, b) => a.mobile - b.mobile);
     data.shift()
     const unqmobile = Array.from(new Set(data.map(a => a.mobile)));
    report(unqmobile, data);
   }
-
   getMyData();
-
  function ddmmyy(input) {
     const date = new Date(input);
     return isNaN(date.getTime()) ? '' : date.toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }).substring(0,10);
   }
-   //ddmmyy = (input) => new Date(input).toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }).substring(0,10)
-
-
   function toProperCase(str) {
     return str ? str.toString().replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase()) : '';
-   // console.log(str)
   }
-
   function report(unqmobile, data) {
     let datareport = '';
     for (let i = 0; i < unqmobile.length; i++) {
       const amobile = data.filter(a => a.mobile === unqmobile[i]);
-      datareport += `<button class="accordion">${unqmobile[i]}-${amobile[0].t2}</button><div class="panel"><p>`;
+      datareport += `<button class="accordion">${unqmobile[i]}-${amobile[0].spname}</button><div class="panel"><p>`;
       amobile.forEach(a => {
         let cosp = '';
-        datareport += `కర్త: ${a.t2}<br>గోత్రం: ${a.t3}<br>`;
+        datareport += `కర్త: ${a.spname}<br>గోత్రం: ${a.spgotra}<br>`;
         if (a.cospon !== '') {
-          cosp = `సహకర్త: ${a.t4} <br>గోత్రం: ${a.t5}<br>`;
+          cosp = `సహకర్త: ${a.coname} <br>గోత్రం: ${a.cogotra}<br>`;
         }
-        
         datareport += `${cosp}
-        <span class='one'>తేది: ${ddmmyy(a.t9)} </span><br>
-			పితృ దేవత: ${a.t6} <br>గోత్రం: ${a.t7} <br>సంబంధం: ${a.t8}<br>`;
-            
-        if (a.t10 !== '') {
-          pd2 = `<span class='two'>తేది: ${ddmmyy(a.t13)}</span> <br>
-          పితృ దేవత: ${a.t10} <br>
-			గోత్రం: ${a.t11} <br>
-          సంబంధం: ${a.t12}`;
+        <span class='one'>తేది: ${ddmmyy(a.p1date)} </span><br>
+			పితృ దేవత: ${a.p1name} <br>గోత్రం: ${a.p1gotra} <br>సంబంధం: ${a.p1relation}<br>`;
+        if (a.p2name !== '') {
+          pd2 = `<span class='two'>తేది: ${ddmmyy(a.p2date)}</span> <br>
+          పితృ దేవత: ${a.p2name} <br>
+			గోత్రం: ${a.p2gotra} <br>
+          సంబంధం: ${a.p2relation}`;
         }
-        
         datareport += `${pd2} <hr>`;
 	      pd2=''
       });
       datareport += `</p></div>`;  // Close the panel after all entries for the same mobile
       cosp=''
-      
     }
     document.getElementById('reportData').innerHTML = datareport;
-    // Attach click event to accordion buttons after report is rendered
     attachAccordionEvents();
   }
 
@@ -99,8 +81,6 @@ sheetName = 'Sheet1'
       });
     }
   }
-  
 </script>
-
 </body>
 </html>
