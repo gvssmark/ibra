@@ -424,7 +424,7 @@ Relationship2: ${item.Relationship2 || ''}
 `;
     }
 
-    div.textContent = content;
+    div.innerHTML = content;
     reportDiv.appendChild(div);
   });
 }
