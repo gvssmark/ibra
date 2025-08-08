@@ -141,6 +141,8 @@
     }
   }
   h4 {text-align:center;}
+    .dtsb {background:black; color:white;padding-right:10px;}
+  .dtsr {background:red  ; color:white;padding-right:10px;}
 </style>
 </head>
 <body>
@@ -406,18 +408,20 @@ Sponsor Name: ${item["Sponsor Name"] || ''}
 Sponsor Gotra: ${item["Sponsor Gotra"] || ''}
 Co Sponsor Name: ${item["Co Sponsor Name"] || 'NIL'}
 Co Sponsor Gotra: ${item["Co Sponsor Gotra"] || 'NIL'}
+<span class='dtsb'>Date of Seva: ${ddmmyy(item["Date of Seva"]) || ''}</span>
 Pitru1 Name: ${item["Pitru1 Name"] || ''}
 Pitru1 Gotra: ${item["Pitru1 Gotra"] || ''}
 Relationship: ${item.Relationship || ''}
-Date of Seva: ${ddmmyy(item["Date of Seva"]) || ''}`;
+`;
 
     if (item["Pitru2 Name"] || item["Pitru2 Gotra"] || item.Relationship2 || item["Date of Seva2"]) {
       content +=
 `
+<span class='dtsr'>Date of Seva2: ${ddmmyy(item["Date of Seva2"]) || ''}</span>
 Pitru2 Name: ${item["Pitru2 Name"] || ''}
 Pitru2 Gotra: ${item["Pitru2 Gotra"] || ''}
 Relationship2: ${item.Relationship2 || ''}
-Date of Seva2: ${ddmmyy(item["Date of Seva2"]) || ''}`;
+`;
     }
 
     div.textContent = content;
