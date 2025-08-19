@@ -253,7 +253,7 @@
  today = new Date()
 // today = new Date(2025,08,19)
 fixedmindate= new Date(2025,08,04)
-newmindate = today >= fixedmindate ? new Date(today.getTime() + (86400000)*4).toISOString().split("T")[0] : "2025-09-08"
+newmindate = today >= fixedmindate ? new Date(today.getTime() + (86400000)*4).toISOString().split("T")[0] : "2025-09-07"
 document.getElementById('date_of_seva').min = newmindate
 document.getElementById('date_of_seva2').min = newmindate
 document.getElementById('min1').innerHTML= newmindate
