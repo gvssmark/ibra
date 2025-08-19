@@ -156,7 +156,7 @@
     - Fill in the form carefully.<br />
     - Mobile number must start with 6,7,8, or 9 and be 10 digits.<br />
     - If "Other" is selected in relationship, specify the relationship.<br />
-    - Date of Seva is between 8th Sep and 21st Sep 2025.<br />
+    - Date of Seva is between 7th Sep and 21st Sep 2025.<br />
     - Provide 3 days time for processing.<br />
     - Optionally, add second Pitru 2 details; if any second Pitru field is filled, all must be completed.<br />
     -Data Entry is now open for <span id='entryclose'> </span> onwards. Will close on 18-Sep-2025 
@@ -199,8 +199,8 @@
     <div id="relationshipOtherDiv" class="field-group hidden">
       <input type="text" id="relationshipOtherInput" placeholder="Enter relationship" />
     </div>
-    <label>Date of Seva <span class="required">*</span> Min <span id='min1'>8-Sep-2025 </span> Max 21-Sep-2025
-      <input type="date" name="date_of_seva" id='date_of_seva' min="2025-09-08" max="2025-09-21" required />
+    <label>Date of Seva <span class="required">*</span> Min <span id='min1'>7-Sep-2025 </span> Max 21-Sep-2025
+      <input type="date" name="date_of_seva" id='date_of_seva' min="2025-09-07" max="2025-09-21" required />
     </label>
     <hr />
     <label>Name of Pitru2 (Optional)
@@ -220,8 +220,8 @@
     <div id="relationship2OtherDiv" class="field-group hidden">
       <input type="text" id="relationship2OtherInput" placeholder="Enter relationship" />
     </div>
-    <label>Date of Seva (Optional) Min <span id='min2'>8-Sep-2025</span> Max 21-Sep-2025
-      <input type="date" name="date_of_seva2" min="2025-09-08" max="2025-09-21" id="date_of_seva2" />
+    <label>Date of Seva (Optional) Min <span id='min2'>7-Sep-2025</span> Max 21-Sep-2025
+      <input type="date" name="date_of_seva2" min="2025-09-07" max="2025-09-21" id="date_of_seva2" />
     </label>
     <button type="submit">Submit</button>
   </form>
@@ -252,7 +252,7 @@
  
  today = new Date()
 // today = new Date(2025,08,19)
-fixedmindate= new Date(2025,08,05)
+fixedmindate= new Date(2025,08,04)
 newmindate = today >= fixedmindate ? new Date(today.getTime() + (86400000)*4).toISOString().split("T")[0] : "2025-09-08"
 document.getElementById('date_of_seva').min = newmindate
 document.getElementById('date_of_seva2').min = newmindate
