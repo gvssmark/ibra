@@ -367,7 +367,8 @@ div.style.background = '#fff';
 div.style.boxShadow = '0 1px 6px rgba(0,0,0,0.08)';
 div.style.whiteSpace = 'pre-wrap';
 let content =
-`Mobile: ${item.Mobile || ''}
+`Entry Date: ${ddmmyy(item.Timestamp)}
+Mobile: ${item.Mobile || ''}
 Sponsor Name: ${item["Sponsor Name"] || ''}
 Sponsor Gotra: ${item["Sponsor Gotra"] || ''}
 Co Sponsor Name: ${item["Co Sponsor Name"] || 'NIL'}
@@ -465,7 +466,7 @@ relationshipDiv.classList.add('hidden');
 relationship2Div.classList.add('hidden');
 // Update cachedReport by appending the new record so report reflects fresh data
 const newEntry = {
-Timestamp: new Date().toLocaleString(),
+Timestamp: new Date(),
 Mobile: mobile,
 "Sponsor Name": formData.get('sponsor_name'),
 "Sponsor Gotra": formData.get('sponsor_gotra'),
