@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Seva 25 Report</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<style>
+body {
+  font-size: small;
+  background: lightgrey;
+  margin: 0;
+  padding-top: 130px; /* space for fixed header */
+}
+table {width:100%;
+border:1px solid black; 
+border-collapse:collapse;
+white-Space : pre-wrap;
+}
+h1 {text-align:center; color:red;}
+.pitru {color:white; background: black; padding:0 10px; text-align:center;}
+.spons {color:white;  background: blue; padding:0 10px}
+input[type="text"] {
+  margin-top: 10px;
+  padding: 5px;
+  width: 300px;
+}
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: lightgrey;
+  padding: 10px 0;
+  z-index: 1000;
+  text-align: center;
+  border-bottom: 1px solid red;
+}
+</style>
+</head>
+<body>
+
+<div class= 'header'>
+<h1>Seva25 Datewise Report</h1>
+<input type='text' id="filterInput" placeholder='Search / Filter' >
+</div>
+<p id=div></p>
+
+
+<script>
+
+const div = document.getElementById('div');
+const filterInput = document.getElementById('filterInput');
+const ShId = '1aCFMOAHetzhrq_XfQLtbNsaVW5mhUYMfSEf32AMjYYo';
+const ShName = 'Puroit Daily';
+appscripturl='https://script.google.com/macros/s/AKfycbxeL3EhO9OCwAup_eJzrMZ6b6tcxmJDydUYZctMLr2f3KdusHuAhBBebkoKw0y5lsDg/exec'
+
+const dataUrl = `${appscripturl}?sheetid=${ShId}&sheetname=${ShName}`;
+async function fetchData() {
+   response = await fetch(dataUrl);
+   raw = await response.json();
+  // console.clear()
+   //console.log(raw.filter(a=> a[0]>0))
+   data = raw.filter(a=> a[0]>0).map(([mobile, sp, spg, cosp, cospg, p, pg, pr, dt])=>({mobile, sp, spg, cosp, cospg, p, pg, pr, dt: ddmmyy(dt)}))
+   //report()
+   renderTable(data)
+}
+fetchData()
+
+function renderTable(filteredData){
+tdata='<table border=1 align=center>'
+filteredData.forEach((a)=> {tdata+= `<tr> 
+ <td> <span class='spons'>Sponsor Details - Mobile - Name(s) - Gotra</span>
+ ${a.mobile} 
+ ${a.sp} 
+ ${a.spg}
+ `
+ 
+ if (a.cosp.trim()) {
+      tdata += `${a.cosp}
+ ${a.cospg}
+      `;
+    }
+ tdata += `
+ <span class='pitru'>Pitru Details - Name(s)-Gotra - Date</span>
+ ${a.p}
+ ${a.pg}
+ ${a.pr}
+ ${a.dt}` 
+} )
+tdata += '</table>'
+
+div.innerHTML =tdata
+
+}
+
+function ddmmyy(input) {
+    const date = new Date(input);
+    return isNaN(date.getTime()) ? '' : date.toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }).substring(0,10);
+  }
+  
+  
+  filterInput.addEventListener('input', () => {
+   query = filterInput.value.toLowerCase();
+   filtered = data.filter(a =>
+    Object.values(a).some(val =>
+      String(val).toLowerCase().includes(query)
+    )
+  );
+  renderTable(filtered);
+});
+</script>
+</body>
+</html>
+
