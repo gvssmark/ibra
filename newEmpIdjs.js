@@ -1,6 +1,6 @@
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open('your-cache-name').then(cache => {
+    caches.open('newEmpId-cache-v1').then(cache => {
       return cache.addAll([
         '/newEmpId.html',
         '/newEmpIdjs.js',
@@ -18,5 +18,9 @@ self.addEventListener('fetch', event => {
     })
   );
 });
+
+
+
+
 
 
