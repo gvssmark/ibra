@@ -3,7 +3,17 @@
 <head>
   <title>New Emp Id Collection</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('newEmpIdjs.js')
+      .then(registration => {
+        console.log('Service Worker registered:', registration);
+      })
+      .catch(error => {
+        console.error('Service Worker registration failed:', error);
+      });
+  }
+</script>
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; }
     label { display: block; margin-top: 10px; }
