@@ -3,7 +3,7 @@
   "name": "NewEmpId",
   "icons": [
     {
-      "src": "/images/ibra192.png",
+      "src": "/images/newEmpId.png",
       "sizes": "192x192",
       "type": "image/png"
     }
@@ -13,4 +13,5 @@
   "display": "standalone",
   "theme_color": "#ffffff"
 }
+
 
