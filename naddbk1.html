@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>My First Heading</h1>
+<div id="report-container"></div>
+
+<script>
+  // Format date to DD/MM/YYYY or fallback
+  function formatDate(input) {
+    const date = new Date(input);
+    return isNaN(date) ? 'Not Available' : date.toLocaleDateString('en-GB');
+  }
+
+  // Fetch JSON from a URL with no-store cache
+  async function fetchJson(url) {
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`Fetch failed: ${url}`);
+    return await res.json();
+  }
+
+  // Fetch latest timestamp
+  async function fetchLatestTimestamp() {
+    const url = 'https://script.google.com/macros/s/AKfycbwo-TtPn3DAjHSPCXDwPFerT36QyfPPvUTi7uQEvcmjJso_aWpaKefUsgx_vpJOowHUgg/exec?sheetid=17Tf6EBg-FlyXNhl3INAgp6TvJ5lKyY0Ov-wnD-RN-Vc&sheetname=Blank';
+    const res = await fetch(url, { cache: 'no-store' });
+    return (await res.text()).trim();
+  }
+
+  // Cache data to CacheStorage
+  async function cacheData(key, data) {
+    const cache = await caches.open('addbook');
+    const response = new Response(JSON.stringify(data), { headers: { 'Content-Type': 'application/json' } });
+    await cache.put(key, response);
+  }
+
+  // Read cached data
+  async function readCachedData(key) {
+    const cache = await caches.open('addbook');
+    const response = await cache.match(key);
+    return response ? response.json() : null;
+  }
+
+  // Fetch and cache AddBook data
+  async function fetchAddBookData() {
+    const url = 'https://script.google.com/macros/s/AKfycbwIVAlRrCTt6z_Ej4W6PHhopFqCq1JvEsSoN2RPqgWY7VXLW0P2pteA1jgVFaWePc2S/exec';
+    let data = await fetchJson(url);
+    data.shift(); // Remove header row
+
+    const formatted = data.map(([id, name, add1, add2, add3, district, place, pincode, fixed, mobile1, mobile2, state, email, srno, sbac, doj, dor, spname, area, blank1, dob, fampen, pensionbr, scanned, newempid, dod, blank2, blank3, blank4]) => ({
+      id, name, add1, add2, add3, district, place, pincode, fixed, mobile1, mobile2, state, email, srno, sbac,
+      doj: formatDate(doj), dor: formatDate(dor), spname, area, blank1, dob: formatDate(dob), fampen, pensionbr, scanned, newempid, dod: formatDate(dod),
+      blank2, blank3, blank4
+    }));
+
+    await cacheData('/custom/addbookdata.json', formatted);
+    return formatted;
+  }
+
+  // Fetch and cache photo data
+  async function fetchPhotoData() {
+    const url = 'https://script.google.com/macros/s/AKfycbw_h5LMGCyIraesAhh6xlkeP8RUz3HO4ga4Q8XZaJhJRpnuQqp3TWUUZyodZPxpeA7A/exec';
+    let data = await fetchJson(url);
+    data.shift();
+    const photos = data.map(([mno, photoid]) => ({ mno, photoid }));
+    await cacheData('/custom/addbookphotodata.json', photos);
+    return photos;
+  }
+
+  // Main: Validate cache with server timestamp
+  async function getData() {
+    try {
+      const serverTimestamp = await fetchLatestTimestamp();
+      const localTimestamp = localStorage.getItem('data_updated_at');
+
+      if (localTimestamp !== serverTimestamp) {
+        const [addBookData, photoData] = await Promise.all([
+          fetchAddBookData(),
+          fetchPhotoData()
+        ]);
+        localStorage.setItem('data_updated_at', serverTimestamp);
+        return { addBookData, photoData };
+      } else {
+        const [addBookData, photoData] = await Promise.all([
+          readCachedData('/custom/addbookdata.json'),
+          readCachedData('/custom/addbookphotodata.json')
+        ]);
+        return { addBookData, photoData };
+      }
+    } catch (error) {
+      console.error("Data fetch error:", error);
+      const [addBookData, photoData] = await Promise.all([
+        fetchAddBookData(),
+        fetchPhotoData()
+      ]);
+      return { addBookData, photoData };
+    }
+  }
+
+  // Render table of active members
+  function renderReport(data) {
+    const headers = ['ID', 'Name', 'Address', 'District', 'Place', 'Mobile'];
+    const table = document.createElement('table');
+    table.style.borderCollapse = 'collapse';
+    table.style.width = '100%';
+
+    // Header
+    const thead = table.createTHead();
+    const headRow = thead.insertRow();
+    headers.forEach(text => {
+      const th = document.createElement('th');
+      th.textContent = text;
+      th.style.cssText = 'border:1px solid #999; padding:8px; background:#f2f2f2';
+      headRow.appendChild(th);
+    });
+
+    // Body
+    const tbody = table.createTBody();
+    data.forEach(member => {
+      const row = tbody.insertRow();
+      const address = `${member.add1 || ''} ${member.add2 || ''} ${member.add3 || ''}`.trim();
+      const cells = [member.id, member.name, address, member.district, member.place, member.mobile1];
+
+      cells.forEach(text => {
+        const td = row.insertCell();
+        td.textContent = text || '';
+        td.style.cssText = 'border:1px solid #999; padding:8px';
+      });
+    });
+
+    // Inject table
+    const container = document.getElementById('report-container');
+    container.innerHTML = '';
+    container.appendChild(table);
+  }
+
+  // Execute
+  getData().then(({ addBookData }) => {
+    const active = addBookData.filter(m => m.name).sort((a, b) => a.name.localeCompare(b.name));
+    renderReport(active);
+  });
+</script>
+
+</body>
+</html>
