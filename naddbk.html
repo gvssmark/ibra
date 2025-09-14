@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>My First Heading</h1>
+
+<div id="report-container"></div>
+
+
+<script>
+// Helper: Format date if needed (example, already exists from your code)
+function ddmmyy(dateStr) {
+  // Implement your date formatting here or return as is
+  return dateStr;
+}
+
+// Fetch latest timestamp from server (your Apps Script URL)
+async function fetchLatestTimestamp() {
+  const timestampUrl = 'https://script.google.com/macros/s/AKfycbwo-TtPn3DAjHSPCXDwPFerT36QyfPPvUTi7uQEvcmjJso_aWpaKefUsgx_vpJOowHUgg/exec?sheetid=17Tf6EBg-FlyXNhl3INAgp6TvJ5lKyY0Ov-wnD-RN-Vc&sheetname=Blank';
+  const response = await fetch(timestampUrl, {cache: 'no-store'});
+  if (!response.ok) throw new Error("Failed to fetch latest timestamp");
+  const text = await response.text();
+  return text.trim();
+}
+
+// Fetch main data from network, process and update cache and localStorage
+async function fetchAndCacheAddBookData() {
+  const url = 'https://script.google.com/macros/s/AKfycbwIVAlRrCTt6z_Ej4W6PHhopFqCq1JvEsSoN2RPqgWY7VXLW0P2pteA1jgVFaWePc2S/exec';
+  const response = await fetch(url, {cache: 'no-store'});
+  if (!response.ok) throw new Error("Failed to fetch addbook data");
+  let data = await response.json();
+  data.shift();
+  data = data.map(([id, name, add1, add2, add3, district, place, pincode, fixed, mobile1, mobile2, state, email, srno, sbac, doj, dor, spname, area, blank1, dob, fampen, pensionbr, scanned, newempid, dod, blank2, blank3, blank4]) => ({
+    id, name, add1, add2, add3, district, place, pincode, fixed, mobile1, mobile2, state, email, srno, sbac,
+    doj: ddmmyy(doj), dor: ddmmyy(dor), spname, area, blank1, dob: ddmmyy(dob), fampen, pensionbr, scanned, newempid, dod: ddmmyy(dod),
+    blank2, blank3, blank4
+  }));
+
+  const cache = await caches.open('addbook');
+  const cacheResponse = new Response(JSON.stringify(data), {
+    headers: { 'Content-Type': 'application/json' }
+  });
+  await cache.put('/custom/addbookdata.json', cacheResponse);
+  return data;
+}
+
+async function fetchAndCachePhotoData() {
+  const photidurl = 'https://script.google.com/macros/s/AKfycbw_h5LMGCyIraesAhh6xlkeP8RUz3HO4ga4Q8XZaJhJRpnuQqp3TWUUZyodZPxpeA7A/exec';
+  const response = await fetch(photidurl, {cache: 'no-store'});
+  if (!response.ok) throw new Error("Failed to fetch photo data");
+  let pdata = await response.json();
+  pdata.shift();
+  const photodata = pdata.map(([mno, photoid]) => ({ mno, photoid }));
+
+  const cache = await caches.open('addbook');
+  const cacheResponse = new Response(JSON.stringify(photodata), {
+    headers: { 'Content-Type': 'application/json' }
+  });
+  await cache.put('/custom/addbookphotodata.json', cacheResponse);
+  return photodata;
+}
+
+// Read cached data from cache storage
+async function readCachedData(cacheKey) {
+  const cache = await caches.open('addbook');
+  const response = await cache.match(cacheKey);
+  if (!response) return null;
+  return await response.json();
+}
+
+// Main function: compare timestamps, update cache if needed, else read cache
+async function getDataWithCacheValidation() {
+  try {
+    const localTimestamp = localStorage.getItem('data_updated_at');
+    const serverTimestamp = await fetchLatestTimestamp();
+
+    if (localTimestamp !== serverTimestamp) {
+      console.log("Cache stale or missing. Fetching fresh data...");
+      const [addBookData, photoData] = await Promise.all([
+        fetchAndCacheAddBookData(),
+        fetchAndCachePhotoData()
+      ]);
+      localStorage.setItem('data_updated_at', serverTimestamp);
+      return { addBookData, photoData };
+    } else {
+      console.log("Cache fresh. Reading from cache...");
+      const [addBookData, photoData] = await Promise.all([
+        readCachedData('/custom/addbookdata.json'),
+        readCachedData('/custom/addbookphotodata.json')
+      ]);
+      return { addBookData, photoData };
+    }
+  } catch (error) {
+    console.error("Error in cache validation or fetching:", error);
+    // Fallback: try fetching network directly without cache update
+    const addBookData = await fetchAndCacheAddBookData();
+    const photoData = await fetchAndCachePhotoData();
+    return { addBookData, photoData };
+  }
+}
+
+// Example use
+getDataWithCacheValidation().then(({ addBookData, photoData }) => {
+  // Work with your data here
+  console.log("AddBook Data:", addBookData);
+  console.log("Photo Data:", photoData);
+  // Example: filter active members from addBookData
+  const activeMembers = addBookData.filter(a => a.name !== "").sort((a, b) => a.name.localeCompare(b.name));
+  console.log("Active Members:", activeMembers);
+  generateActiveMembersReport(activeMembers)
+});
+
+   function ddmmyy(input) {
+    const date = new Date(input);
+    return isNaN(date.getTime()) ? 'Not Available' : date.toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }).substring(0,10);
+  }
+  
+  getDataWithCacheValidation()
+
+  // Example: generate a report table for active members in the web page
+function generateActiveMembersReport(activeMembers) {
+  // Create table element
+  const table = document.createElement('table');
+  table.style.borderCollapse = 'collapse';
+  table.style.width = '100%';
+
+  // Define table header row
+  const headers = ['ID', 'Name', 'Address', 'District', 'Place', 'Mobile']; // Customize columns as needed
+  const thead = document.createElement('thead');
+  const trHead = document.createElement('tr');
+
+  headers.forEach(headerText => {
+    const th = document.createElement('th');
+    th.textContent = headerText;
+    th.style.border = '1px solid #999';
+    th.style.padding = '8px';
+    th.style.backgroundColor = '#f2f2f2';
+    trHead.appendChild(th);
+  });
+  thead.appendChild(trHead);
+  table.appendChild(thead);
+
+  // Create table body
+  const tbody = document.createElement('tbody');
+
+  activeMembers.forEach(member => {
+    const tr = document.createElement('tr');
+
+    // Customize property access as needed
+    const cells = [
+      member.id || '',
+      member.name || '',
+      `${member.add1 || ''} ${member.add2 || ''} ${member.add3 || ''}`.trim(),
+      member.district || '',
+      member.place || '',
+      member.mobile1 || '',
+    ];
+
+    cells.forEach(cellText => {
+      const td = document.createElement('td');
+      td.textContent = cellText;
+      td.style.border = '1px solid #999';
+      td.style.padding = '8px';
+      tr.appendChild(td);
+    });
+
+    tbody.appendChild(tr);
+  });
+
+  table.appendChild(tbody);
+
+  // Add the table to a container in your HTML (example: a div with id="report-container")
+  const container = document.getElementById('report-container');
+  container.innerHTML = ''; // clear previous content
+  container.appendChild(table);
+}
+
+//generateActiveMembersReport(activeMembers);
+
+</script>
+
+</body>
+</html>
+
