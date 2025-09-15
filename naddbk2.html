@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, maximum-scale=1 , initial-scale=1.0">
+  <title>Filtered Single-Column Member List</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+    .fixed-search {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #fff;
+      padding: 20px 0 5px 0;
+      border-bottom: 1px solid #eee;
+    }
+    #search-input {
+      width: 90vw;
+      max-width: 500px;
+      font-size: 1.2em;
+      padding: 10px 16px;
+      border: 1.5px solid #888;
+      border-radius: 5px;
+      margin: 0 5vw 10px 5vw;
+      outline: none;
+      background: #fafafa;
+      box-sizing: border-box;
+      display: block;
+    }
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 12px;
+    }
+    thead { display: none; }
+    tbody tr {
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      border-radius: 8px;
+      display: table-row;
+    }
+    td {
+      display: block;
+      padding: 18px 5vw 10px 5vw;
+      border: none;
+    }
+    .member-name {
+      color: #c00;
+      font-weight: bold;
+      font-size: large;
+      margin-bottom: 8px;
+      line-height: 1.2;
+      text-align:center;
+    }
+    .member-meta {
+      color: #1386e7;
+      font-size: x-small;
+      margin-top: 6px;
+      letter-spacing: 0.2px;
+      text-align:center;
+    }
+    @media (max-width:600px) {
+      td { padding: 15px 2vw 7px 2vw; }
+      #search-input { font-size: 1em; }
+      .member-name { font-size: 1.15em; }
+      .member-meta { font-size: 0.91em; }
+    }
+  </style>
+</head>
+<body>
+  <div class="fixed-search">
+    <input type="text" id="search-input" autocomplete="off" placeholder="Search by name, mobile, or ID...">
+  </div>
+  <div id="report-container"></div>
+  <script>
+ //==== Utility: Date Formatting ====
+function formatDate(input) {
+  const date = new Date(input);
+  return isNaN(date) ? 'Not Available' : date.toLocaleDateString('en-GB');
+}
+
+//==== Fetch Data Functions ====
+async function fetchJson(url) {
+  const res = await fetch(url, { cache: 'no-store' });
+  if (!res.ok) throw new Error(`Fetch failed: ${url}`);
+  return await res.json();
+}
+async function fetchLatestTimestamp() {
+  const url = 'https://script.google.com/macros/s/AKfycbwo-TtPn3DAjHSPCXDwPFerT36QyfPPvUTi7uQEvcmjJso_aWpaKefUsgx_vpJOowHUgg/exec?sheetid=17Tf6EBg-FlyXNhl3INAgp6TvJ5lKyY0Ov-wnD-RN-Vc&sheetname=Blank';
+  const res = await fetch(url, { cache: 'no-store' });
+  return (await res.text()).trim();
+}
+async function cacheData(key, data) {
+  const cache = await caches.open('addbook');
+  const response = new Response(JSON.stringify(data), { headers: { 'Content-Type': 'application/json' } });
+  await cache.put(key, response);
+}
+async function readCachedData(key) {
+  const cache = await caches.open('addbook');
+  const response = await cache.match(key);
+  if (!response || !response.ok) return null;
+  try {
+    return await response.json();
+  } catch {
+    return null;
+  }
+}
+async function fetchAddBookData() {
+  const url = 'https://script.google.com/macros/s/AKfycbwIVAlRrCTt6z_Ej4W6PHhopFqCq1JvEsSoN2RPqgWY7VXLW0P2pteA1jgVFaWePc2S/exec';
+  let data = await fetchJson(url);
+  data.shift();
+  const formatted = data.map(([id, name, add1, add2, add3, district, place, pincode, fixed, mobile1, mobile2, state, email, srno, sbac, doj, dor, spname, area, blank1, dob, fampen, pensionbr, scanned, newempid, dod, blank2, blank3, blank4]) => ({
+    id, name, add1, add2, add3, district, place, pincode, fixed, mobile1, mobile2, state, email, srno, sbac,
+    doj: formatDate(doj), dor: formatDate(dor), spname, area, blank1, dob: formatDate(dob), fampen, pensionbr, scanned, newempid, dod: formatDate(dod),
+    blank2, blank3, blank4
+  }));
+  await cacheData('/custom/addbookdata.json', formatted);
+  return formatted;
+}
+async function fetchPhotoData() {
+  const url = 'https://script.google.com/macros/s/AKfycbw_h5LMGCyIraesAhh6xlkeP8RUz3HO4ga4Q8XZaJhJRpnuQqp3TWUUZyodZPxpeA7A/exec';
+  let data = await fetchJson(url);
+  data.shift();
+  const photos = data.map(([mno, photoid]) => ({ mno, photoid }));
+  await cacheData('/custom/addbookphotodata.json', photos);
+  return photos;
+}
+
+//==== Coordinated Loader with Self-Healing ====
+async function getData() {
+  try {
+    const serverTimestamp = await fetchLatestTimestamp();
+    const localTimestamp = localStorage.getItem('data_updated_at');
+    if (localTimestamp !== serverTimestamp) {
+      const [addBookData, photoData] = await Promise.all([
+        fetchAddBookData(),
+        fetchPhotoData()
+      ]);
+      localStorage.setItem('data_updated_at', serverTimestamp);
+      return { addBookData, photoData };
+    } else {
+      let [addBookData, photoData] = await Promise.all([
+        readCachedData('/custom/addbookdata.json'),
+        readCachedData('/custom/addbookphotodata.json')
+      ]);
+      if (!addBookData || !photoData) {
+        [addBookData, photoData] = await Promise.all([
+          fetchAddBookData(),
+          fetchPhotoData()
+        ]);
+        localStorage.setItem('data_updated_at', serverTimestamp);
+      }
+      return { addBookData, photoData };
+    }
+  } catch (error) {
+    console.error("Data fetch error:", error);
+    const [addBookData, photoData] = await Promise.all([
+      fetchAddBookData(),
+      fetchPhotoData()
+    ]);
+    return { addBookData, photoData };
+  }
+}
+
+//==== Card Renderer ====
+function renderReport(data) {
+  const container = document.getElementById('report-container');
+  container.innerHTML = '';
+  const table = document.createElement('table');
+  const tbody = document.createElement('tbody');
+  data.forEach(member => {
+    const row = document.createElement('tr');
+    const cell = document.createElement('td');
+    // Name: large, bold, red
+    const name = document.createElement('div');
+    name.className = 'member-name';
+    name.textContent = member.name || '';
+    // Meta info: blue, small font
+    const meta = document.createElement('div');
+    meta.className = 'member-meta';
+    meta.textContent = [member.mobile1, member.srno, member.newempid, member.id]
+      .filter(Boolean)
+      .join('  ·  ');
+    cell.appendChild(name);
+    cell.appendChild(meta);
+    row.appendChild(cell);
+    tbody.appendChild(row);
+  });
+  table.appendChild(tbody);
+  container.appendChild(table);
+}
+
+//==== Search State and Handler ====
+let allMembers = [];
+getData().then(({ addBookData }) => {
+  allMembers = addBookData.filter(m => m.name)
+    .sort((a, b) => a.name.localeCompare(b.name));
+  renderReport(allMembers);
+});
+
+// Live filter
+document.getElementById('search-input').addEventListener('input', function() {
+  const search = this.value.trim().toLowerCase();
+  const rows = document.querySelectorAll('#report-container table tbody tr');
+  rows.forEach(row => {
+    const text = row.textContent.toLowerCase();
+    row.style.display = text.includes(search) ? '' : 'none';
+  });
+});
+// (Optional) Manual cache test (can remove if not needed)
+function getmycachedata() {
+  caches.open('addbook').then(cache => {
+    cache.match('/custom/addbookdata.json').then(response => {
+      if (response) {
+        response.json().then(data => {
+          cachedata = data.sort((a, b) => a.name.localeCompare(b.name)).filter(a=> a.name !="");
+          renderReport(cachedata);
+        });
+      } else {
+        alert('No cached data found');
+      }
+    });
+  });
+}
+getmycachedata()
+window.getmycachedata = getmycachedata;
+ // getmycachedata function can be left or omitted as before
+</script>
+</body>
+</html>
