@@ -96,7 +96,7 @@ async function fetchJson(url) {
   return await res.json();
 }
 async function fetchLatestTimestamp() {
-  const url = 'https://script.google.com/macros/s/AKfycbwo-TtPn3DAjHSPCXDwPFerT36QyfPPvUTi7uQEvcmjJso_aWpaKefUsgx_vpJOowHUgg/exec?sheetid=17Tf6EBg-FlyXNhl3INAgp6TvJ5lKyY0Ov-wnD-RN-Vc&sheetname=Blank';
+  const url = 'https://script.google.com/macros/s/AKfycbwo-TtPn3DAjHSPCXDwPFerT36QyfPPvUTi7uQEvcmjJso_aWpaKefUsgx_vpJOowHUgg/exec?sheetid=1MaB1PMP3ouY3Es5ziLgY7dhT3ZSb6oHRgecw3JiJfGw&sheetname=Sheet1';
   const res = await fetch(url, { cache: 'no-store' });
   return (await res.text()).trim();
 }
