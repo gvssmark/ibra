@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -161,8 +162,8 @@ Please use the buttons below to enter data or view the report.<br />
 </div>
 <!-- Data Entry Section -->
 <div id="dataEntrySection" class="container hidden" >
-<h2>Seva Data Collection</h2>
-<form id="dataForm" autocomplete="off">
+<h2>Seva Data Collection - Closed</h2>
+<form id="dataForm" autocomplete="off" style='display:none'>
 <label>Mobile Number <span class="required">*</span>
 <input type="tel" name="mobile" id="mobile" required pattern="^[6-9][0-9]{9}$" maxlength="10" placeholder="Enter 10 digit mobile number" />
 </label>
@@ -195,8 +196,8 @@ Please use the buttons below to enter data or view the report.<br />
 <div id="relationshipOtherDiv" class="field-group hidden">
 <input type="text" id="relationshipOtherInput" placeholder="Enter relationship" />
 </div>
-<label>Date of Seva <span class="required">*</span> Min <span id='min1'>21-Sep-2025 </span> Max 21-Sep-2025
-<input type="date" name="date_of_seva" id='date_of_seva' min="2025-09-21" max="2025-09-21" required />
+<label>Date of Seva - Now Closed
+<input type="date" name="date_of_seva" id='date_of_seva' min="2025-09-21" max="2025-09-20" required />
 </label>
 <hr />
 <label>Name of Pitru2 (Optional)
