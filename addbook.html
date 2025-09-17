@@ -1,0 +1,584 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins&effect=neon|outline|emboss|shadow-multiple">
+    <title>IBRA</title>
+    <script src="index.js" defer></script>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#317EFB" />
+    <link rel="apple-touch-icon" href="images/ibra512.png">
+    <style>
+        h1 { text-align: center }
+        .spinner {
+            border: 1px solid black;
+            border-top: 1px solid orange;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 4s linear infinite;
+            margin: 0 auto;
+            background: red;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        body { overscroll-behavior: contain; }
+        .pname {
+            font-family: "Poppins", sans-serif;
+            text-shadow: 3px 3px 3px #ababab;
+            font-size: 25px;
+        }
+        a { text-decoration: none }
+        body {
+            background: wheat;
+            font-size: small;
+            margin: 0px auto;
+            width: 360px;
+            box-sizing: border-box;
+        }
+        .active, .btn:hover {
+            background-color: red;
+            color: white;
+        }
+        #regionTable td:hover {
+            background-color: #9999997d;
+            color: white;
+        }
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+        li {
+            float: left;
+            font-size: small;
+        }
+        .list {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 2px 6px;
+            text-decoration: none;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-left: 1px;
+            margin-right: 1px;
+            border: 1px solid black;
+            font-size: small;
+        }
+        #myInput {
+            width: 300px;
+            margin-left: 30px;
+            height: 30px;
+            border-radius: 15px;
+            background-color: cyan;
+            border: 0;
+            outline: 0;
+            display: none;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 1px;
+            left: inherit;
+            top: 0;
+            width: 360px;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        .modal-content {
+            background-color: #99ffcc;
+            margin: auto;
+            padding: 2px;
+            padding-bottom: 2px;
+            border: 1px solid #888;
+            width: 95%;
+            border-radius: 15px;
+            margin-top: 53px;
+        }
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover, .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .badge {
+            display: inline-block;
+            padding: 0;
+            width: 25px;
+            height: 25px;
+            line-height: 25px;
+            font-size: x-small;
+            font-weight: lighter !important;
+            color: #fff !important;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            background-color: #d73d33;
+            border-radius: 50px;
+            top: -3px;
+        }
+        .badge1 {
+            display: inline-block;
+            padding: 0;
+            width: 25px;
+            height: 25px;
+            line-height: 25px;
+            font-size: small;
+            font-weight: lighter !important;
+            color: black !important;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            background-color: yellow;
+            border-radius: 50px;
+            top: -3px;
+        }
+        .eabbadge {
+            display: inline-block;
+            padding: 0;
+            width: 25px;
+            height: 25px;
+            line-height: 25px;
+            font-size: small;
+            font-weight: lighter !important;
+            color: black !important;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            background-color: pink;
+            border-radius: 50px;
+            top: -3px;
+        }
+        .smallbadge {
+            display: inline-block;
+            padding: 0;
+            width: 10px;
+            height: 10px;
+            line-height: 10px;
+            font-size: small;
+            font-weight: lighter !important;
+            color: green !important;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            background-color: yellow;
+            border-radius: 50px;
+            top: -3px;
+        }
+        .smalleabbadge {
+            display: inline-block;
+            padding: 0;
+            width: 10px;
+            height: 10px;
+            line-height: 10px;
+            font-size: small;
+            font-weight: lighter !important;
+            color: green !important;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            background-color: pink;
+            border-radius: 50px;
+            top: -3px;
+        }
+        .ibeab {
+            background: pink;
+        }
+        button a {
+            color: black;
+        }
+        button {
+            background: yellow;
+            border: 0;
+            width: 170px;
+            padding: 5px;
+            border-radius: 15px;
+            box-shadow: 3px 5px #888888;
+            margin-left: 5px;
+        }
+        img {
+            border-radius: 50px;
+        }
+        #whatsapp {
+            margin-top: -100px;
+            float: right;
+        }
+        #page1 {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id='spin'>
+        <h1>IBRA ADDRESS BOOK <br>Loading ...</h1>
+        <div class="spinner"></div>
+    </div>
+
+    <div id='page1'>      
+        <h3 align="center">Indian Bank Retirees' Association</h3>
+        <h4 align="center">Members Address Book</h4>
+        <table border="1">
+            <tr>
+                <td>Region</td>
+                <td>State / Districts</td>
+            </tr>
+            <tr><td>VSP</td><td>Srikakulam, Vizianagaram and Visakhapatnam</td></tr>
+            <tr><td>GOD</td><td>East and West Godavaris</td></tr>
+            <tr><td>VIJ</td><td>Krishna, Guntur and Prakasam</td></tr>
+            <tr><td>SEEMA</td><td>Entire Rayalaseema Area and Nellore</td></tr>
+            <tr><td>HYD</td><td>All Districts of Telangana State</td></tr>
+            <tr><td>OTH</td><td>All States other than AP & TS</td></tr>
+            <tr><td>eAB</td><td>List Earstwhile Allahabad Bank Retirees. These members are grouped in respective regions</td></tr>
+        </table>
+        <span class='smallbadge'>&nbsp;</span> &nbsp;indicates a Family Pensioner<br>
+        <span class='smalleabbadge'>&nbsp;</span> &nbsp;indicates an eAB Retiree<br><br>
+        Members are requested to verify the correctness of their address and suggest changes if any.<br><br>
+        <table>
+            <tr>
+                <td>
+                    <button style='display:none' id='addbtn' onclick='shregions()'>Show Address Book</button>
+                </td>
+                <td>
+                    <button>
+                        <a href="https://gvssmark.github.io/ibra/welfare.html" target="_blank">Welfare Schemes</a>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="regions" style="display:none;">
+        <div style="background:powderblue; top:0; height:83px; overflow:auto; position:fixed; width: 360px;">
+            <ul>
+                <li onclick="selectedRegion('allmemb',0)" class="list active">All</li>
+                <li onclick="selectedRegion('VSP',1)" class="list">VSP</li>
+                <li onclick="selectedRegion('GOD',2)" class="list">GOD</li>
+                <li onclick="selectedRegion('VIJ',3)" class="list">VIJ</li>
+                <li onclick="selectedRegion('SEE',4)" class="list">SEEMA</li>
+                <li onclick="selectedRegion('HYD',5)" class="list">HYD</li>
+                <li onclick="selectedRegion('OTH',6)" class="list">OTH</li>
+                <li onclick="selectedRegion('EAB',7)" class="list">eAB</li>
+                <li onclick="selectedRegion('allMembNoWise',8)" class="list">SR No</li>
+            </ul>
+            <h4 id='regionHeading' align="center" style="margin-top: 0; margin-bottom: 0;"></h4>
+            <input type="text" id='myInput' placeholder="Search here..." onkeyup="fiterName()">
+        </div>
+        <p id='paraInThisRegion' style="margin-top:85px; margin-left:1px; width:360px;"></p>
+
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h4 align="center" id="nameHeader"></h4>
+                <p id="modalData"></p>
+                <div id='photo' style='margin-top:-266px; float:right'></div>
+                <div id='whatsapp'></div>
+            </div>
+        </div>
+
+        <script>
+            let data = [];
+            let photodata = [];
+            let activeMembers = [];
+let familyPensioners = [];
+let blank = [];
+let allMembNoWise = [];
+let allmemb = [];
+
+
+            async function loadCachedData() {
+  try {
+    const cache = await caches.open('addbook');
+    const [dataResponse, photoResponse] = await Promise.all([
+      cache.match('/custom/addbookdata.json'),
+      cache.match('/custom/addbookphotodata.json')
+    ]);
+    if (dataResponse && photoResponse) {
+      data = await dataResponse.json();
+      photodata = await photoResponse.json();
+      processData();
+      selectedRegion('allmemb', 0);
+    }
+  } catch (error) {
+    console.warn('Error loading cache:', error);
+  }
+}
+
+
+            async function refreshDataInBackground() {
+                await getMyData();
+                //renderReport(data);
+            }
+
+            loadCachedData();
+            refreshDataInBackground();
+
+            async function getMyData() {
+                const cacheName = 'addbook';
+                const dataKey = '/custom/addbookdata.json';
+                const photoKey = '/custom/addbookphotodata.json';
+                const updatedKey = 'data_updated_at';
+
+                const dataUrl = 'https://script.google.com/macros/s/AKfycbwIVAlRrCTt6z_Ej4W6PHhopFqCq1JvEsSoN2RPqgWY7VXLW0P2pteA1jgVFaWePc2S/exec';
+                const photoUrl = 'https://script.google.com/macros/s/AKfycbw_h5LMGCyIraesAhh6xlkeP8RUz3HO4ga4Q8XZaJhJRpnuQqp3TWUUZyodZPxpeA7A/exec';
+                const timestampUrl = 'https://script.google.com/macros/s/AKfycbwo-TtPn3DAjHSPCXDwPFerT36QyfPPvUTi7uQEvcmjJso_aWpaKefUsgx_vpJOowHUgg/exec?sheetid=1MaB1PMP3ouY3Es5ziLgY7dhT3ZSb6oHRgecw3JiJfGw&sheetname=Sheet1';
+
+                let serverTimestamp;
+                try {
+                    const tsRes = await fetch(timestampUrl, { cache: 'no-store' });
+                    serverTimestamp = (await tsRes.text()).trim();
+                    if (!serverTimestamp) serverTimestamp = new Date().toISOString();
+                } catch {
+                    serverTimestamp = new Date().toISOString();
+                }
+
+                const localTimestamp = localStorage.getItem(updatedKey);
+
+                const cache = await caches.open(cacheName);
+                let dataResponse = await cache.match(dataKey);
+                let photoResponse = await cache.match(photoKey);
+
+                let needFetch = !dataResponse || !photoResponse || !localTimestamp || (localTimestamp !== serverTimestamp);
+
+                if (!needFetch) {
+                    try {
+                        data = await dataResponse.json();
+                        photodata = await photoResponse.json();
+                    } catch {
+                        needFetch = true;
+                    }
+                }
+
+                if (needFetch) {
+                    const response = await fetch(dataUrl, { cache: 'no-store' });
+                    let rawData = await response.json();
+                    rawData.shift();
+                    data = rawData.map(([id,name,add1,add2,add3,district,place,pincode,fixed,mobile1,mobile2,state,email,srno,sbac,doj,dor,spname,area,blank1,dob,fampen,pensionbr,scanned,newempid,dod,blank2,blank3,blank4]) => ({
+                        id, name, add1, add2, add3, district, place, pincode, fixed, mobile1, mobile2, state, email, srno, sbac,
+                        doj: ddmmyy(doj), dor: ddmmyy(dor), spname, area, blank1, dob: ddmmyy(dob),
+                        fampen, pensionbr, scanned, newempid, dod: ddmmyy(dod), blank2, blank3, blank4
+                    }));
+                    const photoResponseFetch = await fetch(photoUrl, { cache: 'no-store' });
+                    let rawPhotoData = await photoResponseFetch.json();
+                    rawPhotoData.shift();
+                    photodata = rawPhotoData.map(([id, photoid]) => ({ id, photoid }));
+                    await cache.put(dataKey, new Response(JSON.stringify(data), { headers: { "Content-Type": "application/json" } }));
+                    await cache.put(photoKey, new Response(JSON.stringify(photodata), { headers: { "Content-Type": "application/json" } }));
+                    localStorage.setItem(updatedKey, serverTimestamp);
+                }
+
+                processData()
+                selectedRegion('allmemb', 0);
+
+                if (activeMembers.length > 0) {
+                    document.getElementById("addbtn").style.display = "block";
+                }
+                if (photodata && photodata.length > 0) {
+                    document.getElementById('spin').style.display = 'none';
+                    document.getElementById('page1').style.display = 'block';
+                }
+            }
+
+
+function processData() {
+  activeMembers = data.filter(a => a.name !== "").sort((a, b) => a.name.localeCompare(b.name));
+  activeMembers.forEach(element => {
+    element.IBorEAB = (element.area.substr(-3).toUpperCase() === 'EAB' ? "EAB" : "IB");
+    element.pentype = (element.fampen.length > 0 ? "fam" : "ser");
+  });
+  familyPensioners = activeMembers.filter(a => a.fampen !== "")
+    .map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB }));
+  blank = activeMembers.filter(a => a.area === "BLANK")
+    .map(a => ({ id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB, srno: a.srno, mobile: a.mobile1 }));
+  allMembNoWise = activeMembers.map(a => ({
+    id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB,
+    srno: a.srno, mobile: a.mobile1, newempid: a.newempid
+  })).sort((a, b) => a.srno - b.srno);
+  allmemb = activeMembers.map(a => ({
+    id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB,
+    srno: a.srno, mobile: a.mobile1, newempid: a.newempid
+  }));
+}
+
+            let penbrTemp = "";
+
+            function shregions() {
+                document.getElementById("regions").style.display = "block";
+                document.getElementById("page1").style.display = "none";
+            }
+
+            function selectedRegion(array, n) {
+                let tany = activeMembers.filter(a => a.area.includes(array)).map(a => ({
+                    id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB,
+                    srno: a.srno, mobile: a.mobile1, newempid: a.newempid
+                }));
+                let tarr = array === 'allmemb' ? allmemb : array === 'allMembNoWise' ? allMembNoWise : tany;
+                document.getElementById("myInput").value = "";
+                document.getElementById("myInput").style.display = "block";
+                document.documentElement.scrollTop = 0;
+
+                let famPensionersCount = tarr.filter(a => a.fampen.length > 0).length;
+                let eabcount = tarr.filter(a => a.ibeab === 'EAB').length;
+                let regions = ["All Members", "Visakhapatnam Area", "Godavari Area", "Vijayawada Area", "Seema Area", "Hyderabad Area", "Other States", "e Allahabad", "SR No Sorted"];
+                document.getElementById('regionHeading').innerHTML = "Members in " + regions[n] +
+                    " <span class='badge'>" + tarr.length + "</span>" +
+                    "<span class='badge1'>" + famPensionersCount + "</span> " +
+                    "<span class='eabbadge'>" + eabcount + "</span>";
+
+                let inThisRegion = "<table id='regionTable' border='1'><tr><td>Name / Mobile / SR No/<span class='newempid'>NewEmpId</span> / Memb No /Photo </td></tr>";
+                tarr.forEach(a => {
+                    inThisRegion += `<b>
+                        <tr align="center" onClick="nameclick(this.id)" id="${a.id}">
+                            <td class="${a.fampen.length > 0 ? "fam" : "ser"}">
+                                <span class="pname">${a.name}</span>
+                                ${a.fampen.length > 0 ? `<span class="smallbadge">&nbsp;</span><br>Family Pension of: ${a.fampen}` : ``}
+                                ${a.ibeab === 'EAB' ? `<span class="smalleabbadge">&nbsp;</span>` : ``}
+                                <br> Mobile: ${a.mobile} / SR: ${a.srno} /<span class=newempid>${a.newempid}</span> / Memb: ${a.id}  ${isPhoto(a.id)}
+                            </td>
+                        </tr></b>`;
+                });
+                inThisRegion += "</table><br><br><br>";
+                document.getElementById('paraInThisRegion').innerHTML = inThisRegion;
+                window.scrollTo(0, 0);
+            }
+
+            const isPhoto = (id) => photodata.some(a => a.id.toString() === id.toString()) ? '<span>👨</span>' : '';
+
+
+            let modal = document.getElementById("myModal");
+            let span = document.getElementsByClassName("close")[0];
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+            window.addEventListener('touchstart', function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            });
+            window.addEventListener('touchend', function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            });
+
+            function ddmmyy(input) {
+                const date = new Date(input);
+                return isNaN(date.getTime()) ? 'Not Available' : date.toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }).substring(0, 10);
+            }
+
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            function nameclick(membershipNo) {
+                let toDisplay = "<table border=1><tr>";
+                document.getElementById("myInput").value = "";
+
+                let membno = membershipNo * 1;
+                 memphotoid = photodata.filter(a => a.id.toString() === membershipNo.toString());
+                console.log(memphotoid)
+                 memphoto = memphotoid.length>0 ? `<img  src='https://drive.google.com/thumbnail?id=${memphotoid[0].photoid}' height=100 width=100'>`  : ""
+
+                let membData = activeMembers.filter(a => a.id === membno);
+
+                let dob = membData[0].dob;
+                let doj = membData[0].doj;
+                let dor = membData[0].dor;
+                let spname = membData[0].spname;
+                let ptype = membData[0].fampen !== "" ? "Family Pension" : "Service Pension";
+
+                toDisplay += `<tr><td colspan=2><b>Membership No</b> ${membData[0].id}</td></tr>`;
+                toDisplay += `<tr><td colspan='2'><b>Address: </b><br>${membData[0].add1}<br>`;
+                if (membData[0].add2.length > 0) toDisplay += `${membData[0].add2}<br>`;
+                if (membData[0].add3.length > 0) toDisplay += `${membData[0].add3}<br>`;
+                if (membData[0].place.length > 0) toDisplay += `${membData[0].place}  ${membData[0].pincode}<br>`;
+                if (membData[0].district.length > 0) toDisplay += `${membData[0].district} District <br>`;
+                toDisplay += `<tr><td colspan=2><b>Phones: </b>`;
+                if (membData[0].fixed.length > 0) toDisplay += `${membData[0].fixed} / `;
+                if (membData[0].mobile1 > 0) toDisplay += `<a href=tel:${membData[0].mobile1}><mark style='background:red; color:white'>${membData[0].mobile1}</mark></a>`;
+                if (membData[0].mobile2 > 0) toDisplay += ` / ${membData[0].mobile2}`;
+                toDisplay += `<tr><td colspan=2><b>Email: </b>${membData[0].email}</td></tr>`;
+                toDisplay += `<tr><td colspan=2><b>S R No: </b>${membData[0].srno} /  <b>New Emp Id: </b>${membData[0].newempid}</td></tr>`;
+                toDisplay += `<tr><td colspan=2><b>Application Scanned: </b>${membData[0].scanned}</td></tr>`;
+                toDisplay += `<tr><td colspan=2><b>Pension Br: </b>${membData[0].pensionbr}</td></tr>`;
+
+                if (membData[0].fampen !== "") {
+                    toDisplay += `<tr bgcolor=yellow><td colspan=2><b>Family Pension of :</b> ${membData[0].fampen}<br> DOD of Ser. Pensioner: ${membData[0].dod}</td></tr>`;
+                }
+
+                toDisplay += `<tr><td colspan=2><b>Pension Acc: </b> ${membData[0].sbac}</td></tr>`;
+                let whichBank = membData[0].IBorEAB === 'IB' ? "Indian Bank" : "e Allahabad Bank";
+                toDisplay += `<tr><td colspan=2><b>Retired from : </b> ${whichBank}</td></tr>`;
+                toDisplay += `<tr><td colspan=2><b>Region : </b> ${membData[0].area.substr(0, 3)}</td></tr>`;
+                toDisplay += `<tr><td colspan=2><b>DOB : </b> ${dob}</td></tr>`;
+                toDisplay += `<tr><td colspan=2><b>DOJ : </b> ${doj}</td></tr>`;
+                toDisplay += `<tr><td colspan=2><b>DOR : </b> ${dor}</td></tr>`;
+                toDisplay += `<tr><td colspan=2><b>Spouse Name : </b> ${spname}</td></tr>`;
+                toDisplay += `<tr><td colspan=2><b>Pension Type : </b> ${ptype}</td></tr>`;
+
+                document.getElementById("modalData").innerHTML = toDisplay + "</table>";
+                document.getElementById("nameHeader").innerHTML = membData[0].name;
+                modal.style.display = "block";
+                document.getElementById('photo').innerHTML = memphoto;
+
+                if (isMobileDevice) {
+                    document.getElementById('whatsapp').innerHTML = `<a aria-label="Chat on WhatsApp" href="<https://wa.me/91${membData>[0].mobile1}"> <img alt="Chat on WhatsApp" src="images/WhatsApp.jpg" height="50px" /></a>`;
+                }
+            }
+
+            function fiterName() {
+                let input = document.getElementById("myInput");
+                let filter = input.value.toUpperCase().replaceAll(" ", "");
+                let table = document.getElementById("regionTable");
+                let tr = table.getElementsByTagName("tr");
+                for (let i = 0; i < tr.length; i++) {
+                    let td = tr[i].getElementsByTagName("td")[0];
+                    if (td) {
+                        let txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().replaceAll(" ", "").indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                }
+            }
+
+            var btnContainer = document.getElementById("regions");
+            if (btnContainer) {
+                var btns = btnContainer.getElementsByClassName("list");
+                for (let i = 0; i < btns.length; i++) {
+                    btns[i].addEventListener("click", function () {
+                        let current = document.getElementsByClassName("active");
+                        if (current[0]) current[0].className = current[0].className.replace(" active", "");
+                        this.className += " active";
+                    });
+                }
+            }
+
+            let details = navigator.userAgent;
+            let regexp = /android|iphone|kindle|ipad/i;
+            let isMobileDevice = regexp.test(details);
+            
+            
+            
+            
+        </script>
+    </div>
+</body>
+</html>
