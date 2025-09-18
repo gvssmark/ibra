@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, maximum-scale=1 , initial-scale=1.0">
+  <title>Filtered Single-Column Member List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 1rem;
+    }
+    h1 {
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+    }
+    p {
+      margin: 0.5rem 0;
+    }
+    #DataLoadedFrom {
+      font-weight: bold;
+      color: darkgreen;
+    }
+  </style>
+</head>
+<body>
+  <h1>My Data Statistics</h1>
+  <p id='DataLoadedFrom'>Loading...</p>
+  <p id='Addressbookdata'>Number of Records</p>
+  <p id='Photodata'>Number of Records</p>
+  <p id='DataLastUpdatedOn'>Data Last Updated on</p>
+
+<script>
+//==== Utility: Date Formatting ====
+function formatDate(input) {
+  const date = new Date(input);
+  return isNaN(date) ? 'Not Available' : date.toLocaleString('en-GB');
+}
+
+//==== Fetch Data Functions ====
+async function fetchJson(url) {
+  const res = await fetch(url, { cache: 'no-store' });
+  if (!res.ok) throw new Error(`Fetch failed: ${url}`);
+  return await res.json();
+}
+async function fetchLatestTimestamp() {
+  const url = 'https://script.google.com/macros/s/AKfycbwo-TtPn3DAjHSPCXDwPFerT36QyfPPvUTi7uQEvcmjJso_aWpaKefUsgx_vpJOowHUgg/exec?sheetid=1MaB1PMP3ouY3Es5ziLgY7dhT3ZSb6oHRgecw3JiJfGw&sheetname=Sheet1';
+  const res = await fetch(url, { cache: 'no-store' });
+  const text = (await res.text()).trim();
+  // Handle [[timestamp]] case
+  try {
+    const parsed = JSON.parse(text);
+    return Array.isArray(parsed) ? parsed.flat(Infinity)[0] : parsed;
+  } catch {
+    return text;
+  }
+}
+async function cacheData(key, data) {
+  const cache = await caches.open('addbook');
+  const response = new Response(JSON.stringify(data), { headers: { 'Content-Type': 'application/json' } });
+  await cache.put(key, response);
+}
+async function readCachedData(key) {
+  const cache = await caches.open('addbook');
+  const response = await cache.match(key);
+  if (!response || !response.ok) return null;
+  try {
+    return await response.json();
+  } catch {
+    return null;
+  }
+}
+async function fetchAddBookData() {
+  const url = 'https://script.google.com/macros/s/AKfycbwIVAlRrCTt6z_Ej4W6PHhopFqCq1JvEsSoN2RPqgWY7VXLW0P2pteA1jgVFaWePc2S/exec';
+  let data = await fetchJson(url);
+  data.shift(); // remove header
+  const formatted = data.map(([id, name, add1, add2, add3, district, place, pincode, fixed, mobile1, mobile2, state, email, srno, sbac, doj, dor, spname, area, blank1, dob, fampen, pensionbr, scanned, newempid, dod, blank2, blank3, blank4]) => ({
+    id, name, add1, add2, add3, district, place, pincode, fixed, mobile1, mobile2, state, email, srno, sbac,
+    doj: formatDate(doj), dor: formatDate(dor), spname, area, blank1, dob: formatDate(dob), fampen, pensionbr, scanned, newempid, dod: formatDate(dod),
+    blank2, blank3, blank4
+  }));
+  await cacheData('/custom/addbookdata.json', formatted);
+  return formatted;
+}
+async function fetchPhotoData() {
+  const url = 'https://script.google.com/macros/s/AKfycbw_h5LMGCyIraesAhh6xlkeP8RUz3HO4ga4Q8XZaJhJRpnuQqp3TWUUZyodZPxpeA7A/exec';
+  let data = await fetchJson(url);
+  data.shift();
+  const photos = data.map(([id, photoid]) => ({ id, photoid }));
+  await cacheData('/custom/addbookphotodata.json', photos);
+  return photos;
+}
+
+//==== Report Renderer ====
+function showReport(addBookData, photoData, source, serverTimestamp) {
+  document.getElementById("DataLoadedFrom").textContent =
+    `Report from: ${source}`;
+  document.getElementById("Addressbookdata").textContent =
+    "Addressbook Records: " + (addBookData ? addBookData.length : 0);
+  document.getElementById("Photodata").textContent =
+    "Photo Records: " + (photoData ? photoData.length : 0);
+  document.getElementById("DataLastUpdatedOn").textContent =
+    "Data Last Updated on: " + formatDate(serverTimestamp-(5.5*60*60*1000));
+}
+
+//==== Init with Cache-then-Network Strategy ====
+async function initReport() {
+  // 1. Try cache first (instant report)
+  let [addBookData, photoData] = await Promise.all([
+    readCachedData('/custom/addbookdata.json'),
+    readCachedData('/custom/addbookphotodata.json')
+  ]);
+
+  const localTimestamp = localStorage.getItem("data_updated_at");
+
+  if (addBookData && photoData && localTimestamp) {
+    showReport(addBookData, photoData, "Cache", localTimestamp);
+  } else {
+    document.getElementById("DataLoadedFrom").textContent = "No cache, waiting for server...";
+  }
+
+  // 2. In background, check server timestamp
+  try {
+    const serverTimestamp = await fetchLatestTimestamp();
+    const localTimestamp = localStorage.getItem("data_updated_at");
+
+    if (!addBookData || !photoData || localTimestamp != serverTimestamp) {
+      // Fetch fresh if missing or outdated
+      [addBookData, photoData] = await Promise.all([
+        fetchAddBookData(),
+        fetchPhotoData()
+      ]);
+      localStorage.setItem("data_updated_at", serverTimestamp);
+      showReport(addBookData, photoData, "Server (updated)", serverTimestamp);
+    }
+  } catch (err) {
+    console.error("Background refresh failed", err);
+  }
+}
+
+initReport();
+</script>
+</body>
+</html>
