@@ -61,7 +61,7 @@
       <h4 align="center" id="nameHeader"></h4>
       <p id="modalData"></p>
       <div id='photo' style='margin-top:-266px;float:right'></div>
-      <div id='whatsapp'></div>
+      <div id='whatsapp' style='margin-top:-125px;float:right'></div>
     </div>
   </div>
 </div>
@@ -71,7 +71,7 @@
 
 function ddmmyy(input) {
     const date = new Date(input);
-    return isNaN(date.getTime()) ? 'Not Available' : date.toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }).substring(0,10);
+    return isNaN(date.getTime()) ? 'NA' : date.toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }).substring(0,10);
   }
   
  window.onscroll=function(){document.getElementById("topBtn").style.display=document.documentElement.scrollTop>200?"block":"none";}
@@ -257,7 +257,7 @@ let modal = document.getElementById("myModal");
             window.addEventListener('touchend', function(event) {if (event.target == modal) {modal.style.display = "none";}});
             function ddmmyy(input) {
                 const date = new Date(input);
-                return isNaN(date.getTime()) ? 'Not Available' : date.toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }).substring(0, 10);
+                return isNaN(date.getTime()) ? 'NA' : date.toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }).substring(0, 10);
             }
 
             span.onclick = function() {modal.style.display = "none";}
@@ -306,6 +306,8 @@ let modal = document.getElementById("myModal");
                 Message from IBRA`
                 msg = encodeURIComponent(msg);
                  document.getElementById('whatsapp').innerHTML = `<a href="<http://wa.me/91${membData>[0].mobile1}?text=${msg}" target="_blank"> <img alt="Chat on WhatsApp" src="images/WhatsApp.jpg" height="50px" /></a>`;}}
+                 
+                 
 
 function fiterName() {
                 let input = document.getElementById("myInput");
