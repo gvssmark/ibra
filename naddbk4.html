@@ -516,7 +516,11 @@ let modal = document.getElementById("myModal");
                 document.getElementById('photo').innerHTML = memphoto;
 
                 if (isMobileDevice) {
-                    document.getElementById('whatsapp').innerHTML = `<a aria-label="Chat on WhatsApp" href="<https://wa.me/91${membData>[0].mobile1}"> <img alt="Chat on WhatsApp" src="images/WhatsApp.jpg" height="50px" /></a>`;
+                   msg=`Hi ${membData[0].name}
+                Message from IBRA`
+                msg = encodeURIComponent(msg);
+                 document.getElementById('whatsapp').innerHTML = `<a href="<http://wa.me/91${membData>[0].mobile1}?text=${msg}" target="_blank"> <img alt="Chat on WhatsApp" src="images/WhatsApp.jpg" height="50px" /></a>`;
+                  //  document.getElementById('whatsapp').innerHTML = `<a aria-label="Chat on WhatsApp" href="<https://wa.me/91${membData>[0].mobile1}"> <img alt="Chat on WhatsApp" src="images/WhatsApp.jpg" height="50px" /></a>`;
                 }
             }
 
