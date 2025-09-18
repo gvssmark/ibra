@@ -19,7 +19,7 @@
     table{border-collapse:collapse;width:100%;border:1px solid #000;font-size:small}
     #myInput{width:90%;margin:5px auto;display:block;height:30px;border-radius:15px;background:cyan;border:0;outline:0}
     .modal{display:none;position:fixed;z-index:2;padding-top:1px;left:0;top:0;width:100%;height:100%;overflow:auto;background:rgba(0,0,0,.4)}
-    .modal-content{background:#99ffcc;margin:auto;padding:5px;border:1px solid #888;width:95%;border-radius:15px;margin-top:153px}
+    .modal-content{background:#99ffcc;margin:auto;padding:5px;border:1px solid #888;max-width:470px;border-radius:15px;margin-top:153px}
     .close{color:#aaa;float:right;font-size:28px;font-weight:bold;cursor:pointer}
     .close:hover{color:#000}
     .badge,.badge1,.eabbadge,.smallbadge,.smalleabbadge{display:inline-block;text-align:center;vertical-align:baseline;border-radius:50px}
@@ -69,13 +69,18 @@
 
 <script>
 
+function ddmmyy(input) {
+    const date = new Date(input);
+    return isNaN(date.getTime()) ? 'Not Available' : date.toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }).substring(0,10);
+  }
+  
  window.onscroll=function(){document.getElementById("topBtn").style.display=document.documentElement.scrollTop>200?"block":"none";}
   function scrollToTop(){document.documentElement.scrollTop=0;}
   
   //==== Utility: Date Formatting ====
 function formatDate(input) {
   const date = new Date(input);
-  return isNaN(date) ? 'Not Available' : date.toLocaleString('en-GB');
+  return isNaN(date) ? 'NA' : date.toLocaleString('en-GB');
 }
 
 //==== Fetch Data Functions ====
@@ -117,7 +122,7 @@ async function fetchAddBookData() {
   data.shift(); // remove header
   const formatted = data.map(([id, name, add1, add2, add3, district, place, pincode, fixed, mobile1, mobile2, state, email, srno, sbac, doj, dor, spname, area, blank1, dob, fampen, pensionbr, scanned, newempid, dod, blank2, blank3, blank4]) => ({
     id, name, add1, add2, add3, district, place, pincode, fixed, mobile1, mobile2, state, email, srno, sbac,
-    doj: formatDate(doj), dor: formatDate(dor), spname, area, blank1, dob: formatDate(dob), fampen, pensionbr, scanned, newempid, dod: formatDate(dod),
+    doj: ddmmyy(doj), dor: ddmmyy(dor), spname, area, blank1, dob: ddmmyy(dob), fampen, pensionbr, scanned, newempid, dod: ddmmyy(dod),
     blank2, blank3, blank4
   }));
   await cacheData('/custom/addbookdata.json', formatted);
@@ -286,13 +291,10 @@ let modal = document.getElementById("myModal");
                 if (membData[0].fampen !== "") {toDisplay += `<tr bgcolor=yellow><td colspan=2><b>Family Pension of :</b> ${membData[0].fampen}<br> DOD of Ser. Pensioner: ${membData[0].dod}</td></tr>`;}
                 toDisplay += `<tr><td colspan=2><b>Pension Acc: </b> ${membData[0].sbac}</td></tr>`;
                 let whichBank = membData[0].IBorEAB === 'IB' ? "Indian Bank" : "e Allahabad Bank";
-                toDisplay += `<tr><td colspan=2><b>Retired from : </b> ${whichBank}</td></tr>`;
+                toDisplay += `<tr><td colspan=2><b>Retired from : </b> ${whichBank} / <b>Pension Type : </b> ${ptype} </td></tr>`;
                 toDisplay += `<tr><td colspan=2><b>Region : </b> ${membData[0].area.substr(0, 3)}</td></tr>`;
-                toDisplay += `<tr><td colspan=2><b>DOB : </b> ${dob}</td></tr>`;
-                toDisplay += `<tr><td colspan=2><b>DOJ : </b> ${doj}</td></tr>`;
-                toDisplay += `<tr><td colspan=2><b>DOR : </b> ${dor}</td></tr>`;
+                toDisplay += `<tr><td colspan=2><b>DOB : </b> ${dob} / <b>DOJ : </b> ${doj} / <b>DOR : </b> ${dor}</td></tr>`;
                 toDisplay += `<tr><td colspan=2><b>Spouse Name : </b> ${spname}</td></tr>`;
-                toDisplay += `<tr><td colspan=2><b>Pension Type : </b> ${ptype}</td></tr>`;
                 document.getElementById("modalData").innerHTML = toDisplay + "</table>";
                 document.getElementById("nameHeader").innerHTML = membData[0].name;
                 modal.style.display = "block";
