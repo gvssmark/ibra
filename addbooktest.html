@@ -353,12 +353,7 @@ let allmemb = [];
                 let needFetch = !dataResponse || !photoResponse || !localTimestamp || (localTimestamp !== serverTimestamp);
 
                 if (!needFetch) {
-                    try {
-                        data = await dataResponse.json();
-                        photodata = await photoResponse.json();
-                    } catch {
-                        needFetch = true;
-                    }
+                   loadCachedData();
                 }
 
                 if (needFetch) {
