@@ -257,7 +257,7 @@ let modal = document.getElementById("myModal");
             window.addEventListener('touchend', function(event) {if (event.target == modal) {modal.style.display = "none";}});
             function ddmmyy(input) {
                 const date = new Date(input);
-                return isNaN(date.getTime()) ? 'Not Available' : date.toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }).substring(0, 10);
+                return isNaN(date.getTime()) ? 'NA' : date.toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }).substring(0, 10);
             }
 
             span.onclick = function() {modal.style.display = "none";}
