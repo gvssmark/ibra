@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -123,7 +122,7 @@ async function fetchAddBookData() {
   data.shift(); // remove header
   const formatted = data.map(([id, name, add1, add2, add3, district, place, pincode, fixed, mobile1, mobile2, state, email, srno, sbac, doj, dor, spname, area, blank1, dob, fampen, pensionbr, scanned, newempid, dod, blank2, blank3, blank4]) => ({
     id, name, add1, add2, add3, district, place, pincode, fixed, mobile1, mobile2, state, email, srno, sbac,
-    doj: formatDate(doj), dor: formatDate(dor), spname, area, blank1, dob: formatDate(dob), fampen, pensionbr, scanned, newempid, dod: formatDate(dod),
+    doj: ddmmyy(doj), dor: ddmmyy(dor), spname, area, blank1, dob: ddmmyy(dob), fampen, pensionbr, scanned, newempid, dod: ddmmyy(dod),
     blank2, blank3, blank4
   }));
   await cacheData('/custom/addbookdata.json', formatted);
@@ -292,13 +291,10 @@ let modal = document.getElementById("myModal");
                 if (membData[0].fampen !== "") {toDisplay += `<tr bgcolor=yellow><td colspan=2><b>Family Pension of :</b> ${membData[0].fampen}<br> DOD of Ser. Pensioner: ${membData[0].dod}</td></tr>`;}
                 toDisplay += `<tr><td colspan=2><b>Pension Acc: </b> ${membData[0].sbac}</td></tr>`;
                 let whichBank = membData[0].IBorEAB === 'IB' ? "Indian Bank" : "e Allahabad Bank";
-                toDisplay += `<tr><td colspan=2><b>Retired from : </b> ${whichBank}</td></tr>`;
+                toDisplay += `<tr><td colspan=2><b>Retired from : </b> ${whichBank} / <b>Pension Type : </b> ${ptype}</td></tr>`;
                 toDisplay += `<tr><td colspan=2><b>Region : </b> ${membData[0].area.substr(0, 3)}</td></tr>`;
-                toDisplay += `<tr><td colspan=2><b>DOB : </b> ${dob}</td></tr>`;
-                toDisplay += `<tr><td colspan=2><b>DOJ : </b> ${doj}</td></tr>`;
-                toDisplay += `<tr><td colspan=2><b>DOR : </b> ${dor}</td></tr>`;
+                toDisplay += `<tr><td colspan=2><b>DOB : </b> ${dob} / <b>DOJ : </b> ${doj} / <b>DOR : </b> ${dor}</td></tr>`;
                 toDisplay += `<tr><td colspan=2><b>Spouse Name : </b> ${spname}</td></tr>`;
-                toDisplay += `<tr><td colspan=2><b>Pension Type : </b> ${ptype}</td></tr>`;
                 document.getElementById("modalData").innerHTML = toDisplay + "</table>";
                 document.getElementById("nameHeader").innerHTML = membData[0].name;
                 modal.style.display = "block";
