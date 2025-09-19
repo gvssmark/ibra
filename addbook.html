@@ -306,7 +306,17 @@ let modal = document.getElementById("myModal");
                 Message from IBRA`
                 msg = encodeURIComponent(msg);
                  document.getElementById('whatsapp').innerHTML = `<a href="<http://wa.me/91${membData>[0].mobile1}?text=${msg}" target="_blank"> <img alt="Chat on WhatsApp" src="images/WhatsApp.jpg" height="50px" /></a>`;} */
-                 
+
+if (isMobileDevice) {
+    let msg = `Hi ${membData[0].name}, Message from IBRA`;
+    msg = encodeURIComponent(msg);
+    
+    document.getElementById('whatsapp').innerHTML = `
+        <a href="https://wa.me/91${membData[0].mobile1}?text=${msg}" target="_blank">
+            <img alt="Chat on WhatsApp" src="images/WhatsApp.jpg" height="50px" />
+        </a>`;
+}
+              
                  }
 
 function fiterName() {
