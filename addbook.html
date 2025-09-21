@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -58,7 +59,7 @@
     <h4 id='regionHeading' align="center" style="margin:0"></h4>
     <input type="text" id='myInput' placeholder="Search here..." onkeyup="fiterName()">
   </div>
-  <p id='DataLoadedFrom'>Loading...</p>  
+  <p id='DataLoadedFrom'></p>  
   <p id='paraInThisRegion'></p>
   <div id="myModal" class="modal">
     <div class="modal-content">
@@ -83,117 +84,94 @@ function formatDate(input) {
   return isNaN(date) ? 'NA' : date.toLocaleString('en-GB');
 }
 
-//==== Fetch Data Functions ====
-async function fetchJson(url) {
-  const res = await fetch(url, { cache: 'no-store' });
-  if (!res.ok) throw new Error(`Fetch failed: ${url}`);
-  return await res.json();
-}
-async function fetchLatestTimestamp() {
-  const url = 'https://script.google.com/macros/s/AKfycbwo-TtPn3DAjHSPCXDwPFerT36QyfPPvUTi7uQEvcmjJso_aWpaKefUsgx_vpJOowHUgg/exec?sheetid=1MaB1PMP3ouY3Es5ziLgY7dhT3ZSb6oHRgecw3JiJfGw&sheetname=Sheet1';
-  const res = await fetch(url, { cache: 'no-store' });
-  const text = (await res.text()).trim();
-  // Handle [[timestamp]] case
+let addbookData = null;
+let photoData   = null;
+
+async function getAndReportData() {
+  const urls = {
+    addbook: 'https://script.google.com/macros/s/AKfycbwIVAlRrCTt6z_Ej4W6PHhopFqCq1JvEsSoN2RPqgWY7VXLW0P2pteA1jgVFaWePc2S/exec',
+    photo:   'https://script.google.com/macros/s/AKfycbw_h5LMGCyIraesAhh6xlkeP8RUz3HO4ga4Q8XZaJhJRpnuQqp3TWUUZyodZPxpeA7A/exec'
+  };
+
+  const keys = {
+    addbook: '/custom/addbookdata.json',
+    photo:   '/custom/addbookphotodata.json'
+  };
+
+  const cache = await caches.open('addbook'); // creates if not exist
+  const cachedAddbook = await cache.match(keys.addbook);
+  const cachedPhoto   = await cache.match(keys.photo);
+
+  // Load cached into globals (null if not found)
+  addbookData = cachedAddbook ? await cachedAddbook.json() : null;
+  photoData   = cachedPhoto   ? await cachedPhoto.json()   : null;
+
+  if (addbookData) {
+  processData()
+    //document.getElementById('report').textContent = `${addbookData[1][1]} Cached data loaded`;
+  } else {
+    //document.getElementById('report').textContent = 'No cache yet, fetching fresh data...';
+  }
+
   try {
-    const parsed = JSON.parse(text);
-    return Array.isArray(parsed) ? parsed.flat(Infinity)[0] : parsed;
-  } catch {
-    return text;
+    // Fetch both datasets in parallel
+    const [addbookResp, photoResp] = await Promise.all([
+      fetch(urls.addbook),
+      fetch(urls.photo)
+    ]);
+
+    const freshAddbook = await addbookResp.json();
+    const freshPhoto   = await photoResp.json();
+
+    const changed = {
+      addbook: !addbookData || JSON.stringify(freshAddbook) !== JSON.stringify(addbookData),
+      photo:   !photoData   || JSON.stringify(freshPhoto)   !== JSON.stringify(photoData)
+    };
+
+    // Update globals + cache
+    if (changed.addbook) {
+      addbookData = freshAddbook;
+      await cache.put(keys.addbook, new Response(JSON.stringify(addbookData), {
+        headers: { 'Content-Type': 'application/json' }
+      }));
+    }
+    if (changed.photo) {
+      photoData = freshPhoto;
+      await cache.put(keys.photo, new Response(JSON.stringify(photoData), {
+        headers: { 'Content-Type': 'application/json' }
+      }));
+    }
+
+    // Always show fresh data
+    document.getElementById('report').textContent = `${addbookData[1][1]} Fresh data loaded`;
+  } catch (err) {
+    if (addbookData) {
+    processData()
+      // fallback to cache
+     // document.getElementById('report').textContent = `${addbookData[1][1]} Using cached data (offline)`;
+    } else {
+      //document.getElementById('report').textContent = 'No cache and fetch failed!';
+    }
+    console.warn('Fetch failed:', err);
   }
 }
-async function cacheData(key, data) {
-  const cache = await caches.open('addbook');
-  const response = new Response(JSON.stringify(data), { headers: { 'Content-Type': 'application/json' } });
-  await cache.put(key, response);
-}
-async function readCachedData(key) {
-  const cache = await caches.open('addbook');
-  const response = await cache.match(key);
-  if (!response || !response.ok) return null;
-  try {
-    return await response.json();
-  } catch {
-    return null;
+
+getAndReportData();
+
+function showFirstName() {
+
+  if (addbookData) {
+    alert("First Name: " + addbookData[1][1]);
   }
 }
-async function fetchAddBookData() {
-  const url = 'https://script.google.com/macros/s/AKfycbwIVAlRrCTt6z_Ej4W6PHhopFqCq1JvEsSoN2RPqgWY7VXLW0P2pteA1jgVFaWePc2S/exec';
-  let data = await fetchJson(url);
-  data.shift(); // remove header
-  const formatted = data.map(([id, name, add1, add2, add3, district, place, pincode, fixed, mobile1, mobile2, state, email, srno, sbac, doj, dor, spname, area, blank1, dob, fampen, pensionbr, scanned, newempid, dod, blank2, blank3, blank4]) => ({
+
+
+function processData() {
+data = addbookData.map(([id, name, add1, add2, add3, district, place, pincode, fixed, mobile1, mobile2, state, email, srno, sbac, doj, dor, spname, area, blank1, dob, fampen, pensionbr, scanned, newempid, dod, blank2, blank3, blank4]) => ({
     id, name, add1, add2, add3, district, place, pincode, fixed, mobile1, mobile2, state, email, srno, sbac,
     doj: ddmmyy(doj), dor: ddmmyy(dor), spname, area, blank1, dob: ddmmyy(dob), fampen, pensionbr, scanned, newempid, dod: ddmmyy(dod),
     blank2, blank3, blank4
   }));
-  await cacheData('/custom/addbookdata.json', formatted);
-  return formatted;
-}
-async function fetchPhotoData() {
-  const url = 'https://script.google.com/macros/s/AKfycbw_h5LMGCyIraesAhh6xlkeP8RUz3HO4ga4Q8XZaJhJRpnuQqp3TWUUZyodZPxpeA7A/exec';
-  let data = await fetchJson(url);
-  data.shift();
-  const photos = data.map(([id, photoid]) => ({ id, photoid }));
-  await cacheData('/custom/addbookphotodata.json', photos);
-  return photos;
-}
-
-//==== Report Renderer ====
-function showReport(addBookData, photoData, source, serverTimestamp) {
-  document.getElementById("DataLoadedFrom").textContent =
-    `Report from: ${source} - ${formatDate(serverTimestamp-(5.5*60*60*1000))}`;
-  //document.getElementById("Addressbookdata").textContent =
-    "Addressbook Records: " + (addBookData ? addBookData.length : 0);
-  //document.getElementById("Photodata").textContent =
-    "Photo Records: " + (photoData ? photoData.length : 0);
-  //document.getElementById("DataLastUpdatedOn").textContent =
-    "Data Last Updated on: " + formatDate(serverTimestamp-(5.5*60*60*1000));
-    data = addBookData
-    photodata = photoData
-    isPhoto = (id) => photodata.some(a => a.id.toString() === id.toString()) ? '<span>👨</span>' : '';
-    processData()
-    console.log(activeMembers)
-    console.log(photodata)
-    selectedRegion('allmemb', 0);
-}
-
-//==== Init with Cache-then-Network Strategy ====
-async function initReport() {
-  // 1. Try cache first (instant report)
-  let [addBookData, photoData] = await Promise.all([
-    readCachedData('/custom/addbookdata.json'),
-    readCachedData('/custom/addbookphotodata.json')
-  ]);
-
-  const localTimestamp = localStorage.getItem("data_updated_at");
-
-  if (addBookData && photoData && localTimestamp) {
-    showReport(addBookData, photoData, "Cache", localTimestamp);
-  } else {
-    document.getElementById("DataLoadedFrom").textContent = "No cache, waiting for server...";
-  }
-
-  // 2. In background, check server timestamp
-  try {
-    const serverTimestamp = await fetchLatestTimestamp();
-    const localTimestamp = localStorage.getItem("data_updated_at");
-
-    if (!addBookData || !photoData || localTimestamp != serverTimestamp) {
-      // Fetch fresh if missing or outdated
-      [addBookData, photoData] = await Promise.all([
-        fetchAddBookData(),
-        fetchPhotoData()
-      ]);
-      localStorage.setItem("data_updated_at", serverTimestamp);
-      showReport(addBookData, photoData, "Server (updated)", serverTimestamp);
-    }
-  } catch (err) {
-    console.error("Background refresh failed", err);
-  }
-}
-
-initReport();
-
-function processData() {
   activeMembers = data.filter(a => a.name !== "").sort((a, b) => a.name.localeCompare(b.name));
   activeMembers.forEach(element => {
     element.IBorEAB = (element.area.substr(-3).toUpperCase() === 'EAB' ? "EAB" : "IB");
@@ -211,7 +189,9 @@ function processData() {
     id: a.id, name: a.name, fampen: a.fampen, ibeab: a.IBorEAB,
     srno: a.srno, mobile: a.mobile1, newempid: a.newempid
   }));
-   
+photodata =  photoData.map(([id, photoid]) => ({ id, photoid }));
+ isPhoto = (id) => photodata.some(a => a.id.toString() === id.toString()) ? '<span>👨</span>' : '';
+ selectedRegion('allmemb', 0);  
 }
 
 function selectedRegion(array, n) {
