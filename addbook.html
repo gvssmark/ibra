@@ -124,7 +124,7 @@ async function fetchAddBookData() {
   data.shift(); // remove header
   const formatted = data.map(([id, name, add1, add2, add3, district, place, pincode, fixed, mobile1, mobile2, state, email, srno, sbac, doj, dor, spname, area, blank1, dob, fampen, pensionbr, scanned, newempid, dod, blank2, blank3, blank4]) => ({
     id, name, add1, add2, add3, district, place, pincode, fixed, mobile1, mobile2, state, email, srno, sbac,
-    doj: formatDate(doj), dor: formatDate(dor), spname, area, blank1, dob: formatDate(dob), fampen, pensionbr, scanned, newempid, dod: formatDate(dod),
+    doj: ddmmyy(doj), dor: ddmmyy(dor), spname, area, blank1, dob: ddmmyy(dob), fampen, pensionbr, scanned, newempid, dod: ddmmyy(dod),
     blank2, blank3, blank4
   }));
   await cacheData('/custom/addbookdata.json', formatted);
