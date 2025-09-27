@@ -86,5 +86,3 @@ async function initReport() {
 }
 initReport();
 // At the end of initReport()
-activeMembers = addBookData.filter(a => a.name !== "").sort((a, b) => a.name.localeCompare(b.name));
-document.dispatchEvent(new CustomEvent("activeMembersReady", { detail: activeMembers }));
