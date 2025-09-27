@@ -129,14 +129,22 @@ async function fetchPhotoData() {
   return photos;
 }
 
-async function initReport() {
+async function initReport(updateUI) {
+  // 1. Load from cache (instant display if available)
   let [addBookData, photoData] = await Promise.all([
     readCachedData("/custom/addbookdata.json"),
     readCachedData("/custom/addbookphotodata.json"),
   ]);
 
-  const localTimestamp = localStorage.getItem("data_updated_at");
+  if (addBookData && photoData) {
+    activeMembers = addBookData
+      .filter(a => a.name !== "")
+      .sort((a, b) => a.name.localeCompare(b.name));
 
+    if (typeof updateUI === "function") updateUI("cache");
+  }
+
+  // 2. Check server timestamp in background
   try {
     const serverTimestamp = await fetchLatestTimestamp();
     const localTimestamp = localStorage.getItem("data_updated_at");
@@ -147,13 +155,15 @@ async function initReport() {
         fetchPhotoData(),
       ]);
       localStorage.setItem("data_updated_at", serverTimestamp);
+
+      activeMembers = addBookData
+        .filter(a => a.name !== "")
+        .sort((a, b) => a.name.localeCompare(b.name));
+
+      if (typeof updateUI === "function") updateUI("fresh");
     }
   } catch (err) {
     console.error("Background refresh failed", err);
   }
-
-  console.log(addBookData);
-  activeMembers = addBookData
-    .filter((a) => a.name !== "")
-    .sort((a, b) => a.name.localeCompare(b.name));
 }
+
