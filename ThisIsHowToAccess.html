@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<style>
+.card {  border: 1px solid #ccc;  padding: 12px;  margin: 10px;  border-radius: 8px;  box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
+</style>
+<body>
+
+<h1>IBRA REPORT</h1>
+
+<p>This is how to access </p>
+<div id='report'></div>
+<script src="https://gvssmark.github.io/ibra/fetchAddBookData.js" defer></script>
+<script>
+  const waitForMembers = setInterval(() => {
+    if (Array.isArray(activeMembers) && activeMembers.length > 0) {
+      clearInterval(waitForMembers);
+      renderReport(activeMembers);
+    }
+  }, 300);
+
+   function renderReport(data) {
+  const container = document.getElementById("report");
+  container.innerHTML = data.map(m => `
+    <div class="card">
+      <h3>${m.name}</h3>
+      <p><strong>Area:</strong> ${m.area}</p>
+      <p><strong>Mobile:</strong> ${m.mobile1}</p>
+    </div>
+  `).join("");
+}
+</script>
+</body>
+</html>
+
