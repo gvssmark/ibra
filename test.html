@@ -3,22 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <title>IBRA Report Test</title>
-  <!-- Load your JS directly from GitHub Pages -->
   <script src="https://gvssmark.github.io/ibra/mylib.js"></script>
+  <style>
+    body { font-family: sans-serif; }
+    #status { font-style: italic; margin-bottom: 10px; }
+  </style>
 </head>
 <body>
   <h1>IBRA Report Test</h1>
-  <button id="loadBtn">Load Members</button>
+  <div id="status">Loading…</div>
   <pre id="output"></pre>
 
   <script>
-    async function showMembers() {
-      await initReport();
+    function updateUI(source) {
+      document.getElementById("status").textContent =
+        source === "cache" ? "Showing cached data…" : "Updated with fresh data!";
       document.getElementById("output").textContent =
-        activeMembers.slice(0, 10).map(m => m.name).join("\n");
+        activeMembers.slice(0, 2000).map(m => m.name).join("\n");
     }
 
-    document.getElementById("loadBtn").onclick = showMembers;
+    // Run automatically on page load
+    window.addEventListener("DOMContentLoaded", () => {
+      initReport(updateUI);
+    });
   </script>
 </body>
 </html>
