@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>IBRA Report Test</title>
+  <!-- Load your JS directly from GitHub Pages -->
+  <script src="https://gvssmark.github.io/ibra/mylib.js"></script>
+</head>
+<body>
+  <h1>IBRA Report Test</h1>
+  <button id="loadBtn">Load Members</button>
+  <pre id="output"></pre>
+
+  <script>
+    async function showMembers() {
+      await initReport();
+      document.getElementById("output").textContent =
+        activeMembers.slice(0, 10).map(m => m.name).join("\n");
+    }
+
+    document.getElementById("loadBtn").onclick = showMembers;
+  </script>
+</body>
+</html>
