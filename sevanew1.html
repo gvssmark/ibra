@@ -524,21 +524,44 @@ updateReportButtonState();
 
 
 function sub(entry) {
-  // Construct message text dynamically from actual submitted data
-  const msg = `🕉️ *SEVA 24 Details* 🕉️%0A
+  // === Message to ADMIN ===
+  const adminMsg = `🕉️ *SEVA 24 - New Entry* 🕉️%0A
 📅 *Date of Seva:* ${ddmmyy(entry["Date of Seva"])}%0A
 👤 *Sponsor:* ${entry["Sponsor Name"]} (${entry["Sponsor Gotra"]})%0A
 🤝 *Co-Sponsor:* ${entry["Co Sponsor Name"] || 'NIL'} (${entry["Co Sponsor Gotra"] || 'NIL'})%0A
 📱 *Mobile:* ${entry.Mobile}%0A
 🙏 *Pitru Devatas:* ${entry["Pitru1 Name"]}${entry["Pitru2 Name"] ? ' & ' + entry["Pitru2 Name"] : ''}%0A
 🔸 *Gotras:* ${entry["Pitru1 Gotra"]}${entry["Pitru2 Gotra"] ? ' & ' + entry["Pitru2 Gotra"] : ''}%0A
-👨‍👩‍👧‍👦 *Relationship:* ${entry.Relationship}${entry.Relationship2 ? ' & ' + entry.Relationship2 : ''}`;
+👨‍👩‍👧‍👦 *Relationship:* ${entry.Relationship}${entry.Relationship2 ? ' & ' + entry.Relationship2 : ''}%0A
+------------------------------------%0A
+_This entry was submitted via SEVA Data Form._`;
 
-  // Open WhatsApp message (change target number if needed)
-  const waNumber = "919989036183"; // Include country code (91 for India)
-  const waUrl = `https://wa.me/${waNumber}?text=${msg}`;
-  window.open(waUrl, "_blank");
+  // === Message to SPONSOR ===
+  const sponsorMsg = `🙏 *Thank you for registering your SEVA 24 details!* 🙏%0A
+Your Seva entry has been successfully recorded.%0A
+Here are your details:%0A
+📅 *Date of Seva:* ${ddmmyy(entry["Date of Seva"])}%0A
+👤 *Sponsor:* ${entry["Sponsor Name"]} (${entry["Sponsor Gotra"]})%0A
+🤝 *Co-Sponsor:* ${entry["Co Sponsor Name"] || 'NIL'} (${entry["Co Sponsor Gotra"] || 'NIL'})%0A
+🙏 *Pitru Devatas:* ${entry["Pitru1 Name"]}${entry["Pitru2 Name"] ? ' & ' + entry["Pitru2 Name"] : ''}%0A
+🔸 *Gotras:* ${entry["Pitru1 Gotra"]}${entry["Pitru2 Gotra"] ? ' & ' + entry["Pitru2 Gotra"] : ''}%0A
+👨‍👩‍👧‍👦 *Relationship:* ${entry.Relationship}${entry.Relationship2 ? ' & ' + entry.Relationship2 : ''}%0A
+------------------------------------%0A
+🕉️ _May your Seva bring blessings to your family._ 🕉️`;
+
+  // === WhatsApp numbers ===
+  const adminNumber = "919989036183";  // Admin
+  const sponsorNumber = `91${entry.Mobile}`; // Sponsor (add country code)
+
+  // Encode messages and build URLs
+  const adminUrl = `https://wa.me/${adminNumber}?text=${adminMsg}`;
+  const sponsorUrl = `https://wa.me/${sponsorNumber}?text=${sponsorMsg}`;
+
+  // Open WhatsApp chats sequentially
+  window.open(adminUrl, "_blank");
+  setTimeout(() => window.open(sponsorUrl, "_blank"), 1000);
 }
+
 
 
 </script>
