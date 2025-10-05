@@ -226,31 +226,52 @@ it.style.display=it.textContent.toLowerCase().includes(f)?'':'none';
 });
 
 // ===== WhatsApp Message Sending =====
+// ===== WhatsApp Message Sending =====
 function sendWhatsAppMessages(entry) {
   const adminNumber = "919989036183"; // Admin WhatsApp number
   const sponsorNumber = `91${entry.Mobile}`; // Sponsor’s WhatsApp (with country code)
+
+  // --- Pitru Devatas, Gotras, and Relationships ---
+  let pitruDevatas = `🙏 *Pitru Devatas:* ${entry["Pitru1 Name"]}`;
+  let gotras = `🔸 *Gotras:* ${entry["Pitru1 Gotra"]}`;
+  let relationships = `👨‍👩‍👧‍👦 *Relationship:* ${entry.Relationship}`;
+
+  // Include Pitru2 only if all fields are present
+  if (entry["Pitru2 Name"] && entry["Pitru2 Gotra"] && entry.Relationship2) {
+    pitruDevatas += ` & ${entry["Pitru2 Name"]}`;
+    gotras += ` & ${entry["Pitru2 Gotra"]}`;
+    relationships += ` & ${entry.Relationship2}`;
+  }
+
+  // --- Message for Admin ---
   const adminMsg = `🕉️ *SEVA 24 Details* 🕉️%0A
 📅 *Date of Seva:* ${ddmmyy(entry["Date of Seva"])}%0A
 👤 *Sponsor:* ${entry["Sponsor Name"]} (${entry["Sponsor Gotra"]})%0A
 🤝 *Co-Sponsor:* ${entry["Co Sponsor Name"] || 'NIL'} (${entry["Co Sponsor Gotra"] || 'NIL'})%0A
 📱 *Mobile:* ${entry.Mobile}%0A
-🙏 *Pitru Devatas:* ${entry["Pitru1 Name"]}${entry["Pitru2 Name"] ? ' & ' + entry["Pitru2 Name"] : ''}%0A
-🔸 *Gotras:* ${entry["Pitru1 Gotra"]}${entry["Pitru2 Gotra"] ? ' & ' + entry["Pitru2 Gotra"] : ''}%0A
-👨‍👩‍👧‍👦 *Relationship:* ${entry.Relationship}${entry.Relationship2 ? ' & ' + entry.Relationship2 : ''}`;
+${pitruDevatas}%0A
+${gotras}%0A
+${relationships}`;
+
+  // --- Message for Sponsor ---
   const sponsorMsg = `🙏 *Thank you for registering your Seva!*%0A
 Below are your submitted details:%0A%0A
 📅 *Date of Seva:* ${ddmmyy(entry["Date of Seva"])}%0A
 👤 *Sponsor:* ${entry["Sponsor Name"]} (${entry["Sponsor Gotra"]})%0A
 🤝 *Co-Sponsor:* ${entry["Co Sponsor Name"] || 'NIL'} (${entry["Co Sponsor Gotra"] || 'NIL'})%0A
-🙏 *Pitru Devatas:* ${entry["Pitru1 Name"]}${entry["Pitru2 Name"] ? ' & ' + entry["Pitru2 Name"] : ''}%0A
-🔸 *Gotras:* ${entry["Pitru1 Gotra"]}${entry["Pitru2 Gotra"] ? ' & ' + entry["Pitru2 Gotra"] : ''}%0A
-👨‍👩‍👧‍👦 *Relationship:* ${entry.Relationship}${entry.Relationship2 ? ' & ' + entry.Relationship2 : ''}%0A%0A
+📱 *Mobile:* ${entry.Mobile}%0A
+${pitruDevatas}%0A
+${gotras}%0A
+${relationships}%0A%0A
 🕉️ _We appreciate your participation in SEVA 24._`;
+
+  // Open WhatsApp chats
   window.open(`https://wa.me/${adminNumber}?text=${adminMsg}`, "_blank");
   setTimeout(() => {
     window.open(`https://wa.me/${sponsorNumber}?text=${sponsorMsg}`, "_blank");
   }, 800);
 }
+
 
 // ===== Form Submission =====
 document.getElementById('dataForm').addEventListener('submit',function(e){
