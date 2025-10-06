@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Seva Data Collection</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    html, body { margin:0; padding:0; box-sizing:border-box; }
+    body { background: #f8f9fa; font-family: Arial,sans-serif; }
+    h1, h2 { color: #38598b; margin:16px 0 10px 0; text-align:center; }
+
+    /* Tabs */
+    .tab { display: flex; justify-content: center; background: #e2e7f1; border-radius: 10px; margin: 16px auto 0 auto; max-width:440px; }
+    .tab button { background: none; border: none; outline:none; padding: 12px 24px; cursor: pointer; font-size: 16px; color:#345; border-bottom:3px solid transparent; }
+    .tab button.active { border-bottom:3px solid #38598b; color: #38598b; font-weight:bold; }
+
+    .tabcontent { display: none; padding:0; }
+    .tabcontent.active { display:block; }
+
+    /* Mobile-friendly, responsive form */
+    .form-container { background: #fff; border-radius: 8px; padding: 20px 20px 8px 20px; margin:20px auto; max-width:440px; box-shadow: 0 2px 16px rgba(80,80,80,.08); }
+    .form-group { margin-bottom: 13px; }
+    label { display: block; font-weight: bold; margin-bottom: 4px; }
+    .optional { font-weight: normal; font-size: 13px; color: #888; }
+    input[type="text"], input[type="date"], select {
+      width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #bbb; font-size: 16px; box-sizing: border-box; margin-bottom:2px;
+    }
+    button[type="submit"] { background: #27ae60; color: #fff; border: none; padding: 10px 22px; font-size: 17px; border-radius: 6px; cursor: pointer; margin-top: 4px; display:block; width:100%; }
+    .success-msg { color: #218838; margin-bottom: 10px; text-align: center; font-weight: bold; font-size:15px; min-height:20px; }
+    @media (max-width: 490px) {
+      .form-container { max-width:99vw; padding:15px 6px 4px 6px;}
+      .tab { max-width:99vw; }
+    }
+
+    /* Cards/Search */
+    .cards-search {
+      display: block;
+      margin: 0 auto 0 auto;
+      width:98%;
+      max-width:340px;
+      padding:9px;
+      border-radius:7px;
+      border:1px solid #bbb;
+      font-size:16px;
+      position:sticky;
+      top:0;
+      background:#f8f9fa;
+      z-index:100;
+    }
+    #reportTab {padding-top:18px;}
+    .cards-container { display:flex; flex-wrap:wrap; gap:17px; justify-content:center; margin-bottom:36px;}
+    .card {
+      background:#fff; border-radius:9px; box-shadow:0 3px 10px rgba(50,50,50,0.13);  max-width:96vw; padding: 16px 18px 11px 18px; font-size:small;
+    }
+    .card h3 {margin:0 0 8px 0; font-size:18px; color:#20639B;}
+    .card p {margin:2px 0; font-size:15px; color:#333;}
+    .whatsapp-btn { background:#25D366; color:#fff; border:none; padding:7px 16px; border-radius:4px; margin:6px 0 0 0; font-weight:bold; align-self:flex-end; cursor:pointer; }
+
+    @media (max-width:700px) { .card { width:99vw; max-width:99vw; } }
+  </style>
+</head>
+<body>
+  <h1>Seva Registration</h1>
+  <div class="tab">
+    <button class="tablinks active" onclick="openTab(event, 'dataEntryTab')">Data Entry</button>
+    <button class="tablinks" onclick="openTab(event, 'reportTab')">Report</button>
+  </div>
+
+  <div id="dataEntryTab" class="tabcontent active">
+    <div class="form-container">
+      <form id="sevaForm" autocomplete="off">
+        <div class="form-group"><label>Mobile (starts 6/7/8/9)</label><input type="text" id="mobile" name="mobile" required pattern="[6-9][0-9]{9}"></div>
+        <div class="form-group"><label>Sponsor Name</label><input type="text" id="sponsor_name" name="sponsor_name" required></div>
+        <div class="form-group"><label>Sponsor Gotra</label><input type="text" id="sponsor_gotra" name="sponsor_gotra" required></div>
+        <div class="form-group"><label>Co-sponsor Name <span class="optional">(optional)</span></label><input type="text" id="co_sponsor_name" name="co_sponsor_name"></div>
+        <div class="form-group"><label>Co-sponsor Gotra <span class="optional">(optional)</span></label><input type="text" id="co_sponsor_gotra" name="co_sponsor_gotra"></div>
+        <div class="form-group"><label>Pitru 1 Name</label><input type="text" id="pitru1_name" name="pitru1_name" required></div>
+        <div class="form-group"><label>Pitru 1 Gotra</label><input type="text" id="pitru1_gotra" name="pitru1_gotra" required></div>
+        <div class="form-group">
+          <label>Pitru 1 Relationship</label>
+          <select id="relationship" name="relationship" required>
+            <option value="">Select Relationship</option>
+            <option value="Father">Father</option>
+            <option value="Mother">Mother</option>
+            <option value="Other">Other</option>
+          </select>
+          <input type="text" id="relationship_other" name="relationship_other" style="display:none;" placeholder="Specify Other Relationship">
+        </div>
+        <div class="form-group"><label>Pitru 2 Name <span class="optional">(optional)</span></label><input type="text" id="pitru2_name" name="pitru2_name"></div>
+        <div class="form-group"><label>Pitru 2 Gotra <span class="optional">(req if name)</span></label><input type="text" id="pitru2_gotra" name="pitru2_gotra"></div>
+        <div class="form-group">
+          <label>Pitru 2 Relationship <span class="optional">(req if name)</span></label>
+          <select id="relationship2" name="relationship2">
+            <option value="">Select Relationship</option>
+            <option value="Father">Father</option>
+            <option value="Mother">Mother</option>
+            <option value="Other">Other</option>
+          </select>
+          <input type="text" id="relationship2_other" name="relationship2_other" style="display:none;" placeholder="Specify Other Relationship">
+        </div>
+        <div class="form-group"><label>Date of Seva</label>
+          <input type="date" id="date_of_seva" name="date_of_seva" required min="2026-09-26" max="2026-10-10">
+        </div>
+        <button type="submit">Submit</button>
+        <div id="formSuccess" class="success-msg"></div>
+      </form>
+    </div>
+  </div>
+  <div id="reportTab" class="tabcontent">
+    <h2>Report</h2>
+    <input class="cards-search" type="text" id="searchInput" placeholder="Search entries...">
+    <div id="cardList" class="cards-container"></div>
+  </div>
+
+  <script>
+    function openTab(evt, tabId) {
+      document.querySelectorAll(".tabcontent").forEach(tc=>tc.classList.remove("active"));
+      document.querySelectorAll(".tablinks").forEach(tb=>tb.classList.remove("active"));
+      document.getElementById(tabId).classList.add("active");
+      evt.currentTarget.classList.add("active");
+      if(tabId === "reportTab") setTimeout(()=>{ document.getElementById("searchInput").focus(); }, 140);
+    }
+
+    document.getElementById('relationship').addEventListener('change', function() {
+      document.getElementById('relationship_other').style.display = (this.value === 'Other') ? 'block' : 'none';
+    });
+    document.getElementById('relationship2').addEventListener('change', function() {
+      document.getElementById('relationship2_other').style.display = (this.value === 'Other') ? 'block' : 'none';
+    });
+
+    let cachedReportData=[];
+
+    function validateForm() {
+      const mobile = document.getElementById('mobile').value.trim();
+      if (!/^[6-9][0-9]{9}$/.test(mobile)) { alert("Mobile must start with 6,7,8,9 and have 10 digits."); return false; }
+      if (!document.getElementById('sponsor_name').value.trim() || !document.getElementById('sponsor_gotra').value.trim()) {
+        alert("Sponsor Name and Gotra are required."); return false;
+      }
+      // Co-sponsor validation (at least one must be filled, then both required)
+      const coSponsorName = document.getElementById('co_sponsor_name').value.trim();
+      const coSponsorGotra = document.getElementById('co_sponsor_gotra').value.trim();
+      if ((coSponsorName || coSponsorGotra) && (!coSponsorName || !coSponsorGotra)) {
+        alert("Both Co-sponsor Name and Gotra are required if any is filled."); return false;
+      }
+      if (!document.getElementById('pitru1_name').value.trim()||!document.getElementById('pitru1_gotra').value.trim()||!document.getElementById('relationship').value) {
+        alert("Pitru1 name/gotra/relationship required."); return false;
+      }
+      if (document.getElementById('relationship').value==="Other"&&!document.getElementById('relationship_other').value.trim()) {
+        alert("Pitru1 relationship other required."); return false;
+      }
+      const pitru2Name = document.getElementById('pitru2_name').value.trim();
+      if (pitru2Name) {
+        if (!document.getElementById('pitru2_gotra').value.trim()||!document.getElementById('relationship2').value) {
+          alert("Pitru2 gotra and relationship required if name entered."); return false;
+        }
+        if(document.getElementById('relationship2').value==="Other"&&!document.getElementById('relationship2_other').value.trim()) {
+          alert("Pitru2 relationship other required."); return false;
+        }
+      }
+      const dateSeva = document.getElementById('date_of_seva').value;
+      if(!dateSeva||(dateSeva<"2026-09-26"||dateSeva>"2026-10-10")) {
+        alert("Date of seva must be between 26 Sep 2026 and 10 Oct 2026."); return false;
+      }
+      return true;
+    }
+
+    function toDisplayDate(isoDate) {
+      if(!isoDate) return "";
+      const parts = isoDate.split('-');
+      return parts.length==3 ? parts[2]+'/'+parts[1]+'/'+parts[0] : isoDate;}
+      
+      
+      function ddmmyy(input) {
+    const date = new Date(input);
+    return isNaN(date.getTime()) ? '' : date.toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }).substring(0,10);
+  }
+
+    document.getElementById('sevaForm').addEventListener('submit', async function(ev) {
+      ev.preventDefault();
+      if (!validateForm()) return;
+      const fd = new FormData(ev.target);
+      let relationshipValue = fd.get('relationship');
+      if (relationshipValue === "Other") relationshipValue += " - " + fd.get('relationship_other');
+      fd.set('relationship', relationshipValue);
+      if (fd.get('pitru2_name')) {
+        let rel2Value = fd.get('relationship2');
+        if (rel2Value === "Other") rel2Value += " - " + fd.get('relationship2_other');
+        fd.set('relationship2', rel2Value);
+      }
+      document.getElementById('formSuccess').textContent = "";
+      const scriptUrl = "https://script.google.com/macros/s/AKfycbzT7quKfsC8YCJoTJbS7hDW7q76UHg4IWjd2OFKckl0B8NXnPFgw92NTP7_a9I-X8dn/exec";
+      let params = new URLSearchParams();
+      for (const pair of fd.entries()) if(pair[1]) params.append(pair[0], pair[1]);
+      try {
+        const resp = await fetch(scriptUrl, { method: "POST", body: params });
+        if ((await resp.text()).trim().toLowerCase() === "success") {
+          document.getElementById('formSuccess').innerText = "Form submitted successfully!";
+          let newRow = {};
+          for (let pair of fd.entries()) newRow[pair[0]] = pair[1];
+          newRow["date_of_seva"] = fd.get("date_of_seva");
+          ["co_sponsor_name","co_sponsor_gotra","pitru2_name","pitru2_gotra","relationship2"].forEach(k=>{ if(!newRow[k]) newRow[k] = "" });
+          cachedReportData.unshift(newRow);
+          renderCards();
+          document.getElementById('sevaForm').reset();
+          document.getElementById('relationship_other').style.display = 'none';
+          document.getElementById('relationship2_other').style.display = 'none';
+          sendWhatsAppMsg(fd);
+          document.querySelector(".tablinks.active").classList.remove("active");
+          document.querySelectorAll(".tablinks")[1].classList.add("active");
+          document.getElementById("dataEntryTab").classList.remove("active");
+          document.getElementById("reportTab").classList.add("active");
+          setTimeout(()=>{document.getElementById("searchInput").focus()},140);
+        } else { alert("Submission failed."); }
+      } catch (err) { alert("Error submitting: " + err.message); }
+    });
+
+    function sendWhatsAppMsg(fd) {
+      let msg = `Seva Registration:\n`;
+      msg += `Mobile: ${fd.get("mobile")}\nSponsor: ${fd.get("sponsor_name")}, Gotra: ${fd.get("sponsor_gotra")}\n`;
+      if (fd.get("co_sponsor_name")) msg += `Co-sponsor: ${fd.get("co_sponsor_name")}, Gotra: ${fd.get("co_sponsor_gotra")}\n`;
+      msg += `Pitru1: ${fd.get("pitru1_name")}, Gotra: ${fd.get("pitru1_gotra")}, Relationship: ${fd.get("relationship")}\n`;
+      if (fd.get("pitru2_name")) msg += `Pitru2: ${fd.get("pitru2_name")}, Gotra: ${fd.get("pitru2_gotra")}, Relationship: ${fd.get("relationship2")}\n`;
+      msg += `Date of Seva: ${toDisplayDate(fd.get("date_of_seva"))}\n--`;
+      let waUrl = `https://wa.me/919989036183?text=${encodeURIComponent(msg)}`;
+      window.open(waUrl, "_blank");
+    }
+
+    async function loadCards() {
+      const scriptUrl = "https://script.google.com/macros/s/AKfycbzT7quKfsC8YCJoTJbS7hDW7q76UHg4IWjd2OFKckl0B8NXnPFgw92NTP7_a9I-X8dn/exec";
+      try {
+        const resp = await fetch(scriptUrl);
+        cachedReportData = await resp.json();
+        renderCards();
+      } catch (err) {
+        document.getElementById("cardList").innerHTML = "<p>Error loading report.</p>";
+      }
+    }
+    function renderCards() {
+      const searchVal = document.getElementById("searchInput").value.toLowerCase();
+      const list = document.getElementById("cardList");
+      list.innerHTML = "";
+      let filtered = cachedReportData.filter(row => Object.values(row).join(" ").toLowerCase().includes(searchVal));
+      if(filtered.length === 0) { list.innerHTML = "<p>No entries found.</p>"; return;}
+      filtered.forEach(row => {
+        let card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML =
+          `<h3>${row.sponsor_name || ""} (${row.sponsor_gotra || ""})</h3>
+           <p><strong>Mobile:</strong> ${row.mobile || ""}</p>
+           <p><strong>Co-sponsor:</strong> ${row.co_sponsor_name || ""} ${row.co_sponsor_gotra ? "("+row.co_sponsor_gotra+")" : ""}</p>
+           <p><strong>Pitru1:</strong> ${row.pitru1_name || ""}, ${row.pitru1_gotra || ""}, ${row.relationship || ""}</p>
+           ${row.pitru2_name ? `<p><strong>Pitru2:</strong> ${row.pitru2_name}, ${row.pitru2_gotra || ""}, ${row.relationship2 || ""}</p>` : "" }
+           <p><strong>Date of Seva:</strong> ${ddmmyy(row.date_of_seva) || ""}</p>
+           `;
+        list.appendChild(card);
+      });
+    }
+    function sendCardMsg(row) {
+      let msg = `Seva Registration:\nMobile: ${row.mobile}\nSponsor: ${row.sponsor_name}, Gotra: ${row.sponsor_gotra}`;
+      if (row.co_sponsor_name) msg+= `\nCo-sponsor: ${row.co_sponsor_name}, Gotra: ${row.co_sponsor_gotra}`;
+      msg += `\nPitru1: ${row.pitru1_name}, Gotra: ${row.pitru1_gotra}, Relationship: ${row.relationship}`;
+      if (row.pitru2_name) msg+= `\nPitru2: ${row.pitru2_name}, Gotra: ${row.pitru2_gotra}, Relationship: ${row.relationship2}`;
+      msg += `\nDate of Seva: ${ddmmyy(row.date_of_seva)}\n--`;
+      let waUrl = `https://wa.me/919989036183?text=${encodeURIComponent(msg)}`;
+      window.open(waUrl, "_blank");
+    }
+    document.getElementById("searchInput").addEventListener("input", renderCards);
+    window.addEventListener('DOMContentLoaded', loadCards);
+  </script>
+</body>
+</html>
