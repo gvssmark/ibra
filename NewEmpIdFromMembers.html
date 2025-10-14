@@ -92,7 +92,7 @@ async function fetchNewEmpIdData() {
   NewEmpIdData = raw.slice(1).map(([srno, name, newEmpId, date]) => ({
     srno: Number(srno), name, newEmpId, date
   }));
-  document.getElementById('count').innerText = `${NewEmpIdData.length} of 1782`;
+  document.getElementById('count').innerText = `${NewEmpIdData.length} of ${MasterDataCount}`;
 
   let tdata = '<table border=1>';
   NewEmpIdData.sort((a, b) => (a.srno - b.srno)).forEach((a, i) => {
@@ -109,7 +109,8 @@ async function getMemberData() {
   const raw = await membData.json();
   MasterData = raw.slice(1).map(([srno, name, c, d, e, f, state]) => ({
     srno: Number(srno), name, state: state?.toLowerCase() || ''
-  }));
+  })).filter(a=> a.name !=="");
+  MasterDataCount = MasterData.length
   await fetchNewEmpIdData();
   showLoader(false);
 }
