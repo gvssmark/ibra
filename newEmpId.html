@@ -86,7 +86,7 @@
     try {
       const membData = await fetch(MasterDataUrl);
       const raw = await membData.json();
-      MasterData = raw.slice(1).map(([srno, name]) => ({ srno: Number(srno), name }));
+      MasterData = raw.slice(1).map(([srno, name]) => ({ srno: Number(srno), name })).filter(a=> a.name !=="");
       await fetchNewEmpIdData();
     } catch (err) {
       statusDiv.textContent = 'Error loading master data.';
