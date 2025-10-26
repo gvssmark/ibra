@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KMD Insurance</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding-top: 100px;
+      background: #f4f4f4;
+    }
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: #0077cc;
+      color: white;
+      padding-top: 0px;
+      text-align: center;
+      z-index: 1000;
+    }
+    #searchBox {
+      position: fixed;
+      top: 60px;
+      width: 75%;
+      left: ;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      z-index: 1000;
+      margin:0 auto;
+      background:yellow;
+    }
+    .card {
+      background: white;
+      margin: 10px;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .card h3 {
+      margin: 0 0 10px;
+      color: #0077cc;
+    }
+    .card p {
+      margin: 5px 0;
+      font-size: 14px;
+    }
+    #datadate {color:white; font-size:xx-small;}
+    h2{margin-top:0}
+  </style>
+</head>
+<body>
+  <header>
+  
+    <h2>KMD Insurance <span id='datadate'>Data as on</span> </h2>
+    
+  </header>
+  <input type="text" id="searchBox" placeholder="Search by name, ID, product..." />
+
+  <div id="cardContainer"></div>
+
+  <script>
+    const endpoint = "https://script.google.com/macros/s/AKfycbxeL3EhO9OCwAup_eJzrMZ6b6tcxmJDydUYZctMLr2f3KdusHuAhBBebkoKw0y5lsDg/exec?sheetid=1FOI0TXrwhne2h3PSzOETdin-YB-SLIphrQP-UozsWJ8&sheetname=Sheet2";
+
+    async function fetchData() {
+      try {
+         res = await fetch(endpoint);
+         json = await res.json();
+         rawData = json;
+         repdate=rawData[0][19]
+         data = rawData.slice(1); // Skip header row
+         document.getElementById('datadate').innerHTML=`Rep Date ${repdate}`
+        return data;
+      } catch (err) {
+        console.error("Fetch error:", err);
+        return [];
+      }
+    }
+
+    function createCard(entry) {
+      const [
+        srnoEmpID, Name, Gender, DOB, email, mobile, address, state, pin,
+        spouse, spdob, spgender, nominee, nomGener, nomdob, nomrelation,
+        product, sum, premium
+      ] = entry;
+
+      return `
+        <div class="card">
+          <h3>${Name || "Unknown"} (${srnoEmpID || "N/A"})</h3>
+          <p><strong>Gender:</strong> ${Gender || "-"}</p>
+          <p><strong>DOB:</strong> ${DOB ? ddmmyy(DOB) : "-"}</p>
+          <p><strong>Email:</strong> ${email || "-"}</p>
+          <p><strong>Mobile:</strong> ${mobile || "-"}</p>
+          <p><strong>Address:</strong> ${address || "-"}, ${state || "-"} - ${pin || "-"}</p>
+          <p><strong>Spouse:</strong> ${spouse || "-"} (${spgender || "-"}, ${spdob ? ddmmyy(spdob): "-"})</p>
+          <p><strong>Nominee:</strong> ${nominee || "-"} (${nomGener || "-"}, ${nomdob ? ddmmyy(nomdob): "-"}) - ${nomrelation || "-"}</p>
+          <p><strong>Product:</strong> ${product || "-"}</p>
+          <p><strong>Sum Insured:</strong> ₹${sum || "0"}</p>
+          <p><strong>Premium:</strong> ₹${premium || "0"}</p>
+        </div>
+      `;
+    }
+
+    function renderCards(data) {
+      const container = document.getElementById("cardContainer");
+      container.innerHTML = data.map(createCard).join("");
+    }
+
+    function setupSearch(data) {
+      const input = document.getElementById("searchBox");
+      input.addEventListener("input", () => {
+        const term = input.value.toLowerCase();
+        const filtered = data.filter(entry =>
+          entry.some(field => String(field).toLowerCase().includes(term))
+        );
+        renderCards(filtered);
+      });
+    }
+
+    fetchData().then(data => {
+      renderCards(data);
+      setupSearch(data);
+    });
+    
+    
+    function ddmmyy(input) {
+    const date = new Date(input);
+    return isNaN(date.getTime()) ? '' : date.toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }).substring(0,10);
+  }
+  
+  
+  </script>
+</body>
+</html>
