@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -86,7 +87,7 @@
       const [
         srnoEmpID, Name, Gender, DOB, email, mobile, address, state, pin,
         spouse, spdob, spgender, nominee, nomGener, nomdob, nomrelation,
-        product, sum, premium,option
+        product, sum, premium,option,membership
       ] = entry;
 
       return `
@@ -103,6 +104,7 @@
           <p><strong>Sum Insured:</strong> ₹${sum || "0"}</p>
           <p><strong>Premium:</strong> ₹${premium || "0"}</p>
 		  <p><strong>Option:</strong> ${option || "-"}</p>
+		  <p><strong>Membership No:</strong> ${membership || "-"}</p>
         </div>
       `;
     }
