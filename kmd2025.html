@@ -85,7 +85,7 @@
       const [
         srnoEmpID, Name, Gender, DOB, email, mobile, address, state, pin,
         spouse, spdob, spgender, nominee, nomGener, nomdob, nomrelation,
-        product, sum, premium
+        product, sum, premium,option
       ] = entry;
 
       return `
@@ -101,6 +101,7 @@
           <p><strong>Product:</strong> ${product || "-"}</p>
           <p><strong>Sum Insured:</strong> ₹${sum || "0"}</p>
           <p><strong>Premium:</strong> ₹${premium || "0"}</p>
+		  <p><strong>Option:</strong> ${option || "-"}</p>
         </div>
       `;
     }
