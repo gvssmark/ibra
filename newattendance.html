@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>IBRA Attendance Form</title>
+  <style>
+    body { background: grey; }
+    form { 
+      background-image: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+      font-family: Arial, sans-serif; 
+      margin: 20px auto; 
+      padding: 20px; 
+      max-width: 400px;  
+      border: 1px solid black; 
+      border-radius: 10px; 
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  
+    }
+    label { display: block; margin-top: 10px; color: blue; }
+    input { width: 95%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; outline: none; font-size: 1.5em; letter-spacing: 2px;}
+    button { width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; font-size: large; color: white; }
+    button:disabled { background-color: #ccc; cursor: not-allowed; }
+    p { color: red; font-size: 14px; }
+    h2 { text-align: center; }
+    input::placeholder { font-size: small; color: red; text-align: right; }
+    .loader { display: none; border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px auto; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    #name { text-transform: capitalize; color: white }
+    #report { display: none; }
+    table { border-collapse: collapse; width: 96%; margin: 10px; }
+    #message1 { width: 50px; height: 50px; background: #8c0fa1; color: white; line-height: 50px; text-align: center; border-radius: 50%; font-size: large; position: sticky; float: right; margin-top: -34px;}
+    #operatorDiv { display: none; background: white; padding: 20px; margin: 20px auto; max-width: 400px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.15);}
+    #operatorDiv label { color: green; font-size: 1.2em; }
+    #operatorDiv input { font-size: 1.2em; }
+  </style>
+</head>
+<body>
+
+<h2 onclick='showHideReport()'>IBRA Attendance</h2>
+
+<div id="operatorDiv">
+  <label for="operatorSrNo">Operator SR No:</label>
+  <input type="number" id="operatorSrNo" placeholder="Enter Operator SR No" autocomplete="off" />
+  <button id="operatorSubmitBtn" style="background: green; color:white; padding:10px;">Set Operator</button>
+  <p id="operatorMsg" style="color: red;"></p>
+</div>
+
+<form name="submit-to-google-sheet" id="attend25">
+  <label for="srNo">SR No:</label>
+  <input type="number" id="srNo" placeholder="Enter SR No" name="SRNo" pattern="\d*" required />
+
+  <label for="name">Name:</label>
+  <input type="text" id="name" name="Name" placeholder="Name" readonly required onclick="this.select()" autocomplete="off"/>
+
+  <label for="membershipNo">Membership Number:</label>
+  <input type="text" id="membershipNo" name="Membership No" readonly placeholder="Membership No" />
+
+  <label for="mobileNo">Mobile Number:</label>
+  <input type="tel" id="mobileNo" name="Mobile" pattern="[6-9][0-9]{9}" placeholder="Mobile" required  onclick="this.select()" autocomplete="off"/>
+
+  <input type="text" id="attendanceDate" name="Attendance" readonly style="display: none;" />
+
+  <button id="okButton" style="background: green;" disabled>OK</button>
+  <button type="button" style="background: red;" onclick="resetForm()">Cancel</button>
+
+  <p id="message">&nbsp;</p>
+  <div id="message1">0</div>
+</form>
+
+<div class="loader" id="loader"></div>
+<div id='report'></div>
+
+<script>
+  // ---- CONFIG ----
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbytzFhmFLKbTpwiMhtvPUGyi26GTFg2i9cIPkbLQKrEfRd4Mb-ezKptfrf7nm-fSzUM/exec';
+  const dataData = 'https://script.google.com/macros/s/AKfycbyrOAeTWWte70yEzUu4xHXh327c8Q1UQbQzVaF33x_m9zn7QweP1xESUNwgvpk6BLMx/exec';
+  const ShId = '1O7D6VuAtUltMopqd8pIyKX-S86idy0xYs-whJHJuBjw';
+  const ShName = 'attendance';
+  const dataAttendance = `https://script.google.com/macros/s/AKfycbwo-TtPn3DAjHSPCXDwPFerT36QyfPPvUTi7uQEvcmjJso_aWpaKefUsgx_vpJOowHUgg/exec?sheetid=${ShId}&sheetname=${ShName}`;
+  // ---- GLOBALS ----
+  let memberData = [];
+  let attendanceData = [];
+  let ibradata = [];
+  let entryBy = null; // operator info SR NO and name
+
+  // ---- ELEMENTS ----
+  const form = document.forms['submit-to-google-sheet'];
+  const loader = document.getElementById('loader');
+  const srNoInput = document.getElementById('srNo');
+  const nameInput = document.getElementById('name');
+  const membershipNoInput = document.getElementById('membershipNo');
+  const mobileNoInput = document.getElementById('mobileNo');
+  const attendanceDateInput = document.getElementById('attendanceDate');
+  const okButton = document.getElementById('okButton');
+  const messageElement = document.getElementById('message');
+  const operatorDiv = document.getElementById('operatorDiv');
+  const operatorSrNoInput = document.getElementById('operatorSrNo');
+  const operatorSubmitBtn = document.getElementById('operatorSubmitBtn');
+  const operatorMsg = document.getElementById('operatorMsg');
+
+  // ---- UTILS ----
+  function showLoader(visible) { loader.style.display = visible ? 'block' : 'none'; }
+  function toggleFormAccessibility(enable) {
+    const formElements = form.querySelectorAll('input, button');
+    formElements.forEach(element => element.disabled = !enable);
+  }
+  function titleCase(str) { return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase()); }
+  function displayMessage(message, color = 'red') {
+    messageElement.textContent = message;
+    messageElement.style.color = color;
+  }
+  function resetForm() {
+    form.reset();
+    resetInputs();
+    displayMessage('Information:');
+  }
+  function resetInputs() {
+    nameInput.value = '';
+    nameInput.style.backgroundColor = 'white';
+    membershipNoInput.value = '';
+    mobileNoInput.value = '';
+    attendanceDateInput.value = '';
+    okButton.disabled = true;
+  }
+  function countatt(){ document.getElementById('message1').innerHTML = attendanceData.length; }
+
+  // ---- LOCALSTORAGE FOR OPERATOR ENTRY ----
+  function loadOperatorInfo() {
+    try {
+      const stored = localStorage.getItem('ibra_operator');
+      if (stored) { entryBy = JSON.parse(stored); return entryBy; }
+    } catch (e) {}
+    return null;
+  }
+  function showOperatorDiv() {
+    operatorDiv.style.display = 'block';
+    form.style.display = 'none';
+    document.getElementById('report').style.display = 'none';
+    operatorMsg.textContent = '';
+  }
+  function hideOperatorDiv() {
+    operatorDiv.style.display = 'none';
+    form.style.display = 'block';
+    fetchData();
+  }
+
+  // ---- GET IBRA DATA FROM LOCAL CACHE ----
+  async function getibradata() {
+    // Replace with actual indexedDB cache as per your code; for now will fetch mock JSON
+    // Simulated fetch, use your actual cache
+    // ibradata = (await response?.json())?.filter(b => b.name !== "") || [];
+    // For demo, example data:
+     const response = await caches.match('/custom/addbookdata.json');
+      ibradata = (await response?.json())?.filter(b => b.name !== "") || [];
+      memberData = ibradata;
+  }
+
+  // ---- INITIAL LOAD HANDLER ----
+  window.addEventListener('DOMContentLoaded', async () => {
+    await getibradata();
+    const op = loadOperatorInfo();
+    if (!op) {
+      showOperatorDiv();
+    } else {
+      entryBy = op;
+      fetchData();
+    }
+  });
+
+  // ---- OPERATOR LOGIN ----
+  operatorSubmitBtn.onclick = () => {
+    const srno = operatorSrNoInput.value.trim()*1;
+    if (!srno) {
+      operatorMsg.textContent = 'Please enter an SR No.';
+      return;
+    }
+    if (srno === '9989036183') {
+      localStorage.removeItem('ibra_operator');
+      operatorMsg.textContent = 'Operator reset! Please enter a new SR No.';
+      operatorSrNoInput.value = '';
+      return;
+    }
+    const member = ibradata.find(b => b.srno === srno);
+    if (member) {
+      entryBy = { srno: member.srno, name: member.name };
+      localStorage.setItem('ibra_operator', JSON.stringify(entryBy));
+      hideOperatorDiv();
+    } else {
+      operatorMsg.textContent = 'Operator not found in member data!';
+    }
+  };
+
+  // ---- FETCH ATTENDANCE DATA & REPORT ----
+  async function fetchData() {
+    toggleFormAccessibility(false);
+    showLoader(true);
+    // Simulated fetch; use your actual endpoint for live usage
+    const response = await fetch(dataAttendance);
+    attendanceData = await response.json();
+    attendanceData = attendanceData.slice(1); // Remove headers
+    // Demo data:
+   // attendanceData = [];
+    showLoader(false);
+    toggleFormAccessibility(true);
+    generateReport();
+    countatt();
+  }
+
+  // ---- SR NO ENTRY LOGIC ----
+  srNoInput.addEventListener('click', function() {
+    displayMessage('New Data', 'blue');
+  });
+
+  srNoInput.addEventListener('blur', () => {
+    const srNoValue = srNoInput.value.trim();
+    if (srNoValue === '9989036183') {
+      localStorage.removeItem('ibra_operator');
+      showOperatorDiv();
+      return;
+    }
+     srNo = srNoInput.value*1;
+    if (isNaN(srNo)) {
+      displayMessage('Please enter a valid SR No.', 'blue');
+      return;
+    }
+    const member = memberData.find(row => row.srno === srNo);
+     alreadyMarked = false;
+    const currentDateTime = new Date().toLocaleString();
+
+    if (!member) {
+      nameInput.value = 'Not a Member';
+      nameInput.style.backgroundColor = 'blue';
+      nameInput.readOnly = false;
+      membershipNoInput.value = '0';
+      mobileNoInput.value = '';
+      attendanceDateInput.value = currentDateTime;
+      alreadyMarked = attendanceData.some(row => row[0] == srNo);
+
+      if (alreadyMarked) {
+        nameInput.value = 'Already Marked';
+        nameInput.style.backgroundColor = 'red';
+        okButton.disabled = true;
+      } else {
+        okButton.disabled = false;
+      }
+    } else {
+      alreadyMarked = attendanceData.some(row => row[0] == srNo);
+      if (alreadyMarked) {
+        nameInput.value = 'Already Marked';
+        nameInput.style.backgroundColor = 'red';
+        okButton.disabled = true;
+      } else {
+        nameInput.readOnly = true;
+        nameInput.value = member.name;
+        nameInput.style.backgroundColor = 'green';
+        membershipNoInput.value = member.id;
+        mobileNoInput.value = member.mobile1;
+        attendanceDateInput.value = currentDateTime;
+        okButton.disabled = false;
+      }
+    }
+  });
+
+  // ---- ATTENDANCE SUBMIT WITH LOCAL PUSH ----
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!entryBy) {
+      displayMessage('Operator not set. Please reload and log in.', 'red');
+      return;
+    }
+    if (nameInput.value === 'Not a Member' || nameInput.value.trim() === '') {
+      displayMessage('Please enter your name before submitting.', 'blue');
+      return;
+    }
+    nameInput.value = nameInput.value; // Clean up manual non-member edits
+
+    // Prepare FormData
+    let formData = new FormData(form);
+    formData.append('spreadsheetId', ShId);
+    formData.append('sheetName', ShName);
+    formData.append('entryBySrNo', entryBy.srno);
+    formData.append('entryByName', entryBy.name);
+    attendanceDateInput.value = new Date()//.toLocaleString();
+    // Could submit via fetch, omitted for demo
+    try {
+      toggleFormAccessibility(false);
+      showLoader(true);
+       await fetch(scriptURL, { method: 'POST', body: formData }); // Uncomment for live submission
+
+      // Add locally for instant report
+      const newAttendance = [
+        srNoInput.value*1,
+        nameInput.value,
+        membershipNoInput.value,
+        mobileNoInput.value*1,
+        attendanceDateInput.value,
+        entryBy.srno,
+        entryBy.name
+      ];
+      attendanceData.push(newAttendance); // For live report
+      form.reset();
+      resetInputs();
+      generateReport();
+      countatt();
+      displayMessage('Attendance marked successfully!', 'blue');
+    } catch (error) {
+      displayMessage('Error marking attendance. Please try again.', 'red');
+    } finally {
+      showLoader(false);
+      toggleFormAccessibility(true);
+    }
+  });
+
+  // ---- REPORT ----
+  function generateReport() {
+    attendanceData.sort((a, b) => a[0] - b[0]);
+    let header = `<h2>IBRA Attendance Report</h2>
+      <table border=1>
+      <tr>
+        <td>Sl No</td>
+        <td>SR No</td>
+        <td>Name</td>
+        <td>Memb No</td>
+        <td>Mobile No</td>
+        <td>Time</td>
+        <td>EntryBy SRNo</td>
+              </tr>`;
+    for (let i = 0; i < attendanceData.length; i++) {
+      let time = '';
+      try {
+        time = new Date(attendanceData[i][4]).toLocaleTimeString("en-GB").substr(0,5);
+      } catch { time = attendanceData[i][4]; }
+      header += `<tr>
+        <td>${i + 1}</td>
+        <td>${attendanceData[i][0] || ''}</td>
+        <td>${attendanceData[i][1] || ''}</td>
+        <td>${attendanceData[i][2] || ''}</td>
+        <td>${attendanceData[i][3] || ''}</td>
+        <td>${time}</td>
+        <td>${attendanceData[i][5] || ''}</td>
+        </tr>`;
+    }
+    header += `</table><br><br>`;
+    document.getElementById('report').innerHTML = header;
+  }
+
+  // ---- SHOW/HIDE REPORT ----
+  function showHideReport() {
+    var x = document.getElementById('report');
+    x.style.backgroundColor = 'white';
+    if (x.style.display === 'none' || x.style.display === '') {
+      form.style.display = 'none';
+      x.style.display = 'block';
+    } else {
+      x.style.display = 'none';
+      form.style.display = 'block';
+    }
+  }
+</script>
+</body>
+</html>
