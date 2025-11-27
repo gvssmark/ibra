@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,73 +7,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>KMD Insurance</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding-top: 100px;
-      background: #f4f4f4;
-    }
-    header {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      background: #0077cc;
-      color: white;
-      padding-top: 0px;
-      text-align: center;
-      z-index: 1000;
-    }
-    #searchBox {
-      position: fixed;
-      top: 30px;
-      width: 100%;
-      left: ;
-      padding: 10px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      z-index: 1000;
-      margin:0 auto;
-      background:yellow;
-    }
-    .card {
-      background: white;
-      margin: 10px;
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    .card h3 {
-      margin: 0 0 10px;
-      color: #0077cc;
-    }
-    .card p {
-      margin: 5px 0;
-      font-size: 14px;
-    }
-    #datadate {color:white; font-size:xx-small;}
-    h2{margin-top:0}
-    #cardContainer{margin-top:-30px;}
+body { font-family: Arial, sans-serif; margin: 0; padding-top: 100px; background: #f4f4f4; }
+header { position: fixed; top: 0; width: 100%; background: #0077cc; color: white; padding-top: 0px; text-align: center; z-index: 1000; }
+#searchBox { position: fixed; top: 30px; width: 100%; left: ; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 5px; z-index: 1000; margin:0 auto; background:yellow; }
+.card { background: white; margin: 10px; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+.card h3 { margin: 0 0 10px; color: #0077cc; }
+.card p { margin: 5px 0; font-size: 14px; }
+#datadate {color:white; font-size:xx-small;}
+h2{margin-top:0}
+#cardContainer{margin-top:-30px;}
   </style>
 </head>
 <body>
   <header>
-  
-    <h2>KMD Insurance <span id='datadate'>Data as on</span> </h2>
-    
+   <h2>KMD Insurance <span id='datadate'>Data as on</span> </h2>
+  <script src="https://gvssmark.github.io/ibra/kmd2526.json"></script>  
   </header>
   <input type="text" id="searchBox" placeholder="Search by name, ID, product..." />
-
   <div id="cardContainer"></div>
-
   <script>
-    const endpoint = "https://script.google.com/macros/s/AKfycbxeL3EhO9OCwAup_eJzrMZ6b6tcxmJDydUYZctMLr2f3KdusHuAhBBebkoKw0y5lsDg/exec?sheetid=1FOI0TXrwhne2h3PSzOETdin-YB-SLIphrQP-UozsWJ8&sheetname=Sheet2";
-
     async function fetchData() {
       try {
-         res = await fetch(endpoint);
-         json = await res.json();
-         rawData = json;
+         rawData = kmd2526;
          repdate=rawData[0][19]
          data = rawData.slice(1); // Skip header row
          document.getElementById('datadate').innerHTML=`Rep Date ${repdate}`
@@ -89,7 +45,6 @@
         spouse, spdob, spgender, nominee, nomGener, nomdob, nomrelation,
         product, sum, premium,option,membership
       ] = entry;
-
       return `
         <div class="card">
           <h3>${Name || "Unknown"} (${srnoEmpID || "N/A"})</h3>
@@ -124,19 +79,14 @@
         renderCards(filtered);
       });
     }
-
     fetchData().then(data => {
       renderCards(data);
       setupSearch(data);
     });
-    
-    
     function ddmmyy(input) {
     const date = new Date(input);
     return isNaN(date.getTime()) ? '' : date.toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }).substring(0,10);
   }
-  
-  
   </script>
 </body>
 </html>
