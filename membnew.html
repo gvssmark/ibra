@@ -7,21 +7,68 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{    font-family:system-ui;    background:linear-gradient(135deg,#667eea,#764ba2);    min-height:100vh;    padding:20px}
-.container{    max-width:520px;    margin:auto;    background:#fff;    border-radius:16px;    box-shadow:0 15px 35px rgba(0,0,0,.15);    overflow:hidden}
-.header{    background:linear-gradient(135deg,#4facfe,#00f2fe);    color:#fff;    padding:25px;    text-align:center}
+body{
+    font-family:system-ui;
+    background:linear-gradient(135deg,#667eea,#764ba2);
+    min-height:100vh;
+    padding:20px
+}
+.container{
+    max-width:520px;
+    margin:auto;
+    background:#fff;
+    border-radius:16px;
+    box-shadow:0 15px 35px rgba(0,0,0,.15);
+    overflow:hidden
+}
+.header{
+    background:linear-gradient(135deg,#4facfe,#00f2fe);
+    color:#fff;
+    padding:25px;
+    text-align:center
+}
 .form-section{padding:25px}
 label{font-size:small;display:block;margin-top:15px;margin-bottom:5px}
-input,textarea{    width:100%;    padding:12px;    border:2px solid #e1e5e9;    border-radius:10px;    font-size:15px}
+input,textarea{
+    width:100%;
+    padding:12px;
+    border:2px solid #e1e5e9;
+    border-radius:10px;
+    font-size:15px
+}
 textarea{resize:vertical}
 .date-group{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .error{color:#e03131;font-size:14px;display:none}
 .success{color:#2f9e44;font-size:14px;display:none}
-.signature-pad{    height:150px;    border:2px solid #ccc;    border-radius:10px;    background:#fff}
-.signature-pad canvas{    width:100%;    height:100%;    background:#fff}
-.btn{    padding:14px;    border:none;    border-radius:10px;    font-weight:600;    cursor:pointer;    margin-top:10px}
-.btn-submit{    width:100%;    margin-top:25px;    font-size:18px;    background:linear-gradient(135deg,#4facfe,#00f2fe);    color:#fff}
-@media(max-width:480px){    .date-group{grid-template-columns:1fr}}
+.signature-pad{
+    height:150px;
+    border:2px solid #ccc;
+    border-radius:10px;
+    background:#fff
+}
+.signature-pad canvas{
+    width:100%;
+    height:100%;
+    background:#fff
+}
+.btn{
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    font-weight:600;
+    cursor:pointer;
+    margin-top:10px
+}
+.btn-submit{
+    width:100%;
+    margin-top:25px;
+    font-size:18px;
+    background:linear-gradient(135deg,#4facfe,#00f2fe);
+    color:#fff
+}
+@media(max-width:480px){
+    .date-group{grid-template-columns:1fr}
+}
 .dob {background:pink; padding:0 5px}
 #dob {background:pink;}
 .doj {background:lightgreen; padding:0 5px}
@@ -199,35 +246,101 @@ if (rStr < minStr || rStr > maxStr) {
 
 doj.onchange=dor.onchange=validateDates;
 
-// ----------- Signature -----------
-const canvas=document.getElementById("signatureCanvas");
-const ctx=canvas.getContext("2d");
-let drawing=false,signatureImg=null;
+// ----------- Signature (Mobile + Desktop Support) -----------
 
-function resizeCanvas(){
-    canvas.width=canvas.offsetWidth;
-    canvas.height=canvas.offsetHeight;
-    ctx.fillStyle="#ffffff";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
+const canvas = document.getElementById("signatureCanvas");
+const ctx = canvas.getContext("2d");
+
+let drawing = false;
+let signatureImg = null;
+
+// Prevent scrolling while touching canvas
+canvas.style.touchAction = "none";
+
+function resizeCanvas() {
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 resizeCanvas();
-window.addEventListener("resize",resizeCanvas);
+window.addEventListener("resize", resizeCanvas);
 
-canvas.addEventListener("mousedown",()=>drawing=true);
-canvas.addEventListener("mouseup",()=>{drawing=false;ctx.beginPath();saveSignature()});
-canvas.addEventListener("mousemove",e=>{
-    if(!drawing) return;
-    ctx.lineWidth=2;
-    ctx.lineCap="round";
-    ctx.strokeStyle="#000";
-    ctx.lineTo(e.offsetX,e.offsetY);
-    ctx.stroke();
+// Get correct coordinates for mouse/touch
+function getPosition(event) {
+    const rect = canvas.getBoundingClientRect();
+
+    if (event.touches) {
+        return {
+            x: event.touches[0].clientX - rect.left,
+            y: event.touches[0].clientY - rect.top
+        };
+    } else {
+        return {
+            x: event.offsetX,
+            y: event.offsetY
+        };
+    }
+}
+
+// Start drawing
+function startDrawing(e) {
+    e.preventDefault();
+    drawing = true;
+    const pos = getPosition(e);
     ctx.beginPath();
-    ctx.moveTo(e.offsetX,e.offsetY);
-});
+    ctx.moveTo(pos.x, pos.y);
+}
 
-function clearSignature(){resizeCanvas();signatureImg=null;}
-function saveSignature(){signatureImg=canvas.toDataURL();}
+// Draw
+function draw(e) {
+    if (!drawing) return;
+    e.preventDefault();
+
+    const pos = getPosition(e);
+
+    
+    ctx.lineWidth = 1;
+    ctx.lineJoin = "round";
+    ctx.lineCap = "round";
+    ctx.strokeStyle = "#000";
+
+    ctx.lineTo(pos.x, pos.y);
+    ctx.stroke();
+}
+
+// Stop drawing
+function stopDrawing(e) {
+    if (!drawing) return;
+    e.preventDefault();
+
+    drawing = false;
+    ctx.beginPath();
+    saveSignature();
+}
+
+// Mouse events
+canvas.addEventListener("mousedown", startDrawing);
+canvas.addEventListener("mousemove", draw);
+canvas.addEventListener("mouseup", stopDrawing);
+canvas.addEventListener("mouseleave", stopDrawing);
+
+// Touch events (🔥 Important for mobile)
+canvas.addEventListener("touchstart", startDrawing);
+canvas.addEventListener("touchmove", draw);
+canvas.addEventListener("touchend", stopDrawing);
+
+// Save signature
+function saveSignature() {
+    signatureImg = canvas.toDataURL("image/png");
+}
+
+// Clear signature
+function clearSignature() {
+    resizeCanvas();
+    signatureImg = null;
+}
 
 // ----------- PDF -----------
 function generatePDF(){
