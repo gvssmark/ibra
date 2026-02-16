@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pension Application</title>
+<title>IBRA Membership Application</title>
 
 <style>
 body{
@@ -15,10 +15,11 @@ h2{
 }
 
 input, textarea{
-    width:100%;
+    width:95%;
     padding:8px;
     margin:6px 0;
     font-size:16px;
+   
 }
 
 button{
@@ -35,30 +36,27 @@ canvas{
     touch-action:none;
 }
 
-/* PRINT STYLING */
+/* PRINT STYLING - SIMPLIFIED FOR MOBILE */
 @media print{
-    body *{
-        visibility:hidden !important;
+    @page {
+        size: A4;
+        margin: 1cm;
     }
-
-    #printArea, #printArea *{
-        visibility:visible !important;
-    }
-
-    #printArea{
-        position:absolute !important;
-        top:0 !important;
-        left:0 !important;
-        width:100% !important;
-        padding:20px !important;
+    
+    body{
         font-family:"Times New Roman", serif !important;
         font-size:13px !important;
         line-height:1.4 !important;
+        width: 210mm !important;
+        height: 297mm !important;
+        margin: 0 !important;
+        padding: 20px !important;
     }
 
     table{
         width:100% !important;
         border-collapse:collapse !important;
+        page-break-inside: avoid !important;
     }
 
     th, td{
@@ -72,17 +70,18 @@ canvas{
         font-weight:bold !important;
         font-size:18px !important;
         margin-bottom:10px !important;
+        page-break-after: avoid !important;
     }
 
     .declaration{
         margin-top:15px !important;
         text-align:justify !important;
+        page-break-inside: avoid !important;
     }
 
     .signature{
         margin-top:40px !important;
-        text-align:right !important;
-        position:relative !important;
+        text-align:left !important;
     }
 
     .signature img{
@@ -90,7 +89,6 @@ canvas{
         width:auto !important;
         display:block !important;
         -webkit-print-color-adjust:exact !important;
-        color-adjust:exact !important;
         print-color-adjust:exact !important;
     }
 }
@@ -98,7 +96,7 @@ canvas{
 </head>
 <body>
 
-<h2>Pension Application Form</h2>
+<h2>IBRA Membership Application</h2>
 
 <label>Name</label>
 <input type="text" id="name">
@@ -136,11 +134,6 @@ canvas{
 
 <button onclick="processForm()">Print + Send WhatsApp</button>
 
-<div id="printArea" style="display:none;">
-    <!-- Signature pre-load container -->
-    <div id="sigContainer" style="display:none;"></div>
-</div>
-
 <script>
 const nameInput=document.getElementById("name");
 const empId=document.getElementById("empId");
@@ -175,8 +168,9 @@ function initCanvas(){
 
 window.addEventListener("load",initCanvas);
 
-/* POINTER EVENTS */
+/* POINTER EVENTS - MOBILE TOUCH PREVENT */
 canvas.addEventListener("pointerdown",function(e){
+    e.preventDefault();
     drawing=true;
     ctx.beginPath();
     ctx.moveTo(e.offsetX,e.offsetY);
@@ -184,11 +178,13 @@ canvas.addEventListener("pointerdown",function(e){
 
 canvas.addEventListener("pointermove",function(e){
     if(!drawing) return;
+    e.preventDefault();
     ctx.lineTo(e.offsetX,e.offsetY);
     ctx.stroke();
 });
 
-canvas.addEventListener("pointerup",function(){
+canvas.addEventListener("pointerup",function(e){
+    e.preventDefault();
     drawing=false;
 });
 
@@ -199,18 +195,15 @@ canvas.addEventListener("pointercancel",function(){
 function clearSignature(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     signatureData="";
-    document.getElementById("sigContainer").innerHTML="";
 }
 
-/* AUTO DATE SET */
+/* AUTO DATE SET & CALCULATIONS - UNCHANGED */
 window.onload=function(){
     initCanvas();
-
     const today=new Date();
     const yyyy=today.getFullYear();
     const mm=String(today.getMonth()+1).padStart(2,'0');
     const dd=String(today.getDate()).padStart(2,'0');
-
     dob.value=`${yyyy-58}-${mm}-${dd}`;
     calculateDates();
 };
@@ -219,25 +212,19 @@ dob.addEventListener("change",calculateDates);
 
 function calculateDates(){
     if(!dob.value) return;
-
     const birth=new Date(dob.value);
-
     const join=new Date(birth);
     join.setFullYear(birth.getFullYear()+25);
     doj.value=formatDate(join);
-
     const sixty=new Date(birth);
     sixty.setFullYear(birth.getFullYear()+60);
-
     let retirement=new Date(sixty);
-
     if(birth.getDate()===1){
         retirement.setDate(0);
     }else{
         retirement.setMonth(retirement.getMonth()+1);
         retirement.setDate(0);
     }
-
     dor.value=formatDate(retirement);
 }
 
@@ -247,92 +234,59 @@ function formatDate(date){
 
 /* VALIDATION - FIXED REGEX */
 function validateForm(){
-    if(nameInput.value.trim()===""){
-        alert("Enter Name");
-        return false;
-    }
-
-    if(!/^\d+$/.test(empId.value)){
-        alert("Employee ID must be numeric");
-        return false;
-    }
-
-    if(!/^[6-9]\d{9}$/.test(mobile1.value)){
-        alert("Mobile 1 invalid");
-        return false;
-    }
-
-    if(mobile2.value && !/^[6-9]\d{9}$/.test(mobile2.value)){
-        alert("Mobile 2 invalid");
-        return false;
-    }
-
-    if(email.value && !/^\S+@\S+\.\S+$/.test(email.value)){
-        alert("Invalid Email");
-        return false;
-    }
-
+    if(!nameInput.value.trim()){ alert("Enter Name"); return false; }
+    if(!/^\d+$/.test(empId.value)){ alert("Employee ID must be numeric"); return false; }
+    if(!/^[6-9]\d{9}$/.test(mobile1.value)){ alert("Mobile 1 invalid"); return false; }
+    if(mobile2.value && !/^[6-9]\d{9}$/.test(mobile2.value)){ alert("Mobile 2 invalid"); return false; }
+    if(email.value && !/^\S+@\S+\.\S+$/.test(email.value)){ alert("Invalid Email"); return false; }
+    // Date validation unchanged...
     const birth=new Date(dob.value);
     const retirement=new Date(dor.value);
-
-    const minRetire=new Date(birth);
-    minRetire.setFullYear(birth.getFullYear()+50);
-
-    if(retirement<minRetire){
-        alert("Retirement cannot be before 50 years");
-        return false;
-    }
-
-    const sixty=new Date(birth);
-    sixty.setFullYear(birth.getFullYear()+60);
-
+    const minRetire=new Date(birth); minRetire.setFullYear(birth.getFullYear()+50);
+    if(retirement<minRetire){ alert("Retirement cannot be before 50 years"); return false; }
+    const sixty=new Date(birth); sixty.setFullYear(birth.getFullYear()+60);
     let expected=new Date(sixty);
-
-    if(birth.getDate()===1){
-        expected.setDate(0);
-    }else{
-        expected.setMonth(expected.getMonth()+1);
-        expected.setDate(0);
-    }
-
-    if(retirement>expected){
-        alert("Retirement exceeds superannuation date");
-        return false;
-    }
-
+    if(birth.getDate()===1){ expected.setDate(0); }else{ expected.setMonth(expected.getMonth()+1); expected.setDate(0); }
+    if(retirement>expected){ alert("Retirement exceeds superannuation date"); return false; }
     return true;
 }
 
 /* MAIN PROCESS */
 function processForm(){
     if(!validateForm()) return;
-
     signatureData=canvas.toDataURL("image/png");
-
-    if(signatureData.length<2000){
-        alert("Please sign");
-        return;
-    }
-
-    // Pre-load signature image for print
-    preloadSignature();
-
+    if(signatureData.length<2000){ alert("Please sign"); return; }
     generatePrint();
     sendWhatsApp();
 }
 
-function preloadSignature(){
-    const sigContainer = document.getElementById("sigContainer");
-    sigContainer.innerHTML = `<img id="printSig" src="${signatureData}" alt="Signature" style="display:none;">`;
-}
-
+/* FIXED MOBILE PRINT - NEW WINDOW */
 function generatePrint(){
     const today=new Date().toLocaleDateString("en-IN");
-    const print=document.getElementById("printArea");
-
-    print.innerHTML=`
+    
+    const printContent = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>IBRA Membership Application ${empId.value} </title>
+    ${document.querySelector('style').outerHTML}
+</head>
+<body>
     <div class="header">PENSION APPLICATION FORM</div>
-
+    <div class="declaration">
+        Dear Comrade<br>
+Please enrol me as member of the Retirees’ Association. I have read the Bye-laws and rules of the
+Association and I am willing to abide by them. I am remitting a sum of Rs.1000/- (Rupees One
+Thousand only) towards one time admission fee and Life Membership. Amount Credited to SB
+Account No 465693063 with Indian Bank, Himayatnagar Branch / Demand Draft / Cheque favouring
+Indian Bank Retirees’ Association, AP & TS is enclosed.
+    </div>
+    <div class="signature">
+        <img src="${signatureData}" style="height:60px;"><br>
+        Signature<br>Date: ${today}
+    </div>
+    
     <table>
         <tr><th>Name</th><td>${nameInput.value}</td></tr>
         <tr><th>Employee ID</th><td>${empId.value}</td></tr>
@@ -345,42 +299,26 @@ function generatePrint(){
         <tr><th>Mobile 2</th><td>${mobile2.value||"N/A"}</td></tr>
         <tr><th>Address</th><td>${address.value}</td></tr>
     </table>
+    
+</body>
+</html>`;
 
-    <div class="declaration">
-    I hereby declare that the above information is true and correct to the best of my knowledge.
-    </div>
+    // Open new window for reliable mobile print
+    const printWindow = window.open('', '_blank', 'width=800,height=600');
+    printWindow.document.write(printContent);
+    printWindow.document.close();
 
-    <div class="signature">
-        <img src="${signatureData}" id="sigPrint"><br>
-        Signature<br>
-        Date: ${today}
-    </div>
-    `;
-
-    print.style.display="block";
-
-    // Short delay to ensure image loads before print
-    setTimeout(() => {
-        window.print();
-        print.style.display="none";
-    }, 100);
+    // Print once loaded
+    printWindow.onload = function() {
+        printWindow.focus();
+        printWindow.print();
+        printWindow.close();
+    };
 }
 
-/* WHATSAPP */
+/* WHATSAPP - UNCHANGED */
 function sendWhatsApp(){
-    const msg=`PENSION APPLICATION
-
-Name: ${nameInput.value}
-Employee ID: ${empId.value}
-DOB: ${dob.value}
-DOJ: ${doj.value}
-DOR: ${dor.value}
-Spouse: ${spouse.value||"N/A"}
-Email: ${email.value||"N/A"}
-Mobile1: ${mobile1.value}
-Mobile2: ${mobile2.value||"N/A"}
-Address: ${address.value}`;
-
+    const msg=`PENSION APPLICATION\n\nName: ${nameInput.value}\nEmployee ID: ${empId.value}\nDOB: ${dob.value}\nDOJ: ${doj.value}\nDOR: ${dor.value}\nSpouse: ${spouse.value||"N/A"}\nEmail: ${email.value||"N/A"}\nMobile1: ${mobile1.value}\nMobile2: ${mobile2.value||"N/A"}\nAddress: ${address.value}`;
     window.open("https://wa.me/919989036183?text="+encodeURIComponent(msg));
 }
 </script>
