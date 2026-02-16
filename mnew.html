@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pension Application</title>
+
+<style>
+body{
+    font-family: Arial;
+    margin:20px;
+}
+
+h2{
+    text-align:center;
+}
+
+input, textarea{
+    width:100%;
+    padding:8px;
+    margin:6px 0;
+    font-size:16px;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    font-size:16px;
+    margin-top:12px;
+}
+
+canvas{
+    border:1px solid #000;
+    width:100%;
+    height:150px;
+    touch-action:none;
+}
+
+/* PRINT STYLING */
+@media print{
+    body *{
+        visibility:hidden !important;
+    }
+
+    #printArea, #printArea *{
+        visibility:visible !important;
+    }
+
+    #printArea{
+        position:absolute !important;
+        top:0 !important;
+        left:0 !important;
+        width:100% !important;
+        padding:20px !important;
+        font-family:"Times New Roman", serif !important;
+        font-size:13px !important;
+        line-height:1.4 !important;
+    }
+
+    table{
+        width:100% !important;
+        border-collapse:collapse !important;
+    }
+
+    th, td{
+        border:1px solid #000 !important;
+        padding:6px !important;
+        text-align:left !important;
+    }
+
+    .header{
+        text-align:center !important;
+        font-weight:bold !important;
+        font-size:18px !important;
+        margin-bottom:10px !important;
+    }
+
+    .declaration{
+        margin-top:15px !important;
+        text-align:justify !important;
+    }
+
+    .signature{
+        margin-top:40px !important;
+        text-align:right !important;
+        position:relative !important;
+    }
+
+    .signature img{
+        height:60px !important;
+        width:auto !important;
+        display:block !important;
+        -webkit-print-color-adjust:exact !important;
+        color-adjust:exact !important;
+        print-color-adjust:exact !important;
+    }
+}
+</style>
+</head>
+<body>
+
+<h2>Pension Application Form</h2>
+
+<label>Name</label>
+<input type="text" id="name">
+
+<label>Employee ID (Numbers Only)</label>
+<input type="number" id="empId">
+
+<label>Date of Birth</label>
+<input type="date" id="dob">
+
+<label>Date of Joining</label>
+<input type="date" id="doj">
+
+<label>Date of Retirement</label>
+<input type="date" id="dor">
+
+<label>Spouse Name</label>
+<input type="text" id="spouse">
+
+<label>Email</label>
+<input type="email" id="email">
+
+<label>Mobile Number 1</label>
+<input type="tel" id="mobile1">
+
+<label>Mobile Number 2</label>
+<input type="tel" id="mobile2">
+
+<label>Address</label>
+<textarea id="address" rows="3"></textarea>
+
+<label>Signature</label>
+<canvas id="signaturePad"></canvas>
+<button onclick="clearSignature()">Clear Signature</button>
+
+<button onclick="processForm()">Print + Send WhatsApp</button>
+
+<div id="printArea" style="display:none;">
+    <!-- Signature pre-load container -->
+    <div id="sigContainer" style="display:none;"></div>
+</div>
+
+<script>
+const nameInput=document.getElementById("name");
+const empId=document.getElementById("empId");
+const dob=document.getElementById("dob");
+const doj=document.getElementById("doj");
+const dor=document.getElementById("dor");
+const spouse=document.getElementById("spouse");
+const email=document.getElementById("email");
+const mobile1=document.getElementById("mobile1");
+const mobile2=document.getElementById("mobile2");
+const address=document.getElementById("address");
+
+const canvas=document.getElementById("signaturePad");
+const ctx=canvas.getContext("2d");
+
+let drawing=false;
+let signatureData="";
+
+/* CANVAS INITIALIZE */
+function initCanvas(){
+    const rect=canvas.getBoundingClientRect();
+    const ratio=window.devicePixelRatio||1;
+
+    canvas.width=rect.width*ratio;
+    canvas.height=rect.height*ratio;
+
+    ctx.setTransform(ratio,0,0,ratio,0,0);
+    ctx.lineWidth=2;
+    ctx.lineCap="round";
+    ctx.strokeStyle="#000";
+}
+
+window.addEventListener("load",initCanvas);
+
+/* POINTER EVENTS */
+canvas.addEventListener("pointerdown",function(e){
+    drawing=true;
+    ctx.beginPath();
+    ctx.moveTo(e.offsetX,e.offsetY);
+});
+
+canvas.addEventListener("pointermove",function(e){
+    if(!drawing) return;
+    ctx.lineTo(e.offsetX,e.offsetY);
+    ctx.stroke();
+});
+
+canvas.addEventListener("pointerup",function(){
+    drawing=false;
+});
+
+canvas.addEventListener("pointercancel",function(){
+    drawing=false;
+});
+
+function clearSignature(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    signatureData="";
+    document.getElementById("sigContainer").innerHTML="";
+}
+
+/* AUTO DATE SET */
+window.onload=function(){
+    initCanvas();
+
+    const today=new Date();
+    const yyyy=today.getFullYear();
+    const mm=String(today.getMonth()+1).padStart(2,'0');
+    const dd=String(today.getDate()).padStart(2,'0');
+
+    dob.value=`${yyyy-58}-${mm}-${dd}`;
+    calculateDates();
+};
+
+dob.addEventListener("change",calculateDates);
+
+function calculateDates(){
+    if(!dob.value) return;
+
+    const birth=new Date(dob.value);
+
+    const join=new Date(birth);
+    join.setFullYear(birth.getFullYear()+25);
+    doj.value=formatDate(join);
+
+    const sixty=new Date(birth);
+    sixty.setFullYear(birth.getFullYear()+60);
+
+    let retirement=new Date(sixty);
+
+    if(birth.getDate()===1){
+        retirement.setDate(0);
+    }else{
+        retirement.setMonth(retirement.getMonth()+1);
+        retirement.setDate(0);
+    }
+
+    dor.value=formatDate(retirement);
+}
+
+function formatDate(date){
+    return date.toISOString().split("T")[0];
+}
+
+/* VALIDATION - FIXED REGEX */
+function validateForm(){
+    if(nameInput.value.trim()===""){
+        alert("Enter Name");
+        return false;
+    }
+
+    if(!/^\d+$/.test(empId.value)){
+        alert("Employee ID must be numeric");
+        return false;
+    }
+
+    if(!/^[6-9]\d{9}$/.test(mobile1.value)){
+        alert("Mobile 1 invalid");
+        return false;
+    }
+
+    if(mobile2.value && !/^[6-9]\d{9}$/.test(mobile2.value)){
+        alert("Mobile 2 invalid");
+        return false;
+    }
+
+    if(email.value && !/^\S+@\S+\.\S+$/.test(email.value)){
+        alert("Invalid Email");
+        return false;
+    }
+
+    const birth=new Date(dob.value);
+    const retirement=new Date(dor.value);
+
+    const minRetire=new Date(birth);
+    minRetire.setFullYear(birth.getFullYear()+50);
+
+    if(retirement<minRetire){
+        alert("Retirement cannot be before 50 years");
+        return false;
+    }
+
+    const sixty=new Date(birth);
+    sixty.setFullYear(birth.getFullYear()+60);
+
+    let expected=new Date(sixty);
+
+    if(birth.getDate()===1){
+        expected.setDate(0);
+    }else{
+        expected.setMonth(expected.getMonth()+1);
+        expected.setDate(0);
+    }
+
+    if(retirement>expected){
+        alert("Retirement exceeds superannuation date");
+        return false;
+    }
+
+    return true;
+}
+
+/* MAIN PROCESS */
+function processForm(){
+    if(!validateForm()) return;
+
+    signatureData=canvas.toDataURL("image/png");
+
+    if(signatureData.length<2000){
+        alert("Please sign");
+        return;
+    }
+
+    // Pre-load signature image for print
+    preloadSignature();
+
+    generatePrint();
+    sendWhatsApp();
+}
+
+function preloadSignature(){
+    const sigContainer = document.getElementById("sigContainer");
+    sigContainer.innerHTML = `<img id="printSig" src="${signatureData}" alt="Signature" style="display:none;">`;
+}
+
+function generatePrint(){
+    const today=new Date().toLocaleDateString("en-IN");
+    const print=document.getElementById("printArea");
+
+    print.innerHTML=`
+    <div class="header">PENSION APPLICATION FORM</div>
+
+    <table>
+        <tr><th>Name</th><td>${nameInput.value}</td></tr>
+        <tr><th>Employee ID</th><td>${empId.value}</td></tr>
+        <tr><th>DOB</th><td>${dob.value}</td></tr>
+        <tr><th>DOJ</th><td>${doj.value}</td></tr>
+        <tr><th>DOR</th><td>${dor.value}</td></tr>
+        <tr><th>Spouse Name</th><td>${spouse.value||"N/A"}</td></tr>
+        <tr><th>Email</th><td>${email.value||"N/A"}</td></tr>
+        <tr><th>Mobile 1</th><td>${mobile1.value}</td></tr>
+        <tr><th>Mobile 2</th><td>${mobile2.value||"N/A"}</td></tr>
+        <tr><th>Address</th><td>${address.value}</td></tr>
+    </table>
+
+    <div class="declaration">
+    I hereby declare that the above information is true and correct to the best of my knowledge.
+    </div>
+
+    <div class="signature">
+        <img src="${signatureData}" id="sigPrint"><br>
+        Signature<br>
+        Date: ${today}
+    </div>
+    `;
+
+    print.style.display="block";
+
+    // Short delay to ensure image loads before print
+    setTimeout(() => {
+        window.print();
+        print.style.display="none";
+    }, 100);
+}
+
+/* WHATSAPP */
+function sendWhatsApp(){
+    const msg=`PENSION APPLICATION
+
+Name: ${nameInput.value}
+Employee ID: ${empId.value}
+DOB: ${dob.value}
+DOJ: ${doj.value}
+DOR: ${dor.value}
+Spouse: ${spouse.value||"N/A"}
+Email: ${email.value||"N/A"}
+Mobile1: ${mobile1.value}
+Mobile2: ${mobile2.value||"N/A"}
+Address: ${address.value}`;
+
+    window.open("https://wa.me/919989036183?text="+encodeURIComponent(msg));
+}
+</script>
+
+</body>
+</html>
