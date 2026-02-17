@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -157,334 +158,317 @@ textarea{resize:vertical}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
 
 <script>
-// ✅ WHATSAPP NOW FULLY VALIDATES DATES - FIXED!
-const dob = document.getElementById("dob");
-const doj = document.getElementById("doj");
-const dor = document.getElementById("dor");
-const dateError = document.getElementById("dateError");
-const dateSuccess = document.getElementById("dateSuccess");
-const signatureError = document.getElementById("signatureError");
-const empIdError = document.getElementById("empIdError");
-const mobile1Error = document.getElementById("mobile1Error");
-const mobile2Error = document.getElementById("mobile2Error");
+// =============================
+// SHORTCUT
+// =============================
+const $ = id => document.getElementById(id);
 
-let signatureCanvas = document.getElementById("signatureCanvas");
-let ctx = signatureCanvas.getContext("2d");
-signatureCanvas.width = 400;
-signatureCanvas.height = 150;
-let hasSignature = false;
-let isDrawing = false;
+// =============================
+// SAFE DATE HELPERS (NO TZ BUG)
+// =============================
+function parseInputDate(value) {
+    const [y, m, d] = value.split("-").map(Number);
+    return new Date(y, m - 1, d); // local date (safe)
+}
+
+function formatDate(date) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+}
 
 function addYears(date, years) {
-    const newDate = new Date(date);
-    newDate.setFullYear(date.getFullYear() + years);
-    return newDate;
+    return new Date(
+        date.getFullYear() + years,
+        date.getMonth(),
+        date.getDate()
+    );
 }
 
-function getLastDayOfDOBMonth(dobDate, yearsOffset) {
-    const futureDate = addYears(dobDate, yearsOffset);
-    const lastDay = new Date(futureDate.getFullYear(), futureDate.getMonth() + 1, 0);
-    return lastDay;
-}
+// =============================
+// ELEMENTS
+// =============================
+const dob = $("dob"), doj = $("doj"), dor = $("dor");
+const dateError = $("dateError"), dateSuccess = $("dateSuccess");
+const mobile1Error = $("mobile1Error"), mobile2Error = $("mobile2Error");
+const signatureError = $("signatureError");
+const form = $("pensionForm");
 
-function getLastDayPrevMonth(dobDate) {
-    const fiftyYearsLater = addYears(dobDate, 50);
-    const prevMonthLastDay = new Date(fiftyYearsLater.getFullYear(), fiftyYearsLater.getMonth(), 0);
-    return prevMonthLastDay;
-}
+// =============================
+// DOR MAX RULE (BUSINESS RULE)
+// =============================
+function getMaxDOR(birthDate) {
+    const sixty = addYears(birthDate, 60);
 
-function updateDependentDates() {
-    if (dob.value) {
-        const dobDate = new Date(dob.value + 'T00:00:00');
-        
-        const dojDate = addYears(dobDate, 24);
-        doj.value = dojDate.toISOString().split('T')[0];
-        
-        let dorDate;
-        if (dobDate.getDate() === 1) {
-            dorDate = getLastDayPrevMonth(dobDate);
-        } else {
-            dorDate = getLastDayOfDOBMonth(dobDate, 55);
-        }
-        dor.value = dorDate.toISOString().split('T')[0];
+    if (birthDate.getDate() === 1) {
+        return new Date(sixty.getFullYear(), sixty.getMonth(), 0);
+    } else {
+        return new Date(sixty.getFullYear(), sixty.getMonth() + 1, 0);
     }
+}
+
+// =============================
+// AUTO DATE CALCULATION
+// =============================
+function autoDates() {
+    if (!dob.value) return;
+
+    const b = parseInputDate(dob.value);
+
+    doj.value = formatDate(addYears(b, 24));
+
+    const maxDor = getMaxDOR(b);
+    dor.value = formatDate(maxDor);
+
     validateDates();
 }
 
+// =============================
+// DATE VALIDATION
+// =============================
 function validateDates() {
-    if (dob.value && doj.value && dor.value) {
-        const dobDate = new Date(dob.value + 'T00:00:00');
-        const dojDate = new Date(doj.value + 'T00:00:00');
-        const dorDate = new Date(dor.value + 'T00:00:00');
-        
-        const yearsDOJ = dojDate.getFullYear() - dobDate.getFullYear();
-        const yearsDOR = dorDate.getFullYear() - dobDate.getFullYear();
-        
-        if (yearsDOJ < 18 || yearsDOJ > 30) {
-            dateError.textContent = `❌ DOJ must be 18-30 years from DOB (${yearsDOJ} years)`;
-            dateError.style.display = "block";
-            dateSuccess.style.display = "none";
-            return false;
-        }
-        
-        if (yearsDOR < 50 || yearsDOR > 60) {
-            dateError.textContent = `❌ DOR must be 50-60 years from DOB (${yearsDOR} years)`;
-            dateError.style.display = "block";
-            dateSuccess.style.display = "none";
-            return false;
-        }
-        
-        if (dobDate >= dojDate || dojDate >= dorDate) {
-            dateError.textContent = "❌ DOB < DOJ < DOR required";
-            dateError.style.display = "block";
-            dateSuccess.style.display = "none";
-            return false;
-        }
-        
-        dateError.style.display = "none";
-        dateSuccess.style.display = "block";
-        dateSuccess.textContent = `✓ DOJ(${yearsDOJ}yrs) DOR(${yearsDOR}yrs) - Validated`;
-        return true;
-    }
-    return false; // Fail if dates missing
-}
+    if (!dob.value || !doj.value || !dor.value) return false;
 
-function validateMobile(input, errorEl) {
-    const value = input.value.replace(/\D/g, '');
-    if (value) {
-        if (value.length !== 10 || !/^[6-9]\d{9}$/.test(value)) {
-            errorEl.textContent = "10 digits, starts with 6-9";
-            errorEl.style.display = "block";
-            input.style.borderColor = "#dc3545";
-            return false;
-        }
+    const b = parseInputDate(dob.value);
+    const j = parseInputDate(doj.value);
+    const r = parseInputDate(dor.value);
+
+    const minDOJ = addYears(b, 18);
+    const maxDOJ = addYears(b, 30);
+
+    const minDOR = addYears(b, 50);
+    const maxDOR = getMaxDOR(b);
+
+    let error = "";
+
+    if (j < minDOJ || j > maxDOJ)
+        error = "❌ DOJ must be between 18–30 years from DOB (exact).";
+
+    else if (r < minDOR || r > maxDOR)
+        error = `❌ DOR must be between 50 years and ${formatDate(maxDOR)}.`;
+
+    else if (!(b < j && j < r))
+        error = "❌ Must follow DOB < DOJ < DOR.";
+
+    if (error) {
+        dateError.textContent = error;
+        dateError.style.display = "block";
+        dateSuccess.style.display = "none";
+        return false;
     }
-    errorEl.style.display = "none";
-    input.style.borderColor = "#dee2e6";
+
+    dateError.style.display = "none";
+    dateSuccess.style.display = "block";
+    dateSuccess.textContent = "✓ Dates validated";
     return true;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    const today = new Date();
-    const currentYear = today.getFullYear();
-    const dobDate = new Date(currentYear - 60, today.getMonth(), today.getDate());
-    dob.value = dobDate.toISOString().split('T')[0];
-    updateDependentDates();
-    
-    dob.addEventListener("change", updateDependentDates);
-    doj.addEventListener("change", validateDates);
-    dor.addEventListener("change", validateDates);
-    
-    document.getElementById("empId").addEventListener("input", function() {
-        const value = this.value;
-        if (value && (!/^\d+$/.test(value) || value.length > 10)) {
-            empIdError.textContent = "Enter valid number (max 10 digits)";
-            empIdError.style.display = "block";
-            this.style.borderColor = "#dc3545";
-        } else {
-            empIdError.style.display = "none";
-            this.style.borderColor = "#dee2e6";
-        }
-    });
-    
-    document.getElementById("mobile1").addEventListener("input", function() {
-        validateMobile(this, mobile1Error);
-    });
-    document.getElementById("mobile2").addEventListener("input", function() {
-        validateMobile(this, mobile2Error);
-    });
-});
-
-// Signature events
-signatureCanvas.addEventListener("mousedown", function(e) {
-    isDrawing = true;
-    hasSignature = true;
-    ctx.lineWidth = 2;
-    ctx.lineCap = "round";
-    ctx.strokeStyle = "#000";
-    const rect = signatureCanvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-});
-
-signatureCanvas.addEventListener("mousemove", function(e) {
-    if (isDrawing) {
-        const rect = signatureCanvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        ctx.lineTo(x, y);
-        ctx.stroke();
-    }
-});
-
-signatureCanvas.addEventListener("mouseup", function() { isDrawing = false; });
-signatureCanvas.addEventListener("mouseout", function() { isDrawing = false; });
-
-signatureCanvas.addEventListener("touchstart", function(e) {
-    e.preventDefault();
-    const touch = e.touches[0];
-    const mouseEvent = new MouseEvent("mousedown", {clientX: touch.clientX, clientY: touch.clientY});
-    signatureCanvas.dispatchEvent(mouseEvent);
-});
-signatureCanvas.addEventListener("touchmove", function(e) {
-    e.preventDefault();
-    const touch = e.touches[0];
-    const mouseEvent = new MouseEvent("mousemove", {clientX: touch.clientX, clientY: touch.clientY});
-    signatureCanvas.dispatchEvent(mouseEvent);
-});
-signatureCanvas.addEventListener("touchend", function(e) {
-    e.preventDefault();
-    const mouseEvent = new MouseEvent("mouseup", {});
-    signatureCanvas.dispatchEvent(mouseEvent);
-});
-
-function clearSignature() {
-    ctx.clearRect(0, 0, signatureCanvas.width, signatureCanvas.height);
-    ctx.fillStyle = "#fff";
-    ctx.fillRect(0, 0, signatureCanvas.width, signatureCanvas.height);
-    hasSignature = false;
-    signatureError.style.display = "none";
+// =============================
+// MOBILE VALIDATION
+// =============================
+function validateMobile(input, errorEl) {
+    const v = input.value.replace(/\D/g, "");
+    const ok = !v || /^[6-9]\d{9}$/.test(v);
+    errorEl.style.display = ok ? "none" : "block";
+    if (!ok) errorEl.textContent = "10 digits, starts with 6-9";
+    return ok;
 }
 
-// ✅ FIXED - FULL VALIDATION BEFORE WHATSAPP
-function sendToWhatsApp() {
-    // Get form data
-    const formData = {
-        name: document.getElementById("pensionerName").value.trim(),
-        empId: document.getElementById("empId").value.trim(),
-        dob: dob.value,
-        doj: doj.value,
-        dor: dor.value,
-        address: document.getElementById("address").value.trim(),
-        mobile1: document.getElementById("mobile1").value.trim(),
-        mobile2: document.getElementById("mobile2").value.trim(),
-        email: document.getElementById("email").value.trim(),
-        branch: document.getElementById("branch").value.trim(),
-        spouse: document.getElementById("spouse").value.trim()
-    };
-    
-    // ✅ CRITICAL DATE VALIDATION FIRST
-    if (!validateDates()) {
-        alert("❌ Date validation failed! Please check DOB, DOJ, DOR.");
-        dateError.style.display = "block";
-        return;
-    }
-    
-    // Check all required fields
-    if (!formData.name || !formData.empId || !formData.address || 
-        !formData.mobile1 || !formData.email || !formData.branch) {
-        alert("Please fill all required fields (* marked)");
-        return;
-    }
-    
-    // Mobile 1 validation
-    if (!validateMobile(document.getElementById("mobile1"), mobile1Error)) {
-        alert("Please enter valid Mobile 1 number");
-        return;
-    }
-    
-    // Signature check
-    if (!hasSignature) {
-        alert("Please provide signature");
-        signatureError.style.display = "block";
-        return;
-    }
-    
-    // ✅ ALL VALID - SEND WHATSAPP
-    const message = `*🆔 IBRA Membership Form*\n\n` +
-        `*👤 Name:* ${formData.name}\n` +
-        `*🆔 SR No/Employee ID:* ${formData.empId}\n` +
-        `*📅 DOB:* ${formData.dob}\n` +
-        `*📅 DOJ:* ${formData.doj}\n` +
-        `*📅 DOR:* ${formData.dor}\n\n` +
-        `*📍 Address:*\n${formData.address}\n\n` +
-        `*📱 Mobile 1:* ${formData.mobile1}\n` +
-        `${formData.mobile2 ? `*📱 Mobile 2:* ${formData.mobile2}\n` : ''}` +
-        `*📧 Email:* ${formData.email}\n` +
-        `*🏦 Pension Branch:* ${formData.branch}\n` +
-        `${formData.spouse ? `*👫 Spouse:* ${formData.spouse}\n` : ''}` +
-        `*📝 Generated:* ${new Date().toLocaleString('en-IN')}`;
-    
-    const whatsappNumber = "919989036183"; // UPDATE YOUR NUMBER
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
-    
-    //alert("✅ WhatsApp message prepared with validated data!");
-}
-
-// PDF submission (already validates)
-document.getElementById("pensionForm").addEventListener("submit", function(e) {
-    e.preventDefault();
-    const formData = {
-        name: document.getElementById("pensionerName").value.trim(),
-        empId: document.getElementById("empId").value.trim(),
-        dob: dob.value,
-        doj: doj.value,
-        dor: dor.value,
-        address: document.getElementById("address").value.trim(),
-        mobile1: document.getElementById("mobile1").value.trim(),
-        mobile2: document.getElementById("mobile2").value.trim(),
-        email: document.getElementById("email").value.trim(),
-        branch: document.getElementById("branch").value.trim(),
-        spouse: document.getElementById("spouse").value.trim()
-    };
-    
-    if (!formData.name || !formData.empId || !formData.address || 
-        !formData.mobile1 || !formData.email || !formData.branch ||
-        !validateDates() || !hasSignature) {
-        alert("Please fill all required fields and signature");
-        return;
-    }
-    
-    generatePDF(formData, signatureCanvas.toDataURL());
-});
-
-function generatePDF(formData, signatureData) {
-    const doc = new jsPDF();
-    doc.setFontSize(20);
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(0, 0, 0);
-    doc.text("IBRA MEMBERSHIP FORM", 105, 25, { align: "center" });
-    
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "normal");
-    doc.setTextColor(0, 0, 0);
-    
-    let yPos = 45;
-    doc.text(`Name: ${formData.name}`, 20, yPos); yPos += 8;
-    doc.text(`SR No/Employee ID: ${formData.empId}`, 20, yPos); yPos += 8;
-    doc.text(`Date of Birth: ${formData.dob}`, 20, yPos); yPos += 8;
-    doc.text(`Date of Joining: ${formData.doj}`, 20, yPos); yPos += 8;
-    doc.text(`Date of Retirement: ${formData.dor}`, 20, yPos); yPos += 12;
-    
-    doc.text("Address:", 20, yPos);
-    doc.setFontSize(10);
-    const addressLines = doc.splitTextToSize(formData.address, 170);
-    doc.text(addressLines, 30, yPos + 8);
-    yPos += 25 + (addressLines.length - 1) * 5;
-    doc.setFontSize(12);
-    
-    doc.text(`Mobile 1: ${formData.mobile1}`, 20, yPos); yPos += 8;
-    if (formData.mobile2) { doc.text(`Mobile 2: ${formData.mobile2}`, 20, yPos); yPos += 8; }
-    doc.text(`Email: ${formData.email}`, 20, yPos); yPos += 8;
-    doc.text(`Pension Branch: ${formData.branch}`, 20, yPos); yPos += 12;
-    
-    if (formData.spouse) { doc.text(`Spouse Name: ${formData.spouse}`, 20, yPos); yPos += 12; }
-    
-    doc.text("Signature:", 20, yPos);
-    doc.addImage(signatureData, 'PNG', 20, yPos + 5, 160, 40);
-    
-    doc.setFontSize(10);
-    doc.text(`Generated: ${new Date().toLocaleString('en-IN')}`, 20, 285);
-    
-    doc.save(`IBRA_Membership_${formData.empId}_${formData.name.replace(/\s+/g, '_')}.pdf`);
-    alert("✅ PDF Generated Successfully!");
-}
+// =============================
+// SIGNATURE PAD
+// =============================
+const canvas = $("signatureCanvas");
+const ctx = canvas.getContext("2d");
+canvas.width = 400;
+canvas.height = 150;
 
 ctx.fillStyle = "#fff";
-ctx.fillRect(0, 0, signatureCanvas.width, signatureCanvas.height);
+ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+let drawing = false, hasSignature = false;
+
+function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const t = e.touches ? e.touches[0] : e;
+    return { x: t.clientX - rect.left, y: t.clientY - rect.top };
+}
+
+["mousedown","touchstart"].forEach(ev =>
+    canvas.addEventListener(ev, e => {
+        e.preventDefault();
+        drawing = true;
+        hasSignature = true;
+        const {x,y} = getPos(e);
+        ctx.beginPath();
+        ctx.moveTo(x,y);
+    })
+);
+
+["mousemove","touchmove"].forEach(ev =>
+    canvas.addEventListener(ev, e => {
+        if (!drawing) return;
+        e.preventDefault();
+        const {x,y} = getPos(e);
+        ctx.lineTo(x,y);
+        ctx.stroke();
+    })
+);
+
+["mouseup","mouseout","touchend"].forEach(ev =>
+    canvas.addEventListener(ev, () => drawing = false)
+);
+
+function clearSignature(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle="#fff";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    hasSignature=false;
+    signatureError.style.display="none";
+}
+
+// =============================
+// FORM DATA
+// =============================
+function getData(){
+    return {
+        name: $("pensionerName").value.trim(),
+        empId: $("empId").value.trim(),
+        dob: dob.value,
+        doj: doj.value,
+        dor: dor.value,
+        address: $("address").value.trim(),
+        mobile1: $("mobile1").value.trim(),
+        mobile2: $("mobile2").value.trim(),
+        email: $("email").value.trim(),
+        branch: $("branch").value.trim(),
+        spouse: $("spouse").value.trim()
+    };
+}
+
+function requiredFilled(d){
+    return d.name && d.empId && d.address &&
+           d.mobile1 && d.email && d.branch;
+}
+
+// =============================
+// WHATSAPP
+// =============================
+function sendToWhatsApp(){
+    const d = getData();
+
+    if (!requiredFilled(d) || !validateDates() ||
+        !validateMobile($("mobile1"), mobile1Error) ||
+        !hasSignature)
+        return alert("Please complete form correctly.");
+
+    const msg =
+`IBRA Membership Form
+
+Name: ${d.name}
+Employee ID: ${d.empId}
+DOB: ${d.dob}
+DOJ: ${d.doj}
+DOR: ${d.dor}
+
+Address:
+${d.address}
+
+Mobile 1: ${d.mobile1}
+${d.mobile2 ? `Mobile 2: ${d.mobile2}\n` : ""}Email: ${d.email}
+Branch: ${d.branch}
+${d.spouse ? `Spouse: ${d.spouse}\n` : ""}
+Generated: ${new Date().toLocaleString("en-IN")}`;
+
+    window.open(`https://wa.me/919989036183?text=${encodeURIComponent(msg)}`, "_blank");
+}
+
+// =============================
+// PDF GENERATION (WITH CERTIFICATE)
+// =============================
+form.addEventListener("submit", e => {
+    e.preventDefault();
+
+    const d = getData();
+
+    if (!requiredFilled(d) || !validateDates() || !hasSignature)
+        return alert("Please complete form correctly.");
+
+    const doc = new jsPDF();
+    doc.setFontSize(18);
+    doc.text("IBRA MEMBERSHIP FORM",105,20,{align:"center"});
+
+    let y = 35;
+
+    // CERTIFICATE
+    doc.setFontSize(11);
+    const cert =
+`I hereby certify that the information furnished above is true and correct to the best of my knowledge and belief. I understand that any false or incorrect information may result in rejection or cancellation of membership at any stage.`;
+
+    const certLines = doc.splitTextToSize(cert,170);
+    doc.text(certLines,20,y);
+    y += certLines.length * 6 + 10;
+
+    doc.setFontSize(12);
+
+    const fields = [
+        ["Name", d.name],
+        ["Employee ID", d.empId],
+        ["Date of Birth", d.dob],
+        ["Date of Joining", d.doj],
+        ["Date of Retirement", d.dor]
+    ];
+
+    fields.forEach(([label,value])=>{
+        doc.text(`${label}: ${value}`,20,y);
+        y+=8;
+    });
+
+    // ADDRESS FIX (NO OVERWRITE)
+    doc.text("Address:",20,y);
+    y+=8;
+
+    doc.setFontSize(10);
+    const addrLines = doc.splitTextToSize(d.address,170);
+    doc.text(addrLines,20,y);
+    y += addrLines.length * 6 + 6;
+
+    doc.setFontSize(12);
+
+    doc.text(`Mobile 1: ${d.mobile1}`,20,y); y+=8;
+    if(d.mobile2){ doc.text(`Mobile 2: ${d.mobile2}`,20,y); y+=8; }
+    doc.text(`Email: ${d.email}`,20,y); y+=8;
+    doc.text(`Branch: ${d.branch}`,20,y); y+=8;
+    if(d.spouse){ doc.text(`Spouse: ${d.spouse}`,20,y); y+=8; }
+
+    y+=10;
+    doc.text("Signature:",20,y);
+    doc.addImage(canvas.toDataURL(),"PNG",20,y+5,120,35);
+
+    doc.setFontSize(9);
+    doc.text(`Generated on: ${new Date().toLocaleString("en-IN")}`,20,285);
+
+    doc.save(`IBRA_${d.empId}.pdf`);
+});
+
+// =============================
+// INIT
+// =============================
+document.addEventListener("DOMContentLoaded",()=>{
+    const today=new Date();
+    dob.value=formatDate(
+        new Date(today.getFullYear()-60,today.getMonth(),today.getDate())
+    );
+
+    autoDates();
+
+    dob.addEventListener("change",autoDates);
+    doj.addEventListener("change",validateDates);
+    dor.addEventListener("change",validateDates);
+
+    $("mobile1").addEventListener("input",e=>validateMobile(e.target,mobile1Error));
+    $("mobile2").addEventListener("input",e=>validateMobile(e.target,mobile2Error));
+});
 </script>
 
 </body>
