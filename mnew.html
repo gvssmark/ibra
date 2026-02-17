@@ -43,7 +43,7 @@ input,textarea{
 textarea{resize:vertical}
 .date-group{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .error{color:#dc3545;font-size:14px;display:none}
-.success{color:#28a745;font-size:14px;display:none}
+.success{color:#28a745;font-size:14px;display:block}
 .signature-pad{
     height:150px;
     border:2px solid #ccc;
@@ -119,7 +119,7 @@ textarea{resize:vertical}
 <input type="date" id="dor" required inputmode="numeric">
 </div>
 <div class="error" id="dateError"></div>
-<div class="success" id="dateSuccess"></div>
+<div class="success" id="dateSuccess">✓ DOB → DOJ(18-30yrs) DOR(50-60yrs, last day)</div>
 
 <label>Address with District, State and PIN Code *</label>
 <textarea id="address" required></textarea>
@@ -146,7 +146,6 @@ textarea{resize:vertical}
 <button type="button" class="btn" onclick="clearSignature()">Clear Signature</button>
 <div class="error" id="signatureError">Signature required</div>
 
-<!-- ✅ WHATSAPP BUTTON ADDED -->
 <button type="button" class="btn btn-whatsapp" onclick="sendToWhatsApp()">
 📱 Send to WhatsApp
 </button>
@@ -158,16 +157,16 @@ textarea{resize:vertical}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
 
 <script>
-// All previous code remains the same...
-const dob=document.getElementById("dob");
-const doj=document.getElementById("doj");
-const dor=document.getElementById("dor");
-const dateError=document.getElementById("dateError");
-const dateSuccess=document.getElementById("dateSuccess");
-const signatureError=document.getElementById("signatureError");
-const empIdError=document.getElementById("empIdError");
-const mobile1Error=document.getElementById("mobile1Error");
-const mobile2Error=document.getElementById("mobile2Error");
+// ✅ WHATSAPP NOW FULLY VALIDATES DATES - FIXED!
+const dob = document.getElementById("dob");
+const doj = document.getElementById("doj");
+const dor = document.getElementById("dor");
+const dateError = document.getElementById("dateError");
+const dateSuccess = document.getElementById("dateSuccess");
+const signatureError = document.getElementById("signatureError");
+const empIdError = document.getElementById("empIdError");
+const mobile1Error = document.getElementById("mobile1Error");
+const mobile2Error = document.getElementById("mobile2Error");
 
 let signatureCanvas = document.getElementById("signatureCanvas");
 let ctx = signatureCanvas.getContext("2d");
@@ -176,48 +175,78 @@ signatureCanvas.height = 150;
 let hasSignature = false;
 let isDrawing = false;
 
-function formatDateLocal(date){
-    const offset=date.getTimezoneOffset();
-    const local=new Date(date.getTime()-offset*60000);
-    return local.toISOString().split("T")[0];
+function addYears(date, years) {
+    const newDate = new Date(date);
+    newDate.setFullYear(date.getFullYear() + years);
+    return newDate;
 }
 
-function autoPopulateDates() {
-    const today = new Date();
-    const currentYear = today.getFullYear();
-    
-    const dobDate = new Date(currentYear - 60, today.getMonth(), today.getDate());
-    dob.value = formatDateLocal(dobDate);
-    
-    const dojDate = new Date(dobDate);
-    dojDate.setFullYear(dobDate.getFullYear() + 22);
-    doj.value = formatDateLocal(dojDate);
-    
-    const dorDate = new Date(dobDate.getFullYear() + 60, dobDate.getMonth() + 1, 0);
-    dor.value = formatDateLocal(dorDate);
-    
+function getLastDayOfDOBMonth(dobDate, yearsOffset) {
+    const futureDate = addYears(dobDate, yearsOffset);
+    const lastDay = new Date(futureDate.getFullYear(), futureDate.getMonth() + 1, 0);
+    return lastDay;
+}
+
+function getLastDayPrevMonth(dobDate) {
+    const fiftyYearsLater = addYears(dobDate, 50);
+    const prevMonthLastDay = new Date(fiftyYearsLater.getFullYear(), fiftyYearsLater.getMonth(), 0);
+    return prevMonthLastDay;
+}
+
+function updateDependentDates() {
+    if (dob.value) {
+        const dobDate = new Date(dob.value + 'T00:00:00');
+        
+        const dojDate = addYears(dobDate, 24);
+        doj.value = dojDate.toISOString().split('T')[0];
+        
+        let dorDate;
+        if (dobDate.getDate() === 1) {
+            dorDate = getLastDayPrevMonth(dobDate);
+        } else {
+            dorDate = getLastDayOfDOBMonth(dobDate, 55);
+        }
+        dor.value = dorDate.toISOString().split('T')[0];
+    }
     validateDates();
 }
 
 function validateDates() {
     if (dob.value && doj.value && dor.value) {
-        const d1 = new Date(dob.value);
-        const d2 = new Date(doj.value);
-        const d3 = new Date(dor.value);
+        const dobDate = new Date(dob.value + 'T00:00:00');
+        const dojDate = new Date(doj.value + 'T00:00:00');
+        const dorDate = new Date(dor.value + 'T00:00:00');
         
-        if (d1 < d2 && d2 < d3) {
-            dateError.style.display = "none";
-            dateSuccess.textContent = "✓ Dates in correct order";
-            dateSuccess.style.display = "block";
-            return true;
-        } else {
-            dateError.textContent = "Birth < Joining < Retirement";
+        const yearsDOJ = dojDate.getFullYear() - dobDate.getFullYear();
+        const yearsDOR = dorDate.getFullYear() - dobDate.getFullYear();
+        
+        if (yearsDOJ < 18 || yearsDOJ > 30) {
+            dateError.textContent = `❌ DOJ must be 18-30 years from DOB (${yearsDOJ} years)`;
             dateError.style.display = "block";
             dateSuccess.style.display = "none";
             return false;
         }
+        
+        if (yearsDOR < 50 || yearsDOR > 60) {
+            dateError.textContent = `❌ DOR must be 50-60 years from DOB (${yearsDOR} years)`;
+            dateError.style.display = "block";
+            dateSuccess.style.display = "none";
+            return false;
+        }
+        
+        if (dobDate >= dojDate || dojDate >= dorDate) {
+            dateError.textContent = "❌ DOB < DOJ < DOR required";
+            dateError.style.display = "block";
+            dateSuccess.style.display = "none";
+            return false;
+        }
+        
+        dateError.style.display = "none";
+        dateSuccess.style.display = "block";
+        dateSuccess.textContent = `✓ DOJ(${yearsDOJ}yrs) DOR(${yearsDOR}yrs) - Validated`;
+        return true;
     }
-    return true;
+    return false; // Fail if dates missing
 }
 
 function validateMobile(input, errorEl) {
@@ -235,31 +264,38 @@ function validateMobile(input, errorEl) {
     return true;
 }
 
-// Event listeners (same as before)
-document.getElementById("empId").addEventListener("input", function() {
-    const value = this.value;
-    if (value && (!/^\d+$/.test(value) || value.length > 10)) {
-        empIdError.textContent = "Enter valid number (max 10 digits)";
-        empIdError.style.display = "block";
-        this.style.borderColor = "#dc3545";
-    } else {
-        empIdError.style.display = "none";
-        this.style.borderColor = "#dee2e6";
-    }
+document.addEventListener('DOMContentLoaded', function() {
+    const today = new Date();
+    const currentYear = today.getFullYear();
+    const dobDate = new Date(currentYear - 60, today.getMonth(), today.getDate());
+    dob.value = dobDate.toISOString().split('T')[0];
+    updateDependentDates();
+    
+    dob.addEventListener("change", updateDependentDates);
+    doj.addEventListener("change", validateDates);
+    dor.addEventListener("change", validateDates);
+    
+    document.getElementById("empId").addEventListener("input", function() {
+        const value = this.value;
+        if (value && (!/^\d+$/.test(value) || value.length > 10)) {
+            empIdError.textContent = "Enter valid number (max 10 digits)";
+            empIdError.style.display = "block";
+            this.style.borderColor = "#dc3545";
+        } else {
+            empIdError.style.display = "none";
+            this.style.borderColor = "#dee2e6";
+        }
+    });
+    
+    document.getElementById("mobile1").addEventListener("input", function() {
+        validateMobile(this, mobile1Error);
+    });
+    document.getElementById("mobile2").addEventListener("input", function() {
+        validateMobile(this, mobile2Error);
+    });
 });
 
-document.getElementById("mobile1").addEventListener("input", function() {
-    validateMobile(this, mobile1Error);
-});
-document.getElementById("mobile2").addEventListener("input", function() {
-    validateMobile(this, mobile2Error);
-});
-
-dob.addEventListener("change", validateDates);
-doj.addEventListener("change", validateDates);
-dor.addEventListener("change", validateDates);
-
-// Signature events (same as before)
+// Signature events
 signatureCanvas.addEventListener("mousedown", function(e) {
     isDrawing = true;
     hasSignature = true;
@@ -286,7 +322,6 @@ signatureCanvas.addEventListener("mousemove", function(e) {
 signatureCanvas.addEventListener("mouseup", function() { isDrawing = false; });
 signatureCanvas.addEventListener("mouseout", function() { isDrawing = false; });
 
-// Touch support
 signatureCanvas.addEventListener("touchstart", function(e) {
     e.preventDefault();
     const touch = e.touches[0];
@@ -313,8 +348,9 @@ function clearSignature() {
     signatureError.style.display = "none";
 }
 
-// ✅ NEW WHATSAPP FUNCTION
+// ✅ FIXED - FULL VALIDATION BEFORE WHATSAPP
 function sendToWhatsApp() {
+    // Get form data
     const formData = {
         name: document.getElementById("pensionerName").value.trim(),
         empId: document.getElementById("empId").value.trim(),
@@ -329,20 +365,34 @@ function sendToWhatsApp() {
         spouse: document.getElementById("spouse").value.trim()
     };
     
-    // Validate required fields
+    // ✅ CRITICAL DATE VALIDATION FIRST
+    if (!validateDates()) {
+        alert("❌ Date validation failed! Please check DOB, DOJ, DOR.");
+        dateError.style.display = "block";
+        return;
+    }
+    
+    // Check all required fields
     if (!formData.name || !formData.empId || !formData.address || 
-        !formData.mobile1 || !formData.email || !formData.branch ||
-        !validateDates()) {
-        alert("Please fill all required fields first");
+        !formData.mobile1 || !formData.email || !formData.branch) {
+        alert("Please fill all required fields (* marked)");
         return;
     }
     
+    // Mobile 1 validation
+    if (!validateMobile(document.getElementById("mobile1"), mobile1Error)) {
+        alert("Please enter valid Mobile 1 number");
+        return;
+    }
+    
+    // Signature check
     if (!hasSignature) {
-        alert("Please provide signature first");
+        alert("Please provide signature");
+        signatureError.style.display = "block";
         return;
     }
     
-    // ✅ FORMATTED WHATSAPP MESSAGE
+    // ✅ ALL VALID - SEND WHATSAPP
     const message = `*🆔 IBRA Membership Form*\n\n` +
         `*👤 Name:* ${formData.name}\n` +
         `*🆔 SR No/Employee ID:* ${formData.empId}\n` +
@@ -357,14 +407,14 @@ function sendToWhatsApp() {
         `${formData.spouse ? `*👫 Spouse:* ${formData.spouse}\n` : ''}` +
         `*📝 Generated:* ${new Date().toLocaleString('en-IN')}`;
     
-    // ✅ UPDATE YOUR WHATSAPP NUMBER HERE (India format)
-    const whatsappNumber = "919989036183"; // ← CHANGE THIS TO YOUR NUMBER
+    const whatsappNumber = "919989036183"; // UPDATE YOUR NUMBER
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-    
     window.open(whatsappUrl, '_blank');
+    
+    //alert("✅ WhatsApp message prepared with validated data!");
 }
 
-// PDF Generation (same as before)
+// PDF submission (already validates)
 document.getElementById("pensionForm").addEventListener("submit", function(e) {
     e.preventDefault();
     const formData = {
@@ -433,8 +483,6 @@ function generatePDF(formData, signatureData) {
     alert("✅ PDF Generated Successfully!");
 }
 
-// Initialize
-autoPopulateDates();
 ctx.fillStyle = "#fff";
 ctx.fillRect(0, 0, signatureCanvas.width, signatureCanvas.height);
 </script>
