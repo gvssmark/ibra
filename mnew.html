@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -465,6 +466,36 @@ document.addEventListener("DOMContentLoaded",()=>{
     $("mobile1").addEventListener("input",e=>validateMobile(e.target,mobile1Error));
     $("mobile2").addEventListener("input",e=>validateMobile(e.target,mobile2Error));
 });
+
+function sendToWhatsApp(){
+    const d = getData();
+
+    if (!requiredFilled(d) || !validateDates() ||
+        !validateMobile($("mobile1"), mobile1Error) ||
+        !hasSignature)
+        return alert("Please complete form correctly.");
+
+    const msg =
+`IBRA Membership Form
+
+Name: ${d.name}
+Employee ID: ${d.empId}
+DOB: ${d.dob}
+DOJ: ${d.doj}
+DOR: ${d.dor}
+
+Address:
+${d.address}
+
+Mobile 1: ${d.mobile1}
+${d.mobile2 ? `Mobile 2: ${d.mobile2}\n` : ""}Email: ${d.email}
+Branch: ${d.branch}
+${d.spouse ? `Spouse: ${d.spouse}\n` : ""}
+Generated: ${new Date().toLocaleString("en-IN")}`;
+
+    window.open(`https://wa.me/919989036183?text=${encodeURIComponent(msg)}`, "_blank");
+}
+
 </script>
 </body>
 </html>
