@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -164,26 +165,28 @@ textarea{resize:vertical}
 const $ = id => document.getElementById(id);
 
 // =============================
-// SAFE DATE HELPERS (NO TZ BUG)
+// DATE HELPERS
 // =============================
-function parseInputDate(value) {
-    const [y, m, d] = value.split("-").map(Number);
-    return new Date(y, m - 1, d); // local date (safe)
+function parseInputDate(value){
+    const [y,m,d] = value.split("-").map(Number);
+    return new Date(y, m-1, d);
 }
 
-function formatDate(date) {
+function formatDate(date){
     const y = date.getFullYear();
-    const m = String(date.getMonth() + 1).padStart(2, "0");
-    const d = String(date.getDate()).padStart(2, "0");
+    const m = String(date.getMonth()+1).padStart(2,"0");
+    const d = String(date.getDate()).padStart(2,"0");
     return `${y}-${m}-${d}`;
 }
 
-function addYears(date, years) {
-    return new Date(
-        date.getFullYear() + years,
-        date.getMonth(),
-        date.getDate()
-    );
+function addYears(date, years){
+    return new Date(date.getFullYear()+years, date.getMonth(), date.getDate());
+}
+
+function clampDate(date,min,max){
+    if(date < min) return min;
+    if(date > max) return max;
+    return date;
 }
 
 // =============================
@@ -192,34 +195,53 @@ function addYears(date, years) {
 const dob = $("dob"), doj = $("doj"), dor = $("dor");
 const dateError = $("dateError"), dateSuccess = $("dateSuccess");
 const mobile1Error = $("mobile1Error"), mobile2Error = $("mobile2Error");
-const signatureError = $("signatureError");
 const form = $("pensionForm");
 
 // =============================
-// DOR MAX RULE (BUSINESS RULE)
+// DOB LIMIT (50–100 YEARS)
 // =============================
-function getMaxDOR(birthDate) {
-    const sixty = addYears(birthDate, 60);
-
-    if (birthDate.getDate() === 1) {
-        return new Date(sixty.getFullYear(), sixty.getMonth(), 0);
-    } else {
-        return new Date(sixty.getFullYear(), sixty.getMonth() + 1, 0);
-    }
+function setDOBLimits(){
+    const today = new Date();
+    const maxDOB = new Date(today.getFullYear()-50,today.getMonth(),today.getDate());
+    const minDOB = new Date(today.getFullYear()-100,today.getMonth(),today.getDate());
+    dob.max = formatDate(maxDOB);
+    dob.min = formatDate(minDOB);
 }
 
 // =============================
-// AUTO DATE CALCULATION
+// DOR MAX RULE (LAST DAY LOGIC)
 // =============================
-function autoDates() {
-    if (!dob.value) return;
+function getMaxDOR(birthDate){
+    const sixty = addYears(birthDate,60);
+    if(birthDate.getDate() === 1)
+        return new Date(sixty.getFullYear(), sixty.getMonth(), 0);
+    else
+        return new Date(sixty.getFullYear(), sixty.getMonth()+1, 0);
+}
+
+// =============================
+// AUTO RECALC FROM DOB ONLY
+// =============================
+function recalcFromDOB(){
+    if(!dob.value) return;
 
     const b = parseInputDate(dob.value);
 
-    doj.value = formatDate(addYears(b, 24));
+    // DOJ: 18–30 years
+    const minDOJ = addYears(b,18);
+    const maxDOJ = addYears(b,30);
 
-    const maxDor = getMaxDOR(b);
-    dor.value = formatDate(maxDor);
+    let j = addYears(b,24); // default 24 yrs
+    j = clampDate(j,minDOJ,maxDOJ);
+    doj.value = formatDate(j);
+
+    // DOR: 50–60 years
+    const minDOR = addYears(b,50);
+    const maxDOR = getMaxDOR(b);
+
+    let r = maxDOR; // default retirement at max
+    r = clampDate(r,minDOR,maxDOR);
+    dor.value = formatDate(r);
 
     validateDates();
 }
@@ -227,122 +249,113 @@ function autoDates() {
 // =============================
 // DATE VALIDATION
 // =============================
-function validateDates() {
-    if (!dob.value || !doj.value || !dor.value) return false;
+function validateDates(){
+    if(!dob.value || !doj.value || !dor.value) return false;
 
     const b = parseInputDate(dob.value);
     const j = parseInputDate(doj.value);
     const r = parseInputDate(dor.value);
 
-    const minDOJ = addYears(b, 18);
-    const maxDOJ = addYears(b, 30);
-
-    const minDOR = addYears(b, 50);
+    const minDOJ = addYears(b,18);
+    const maxDOJ = addYears(b,30);
+    const minDOR = addYears(b,50);
     const maxDOR = getMaxDOR(b);
 
-    let error = "";
+    let error="";
 
-    if (j < minDOJ || j > maxDOJ)
-        error = "❌ DOJ must be between 18–30 years from DOB (exact).";
+    if(j < minDOJ || j > maxDOJ)
+        error="❌ DOJ must be 18–30 years from DOB.";
+    else if(r < minDOR || r > maxDOR)
+        error="❌ DOR must be 50–60 years from DOB.";
+    else if(!(b<j && j<r))
+        error="❌ Must follow DOB < DOJ < DOR.";
 
-    else if (r < minDOR || r > maxDOR)
-        error = `❌ DOR must be between 50 years and ${formatDate(maxDOR)}.`;
-
-    else if (!(b < j && j < r))
-        error = "❌ Must follow DOB < DOJ < DOR.";
-
-    if (error) {
-        dateError.textContent = error;
-        dateError.style.display = "block";
-        dateSuccess.style.display = "none";
+    if(error){
+        dateError.textContent=error;
+        dateError.style.display="block";
+        dateSuccess.style.display="none";
         return false;
     }
 
-    dateError.style.display = "none";
-    dateSuccess.style.display = "block";
-    dateSuccess.textContent = "✓ Dates validated";
+    dateError.style.display="none";
+    dateSuccess.style.display="block";
+    dateSuccess.textContent="✓ Dates validated";
     return true;
 }
 
 // =============================
 // MOBILE VALIDATION
 // =============================
-function validateMobile(input, errorEl) {
-    const v = input.value.replace(/\D/g, "");
-    const ok = !v || /^[6-9]\d{9}$/.test(v);
-    errorEl.style.display = ok ? "none" : "block";
-    if (!ok) errorEl.textContent = "10 digits, starts with 6-9";
+function validateMobile(input,errorEl){
+    const v=input.value.replace(/\D/g,"");
+    const ok=!v || /^[6-9]\d{9}$/.test(v);
+    errorEl.style.display=ok?"none":"block";
+    if(!ok) errorEl.textContent="10 digits, starts with 6-9";
     return ok;
 }
 
 // =============================
 // SIGNATURE PAD
 // =============================
-const canvas = $("signatureCanvas");
-const ctx = canvas.getContext("2d");
-canvas.width = 400;
-canvas.height = 150;
+const canvas=$("signatureCanvas");
+const ctx=canvas.getContext("2d");
+canvas.width=400; canvas.height=150;
+ctx.fillStyle="#fff";
+ctx.fillRect(0,0,canvas.width,canvas.height);
 
-ctx.fillStyle = "#fff";
-ctx.fillRect(0, 0, canvas.width, canvas.height);
+let drawing=false, hasSignature=false;
 
-let drawing = false, hasSignature = false;
-
-function getPos(e) {
-    const rect = canvas.getBoundingClientRect();
-    const t = e.touches ? e.touches[0] : e;
-    return { x: t.clientX - rect.left, y: t.clientY - rect.top };
+function getPos(e){
+    const rect=canvas.getBoundingClientRect();
+    const t=e.touches?e.touches[0]:e;
+    return {x:t.clientX-rect.left,y:t.clientY-rect.top};
 }
 
-["mousedown","touchstart"].forEach(ev =>
-    canvas.addEventListener(ev, e => {
+["mousedown","touchstart"].forEach(ev=>{
+    canvas.addEventListener(ev,e=>{
         e.preventDefault();
-        drawing = true;
-        hasSignature = true;
-        const {x,y} = getPos(e);
-        ctx.beginPath();
-        ctx.moveTo(x,y);
-    })
-);
+        drawing=true; hasSignature=true;
+        const {x,y}=getPos(e);
+        ctx.beginPath(); ctx.moveTo(x,y);
+    });
+});
 
-["mousemove","touchmove"].forEach(ev =>
-    canvas.addEventListener(ev, e => {
-        if (!drawing) return;
+["mousemove","touchmove"].forEach(ev=>{
+    canvas.addEventListener(ev,e=>{
+        if(!drawing) return;
         e.preventDefault();
-        const {x,y} = getPos(e);
-        ctx.lineTo(x,y);
-        ctx.stroke();
-    })
-);
+        const {x,y}=getPos(e);
+        ctx.lineTo(x,y); ctx.stroke();
+    });
+});
 
-["mouseup","mouseout","touchend"].forEach(ev =>
-    canvas.addEventListener(ev, () => drawing = false)
-);
+["mouseup","mouseout","touchend"].forEach(ev=>{
+    canvas.addEventListener(ev,()=>drawing=false);
+});
 
 function clearSignature(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     ctx.fillStyle="#fff";
     ctx.fillRect(0,0,canvas.width,canvas.height);
     hasSignature=false;
-    signatureError.style.display="none";
 }
 
 // =============================
 // FORM DATA
 // =============================
 function getData(){
-    return {
-        name: $("pensionerName").value.trim(),
-        empId: $("empId").value.trim(),
-        dob: dob.value,
-        doj: doj.value,
-        dor: dor.value,
-        address: $("address").value.trim(),
-        mobile1: $("mobile1").value.trim(),
-        mobile2: $("mobile2").value.trim(),
-        email: $("email").value.trim(),
-        branch: $("branch").value.trim(),
-        spouse: $("spouse").value.trim()
+    return{
+        name:$("pensionerName").value.trim(),
+        empId:$("empId").value.trim(),
+        dob:dob.value,
+        doj:doj.value,
+        dor:dor.value,
+        address:$("address").value.trim(),
+        mobile1:$("mobile1").value.trim(),
+        mobile2:$("mobile2").value.trim(),
+        email:$("email").value.trim(),
+        branch:$("branch").value.trim(),
+        spouse:$("spouse").value.trim()
     };
 }
 
@@ -352,101 +365,82 @@ function requiredFilled(d){
 }
 
 // =============================
-// WHATSAPP
+// PDF GENERATION
 // =============================
-function sendToWhatsApp(){
-    const d = getData();
-
-    if (!requiredFilled(d) || !validateDates() ||
-        !validateMobile($("mobile1"), mobile1Error) ||
-        !hasSignature)
-        return alert("Please complete form correctly.");
-
-    const msg =
-`IBRA Membership Form
-
-Name: ${d.name}
-Employee ID: ${d.empId}
-DOB: ${d.dob}
-DOJ: ${d.doj}
-DOR: ${d.dor}
-
-Address:
-${d.address}
-
-Mobile 1: ${d.mobile1}
-${d.mobile2 ? `Mobile 2: ${d.mobile2}\n` : ""}Email: ${d.email}
-Branch: ${d.branch}
-${d.spouse ? `Spouse: ${d.spouse}\n` : ""}
-Generated: ${new Date().toLocaleString("en-IN")}`;
-
-    window.open(`https://wa.me/919989036183?text=${encodeURIComponent(msg)}`, "_blank");
-}
-
-// =============================
-// PDF GENERATION (WITH CERTIFICATE)
-// =============================
-form.addEventListener("submit", e => {
+form.addEventListener("submit",e=>{
     e.preventDefault();
 
-    const d = getData();
-
-    if (!requiredFilled(d) || !validateDates() || !hasSignature)
+    const d=getData();
+    if(!requiredFilled(d)||!validateDates()||!hasSignature)
         return alert("Please complete form correctly.");
 
-    const doc = new jsPDF();
+    const doc=new jsPDF();
     doc.setFontSize(18);
     doc.text("IBRA MEMBERSHIP FORM",105,20,{align:"center"});
 
-    let y = 35;
+    let y=35;
 
-    // CERTIFICATE
     doc.setFontSize(11);
-    const cert =
-`I hereby certify that the information furnished above is true and correct to the best of my knowledge and belief. I understand that any false or incorrect information may result in rejection or cancellation of membership at any stage.`;
+    const cert=`To
+The General Secretary
+Indian Bank Retirees’ Association (AP & TS)
+Flat No#401, Haritasa Residency,
+D No 2-2-1121/2
+New Nallakunta, Hyderabad 500044
 
-    const certLines = doc.splitTextToSize(cert,170);
+Dear Comrade
+Please enrol me as member of the Retirees’ Association. I have read the Bye-laws and rules of the Association and I am willing to abide by them. I am remitting a sum of Rs.1000/- (Rupees One Thousand only) towards one time admission fee and Life Membership. Amount Credited to SB Account No 465693063 with Indian Bank, Himayatnagar Branch / Demand Draft / Cheque favouring Indian Bank Retirees’ Association, AP & TS is enclosed.`;
+
+    const certLines=doc.splitTextToSize(cert,170);
     doc.text(certLines,20,y);
-    y += certLines.length * 6 + 10;
+    y+=certLines.length*6+6; // one line gap
+
+    const labelX=20, valueX=70, gap=8;
 
     doc.setFontSize(12);
 
-    const fields = [
-        ["Name", d.name],
-        ["Employee ID", d.empId],
-        ["Date of Birth", d.dob],
-        ["Date of Joining", d.doj],
-        ["Date of Retirement", d.dor]
-    ];
-
-    fields.forEach(([label,value])=>{
-        doc.text(`${label}: ${value}`,20,y);
-        y+=8;
+    [
+        ["Name",d.name],
+        ["Employee ID",d.empId],
+        ["Date of Birth",d.dob],
+        ["Date of Joining",d.doj],
+        ["Date of Retirement",d.dor]
+    ].forEach(([label,value])=>{
+        doc.text(label,labelX,y);
+        doc.text(":",labelX+45,y);
+        doc.text(value,valueX,y);
+        y+=gap;
     });
 
-    // ADDRESS FIX (NO OVERWRITE)
-    doc.text("Address:",20,y);
-    y+=8;
+    y+=4;
+    doc.text("Address",labelX,y);
+    doc.text(":",labelX+45,y);
+    y+=6;
 
-    doc.setFontSize(10);
-    const addrLines = doc.splitTextToSize(d.address,170);
-    doc.text(addrLines,20,y);
-    y += addrLines.length * 6 + 6;
-
+    doc.setFontSize(11);
+    const addrLines=doc.splitTextToSize(d.address,120);
+    doc.text(addrLines,valueX,y);
+    y+=addrLines.length*6+6;
     doc.setFontSize(12);
 
-    doc.text(`Mobile 1: ${d.mobile1}`,20,y); y+=8;
-    if(d.mobile2){ doc.text(`Mobile 2: ${d.mobile2}`,20,y); y+=8; }
-    doc.text(`Email: ${d.email}`,20,y); y+=8;
-    doc.text(`Branch: ${d.branch}`,20,y); y+=8;
-    if(d.spouse){ doc.text(`Spouse: ${d.spouse}`,20,y); y+=8; }
+    [
+        ["Mobile 1",d.mobile1],
+        ["Mobile 2",d.mobile2],
+        ["Email",d.email],
+        ["Branch",d.branch],
+        ["Spouse",d.spouse]
+    ].forEach(([label,value])=>{
+        if(!value) return;
+        doc.text(label,labelX,y);
+        doc.text(":",labelX+45,y);
+        doc.text(value,valueX,y);
+        y+=gap;
+    });
 
     y+=10;
-    doc.text("Signature:",20,y);
-    doc.addImage(canvas.toDataURL(),"PNG",20,y+5,120,35);
-
-    doc.setFontSize(9);
-    doc.text(`Generated on: ${new Date().toLocaleString("en-IN")}`,20,285);
+    doc.text("Signature",labelX,y);
+    doc.text(":",labelX+45,y);
+    doc.addImage(canvas.toDataURL(),"PNG",valueX,y-5,60,25);
 
     doc.save(`IBRA_${d.empId}.pdf`);
 });
@@ -455,14 +449,16 @@ form.addEventListener("submit", e => {
 // INIT
 // =============================
 document.addEventListener("DOMContentLoaded",()=>{
+    setDOBLimits();
+
     const today=new Date();
     dob.value=formatDate(
         new Date(today.getFullYear()-60,today.getMonth(),today.getDate())
     );
 
-    autoDates();
+    recalcFromDOB();
 
-    dob.addEventListener("change",autoDates);
+    dob.addEventListener("change",recalcFromDOB);
     doj.addEventListener("change",validateDates);
     dor.addEventListener("change",validateDates);
 
@@ -470,6 +466,5 @@ document.addEventListener("DOMContentLoaded",()=>{
     $("mobile2").addEventListener("input",e=>validateMobile(e.target,mobile2Error));
 });
 </script>
-
 </body>
 </html>
