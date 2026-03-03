@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>IBRA Membership Form</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: powderblue; padding: 6px; min-height: 100vh; overflow-x: hidden; }
+        
+        .header { 
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            padding: 12px 3px; text-align: center;
+            background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(5px);
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .container { 
+            max-width: 520px; margin: 80px auto 20px; 
+            background: ghostwhite; border: 1px solid #dee2e6; border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,.1); padding: 15px;
+        }
+
+        label { font-size: small; display: block; margin-top: 15px; margin-bottom: 5px; color: #333; font-weight: 600; }
+        input, select { width: 100%; padding: 12px; border: 2px solid #dee2e6; border-radius: 6px; font-size: 16px; background: #fff; color: #000; }
+
+        .date-group { display: flex; flex-direction: column; gap: 10px; }
+        @media(min-width: 480px) { .date-group { display: grid; grid-template-columns: repeat(3, 1fr); } }
+
+        .dob-color { background:#fff3cd !important; } 
+        .doj-color { background:#d1ecf1 !important; } 
+        .dor-color { background:#d4edda !important; }
+
+        .error { color: #dc3545; font-size: 13px; display: none; margin-top: 5px; font-weight: bold; }
+        .success { color: #28a745; font-size: 13px; display: block; margin-top: 5px; }
+
+        /* Signature Trigger with aspect ratio control to prevent stretching */
+        .sig-trigger {
+            width: 100%; height: 120px; border: 2px dashed #ccc; border-radius: 6px;
+            background: #fff; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; overflow: hidden; margin-bottom: 10px;
+        }
+        #sig-preview { max-height: 100%; max-width: 100%; object-fit: contain; display: none; }
+
+        #sig-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #fff; z-index: 2001; display: none; flex-direction: column;
+            touch-action: none;
+        }
+        .sig-header { 
+            padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; 
+            background: #f8f9fa; border-bottom: 1px solid #ddd;
+        }
+        #canvas { flex: 1; width: 100%; height: 100%; background: #fff; touch-action: none; cursor: crosshair; }
+
+        .btn { padding:14px 20px; border-radius:6px; cursor:pointer; font-weight:bold; border:1px solid #dee2e6; width: 100%; margin-top: 10px; }
+        .btn-submit { background:#007bff; color:#fff; font-size: 18px; }
+        .btn-whatsapp { background:#25D366; color:#fff; }
+    </style>
+</head>
+<body>
+
+<div class="header"><h2 style="margin:0;font-size:24px;color:red">IBRA Membership Form</h2></div>
+
+<div class="container">
+    <form id="pensionForm">
+        <label>Name *</label>
+        <input id="pensionerName" required>
+
+        <label>SR No / Employee ID *</label>
+        <input id="empId" type="number" required inputmode="numeric">
+
+        <label>Dates: <span class="dob-color">Birth</span>, <span class="doj-color">Joining</span>, <span class="dor-color">Retirement*</span></label>
+        <div class="date-group">
+            <input type="date" id="dob" class="dob-color" required>
+            <input type="date" id="doj" class="doj-color" required>
+            <input type="date" id="dor" class="dor-color" required>
+        </div>
+        <div class="error" id="dateError"></div>
+        <div class="success" id="dateSuccess">✓ 50-100yrs range active</div>
+
+        <h3 style="margin-top:20px; font-size:16px; color:#007bff">Address Details</h3>
+        <label>Flat No / House No *</label><input id="hno" required>
+        <label>Area / Land Mark</label><input id="area">
+        <label>Colony / Locality</label><input id="colony">
+        <label>City / Town / Village *</label><input id="city" required>
+        <label>District *</label><input id="dist" required>
+        <label>PIN Code *</label><input id="pin" type="number" required maxlength="6">
+        <label>State *</label>
+        <select id="state" required>
+            <option value="">Select State</option>
+            <option value="Andaman and Nicobar Islands">AN-Andaman and Nicobar Islands</option>
+            <option value="Andhra Pradesh">AP-Andhra Pradesh</option>
+            <option value="Arunāchal Pradesh">AR-Arunāchal Pradesh</option>
+            <option value="Assam">AS-Assam</option>
+            <option value="Bihār">BR-Bihār</option>
+            <option value="Chandigarh">CH-Chandigarh</option>
+            <option value="Chhattīsgarh">CG-Chhattīsgarh</option>
+            <option value="Dādra and Nagar Haveli and Damān and Diu">DH-D&N Haveli & Daman & Diu</option>
+            <option value="Delhi">DL-Delhi</option>
+            <option value="Goa">GA-Goa</option>
+            <option value="Gujarāt">GJ-Gujarāt</option>
+            <option value="Haryāna">HR-Haryāna</option>
+            <option value="Himāchal Pradesh">HP-Himāchal Pradesh</option>
+            <option value="Jammu and Kashmīr">JK-Jammu and Kashmīr</option>
+            <option value="Jhārkhand">JH-Jhārkhand</option>
+            <option value="Karnātaka">KA-Karnātaka</option>
+            <option value="Kerala">KL-Kerala</option>
+            <option value="Ladākh">LA-Ladākh</option>
+            <option value="Lakshadweep">LD-Lakshadweep</option>
+            <option value="Madhya Pradesh">MP-Madhya Pradesh</option>
+            <option value="Mahārāshtra">MH-Mahārāshtra</option>
+            <option value="Manipur">MN-Manipur</option>
+            <option value="Meghālaya">ML-Meghālaya</option>
+            <option value="Mizoram">MZ-Mizoram</option>
+            <option value="Nāgāland">NL-Nāgāland</option>
+            <option value="Odisha">OD-Odisha</option>
+            <option value="Puducherry">PY-Puducherry</option>
+            <option value="Punjab">PB-Punjab</option>
+            <option value="Rājasthān">RJ-Rājasthān</option>
+            <option value="Sikkim">SK-Sikkim</option>
+            <option value="Tamil Nādu">TN-Tamil Nādu</option>
+            <option value="Telangāna">TS-Telangāna</option>
+            <option value="Tripura">TR-Tripura</option>
+            <option value="Uttar Pradesh">UP-Uttar Pradesh</option>
+            <option value="Uttarākhand">UK-Uttarākhand</option>
+            <option value="West Bengal">WB-West Bengal</option>
+        </select>
+
+        <label>Mobile 1 *</label><input id="mob1" type="tel" required maxlength="10">
+        <label>Mobile 2</label><input id="mob2" type="tel" maxlength="10">
+        <label>Email *</label><input id="email" type="email" required>
+        <label>Pension Branch *</label><input id="branch" required>
+        <label>Spouse Name</label><input id="spouse">
+
+        <label>Signature (Tap to sign) *</label>
+        <div class="sig-trigger" onclick="openModal()">
+            <span id="sig-placeholder">Tap to sign electronically</span>
+            <img id="sig-preview">
+        </div>
+
+        <button type="button" class="btn btn-whatsapp" onclick="sendToWhatsApp()">📱 Send to WhatsApp</button>
+        <button type="submit" class="btn btn-submit">💾 Generate PDF</button>
+    </form>
+</div>
+
+<div id="sig-modal">
+    <div class="sig-header">
+        <button type="button" onclick="closeModal()" style="border:none; padding:8px">Cancel</button>
+        <button type="button" onclick="clearCanvas()" style="color:red; background:none; border:none;">Clear</button>
+        <button type="button" onclick="saveSignature()" style="background:#007bff; color:white; border:none; padding:8px 20px; border-radius:4px;">Done</button>
+    </div>
+    <canvas id="canvas"></canvas>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const dob = $("dob"), doj = $("doj"), dor = $("dor");
+const canvas = $("canvas"), ctx = canvas.getContext("2d");
+let drawing = false, hasSignature = false;
+
+// DATE LOGIC
+function parseInputDate(value){ const [y,m,d] = value.split("-").map(Number); return new Date(y, m-1, d); }
+function formatDate(date){ const y = date.getFullYear(), m = String(date.getMonth()+1).padStart(2,"0"), d = String(date.getDate()).padStart(2,"0"); return `${y}-${m}-${d}`; }
+function addYears(date, years){ return new Date(date.getFullYear()+years, date.getMonth(), date.getDate()); }
+
+function setDOBLimits(){
+    const today = new Date();
+    dob.max = formatDate(new Date(today.getFullYear()-50, today.getMonth(), today.getDate()));
+    dob.min = formatDate(new Date(today.getFullYear()-100, today.getMonth(), today.getDate()));
+}
+
+function getMaxDOR(birthDate){
+    const sixty = addYears(birthDate,60);
+    return (birthDate.getDate() === 1) ? new Date(sixty.getFullYear(), sixty.getMonth(), 0) : new Date(sixty.getFullYear(), sixty.getMonth()+1, 0);
+}
+
+function recalcFromDOB(){
+    if(!dob.value) return;
+    const b = parseInputDate(dob.value);
+    const minDOJ = addYears(b,18), maxDOJ = addYears(b,30);
+    doj.value = formatDate(new Date(b.getFullYear()+24, b.getMonth(), b.getDate()));
+    dor.value = formatDate(getMaxDOR(b));
+    validateDates();
+}
+
+function validateDates(){
+    if(!dob.value || !doj.value || !dor.value) return false;
+    const b = parseInputDate(dob.value), j = parseInputDate(doj.value), r = parseInputDate(dor.value);
+    const minDOJ = addYears(b,18), maxDOJ = addYears(b,30), minDOR = addYears(b,50), maxDOR = getMaxDOR(b);
+    let err="";
+    if(j < minDOJ || j > maxDOJ) err="❌ DOJ must be 18–30 years from DOB.";
+    else if(r < minDOR || r > maxDOR) err="❌ DOR must be 50–60 years from DOB.";
+    $("dateError").textContent = err;
+    $("dateError").style.display = err ? "block" : "none";
+    $("dateSuccess").style.display = err ? "none" : "block";
+    return !err;
+}
+
+// SIGNATURE LOGIC
+function openModal() {
+    $("sig-modal").style.display = "flex";
+    setTimeout(resizeCanvas, 100);
+}
+function closeModal() { $("sig-modal").style.display = "none"; }
+function resizeCanvas() {
+    const ratio = window.devicePixelRatio || 1;
+    canvas.width = canvas.offsetWidth * ratio;
+    canvas.height = canvas.offsetHeight * ratio;
+    ctx.scale(ratio, ratio);
+    ctx.lineWidth = 2;
+    ctx.lineCap = "round";
+    ctx.strokeStyle = "#000";
+}
+function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const t = e.touches ? e.touches[0] : e;
+    return { x: t.clientX - rect.left, y: t.clientY - rect.top };
+}
+canvas.addEventListener("touchstart", (e) => { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); e.preventDefault(); }, {passive: false});
+canvas.addEventListener("touchmove", (e) => { if(!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); e.preventDefault(); }, {passive: false});
+canvas.addEventListener("touchend", () => drawing = false);
+
+function clearCanvas() { ctx.clearRect(0,0,canvas.width,canvas.height); hasSignature = false; }
+function saveSignature() {
+    $("sig-preview").src = canvas.toDataURL();
+    $("sig-preview").style.display = "block";
+    $("sig-placeholder").style.display = "none";
+    hasSignature = true;
+    closeModal();
+}
+
+// FORM DATA GATHERING
+function getFormValues(){
+    return {
+        name: $("pensionerName").value,
+        id: $("empId").value,
+        dob: dob.value, doj: doj.value, dor: dor.value,
+        hno: $("hno").value, area: $("area").value,
+        colony: $("colony").value, city: $("city").value,
+        dist: $("dist").value, pin: $("pin").value,
+        state: $("state").value,
+        mob1: $("mob1").value, mob2: $("mob2").value,
+        email: $("email").value, branch: $("branch").value, spouse: $("spouse").value
+    };
+}
+
+// PDF GENERATION
+$("pensionForm").onsubmit = (e) => {
+    e.preventDefault();
+    if(!hasSignature) return alert("Please sign first");
+    const d = getFormValues();
+    const doc = new jsPDF();
+    
+    doc.setFontSize(18); doc.setTextColor(255, 0, 0);
+    doc.text("IBRA MEMBERSHIP FORM", 105, 20, {align:"center"});
+    
+    doc.setFontSize(10); doc.setTextColor(0, 0, 0);
+    const certText = `To\nThe General Secretary\nIndian Bank Retirees’ Association (AP & TS)\nFlat No#401, Haritasa Residency, D No 2-2-1121/2, New Nallakunta, Hyderabad 500044\n\nDear Comrade,\nPlease enrol me as member of the Retirees’ Association. I have read the Bye-laws and rules of the Association and I am willing to abide by them. I am remitting a sum of Rs.1000/- towards one time admission fee and Life Membership. Amount Credited to SB Account No 465693063 with Indian Bank, Himayatnagar Branch is enclosed.`;
+    doc.text(doc.splitTextToSize(certText, 175), 20, 35);
+
+    let y = 90; doc.setFontSize(11);
+    const rows = [
+        ["Name", d.name], ["SR No / ID", d.id], ["DOB", d.dob], ["DOJ", d.doj], ["DOR", d.dor],
+        ["House No", d.hno], ["Area", d.area], ["Colony", d.colony], ["City", d.city],
+        ["District", d.dist], ["PIN", d.pin], ["State", d.state],
+        ["Mobile 1", d.mob1], ["Mobile 2", d.mob2], ["Email", d.email], ["Branch", d.branch], ["Spouse", d.spouse]
+    ];
+
+    rows.forEach(([label, val]) => {
+        if(val) { doc.text(`${label}: ${val}`, 20, y); y += 7; }
+    });
+
+    doc.text("Signature:", 20, y + 10);
+    doc.addImage($("sig-preview").src, 'PNG', 50, y + 5, 50, 20);
+    doc.save(`IBRA_${d.id}.pdf`);
+};
+
+// WHATSAPP GENERATION
+function sendToWhatsApp(){
+    const d = getFormValues();
+    if(!d.name || !d.mob1) return alert("Required fields missing");
+    
+    const msg = `*IBRA Membership Form*
+*Personal Details*
+Name: ${d.name}
+ID: ${d.id}
+DOB: ${d.dob} | DOJ: ${d.doj} | DOR: ${d.dor}
+
+*Address*
+House No: ${d.hno}
+Area: ${d.area}
+Colony: ${d.colony}
+City: ${d.city}
+District: ${d.dist}
+PIN: ${d.pin}
+State: ${d.state}
+
+*Contact*
+Mobile 1: ${d.mob1}
+Mobile 2: ${d.mob2}
+Email: ${d.email}
+Branch: ${d.branch}
+Spouse: ${d.spouse}`;
+
+    window.open(`https://wa.me/919989036183?text=${encodeURIComponent(msg)}`, "_blank");
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    setDOBLimits();
+    dob.onchange = recalcFromDOB;
+    doj.onchange = validateDates;
+    dor.onchange = validateDates;
+});
+</script>
+</body>
+</html>
