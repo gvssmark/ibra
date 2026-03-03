@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IBRA Membership Form</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+font-family:system-ui,-apple-system,system-ui;
+background:#f8f9fa;
+min-height:100vh;
+padding: 6px;
+background: powderblue;
+}
+.container{
+max-width:520px;
+margin:auto;
+margin-top:80px;
+background:#fff;
+border:1px solid #dee2e6;
+border-radius:8px;
+box-shadow:0 2px 10px rgba(0,0,0,.1);
+background: ghostwhite;
+}
+.header{
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+z-index: 1000;
+padding: 12px 3px;
+text-align: center;
+background: rgba(255, 255, 255, 0.65);
+backdrop-filter: blur(5px);
+-webkit-backdrop-filter: blur(5px);
+border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+.form-section{padding: 6px;}
+label{font-size:small;display:block;margin-top:15px;margin-bottom:5px;color:#333}
+input,textarea{
+width:100%;
+padding:12px;
+border:2px solid #dee2e6;
+border-radius:6px;
+font-size:16px;
+background:#fff;
+color:#000
+}
+textarea{resize:vertical}
+.date-group{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.error{color:#dc3545;font-size:14px;display:none}
+.success{color:#28a745;font-size:14px;display:block}
+.signature-trigger{
+width:100%;
+padding:12px;
+border:2px solid #007bff;
+border-radius:6px;
+background:#e3f2fd;
+color:#007bff;
+font-size:16px;
+cursor:pointer;
+text-align:center;
+margin:10px 0;
+transition: all 0.3s ease;
+}
+.signature-trigger:hover{
+background:#bbdefb;
+border-color:#0056b3;
+}
+/* LANDSCAPE FULLSCREEN MODAL */
+.signature-modal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100vw;
+height:100vh;
+background:rgba(0,0,0,0.95);
+z-index:9999;
+}
+.signature-modal.active{
+display:flex !important;
+align-items:center;
+justify-content:center;
+}
+.signature-content{
+position:relative;
+width:100vw;
+height:100vh;
+background:#fff;
+display:flex;
+flex-direction:column;
+overflow:hidden;
+}
+.signature-pad{
+flex:1;
+border:4px solid #007bff;
+border-radius:0;
+background:#fff;
+position:relative;
+margin:0;
+touch-action:none;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+.signature-pad canvas{
+width:100vw;
+height:100vh;
+max-width:100vw;
+max-height:100vh;
+background:#fff;
+display:block;
+object-fit:contain;
+}
+.signature-hint{
+position:absolute;
+top:20px;
+left:50%;
+transform:translateX(-50%);
+background:rgba(0,123,255,0.9);
+color:#fff;
+padding:8px 16px;
+border-radius:20px;
+font-size:18px;
+font-weight:bold;
+z-index:10;
+pointer-events:none;
+animation: pulse 2s infinite;
+}
+@keyframes pulse{
+0%,100%{opacity:1}
+50%{opacity:0.7}
+}
+.modal-buttons{
+position:fixed;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+display:flex;
+gap:15px;
+padding:15px;
+background:rgba(255,255,255,0.95);
+backdrop-filter:blur(10px);
+border-radius:25px;
+box-shadow:0 8px 32px rgba(0,0,0,0.3);
+z-index:100;
+}
+.btn{
+padding:15px 25px;
+border:1px solid #dee2e6;
+border-radius:8px;
+cursor:pointer;
+font-weight:600;
+font-size:16px;
+transition:all 0.3s ease;
+}
+.btn-submit{
+width:100%;
+margin-top:25px;
+font-size:18px;
+background:#007bff;
+color:#fff;
+border-color:#007bff
+}
+.btn-whatsapp{
+background:#25D366;
+color:#fff;
+border-color:#25D366;
+width:100%;
+margin-top:10px
+}
+.btn:hover{background:#0056b3;border-color:#0056b3}
+.btn-whatsapp:hover{background:#128C7E;border-color:#128C7E}
+.btn-modal{background:#28a745;color:#fff;border-color:#28a745;font-size:18px;padding:18px 30px}
+.btn-modal:hover{background:#218838;border-color:#1e7e34}
+.btn-clear{background:#dc3545;color:#fff;border-color:#dc3545;font-size:18px;padding:18px 30px}
+.btn-clear:hover{background:#c82333;border-color:#bd2130}
+.btn-cancel{background:#6c757d;color:#fff;border-color:#6c757d;font-size:18px;padding:18px 30px}
+.btn-cancel:hover{background:#545b62;border-color:#4e555b}
+@media(max-width:768px){
+.signature-modal::before{
+content:"🔄 Rotate to Landscape for Best Signature Experience";
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:rgba(0,0,0,0.9);
+color:#fff;
+padding:20px;
+border-radius:15px;
+text-align:center;
+font-size:18px;
+z-index:1000;
+}
+.modal-buttons{gap:10px;padding:10px;flex-wrap:wrap}
+.btn{padding:12px 20px;font-size:14px}
+}
+@media(max-width:480px){
+.date-group{grid-template-columns:1fr}
+.btn{margin:5px 0}
+.modal-buttons{bottom:10px;width:95%;flex-direction:column}
+.btn{width:100%}
+}
+.dob {background:#fff3cd; padding:0 5px}
+#dob {background:#fff3cd;}
+.doj {background:#d1ecf1; padding:0 5px}
+#doj {background:#d1ecf1;}
+.dor {background:#d4edda; padding:0 5px}
+#dor {background:#d4edda;}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h2 style="margin:0;font-size:24px;color:red">IBRA Membership Form</h2>
+</div>
+<form id="pensionForm" class="form-section">
+<label>Name *</label>
+<input id="pensionerName" required>
+<label>SR No / Employee ID * <span class="error" id="empIdError"></span></label>
+<input id="empId" type="number" min="1" required inputmode="numeric">
+<label>Dates of <span class='dob'>Birth</span>, <span class='doj'>Joining</span>, <span class='dor'>Retirement*</span></label>
+<div class="date-group">
+<input type="date" id="dob" required inputmode="numeric">
+<input type="date" id="doj" required inputmode="numeric">
+<input type="date" id="dor" required inputmode="numeric">
+</div>
+<div class="error" id="dateError"></div>
+<div class="success" id="dateSuccess">✓ DOB → DOJ(18-30yrs) DOR(50-60yrs, last day)</div>
+<label>Address with District, State and PIN Code *</label>
+<textarea id="address" required></textarea>
+<label>Mobile 1 * <span class="error" id="mobile1Error"></span></label>
+<input id="mobile1" type="tel" required inputmode="numeric" maxlength="10">
+<label>Mobile 2 <span class="error" id="mobile2Error"></span></label>
+<input id="mobile2" type="tel" inputmode="numeric" maxlength="10">
+<label>Email *</label>
+<input type="email" id="email" required>
+<label>Pension Branch *</label>
+<input id="branch" required>
+<label>Spouse Name</label>
+<input id="spouse">
+<label>Signature *</label>
+<div class="signature-trigger" onclick="openSignatureModal()">
+✍️ Click here to draw signature (Full Screen)
+</div>
+<div class="error" id="signatureError" style="display:none">Signature required</div>
+<button type="button" class="btn btn-whatsapp" onclick="sendToWhatsApp()">
+📱 Send to WhatsApp
+</button>
+<button type="submit" class="btn btn-submit">💾 Generate PDF</button>
+</form>
+</div>
+
+<!-- FULLSCREEN LANDSCAPE SIGNATURE MODAL -->
+<div id="signatureModal" class="signature-modal">
+<div class="signature-content">
+<div class="signature-hint">Draw your signature here</div>
+<div class="signature-pad">
+<canvas id="signatureCanvas"></canvas>
+</div>
+<div class="modal-buttons">
+<button type="button" class="btn btn-clear" onclick="clearSignature()">Clear</button>
+<button type="button" class="btn btn-modal" onclick="saveSignature()">✓ Save Signature</button>
+<button type="button" class="btn btn-cancel" onclick="closeSignatureModal()">✕ Close</button>
+</div>
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+<script>
+// =============================
+// SHORTCUT + ELEMENTS
+// =============================
+const $ = id => document.getElementById(id);
+const signatureModal = $("signatureModal");
+const signatureError = $("signatureError");
+// =============================
+// SIGNATURE PAD - FULLSCREEN LANDSCAPE
+// =============================
+const canvas=$("signatureCanvas");
+const ctx=canvas.getContext("2d");
+let drawing=false, hasSignature=false;
+let signatureDataURL = null;
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth * window.devicePixelRatio;
+  canvas.height = window.innerHeight * window.devicePixelRatio;
+  ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+  ctx.fillStyle="#fff";
+  ctx.fillRect(0,0,window.innerWidth,window.innerHeight);
+  if(signatureDataURL) {
+    const img = new Image();
+    img.onload = () => {
+      ctx.drawImage(img, 0, 0, window.innerWidth, window.innerHeight);
+    };
+    img.src = signatureDataURL;
+  }
+}
+
+function getPos(e){
+  const rect=canvas.getBoundingClientRect();
+  const t=e.touches?e.touches[0]:e;
+  return {x:t.clientX-rect.left,y:t.clientY-rect.top};
+}
+
+function initSignatureEvents() {
+  canvas.style.width = '100vw';
+  canvas.style.height = '100vh';
+  
+  ["mousedown","touchstart"].forEach(ev=>{
+    canvas.addEventListener(ev,e=>{
+      e.preventDefault();
+      drawing=true; 
+      const {x,y}=getPos(e);
+      ctx.lineWidth=3;
+      ctx.lineCap="round";
+      ctx.lineJoin="round";
+      ctx.strokeStyle="#333";
+      ctx.beginPath(); 
+      ctx.moveTo(x,y);
+    }, {passive:false});
+  });
+  
+  ["mousemove","touchmove"].forEach(ev=>{
+    canvas.addEventListener(ev,e=>{
+      if(!drawing) return;
+      e.preventDefault();
+      const {x,y}=getPos(e);
+      ctx.lineTo(x,y); 
+      ctx.stroke();
+    }, {passive:false});
+  });
+  
+  ["mouseup","mouseout","touchend"].forEach(ev=>{
+    canvas.addEventListener(ev,()=>{
+      if(drawing){
+        drawing=false;
+        signatureDataURL = canvas.toDataURL("image/png", 1.0);
+        hasSignature = true;
+        signatureError.style.display = "none";
+      }
+    }, {passive:false});
+  });
+}
+
+function openSignatureModal() {
+  // Force landscape orientation
+  if (screen.orientation && screen.orientation.lock) {
+    screen.orientation.lock('landscape').catch(() => {});
+  }
+  document.body.style.overflow = 'hidden';
+  signatureModal.classList.add("active");
+  setTimeout(resizeCanvas, 100);
+  setTimeout(initSignatureEvents, 150);
+}
+
+function closeSignatureModal() {
+  signatureModal.classList.remove("active");
+  document.body.style.overflow = '';
+  if (screen.orientation && screen.orientation.unlock) {
+    screen.orientation.unlock();
+  }
+}
+
+function saveSignature() {
+  signatureDataURL = canvas.toDataURL("image/png", 1.0);
+  hasSignature = true;
+  signatureError.style.display = "none";
+  closeSignatureModal();
+}
+
+function clearSignature(){
+  resizeCanvas();
+  hasSignature=false;
+  signatureError.style.display = "none";
+}
+
+// Close on ESC key or outside click
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && signatureModal.classList.contains('active')) {
+    closeSignatureModal();
+  }
+});
+signatureModal.addEventListener('click', function(e) {
+  if(e.target === signatureModal) closeSignatureModal();
+});
+
+// Handle orientation change
+window.addEventListener('orientationchange', () => {
+  if(signatureModal.classList.contains('active')) {
+    setTimeout(resizeCanvas, 300);
+  }
+});
+
+// =============================
+// [ALL EXISTING FORM LOGIC - UNCHANGED]
+// =============================
+const dob = $("dob"), doj = $("doj"), dor = $("dor");
+const dateError = $("dateError"), dateSuccess = $("dateSuccess");
+const mobile1Error = $("mobile1Error"), mobile2Error = $("mobile2Error");
+const form = $("pensionForm");
+
+function parseInputDate(value){
+const [y,m,d] = value.split("-").map(Number);
+return new Date(y, m-1, d);
+}
+function formatDate(date){
+const y = date.getFullYear();
+const m = String(date.getMonth()+1).padStart(2,"0");
+const d = String(date.getDate()).padStart(2,"0");
+return `${y}-${m}-${d}`;
+}
+function addYears(date, years){
+return new Date(date.getFullYear()+years, date.getMonth(), date.getDate());
+}
+function clampDate(date,min,max){
+if(date < min) return min;
+if(date > max) return max;
+return date;
+}
+
+function setDOBLimits(){
+const today = new Date();
+const maxDOB = new Date(today.getFullYear()-50,today.getMonth(),today.getDate());
+const minDOB = new Date(today.getFullYear()-100,today.getMonth(),today.getDate());
+dob.max = formatDate(maxDOB);
+dob.min = formatDate(minDOB);
+}
+
+function getMaxDOR(birthDate){
+const sixty = addYears(birthDate,60);
+if(birthDate.getDate() === 1)
+return new Date(sixty.getFullYear(), sixty.getMonth(), 0);
+else
+return new Date(sixty.getFullYear(), sixty.getMonth()+1, 0);
+}
+
+function recalcFromDOB(){
+if(!dob.value) return;
+const b = parseInputDate(dob.value);
+const minDOJ = addYears(b,18);
+const maxDOJ = addYears(b,30);
+let j = addYears(b,24);
+j = clampDate(j,minDOJ,maxDOJ);
+doj.value = formatDate(j);
+const minDOR = addYears(b,50);
+const maxDOR = getMaxDOR(b);
+let r = maxDOR;
+r = clampDate(r,minDOR,maxDOR);
+dor.value = formatDate(r);
+validateDates();
+}
+
+function validateDates(){
+if(!dob.value || !doj.value || !dor.value) return false;
+const b = parseInputDate(dob.value);
+const j = parseInputDate(doj.value);
+const r = parseInputDate(dor.value);
+const minDOJ = addYears(b,18);
+const maxDOJ = addYears(b,30);
+const minDOR = addYears(b,50);
+const maxDOR = getMaxDOR(b);
+let error="";
+if(j < minDOJ || j > maxDOJ)
+error="❌ DOJ must be 18–30 years from DOB.";
+else if(r < minDOR || r > maxDOR)
+error="❌ DOR must be 50–60 years from DOB.";
+else if(!(b<j && j<r))
+error="❌ Must follow DOB < DOJ < DOR.";
+if(error){
+dateError.textContent=error;
+dateError.style.display="block";
+dateSuccess.style.display="none";
+return false;
+}
+dateError.style.display="none";
+dateSuccess.style.display="block";
+dateSuccess.textContent="✓ Dates validated";
+return true;
+}
+
+function validateMobile(input,errorEl){
+const v=input.value.replace(/\D/g,"");
+const ok=!v || /^[6-9]\d{9}$/.test(v);
+errorEl.style.display=ok?"none":"block";
+if(!ok) errorEl.textContent="10 digits, starts with 6-9";
+return ok;
+}
+
+function getData(){
+return{
+name:$("pensionerName").value.trim(),
+empId:$("empId").value.trim(),
+dob:dob.value,
+doj:doj.value,
+dor:dor.value,
+address:$("address").value.trim(),
+mobile1:$("mobile1").value.trim(),
+mobile2:$("mobile2").value.trim(),
+email:$("email").value.trim(),
+branch:$("branch").value.trim(),
+spouse:$("spouse").value.trim()
+};
+}
+function requiredFilled(d){
+return d.name && d.empId && d.address &&
+d.mobile1 && d.email && d.branch;
+}
+
+form.addEventListener("submit",e=>{
+e.preventDefault();
+const d=getData();
+if(!requiredFilled(d)||!validateDates()||!hasSignature){
+signatureError.style.display = hasSignature ? "none" : "block";
+return alert("Please complete form correctly.");
+}
+const doc=new jsPDF();
+doc.setFontSize(18);
+doc.text("IBRA MEMBERSHIP FORM",105,20,{align:"center"});
+let y=35;
+doc.setFontSize(11);
+const cert=`To
+The General Secretary
+Indian Bank Retirees' Association (AP & TS)
+Flat No#401, Haritasa Residency,
+D No 2-2-1121/2
+New Nallakunta, Hyderabad 500044
+Dear Comrade
+Please enrol me as member of the Retirees' Association. I have read the Bye-laws and rules of the Association and I am willing to abide by them. I am remitting a sum of Rs.1000/- (Rupees One Thousand only) towards one time admission fee and Life Membership. Amount Credited to SB Account No 465693063 with Indian Bank, Himayatnagar Branch / Demand Draft / Cheque favouring Indian Bank Retirees' Association, AP & TS is enclosed.`;
+const certLines=doc.splitTextToSize(cert,170);
+doc.text(certLines,20,y);
+y+=certLines.length*6+6;
+const labelX=20, valueX=70, gap=8;
+doc.setFontSize(12);
+[
+["Name",d.name],
+["Employee ID",d.empId],
+["Date of Birth",d.dob],
+["Date of Joining",d.doj],
+["Date of Retirement",d.dor]
+].forEach(([label,value])=>{
+doc.text(label,labelX,y);
+doc.text(":",labelX+45,y);
+doc.text(value,valueX,y);
+y+=gap;
+});
+y+=4;
+doc.text("Address",labelX,y);
+doc.text(":",labelX+45,y);
+y+=6;
+doc.setFontSize(11);
+const addrLines=doc.splitTextToSize(d.address,120);
+doc.text(addrLines,valueX,y);
+y+=addrLines.length*6+6;
+doc.setFontSize(12);
+[
+["Mobile 1",d.mobile1],
+["Mobile 2",d.mobile2],
+["Email",d.email],
+["Branch",d.branch],
+["Spouse",d.spouse]
+].forEach(([label,value])=>{
+if(!value) return;
+doc.text(label,labelX,y);
+doc.text(":",labelX+45,y);
+doc.text(value,valueX,y);
+y+=gap;
+});
+y+=10;
+doc.text("Signature",labelX,y);
+doc.text(":",labelX+45,y);
+if(signatureDataURL){
+doc.addImage(signatureDataURL,"PNG",valueX,y-5,60,25);
+}
+doc.save(`IBRA_${d.empId}.pdf`);
+});
+
+document.addEventListener("DOMContentLoaded",()=>{
+setDOBLimits();
+const today=new Date();
+dob.value=formatDate(
+new Date(today.getFullYear()-60,today.getMonth(),today.getDate())
+);
+recalcFromDOB();
+dob.addEventListener("change",recalcFromDOB);
+doj.addEventListener("change",validateDates);
+dor.addEventListener("change",validateDates);
+$("mobile1").addEventListener("input",e=>validateMobile(e.target,mobile1Error));
+$("mobile2").addEventListener("input",e=>validateMobile(e.target,mobile2Error));
+});
+
+function sendToWhatsApp(){
+const d = getData();
+if (!requiredFilled(d) || !validateDates() ||
+!validateMobile($("mobile1"), mobile1Error) ||
+!hasSignature){
+signatureError.style.display = hasSignature ? "none" : "block";
+return alert("Please complete form correctly.");
+}
+const msg =
+`IBRA Membership Form
+Name: ${d.name}
+Employee ID: ${d.empId}
+DOB: ${d.dob}
+DOJ: ${d.doj}
+DOR: ${d.dor}
+Address:
+${d.address}
+Mobile 1: ${d.mobile1}
+${d.mobile2 ? `Mobile 2: ${d.mobile2}\n` : ""}Email: ${d.email}
+Branch: ${d.branch}
+${d.spouse ? `Spouse: ${d.spouse}\n` : ""}
+Generated: ${new Date().toLocaleString("en-IN")}`;
+window.open(`https://wa.me/919989036183?text=${encodeURIComponent(msg)}`, "_blank");
+}
+</script>
+</body>
+</html>
