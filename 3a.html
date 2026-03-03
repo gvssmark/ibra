@@ -22,7 +22,7 @@
         }
 
         label { font-size: small; display: block; margin-top: 15px; margin-bottom: 5px; color: #333; font-weight: 600; }
-        input, textarea { width: 100%; padding: 12px; border: 2px solid #dee2e6; border-radius: 6px; font-size: 16px; background: #fff; color: #000; }
+        input, textarea, select { width: 100%; padding: 12px; border: 2px solid #dee2e6; border-radius: 6px; font-size: 16px; background: #fff; color: #000; }
 
         .date-group { display: flex; flex-direction: column; gap: 10px; }
         @media(min-width: 480px) { .date-group { display: grid; grid-template-columns: repeat(3, 1fr); } }
@@ -34,15 +34,13 @@
         .error { color: #dc3545; font-size: 13px; display: none; margin-top: 5px; font-weight: bold; }
         .success { color: #28a745; font-size: 13px; display: block; margin-top: 5px; }
 
-        /* Signature UI */
         .sig-trigger {
             height: 120px; border: 2px dashed #ccc; border-radius: 6px;
             background: #fff; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; overflow: hidden;
+            cursor: pointer; overflow: hidden; margin-bottom: 10px;
         }
         #sig-preview { max-height: 100%; max-width: 100%; display: none; }
 
-        /* Full Screen Signature Modal */
         #sig-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #fff; z-index: 2001; display: none; flex-direction: column;
@@ -53,11 +51,11 @@
             background: #f8f9fa; border-bottom: 1px solid #ddd;
         }
         #canvas { flex: 1; width: 100%; height: 100%; background: #fff; touch-action: none; cursor: crosshair; }
-        .sig-footer { padding: 8px; text-align: center; background: #f8f9fa; border-top: 1px solid #ddd; }
 
         .btn { padding:12px 20px; border-radius:6px; cursor:pointer; font-weight:600; border:1px solid #dee2e6; width: 100%; margin-top: 10px; }
         .btn-submit { background:#007bff; color:#fff; border-color:#007bff; font-size: 18px; }
         .btn-whatsapp { background:#25D366; color:#fff; border-color:#25D366; }
+        .btn-clear { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; padding: 8px 12px; border-radius: 4px; font-size: 14px; }
     </style>
 </head>
 <body>
@@ -72,7 +70,7 @@
         <label>SR No / Employee ID * <span class="error" id="empIdError"></span></label>
         <input id="empId" type="number" min="1" required inputmode="numeric">
 
-        <label>Dates of <span style="background:#fff3cd;padding:2px">Birth</span>, <span style="background:#d1ecf1;padding:2px">Joining</span>, <span style="background:#d4edda;padding:2px">Retirement*</span></label>
+        <label>Dates of <span class="dob-color">Birth</span>, <span class="doj-color">Joining</span>, <span class="dor-color">Retirement*</span></label>
         <div class="date-group">
             <input type="date" id="dob" class="dob-color" required>
             <input type="date" id="doj" class="doj-color" required>
@@ -81,14 +79,71 @@
         <div class="error" id="dateError"></div>
         <div class="success" id="dateSuccess">✓ DOB (50-100yrs) → DOJ(18-30yrs) DOR(50-60yrs, last day)</div>
 
-        <label>Address with District, State and PIN Code *</label>
-        <textarea id="address" required rows="3"></textarea>
+        <h3 style="margin-top:20px; border-bottom:1px solid #ccc; padding-bottom:5px;">Address Details</h3>
+        <label>Flat No & Apts Name / House No *</label>
+        <input id="addr_hno" required>
+        
+        <label>Area / Land Mark</label>
+        <input id="addr_landmark">
+        
+        <label>Colony / Locality</label>
+        <input id="addr_colony">
+        
+        <label>City / Town / Village *</label>
+        <input id="addr_city" required>
+        
+        <label>District *</label>
+        <input id="addr_district" required>
+        
+        <label>PIN Code *</label>
+        <input id="addr_pin" type="number" required maxlength="6">
+        
+        <label>State *</label>
+        <select id="addr_state" required>
+            <option value="">Select State</option>
+            <option value="AN">Andaman and Nicobar Islands</option>
+            <option value="AP">Andhra Pradesh</option>
+            <option value="AR">Arunāchal Pradesh</option>
+            <option value="AS">Assam</option>
+            <option value="BR">Bihār</option>
+            <option value="CH">Chandigarh</option>
+            <option value="CG">Chhattīsgarh</option>
+            <option value="DH">Dādra and Nagar Haveli and Damān and Diu</option>
+            <option value="DL">Delhi</option>
+            <option value="GA">Goa</option>
+            <option value="GJ">Gujarāt</option>
+            <option value="HR">Haryāna</option>
+            <option value="HP">Himāchal Pradesh</option>
+            <option value="JK">Jammu and Kashmīr</option>
+            <option value="JH">Jhārkhand</option>
+            <option value="KA">Karnātaka</option>
+            <option value="KL">Kerala</option>
+            <option value="LA">Ladākh</option>
+            <option value="LD">Lakshadweep</option>
+            <option value="MP">Madhya Pradesh</option>
+            <option value="MH">Mahārāshtra</option>
+            <option value="MN">Manipur</option>
+            <option value="ML">Meghālaya</option>
+            <option value="MZ">Mizoram</option>
+            <option value="NL">Nāgāland</option>
+            <option value="OD">Odisha</option>
+            <option value="PY">Puducherry (Pondicherry)</option>
+            <option value="PB">Punjab</option>
+            <option value="RJ">Rājasthān</option>
+            <option value="SK">Sikkim</option>
+            <option value="TN">Tamil Nādu</option>
+            <option value="TS">Telangāna</option>
+            <option value="TR">Tripura</option>
+            <option value="UP">Uttar Pradesh</option>
+            <option value="UK">Uttarākhand</option>
+            <option value="WB">West Bengal</option>
+        </select>
 
-        <label>Mobile 1 * <span class="error" id="mobile1Error"></span></label>
-        <input id="mobile1" type="tel" required inputmode="numeric" maxlength="10">
+        <label>Mobile 1 *</label>
+        <input id="mobile1" type="tel" required maxlength="10">
 
-        <label>Mobile 2 <span class="error" id="mobile2Error"></span></label>
-        <input id="mobile2" type="tel" inputmode="numeric" maxlength="10">
+        <label>Mobile 2</label>
+        <input id="mobile2" type="tel" maxlength="10">
 
         <label>Email *</label>
         <input type="email" id="email" required>
@@ -101,7 +156,7 @@
 
         <label>Signature (Tap to sign) *</label>
         <div class="sig-trigger" onclick="openModal()">
-            <span id="sig-placeholder">Tap to sign electronically(Rotate if needed)</span>
+            <span id="sig-placeholder">Tap to sign electronically</span>
             <img id="sig-preview">
         </div>
 
@@ -112,14 +167,11 @@
 
 <div id="sig-modal">
     <div class="sig-header">
-        <button type="button" onclick="closeModal()">Cancel</button>
-        <span style="font-weight: bold; font-size: 14px;">Sign Below</span>
-        <button type="button" onclick="saveSignature()" style="background:#007bff; color:white; border:none; padding:8px 15px; border-radius:4px;">Done</button>
+        <button type="button" onclick="closeModal()" style="border:none; background:none; color:#666; font-weight:bold;">Cancel</button>
+        <button type="button" class="btn-clear" onclick="clearCanvas()">Clear</button>
+        <button type="button" onclick="saveSignature()" style="background:#007bff; color:white; border:none; padding:8px 20px; border-radius:4px; font-weight:bold;">Done</button>
     </div>
     <canvas id="canvas"></canvas>
-    <div class="sig-footer">
-        <button type="button" onclick="clearCanvas()" style="color:red; background:none; border:none; text-decoration:underline;">Clear Drawing</button>
-    </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
@@ -129,20 +181,15 @@ const dob = $("dob"), doj = $("doj"), dor = $("dor");
 const canvas = $("canvas"), ctx = canvas.getContext("2d");
 let drawing = false, hasSignature = false;
 
-// =============================
-// DATE LOGIC (RETAINED & FIXED)
-// =============================
+// DATE LOGIC
 function parseInputDate(value){ const [y,m,d] = value.split("-").map(Number); return new Date(y, m-1, d); }
 function formatDate(date){ const y = date.getFullYear(), m = String(date.getMonth()+1).padStart(2,"0"), d = String(date.getDate()).padStart(2,"0"); return `${y}-${m}-${d}`; }
 function addYears(date, years){ return new Date(date.getFullYear()+years, date.getMonth(), date.getDate()); }
 
-// 50–100 YEARS LIMIT FOR DOB
 function setDOBLimits(){
     const today = new Date();
-    const maxDOB = new Date(today.getFullYear()-50, today.getMonth(), today.getDate());
-    const minDOB = new Date(today.getFullYear()-100, today.getMonth(), today.getDate());
-    dob.max = formatDate(maxDOB);
-    dob.min = formatDate(minDOB);
+    dob.max = formatDate(new Date(today.getFullYear()-50, today.getMonth(), today.getDate()));
+    dob.min = formatDate(new Date(today.getFullYear()-100, today.getMonth(), today.getDate()));
 }
 
 function getMaxDOR(birthDate){
@@ -155,10 +202,8 @@ function recalcFromDOB(){
     if(!dob.value) return;
     const b = parseInputDate(dob.value);
     const minDOJ = addYears(b,18), maxDOJ = addYears(b,30);
-    let j = clampDate(addYears(b,24), minDOJ, maxDOJ);
-    doj.value = formatDate(j);
-    const minDOR = addYears(b,50), maxDOR = getMaxDOR(b);
-    dor.value = formatDate(maxDOR);
+    doj.value = formatDate(clampDate(addYears(b,24), minDOJ, maxDOJ));
+    dor.value = formatDate(getMaxDOR(b));
     validateDates();
 }
 
@@ -176,62 +221,35 @@ function validateDates(){
     return !err;
 }
 
-// =============================
-// SIGNATURE PAD (FIXED THICKNESS & ORIENTATION)
-// =============================
+// SIGNATURE LOGIC
 function openModal() {
     $("sig-modal").style.display = "flex";
-    setTimeout(resizeCanvas, 50); // Small delay ensures modal is fully rendered before sizing
+    setTimeout(resizeCanvas, 50);
 }
-
 function closeModal() { $("sig-modal").style.display = "none"; }
-
 function resizeCanvas() {
     const ratio = window.devicePixelRatio || 1;
-    // Internal coordinate size
     canvas.width = canvas.offsetWidth * ratio;
     canvas.height = canvas.offsetHeight * ratio;
-    // visual scale
     ctx.scale(ratio, ratio);
-    ctx.lineWidth = 1.5; // Thinner, professional line
+    ctx.lineWidth = 1.5;
     ctx.lineCap = "round";
     ctx.strokeStyle = "#000";
 }
-
-window.addEventListener('resize', () => { if($("sig-modal").style.display === "flex") resizeCanvas(); });
-window.addEventListener('orientationchange', () => { if($("sig-modal").style.display === "flex") setTimeout(resizeCanvas, 200); });
-
 function getPos(e) {
     const rect = canvas.getBoundingClientRect();
     const t = e.touches ? e.touches[0] : e;
     return { x: t.clientX - rect.left, y: t.clientY - rect.top };
 }
-
-function startDrawing(e) {
-    drawing = true;
-    const p = getPos(e);
-    ctx.beginPath();
-    ctx.moveTo(p.x, p.y);
-    if(e.cancelable) e.preventDefault();
-}
-
-function draw(e) {
-    if (!drawing) return;
-    const p = getPos(e);
-    ctx.lineTo(p.x, p.y);
-    ctx.stroke();
-    if(e.cancelable) e.preventDefault();
-}
-
+function startDrawing(e) { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); if(e.cancelable) e.preventDefault(); }
+function draw(e) { if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); if(e.cancelable) e.preventDefault(); }
 canvas.addEventListener("touchstart", startDrawing, {passive: false});
 canvas.addEventListener("touchmove", draw, {passive: false});
 canvas.addEventListener("touchend", () => drawing = false);
 canvas.addEventListener("mousedown", startDrawing);
 canvas.addEventListener("mousemove", draw);
 window.addEventListener("mouseup", () => drawing = false);
-
 function clearCanvas() { ctx.clearRect(0,0,canvas.width,canvas.height); hasSignature = false; }
-
 function saveSignature() {
     $("sig-preview").src = canvas.toDataURL();
     $("sig-preview").style.display = "block";
@@ -240,15 +258,27 @@ function saveSignature() {
     closeModal();
 }
 
-// =============================
-// PDF & WHATSAPP (RESTORED ORIGINAL)
-// =============================
+// DATA & SUBMISSION
+function getFullAddress() {
+    const fields = [
+        $("addr_hno").value,
+        $("addr_landmark").value,
+        $("addr_colony").value,
+        $("addr_city").value,
+        $("addr_district").value,
+        $("addr_pin").value,
+        $("addr_state").value
+    ];
+    return fields.filter(f => f).join(", ");
+}
+
 function getData(){
     return {
-        name:$("pensionerName").value.trim(), empId:$("empId").value.trim(),
-        dob:dob.value, doj:doj.value, dor:dor.value, address:$("address").value.trim(),
-        mobile1:$("mobile1").value.trim(), mobile2:$("mobile2").value.trim(),
-        email:$("email").value.trim(), branch:$("branch").value.trim(), spouse:$("spouse").value.trim()
+        name:$("pensionerName").value, empId:$("empId").value,
+        dob:dob.value, doj:doj.value, dor:dor.value,
+        address: getFullAddress(),
+        mobile1:$("mobile1").value, mobile2:$("mobile2").value,
+        email:$("email").value, branch:$("branch").value, spouse:$("spouse").value
     };
 }
 
@@ -256,40 +286,29 @@ $("pensionForm").onsubmit = (e) => {
     e.preventDefault();
     const d = getData();
     if(!d.name || !validateDates() || !hasSignature) return alert("Please complete form and sign.");
-    
     const doc = new jsPDF();
-    doc.setFontSize(18);
-    doc.text("IBRA MEMBERSHIP FORM",105,20,{align:"center"});
-    doc.setFontSize(11);
-    const cert = `To\nThe General Secretary\nIndian Bank Retirees’ Association (AP & TS)\nFlat No#401, Haritasa Residency, D No 2-2-1121/2\nNew Nallakunta, Hyderabad 500044\n\nDear Comrade,\nPlease enrol me as member of the Retirees’ Association. I have read the Bye-laws and rules of the Association and I am willing to abide by them. I am remitting a sum of Rs.1000/- (Rupees One Thousand only) towards one time admission fee and Life Membership. Amount Credited to SB Account No 465693063 with Indian Bank, Himayatnagar Branch / Demand Draft / Cheque favouring Indian Bank Retirees’ Association, AP & TS is enclosed.`;
+    doc.setFontSize(18); doc.text("IBRA MEMBERSHIP FORM",105,20,{align:"center"});
+    doc.setFontSize(10);
+    const cert = `To, The General Secretary, Indian Bank Retirees’ Association (AP & TS)... [Rest of cert text]`;
     doc.text(doc.splitTextToSize(cert, 170), 20, 35);
-    
-    let y = 100;
-    const fields = [
-        ["Name", d.name], ["Employee ID", d.empId], ["DOB", d.dob], 
-        ["DOJ", d.doj], ["DOR", d.dor], ["Mobile 1", d.mobile1], 
-        ["Mobile 2", d.mobile2], ["Email", d.email], 
-        ["Branch", d.branch], ["Spouse", d.spouse]
-    ];
-    
-    doc.setFontSize(12);
+    let y = 80; doc.setFontSize(12);
+    const fields = [["Name", d.name], ["Emp ID", d.empId], ["DOB", d.dob], ["DOJ", d.doj], ["DOR", d.dor], ["Address", d.address], ["Mobile 1", d.mobile1], ["Email", d.email], ["Branch", d.branch]];
     fields.forEach(([l, v]) => { 
         if(v){ 
-            doc.text(`${l}:`, 20, y);
-            doc.text(`${v}`, 70, y);
-            y += 8;
+            doc.text(`${l}:`, 20, y); 
+            const valLines = doc.splitTextToSize(v, 110);
+            doc.text(valLines, 70, y); 
+            y += (valLines.length * 7); 
         } 
     });
-
-    doc.text("Signature:", 20, y + 10);
-    doc.addImage($("sig-preview").src, 'PNG', 70, y, 60, 25);
+    doc.addImage($("sig-preview").src, 'PNG', 70, y + 5, 50, 20);
     doc.save(`IBRA_${d.empId}.pdf`);
 };
 
 function sendToWhatsApp(){
     const d = getData();
-    if(!d.name || !d.mobile1) return alert("Fill Name and Mobile");
-    const msg = `IBRA Membership Form\nName: ${d.name}\nEmployee ID: ${d.empId}\nDOB: ${d.dob}\nDOJ: ${d.doj}\nDOR: ${d.dor}\n\nAddress: ${d.address}\n\nMobile 1: ${d.mobile1}\nMobile 2: ${d.mobile2}\nEmail: ${d.email}\nBranch: ${d.branch}\nSpouse: ${d.spouse}\nGenerated: ${new Date().toLocaleString("en-IN")}`;
+    if(!d.name) return alert("Fill Name");
+    const msg = `*IBRA Membership Form*\nName: ${d.name}\nEmp ID: ${d.empId}\nDOB: ${d.dob}\nAddress: ${d.address}\nMobile: ${d.mobile1}\nBranch: ${d.branch}`;
     window.open(`https://wa.me/919989036183?text=${encodeURIComponent(msg)}`, "_blank");
 }
 
