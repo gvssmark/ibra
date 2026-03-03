@@ -214,34 +214,75 @@ $("pensionForm").onsubmit = (e) => {
 
     const doc = new jsPDF();
     const subDate = new Date().toLocaleDateString('en-IN');
-    doc.setFontSize(18); doc.setTextColor(255, 0, 0); doc.text("IBRA MEMBERSHIP FORM", 105, 20, {align:"center"});
     
-    if(hasPhoto) doc.addImage($("photo-preview").src, 'JPEG', 160, 30, 35, 45, undefined, 'FAST');
+    // 1. HEADER
+    doc.setFontSize(18); 
+    doc.setTextColor(255, 0, 0); 
+    doc.text("IBRA MEMBERSHIP FORM", 105, 15, {align:"center"});
     
-    doc.setFontSize(10); doc.setTextColor(0,0,0);
-    doc.text(`Submission Date: ${subDate}`, 20, 30);
-    const cert = `To
-The General Secretary
-Indian Bank Retirees' Association (AP & TS)
-Flat No#401, Haritasa Residency,
-D No 2-2-1121/2
-New Nallakunta, Hyderabad 500044
+    // 2. PHOTO (Fixed Position at Top Right)
+    if(hasPhoto) {
+        doc.addImage($("photo-preview").src, 'JPEG', 160, 25, 35, 45, undefined, 'FAST');
+    }
+    
+    // 3. SUBMISSION DATE
+    doc.setFontSize(9); 
+    doc.setTextColor(0,0,0);
+    doc.text(`Date of Submission: ${subDate}`, 20, 25);
 
-Dear Comrade
+    // 4. THE LONG ADDRESS & CERTIFICATE (Wrapped to avoid Photo)
+    // We set the max width to 130mm so it stops well before the photo (which is at 160mm)
+    const certText = `To\nThe General Secretary\nIndian Bank Retirees' Association (AP & TS)\nFlat No#401, Haritasa Residency,\nD No 2-2-1121/2\nNew Nallakunta, Hyderabad 500044\n\nDear Comrade\n\nPlease enrol me as member of the Retirees' Association. I have read the Bye-laws and rules of the Association and I am willing to abide by them. I am remitting a sum of Rs.1000/- (Rupees One Thousand only) towards one time admission fee and Life Membership. Amount Credited to SB Account No 465693063 with Indian Bank, Himayatnagar Branch / Demand Draft / Cheque favouring Indian Bank Retirees' Association, AP & TS is enclosed.`;
+    
+    doc.setFontSize(10);
+    const splitCert = doc.splitTextToSize(certText, 130);
+    doc.text(splitCert, 20, 35);
 
-Please enrol me as member of the Retirees' Association. I have read the Bye-laws and rules of the Association and I am willing to abide by them. I am remitting a sum of Rs.1000/- (Rupees One Thousand only) towards one time admission fee and Life Membership. Amount Credited to SB Account No 465693063 with Indian Bank, Himayatnagar Branch / Demand Draft / Cheque favouring Indian Bank Retirees' Association, AP & TS is enclosed.`;
-    doc.text(doc.splitTextToSize(cert, 210), 20, 40);
+    // 5. CALCULATE STARTING Y FOR DATA FIELDS
+    // This ensures fields start AFTER the long certificate text
+    let currentY = 35 + (splitCert.length * 5) + 5; 
+    
+    // Ensure we don't start fields higher than the bottom of the photo (25 + 45 = 70)
+    if (currentY < 75) currentY = 75;
 
-    let y = 80; doc.setFontSize(11);
+    doc.setFontSize(11);
     const fields = [
-        ["Name", $("pensionerName").value], ["ID", $("empId").value], ["DOB", $("dob").value], ["DOJ", $("doj").value], ["DOR", $("dor").value],
-        ["H.No", $("hno").value], ["Area", $("area").value], ["Colony", $("colony").value], ["City", $("city").value],
-        ["District", $("dist").value], ["State", $("state").value], ["PIN", $("pin").value],
-        ["Mobile 1", $("mob1").value], ["Mobile 2", $("mob2").value], ["Email", $("email").value], ["Branch", $("branch").value], ["Spouse", $("spouse").value]
+        ["Name", $("pensionerName").value], 
+        ["ID", $("empId").value], 
+        ["DOB", $("dob").value], 
+        ["DOJ", $("doj").value], 
+        ["DOR", $("dor").value],
+        ["H.No", $("hno").value], 
+        ["Area", $("area").value], 
+        ["Colony", $("colony").value], 
+        ["City", $("city").value],
+        ["District", $("dist").value], 
+        ["State", $("state").value], 
+        ["PIN", $("pin").value],
+        ["Mobile 1", $("mob1").value], 
+        ["Mobile 2", $("mob2").value], 
+        ["Email", $("email").value], 
+        ["Branch", $("branch").value], 
+        ["Spouse", $("spouse").value]
     ];
-    fields.forEach(([l, v]) => { if(v){ doc.text(`${l}: ${v}`, 20, y); y += 7; } });
+
+    fields.forEach(([l, v]) => { 
+        if(v && v !== 'NA'){ 
+            doc.setFontStyle("bold");
+            doc.text(`${l}:`, 20, currentY);
+            doc.setFontStyle("normal");
+            doc.text(`${v}`, 60, currentY);
+            currentY += 7; 
+        } 
+    });
     
-    if(hasSig) { doc.text("Signature:", 20, y + 10); doc.addImage($("sig-preview").src, 'PNG', 50, y + 5, 50, 18, undefined, 'FAST'); }
+    // 6. SIGNATURE
+    if(hasSig) { 
+        if (currentY > 270) doc.addPage(); // Handle overflow to new page if needed
+        doc.text("Signature:", 20, currentY + 10); 
+        doc.addImage($("sig-preview").src, 'PNG', 50, currentY + 5, 50, 18, undefined, 'FAST'); 
+    }
+
     doc.save(`IBRA_${$("empId").value}.pdf`);
 };
 
