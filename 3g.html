@@ -51,8 +51,8 @@
         <div class="upload-box" onclick="openCamera()"><span id="photo-prompt">📷 Capture Photo</span><img id="photo-preview"></div>
 
         <label>Full Name *</label><input id="pensionerName" required>
-        <label>Employee ID / SR No *</label><input id="empId" type="number" required>
-
+        <label>Employee ID / SR No *</label>
+<input id="empId" type="text"        required        inputmode="numeric"        pattern="[0-9]*"        placeholder="Digits only">
         <label>Dates (DOB | DOJ | DOR) *</label>
         <div class="date-row">
             <input type="date" id="dob" class="dob-color" required onchange="recalcFromDOB()">
@@ -113,11 +113,13 @@
                     <option value="West Bengal">West Bengal</option>
                 </select>
             </div>
-            <div><label>PIN Code *</label><input id="pin" type="number" required></div>
+            <div><label>PIN Code *</label><input id="pin" type="text"        required         maxlength="5"        inputmode="tel"        pattern="[0-9]*"        placeholder="Digits only"></div>
         </div>
 
-        <label>Mobile 1 *</label><input id="mob1" type="tel" required maxlength="10">
-        <label>Mobile 2</label><input id="mob2" type="tel" maxlength="10">
+        <label>Mobile 1 *</label>
+<input id="mob1" type="tel"        required        maxlength="10"        inputmode="tel"        pattern="[6-9][0-9]{9}"        title="Ten digits starting with 6, 7, 8, or 9"       placeholder="Starts with 6-9">
+<label>Mobile 2</label>
+<input id="mob2" type="tel"        maxlength="10"        inputmode="tel"        pattern="[6-9][0-9]{9}"        title="Ten digits starting with 6, 7, 8, or 9"       placeholder="Optional (Starts with 6-9)">
         <label>Email ID *</label><input id="email" type="email" required>
         <label>Pension Branch *</label><input id="branch" required>
         <label>Spouse Name</label><input id="spouse">
