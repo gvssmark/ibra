@@ -200,13 +200,39 @@ function closeModal(id) { $(id).style.display = "none"; }
 
 // 4. WHATSAPP & PDF (Comprehensive)
 function sendToWhatsApp() {
+    // 1. Get the form element
+    const form = $("pensionForm");
+
+    // 2. Validate all HTML5 patterns and required attributes
+    if (!form.checkValidity()) {
+        // This forces the browser to show the error bubbles (e.g., "Please match the format")
+        form.reportValidity();
+        return; 
+    }
+
+    // 3. If valid, proceed with data collection and opening WhatsApp
     const d = {
-        name: $("pensionerName").value, id: $("empId").value, dob: $("dob").value, doj: $("doj").value, dor: $("dor").value,
-        hno: $("hno").value, area: $("area").value || 'NA', colony: $("colony").value || 'NA', city: $("city").value,
-        dist: $("dist").value, state: $("state").value, pin: $("pin").value, mob1: $("mob1").value,
-        mob2: $("mob2").value || 'NA', email: $("email").value, branch: $("branch").value, spouse: $("spouse").value || 'NA'
+        name: $("pensionerName").value, 
+        id: $("empId").value, 
+        dob: $("dob").value, 
+        doj: $("doj").value, 
+        dor: $("dor").value,
+        hno: $("hno").value, 
+        area: $("area").value || 'NA', 
+        colony: $("colony").value || 'NA', 
+        city: $("city").value,
+        dist: $("dist").value, 
+        state: $("state").value, 
+        pin: $("pin").value, 
+        mob1: $("mob1").value,
+        mob2: $("mob2").value || 'NA', 
+        email: $("email").value, 
+        branch: $("branch").value, 
+        spouse: $("spouse").value || 'NA'
     };
+
     const msg = `*IBRA FORM SUBMISSION*\n*Name:* ${d.name}\n*ID:* ${d.id}\n*DOB/DOJ/DOR:* ${d.dob}/${d.doj}/${d.dor}\n*Address:* \n House No: ${d.hno}\n Area: ${d.area}\n Locality: ${d.colony}\n City/Town/Village: ${d.city}\n District: ${d.dist}\n State: ${d.state} - ${d.pin}\n*Mobile:* ${d.mob1} / ${d.mob2}\n*Email:* ${d.email}\n*Spouse:* ${d.spouse}\n*Branch:* ${d.branch}`;
+
     window.open(`https://wa.me/919989036183?text=${encodeURIComponent(msg)}`, "_blank");
 }
 
