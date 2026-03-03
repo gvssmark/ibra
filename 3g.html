@@ -210,77 +210,95 @@ function sendToWhatsApp() {
 
 $("pensionForm").onsubmit = (e) => {
     e.preventDefault();
+    // Requirements check
     if (isMobile && (!hasPhoto || !hasSig)) return alert("Photo and Signature required on Mobile!");
 
     const doc = new jsPDF();
     const subDate = new Date().toLocaleDateString('en-IN');
     
-    // 1. HEADER
+    // 1. Header
     doc.setFontSize(18); 
-    doc.setTextColor(255, 0, 0); 
+    doc.setTextColor(220, 0, 0); 
+    doc.setFontStyle("bold");
     doc.text("IBRA MEMBERSHIP FORM", 105, 15, {align:"center"});
     
-    // 2. PHOTO (Fixed Position at Top Right)
+    // 2. Passport Photo (Positioned to avoid text)
+    // Anchored at X:155, Y:25. Size: 35x45
     if(hasPhoto) {
-        doc.addImage($("photo-preview").src, 'JPEG', 160, 25, 35, 45, undefined, 'FAST');
+        doc.setDrawColor(200, 200, 200);
+        doc.rect(154, 24, 37, 47); // Optional border for photo
+        doc.addImage($("photo-preview").src, 'JPEG', 155, 25, 35, 45, undefined, 'FAST');
+    } else {
+        // Placeholder for Desktop if no photo
+        doc.setDrawColor(200, 200, 200);
+        doc.rect(155, 25, 35, 45);
+        doc.setFontSize(8);
+        doc.text("PHOTO", 172, 48, {align:"center"});
     }
     
-    // 3. SUBMISSION DATE
+    // 3. Submission Date
     doc.setFontSize(9); 
     doc.setTextColor(0,0,0);
+    doc.setFontStyle("normal");
     doc.text(`Date of Submission: ${subDate}`, 20, 25);
 
-    // 4. THE LONG ADDRESS & CERTIFICATE (Wrapped to avoid Photo)
-    // We set the max width to 130mm so it stops well before the photo (which is at 160mm)
+    // 4. The Long Certificate Text
+    // Wrapped strictly to 125mm to prevent right-margin bleed
     const certText = `To\nThe General Secretary\nIndian Bank Retirees' Association (AP & TS)\nFlat No#401, Haritasa Residency,\nD No 2-2-1121/2\nNew Nallakunta, Hyderabad 500044\n\nDear Comrade\n\nPlease enrol me as member of the Retirees' Association. I have read the Bye-laws and rules of the Association and I am willing to abide by them. I am remitting a sum of Rs.1000/- (Rupees One Thousand only) towards one time admission fee and Life Membership. Amount Credited to SB Account No 465693063 with Indian Bank, Himayatnagar Branch / Demand Draft / Cheque favouring Indian Bank Retirees' Association, AP & TS is enclosed.`;
     
     doc.setFontSize(10);
-    const splitCert = doc.splitTextToSize(certText, 130);
+    const splitCert = doc.splitTextToSize(certText, 125); 
     doc.text(splitCert, 20, 35);
 
-    // 5. CALCULATE STARTING Y FOR DATA FIELDS
-    // This ensures fields start AFTER the long certificate text
+    // 5. Calculate Y position for the next section
+    // Each line in splitText is ~5mm high
     let currentY = 35 + (splitCert.length * 5) + 5; 
     
-    // Ensure we don't start fields higher than the bottom of the photo (25 + 45 = 70)
+    // Ensure data fields don't start until we are clear of the photo's bottom (72mm)
     if (currentY < 75) currentY = 75;
 
+    // 6. Data Fields Mapping
     doc.setFontSize(11);
     const fields = [
         ["Name", $("pensionerName").value], 
-        ["ID", $("empId").value], 
-        ["DOB", $("dob").value], 
-        ["DOJ", $("doj").value], 
-        ["DOR", $("dor").value],
-        ["H.No", $("hno").value], 
+        ["SR No/ID", $("empId").value], 
+        ["Date of Birth", $("dob").value], 
+        ["Date of Joining", $("doj").value], 
+        ["Date of Retirement", $("dor").value],
+        ["House No", $("hno").value], 
         ["Area", $("area").value], 
         ["Colony", $("colony").value], 
         ["City", $("city").value],
         ["District", $("dist").value], 
         ["State", $("state").value], 
-        ["PIN", $("pin").value],
+        ["PIN Code", $("pin").value],
         ["Mobile 1", $("mob1").value], 
         ["Mobile 2", $("mob2").value], 
-        ["Email", $("email").value], 
-        ["Branch", $("branch").value], 
-        ["Spouse", $("spouse").value]
+        ["Email ID", $("email").value], 
+        ["Pension Branch", $("branch").value], 
+        ["Spouse Name", $("spouse").value]
     ];
 
-    fields.forEach(([l, v]) => { 
-        if(v && v !== 'NA'){ 
+    fields.forEach(([label, val]) => { 
+        if(val && val !== 'NA' && val !== ''){ 
+            // Check for page overflow
+            if (currentY > 280) { doc.addPage(); currentY = 20; }
+            
             doc.setFontStyle("bold");
-            doc.text(`${l}:`, 20, currentY);
+            doc.text(`${label}:`, 20, currentY);
             doc.setFontStyle("normal");
-            doc.text(`${v}`, 60, currentY);
+            doc.text(`${val}`, 60, currentY);
             currentY += 7; 
         } 
     });
     
-    // 6. SIGNATURE
+    // 7. Signature Placement
     if(hasSig) { 
-        if (currentY > 270) doc.addPage(); // Handle overflow to new page if needed
+        if (currentY > 260) { doc.addPage(); currentY = 20; }
+        currentY += 5;
+        doc.setFontStyle("bold");
         doc.text("Signature:", 20, currentY + 10); 
-        doc.addImage($("sig-preview").src, 'PNG', 50, currentY + 5, 50, 18, undefined, 'FAST'); 
+        doc.addImage($("sig-preview").src, 'PNG', 50, currentY + 5, 55, 18, undefined, 'FAST'); 
     }
 
     doc.save(`IBRA_${$("empId").value}.pdf`);
