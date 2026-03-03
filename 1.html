@@ -68,7 +68,6 @@ transition: all 0.3s ease;
 background:#bbdefb;
 border-color:#0056b3;
 }
-/* LANDSCAPE FULLSCREEN MODAL */
 .signature-modal{
 display:none;
 position:fixed;
@@ -276,92 +275,113 @@ z-index:1000;
 const $ = id => document.getElementById(id);
 const signatureModal = $("signatureModal");
 const signatureError = $("signatureError");
-// =============================
-// SIGNATURE PAD - FULLSCREEN LANDSCAPE
-// =============================
-const canvas=$("signatureCanvas");
-const ctx=canvas.getContext("2d");
-let drawing=false, hasSignature=false;
+const canvas = $("signatureCanvas");
+const ctx = canvas.getContext("2d");
+let drawing = false, hasSignature = false;
 let signatureDataURL = null;
 
+// =============================
+// SIGNATURE PAD - FIXED VERSION
+// =============================
 function resizeCanvas() {
-  canvas.width = window.innerWidth * window.devicePixelRatio;
-  canvas.height = window.innerHeight * window.devicePixelRatio;
-  ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-  ctx.fillStyle="#fff";
-  ctx.fillRect(0,0,window.innerWidth,window.innerHeight);
-  if(signatureDataURL) {
+  // Store current signature before resize
+  const currentDataURL = canvas.toDataURL();
+  
+  // Set canvas to screen dimensions
+  const rect = canvas.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  canvas.style.width = rect.width + 'px';
+  canvas.style.height = rect.height + 'px';
+  
+  // Reset context scaling
+  ctx.scale(dpr, dpr);
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(0, 0, rect.width, rect.height);
+  
+  // Restore signature if it existed
+  if (currentDataURL && currentDataURL !== signatureDataURL) {
     const img = new Image();
     img.onload = () => {
-      ctx.drawImage(img, 0, 0, window.innerWidth, window.innerHeight);
+      ctx.drawImage(img, 0, 0, rect.width, rect.height);
+      signatureDataURL = canvas.toDataURL("image/png", 1.0);
     };
-    img.src = signatureDataURL;
+    img.src = currentDataURL;
   }
 }
 
-function getPos(e){
-  const rect=canvas.getBoundingClientRect();
-  const t=e.touches?e.touches[0]:e;
-  return {x:t.clientX-rect.left,y:t.clientY-rect.top};
+function getPos(e) {
+  const rect = canvas.getBoundingClientRect();
+  const t = e.touches ? e.touches[0] : e;
+  return {
+    x: t.clientX - rect.left,
+    y: t.clientY - rect.top
+  };
 }
 
 function initSignatureEvents() {
-  canvas.style.width = '100vw';
-  canvas.style.height = '100vh';
+  // Clear existing listeners first
+  canvas.removeEventListener('mousedown', handleStart);
+  canvas.removeEventListener('touchstart', handleStart);
+  canvas.removeEventListener('mousemove', handleMove);
+  canvas.removeEventListener('touchmove', handleMove);
+  canvas.removeEventListener('mouseup', handleEnd);
+  canvas.removeEventListener('touchend', handleEnd);
   
-  ["mousedown","touchstart"].forEach(ev=>{
-    canvas.addEventListener(ev,e=>{
-      e.preventDefault();
-      drawing=true; 
-      const {x,y}=getPos(e);
-      ctx.lineWidth=3;
-      ctx.lineCap="round";
-      ctx.lineJoin="round";
-      ctx.strokeStyle="#333";
-      ctx.beginPath(); 
-      ctx.moveTo(x,y);
-    }, {passive:false});
-  });
+  function handleStart(e) {
+    e.preventDefault();
+    drawing = true;
+    hasSignature = true;
+    signatureError.style.display = "none";
+    
+    const { x, y } = getPos(e);
+    ctx.lineWidth = 3;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.strokeStyle = "#333";
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+  }
   
-  ["mousemove","touchmove"].forEach(ev=>{
-    canvas.addEventListener(ev,e=>{
-      if(!drawing) return;
-      e.preventDefault();
-      const {x,y}=getPos(e);
-      ctx.lineTo(x,y); 
-      ctx.stroke();
-    }, {passive:false});
-  });
+  function handleMove(e) {
+    if (!drawing) return;
+    e.preventDefault();
+    const { x, y } = getPos(e);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+  }
   
-  ["mouseup","mouseout","touchend"].forEach(ev=>{
-    canvas.addEventListener(ev,()=>{
-      if(drawing){
-        drawing=false;
-        signatureDataURL = canvas.toDataURL("image/png", 1.0);
-        hasSignature = true;
-        signatureError.style.display = "none";
-      }
-    }, {passive:false});
-  });
+  function handleEnd(e) {
+    if (drawing) {
+      drawing = false;
+      signatureDataURL = canvas.toDataURL("image/png", 1.0);
+    }
+  }
+  
+  // Add event listeners
+  canvas.addEventListener('mousedown', handleStart, { passive: false });
+  canvas.addEventListener('touchstart', handleStart, { passive: false });
+  canvas.addEventListener('mousemove', handleMove, { passive: false });
+  canvas.addEventListener('touchmove', handleMove, { passive: false });
+  canvas.addEventListener('mouseup', handleEnd, { passive: false });
+  canvas.addEventListener('mouseout', handleEnd, { passive: false });
+  canvas.addEventListener('touchend', handleEnd, { passive: false });
 }
 
 function openSignatureModal() {
-  // Force landscape orientation
-  if (screen.orientation && screen.orientation.lock) {
-    screen.orientation.lock('landscape').catch(() => {});
-  }
   document.body.style.overflow = 'hidden';
   signatureModal.classList.add("active");
-  setTimeout(resizeCanvas, 100);
-  setTimeout(initSignatureEvents, 150);
+  setTimeout(() => {
+    resizeCanvas();
+    initSignatureEvents();
+  }, 100);
 }
 
 function closeSignatureModal() {
   signatureModal.classList.remove("active");
   document.body.style.overflow = '';
-  if (screen.orientation && screen.orientation.unlock) {
-    screen.orientation.unlock();
-  }
 }
 
 function saveSignature() {
@@ -371,157 +391,166 @@ function saveSignature() {
   closeSignatureModal();
 }
 
-function clearSignature(){
-  resizeCanvas();
-  hasSignature=false;
+function clearSignature() {
+  // FIXED: Proper clear with correct dimensions
+  const rect = canvas.getBoundingClientRect();
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(0, 0, rect.width, rect.height);
+  hasSignature = false;
+  signatureDataURL = null;
   signatureError.style.display = "none";
 }
 
-// Close on ESC key or outside click
+// Close on ESC or outside click
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && signatureModal.classList.contains('active')) {
     closeSignatureModal();
   }
 });
+
 signatureModal.addEventListener('click', function(e) {
-  if(e.target === signatureModal) closeSignatureModal();
+  if (e.target === signatureModal) closeSignatureModal();
 });
 
-// Handle orientation change
 window.addEventListener('orientationchange', () => {
-  if(signatureModal.classList.contains('active')) {
+  if (signatureModal.classList.contains('active')) {
     setTimeout(resizeCanvas, 300);
   }
 });
 
 // =============================
-// [ALL EXISTING FORM LOGIC - UNCHANGED]
+// FORM LOGIC (UNCHANGED)
 // =============================
 const dob = $("dob"), doj = $("doj"), dor = $("dor");
 const dateError = $("dateError"), dateSuccess = $("dateSuccess");
 const mobile1Error = $("mobile1Error"), mobile2Error = $("mobile2Error");
 const form = $("pensionForm");
 
-function parseInputDate(value){
-const [y,m,d] = value.split("-").map(Number);
-return new Date(y, m-1, d);
-}
-function formatDate(date){
-const y = date.getFullYear();
-const m = String(date.getMonth()+1).padStart(2,"0");
-const d = String(date.getDate()).padStart(2,"0");
-return `${y}-${m}-${d}`;
-}
-function addYears(date, years){
-return new Date(date.getFullYear()+years, date.getMonth(), date.getDate());
-}
-function clampDate(date,min,max){
-if(date < min) return min;
-if(date > max) return max;
-return date;
+function parseInputDate(value) {
+  const [y, m, d] = value.split("-").map(Number);
+  return new Date(y, m - 1, d);
 }
 
-function setDOBLimits(){
-const today = new Date();
-const maxDOB = new Date(today.getFullYear()-50,today.getMonth(),today.getDate());
-const minDOB = new Date(today.getFullYear()-100,today.getMonth(),today.getDate());
-dob.max = formatDate(maxDOB);
-dob.min = formatDate(minDOB);
+function formatDate(date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
 }
 
-function getMaxDOR(birthDate){
-const sixty = addYears(birthDate,60);
-if(birthDate.getDate() === 1)
-return new Date(sixty.getFullYear(), sixty.getMonth(), 0);
-else
-return new Date(sixty.getFullYear(), sixty.getMonth()+1, 0);
+function addYears(date, years) {
+  return new Date(date.getFullYear() + years, date.getMonth(), date.getDate());
 }
 
-function recalcFromDOB(){
-if(!dob.value) return;
-const b = parseInputDate(dob.value);
-const minDOJ = addYears(b,18);
-const maxDOJ = addYears(b,30);
-let j = addYears(b,24);
-j = clampDate(j,minDOJ,maxDOJ);
-doj.value = formatDate(j);
-const minDOR = addYears(b,50);
-const maxDOR = getMaxDOR(b);
-let r = maxDOR;
-r = clampDate(r,minDOR,maxDOR);
-dor.value = formatDate(r);
-validateDates();
+function clampDate(date, min, max) {
+  if (date < min) return min;
+  if (date > max) return max;
+  return date;
 }
 
-function validateDates(){
-if(!dob.value || !doj.value || !dor.value) return false;
-const b = parseInputDate(dob.value);
-const j = parseInputDate(doj.value);
-const r = parseInputDate(dor.value);
-const minDOJ = addYears(b,18);
-const maxDOJ = addYears(b,30);
-const minDOR = addYears(b,50);
-const maxDOR = getMaxDOR(b);
-let error="";
-if(j < minDOJ || j > maxDOJ)
-error="❌ DOJ must be 18–30 years from DOB.";
-else if(r < minDOR || r > maxDOR)
-error="❌ DOR must be 50–60 years from DOB.";
-else if(!(b<j && j<r))
-error="❌ Must follow DOB < DOJ < DOR.";
-if(error){
-dateError.textContent=error;
-dateError.style.display="block";
-dateSuccess.style.display="none";
-return false;
-}
-dateError.style.display="none";
-dateSuccess.style.display="block";
-dateSuccess.textContent="✓ Dates validated";
-return true;
+function setDOBLimits() {
+  const today = new Date();
+  const maxDOB = new Date(today.getFullYear() - 50, today.getMonth(), today.getDate());
+  const minDOB = new Date(today.getFullYear() - 100, today.getMonth(), today.getDate());
+  dob.max = formatDate(maxDOB);
+  dob.min = formatDate(minDOB);
 }
 
-function validateMobile(input,errorEl){
-const v=input.value.replace(/\D/g,"");
-const ok=!v || /^[6-9]\d{9}$/.test(v);
-errorEl.style.display=ok?"none":"block";
-if(!ok) errorEl.textContent="10 digits, starts with 6-9";
-return ok;
+function getMaxDOR(birthDate) {
+  const sixty = addYears(birthDate, 60);
+  if (birthDate.getDate() === 1)
+    return new Date(sixty.getFullYear(), sixty.getMonth(), 0);
+  else
+    return new Date(sixty.getFullYear(), sixty.getMonth() + 1, 0);
 }
 
-function getData(){
-return{
-name:$("pensionerName").value.trim(),
-empId:$("empId").value.trim(),
-dob:dob.value,
-doj:doj.value,
-dor:dor.value,
-address:$("address").value.trim(),
-mobile1:$("mobile1").value.trim(),
-mobile2:$("mobile2").value.trim(),
-email:$("email").value.trim(),
-branch:$("branch").value.trim(),
-spouse:$("spouse").value.trim()
-};
-}
-function requiredFilled(d){
-return d.name && d.empId && d.address &&
-d.mobile1 && d.email && d.branch;
+function recalcFromDOB() {
+  if (!dob.value) return;
+  const b = parseInputDate(dob.value);
+  const minDOJ = addYears(b, 18);
+  const maxDOJ = addYears(b, 30);
+  let j = addYears(b, 24);
+  j = clampDate(j, minDOJ, maxDOJ);
+  doj.value = formatDate(j);
+  const minDOR = addYears(b, 50);
+  const maxDOR = getMaxDOR(b);
+  let r = maxDOR;
+  r = clampDate(r, minDOR, maxDOR);
+  dor.value = formatDate(r);
+  validateDates();
 }
 
-form.addEventListener("submit",e=>{
-e.preventDefault();
-const d=getData();
-if(!requiredFilled(d)||!validateDates()||!hasSignature){
-signatureError.style.display = hasSignature ? "none" : "block";
-return alert("Please complete form correctly.");
+function validateDates() {
+  if (!dob.value || !doj.value || !dor.value) return false;
+  const b = parseInputDate(dob.value);
+  const j = parseInputDate(doj.value);
+  const r = parseInputDate(dor.value);
+  const minDOJ = addYears(b, 18);
+  const maxDOJ = addYears(b, 30);
+  const minDOR = addYears(b, 50);
+  const maxDOR = getMaxDOR(b);
+  let error = "";
+  if (j < minDOJ || j > maxDOJ)
+    error = "❌ DOJ must be 18–30 years from DOB.";
+  else if (r < minDOR || r > maxDOR)
+    error = "❌ DOR must be 50–60 years from DOB.";
+  else if (!(b < j && j < r))
+    error = "❌ Must follow DOB < DOJ < DOR.";
+  if (error) {
+    dateError.textContent = error;
+    dateError.style.display = "block";
+    dateSuccess.style.display = "none";
+    return false;
+  }
+  dateError.style.display = "none";
+  dateSuccess.style.display = "block";
+  dateSuccess.textContent = "✓ Dates validated";
+  return true;
 }
-const doc=new jsPDF();
-doc.setFontSize(18);
-doc.text("IBRA MEMBERSHIP FORM",105,20,{align:"center"});
-let y=35;
-doc.setFontSize(11);
-const cert=`To
+
+function validateMobile(input, errorEl) {
+  const v = input.value.replace(/\D/g, "");
+  const ok = !v || /^[6-9]\d{9}$/.test(v);
+  errorEl.style.display = ok ? "none" : "block";
+  if (!ok) errorEl.textContent = "10 digits, starts with 6-9";
+  return ok;
+}
+
+function getData() {
+  return {
+    name: $("pensionerName").value.trim(),
+    empId: $("empId").value.trim(),
+    dob: dob.value,
+    doj: doj.value,
+    dor: dor.value,
+    address: $("address").value.trim(),
+    mobile1: $("mobile1").value.trim(),
+    mobile2: $("mobile2").value.trim(),
+    email: $("email").value.trim(),
+    branch: $("branch").value.trim(),
+    spouse: $("spouse").value.trim()
+  };
+}
+
+function requiredFilled(d) {
+  return d.name && d.empId && d.address &&
+    d.mobile1 && d.email && d.branch;
+}
+
+form.addEventListener("submit", e => {
+  e.preventDefault();
+  const d = getData();
+  if (!requiredFilled(d) || !validateDates() || !hasSignature) {
+    signatureError.style.display = hasSignature ? "none" : "block";
+    return alert("Please complete form correctly.");
+  }
+  const doc = new jsPDF();
+  doc.setFontSize(18);
+  doc.text("IBRA MEMBERSHIP FORM", 105, 20, { align: "center" });
+  let y = 35;
+  doc.setFontSize(11);
+  const cert = `To
 The General Secretary
 Indian Bank Retirees' Association (AP & TS)
 Flat No#401, Haritasa Residency,
@@ -529,78 +558,77 @@ D No 2-2-1121/2
 New Nallakunta, Hyderabad 500044
 Dear Comrade
 Please enrol me as member of the Retirees' Association. I have read the Bye-laws and rules of the Association and I am willing to abide by them. I am remitting a sum of Rs.1000/- (Rupees One Thousand only) towards one time admission fee and Life Membership. Amount Credited to SB Account No 465693063 with Indian Bank, Himayatnagar Branch / Demand Draft / Cheque favouring Indian Bank Retirees' Association, AP & TS is enclosed.`;
-const certLines=doc.splitTextToSize(cert,170);
-doc.text(certLines,20,y);
-y+=certLines.length*6+6;
-const labelX=20, valueX=70, gap=8;
-doc.setFontSize(12);
-[
-["Name",d.name],
-["Employee ID",d.empId],
-["Date of Birth",d.dob],
-["Date of Joining",d.doj],
-["Date of Retirement",d.dor]
-].forEach(([label,value])=>{
-doc.text(label,labelX,y);
-doc.text(":",labelX+45,y);
-doc.text(value,valueX,y);
-y+=gap;
-});
-y+=4;
-doc.text("Address",labelX,y);
-doc.text(":",labelX+45,y);
-y+=6;
-doc.setFontSize(11);
-const addrLines=doc.splitTextToSize(d.address,120);
-doc.text(addrLines,valueX,y);
-y+=addrLines.length*6+6;
-doc.setFontSize(12);
-[
-["Mobile 1",d.mobile1],
-["Mobile 2",d.mobile2],
-["Email",d.email],
-["Branch",d.branch],
-["Spouse",d.spouse]
-].forEach(([label,value])=>{
-if(!value) return;
-doc.text(label,labelX,y);
-doc.text(":",labelX+45,y);
-doc.text(value,valueX,y);
-y+=gap;
-});
-y+=10;
-doc.text("Signature",labelX,y);
-doc.text(":",labelX+45,y);
-if(signatureDataURL){
-doc.addImage(signatureDataURL,"PNG",valueX,y-5,60,25);
-}
-doc.save(`IBRA_${d.empId}.pdf`);
-});
-
-document.addEventListener("DOMContentLoaded",()=>{
-setDOBLimits();
-const today=new Date();
-dob.value=formatDate(
-new Date(today.getFullYear()-60,today.getMonth(),today.getDate())
-);
-recalcFromDOB();
-dob.addEventListener("change",recalcFromDOB);
-doj.addEventListener("change",validateDates);
-dor.addEventListener("change",validateDates);
-$("mobile1").addEventListener("input",e=>validateMobile(e.target,mobile1Error));
-$("mobile2").addEventListener("input",e=>validateMobile(e.target,mobile2Error));
+  const certLines = doc.splitTextToSize(cert, 170);
+  doc.text(certLines, 20, y);
+  y += certLines.length * 6 + 6;
+  const labelX = 20, valueX = 70, gap = 8;
+  doc.setFontSize(12);
+  [
+    ["Name", d.name],
+    ["Employee ID", d.empId],
+    ["Date of Birth", d.dob],
+    ["Date of Joining", d.doj],
+    ["Date of Retirement", d.dor]
+  ].forEach(([label, value]) => {
+    doc.text(label, labelX, y);
+    doc.text(":", labelX + 45, y);
+    doc.text(value, valueX, y);
+    y += gap;
+  });
+  y += 4;
+  doc.text("Address", labelX, y);
+  doc.text(":", labelX + 45, y);
+  y += 6;
+  doc.setFontSize(11);
+  const addrLines = doc.splitTextToSize(d.address, 120);
+  doc.text(addrLines, valueX, y);
+  y += addrLines.length * 6 + 6;
+  doc.setFontSize(12);
+  [
+    ["Mobile 1", d.mobile1],
+    ["Mobile 2", d.mobile2],
+    ["Email", d.email],
+    ["Branch", d.branch],
+    ["Spouse", d.spouse]
+  ].forEach(([label, value]) => {
+    if (!value) return;
+    doc.text(label, labelX, y);
+    doc.text(":", labelX + 45, y);
+    doc.text(value, valueX, y);
+    y += gap;
+  });
+  y += 10;
+  doc.text("Signature", labelX, y);
+  doc.text(":", labelX + 45, y);
+  if (signatureDataURL) {
+    doc.addImage(signatureDataURL, "PNG", valueX, y - 5, 60, 25);
+  }
+  doc.save(`IBRA_${d.empId}.pdf`);
 });
 
-function sendToWhatsApp(){
-const d = getData();
-if (!requiredFilled(d) || !validateDates() ||
-!validateMobile($("mobile1"), mobile1Error) ||
-!hasSignature){
-signatureError.style.display = hasSignature ? "none" : "block";
-return alert("Please complete form correctly.");
-}
-const msg =
-`IBRA Membership Form
+document.addEventListener("DOMContentLoaded", () => {
+  setDOBLimits();
+  const today = new Date();
+  dob.value = formatDate(
+    new Date(today.getFullYear() - 60, today.getMonth(), today.getDate())
+  );
+  recalcFromDOB();
+  dob.addEventListener("change", recalcFromDOB);
+  doj.addEventListener("change", validateDates);
+  dor.addEventListener("change", validateDates);
+  $("mobile1").addEventListener("input", e => validateMobile(e.target, mobile1Error));
+  $("mobile2").addEventListener("input", e => validateMobile(e.target, mobile2Error));
+});
+
+function sendToWhatsApp() {
+  const d = getData();
+  if (!requiredFilled(d) || !validateDates() ||
+    !validateMobile($("mobile1"), mobile1Error) ||
+    !hasSignature) {
+    signatureError.style.display = hasSignature ? "none" : "block";
+    return alert("Please complete form correctly.");
+  }
+  const msg = `IBRA Membership Form
 Name: ${d.name}
 Employee ID: ${d.empId}
 DOB: ${d.dob}
@@ -613,7 +641,7 @@ ${d.mobile2 ? `Mobile 2: ${d.mobile2}\n` : ""}Email: ${d.email}
 Branch: ${d.branch}
 ${d.spouse ? `Spouse: ${d.spouse}\n` : ""}
 Generated: ${new Date().toLocaleString("en-IN")}`;
-window.open(`https://wa.me/919989036183?text=${encodeURIComponent(msg)}`, "_blank");
+  window.open(`https://wa.me/919989036183?text=${encodeURIComponent(msg)}`, "_blank");
 }
 </script>
 </body>
