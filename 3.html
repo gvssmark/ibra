@@ -27,9 +27,9 @@
         .date-group { display: flex; flex-direction: column; gap: 10px; }
         @media(min-width: 480px) { .date-group { display: grid; grid-template-columns: repeat(3, 1fr); } }
 
-        .dob { background:#fff3cd; padding:0 5px } #dob { background:#fff3cd; }
-        .doj { background:#d1ecf1; padding:0 5px } #doj { background:#d1ecf1; }
-        .dor { background:#d4edda; padding:0 5px } #dor { background:#d4edda; }
+        .dob-color { background:#fff3cd !important; } 
+        .doj-color { background:#d1ecf1 !important; } 
+        .dor-color { background:#d4edda !important; }
 
         .error { color: #dc3545; font-size: 13px; display: none; margin-top: 5px; font-weight: bold; }
         .success { color: #28a745; font-size: 13px; display: block; margin-top: 5px; }
@@ -46,7 +46,7 @@
         #sig-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #fff; z-index: 2001; display: none; flex-direction: column;
-            touch-action: none; /* Prevents scrolling/zooming while signing */
+            touch-action: none;
         }
         .sig-header { 
             padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; 
@@ -72,14 +72,14 @@
         <label>SR No / Employee ID * <span class="error" id="empIdError"></span></label>
         <input id="empId" type="number" min="1" required inputmode="numeric">
 
-        <label>Dates of <span class='dob'>Birth</span>, <span class='doj'>Joining</span>, <span class='dor'>Retirement*</span></label>
+        <label>Dates of <span style="background:#fff3cd;padding:2px">Birth</span>, <span style="background:#d1ecf1;padding:2px">Joining</span>, <span style="background:#d4edda;padding:2px">Retirement*</span></label>
         <div class="date-group">
-            <input type="date" id="dob" required>
-            <input type="date" id="doj" required>
-            <input type="date" id="dor" required>
+            <input type="date" id="dob" class="dob-color" required>
+            <input type="date" id="doj" class="doj-color" required>
+            <input type="date" id="dor" class="dor-color" required>
         </div>
         <div class="error" id="dateError"></div>
-        <div class="success" id="dateSuccess">✓ DOB → DOJ(18-30yrs) DOR(50-60yrs, last day)</div>
+        <div class="success" id="dateSuccess">✓ DOB (50-100yrs) → DOJ(18-30yrs) DOR(50-60yrs, last day)</div>
 
         <label>Address with District, State and PIN Code *</label>
         <textarea id="address" required rows="3"></textarea>
@@ -130,11 +130,21 @@ const canvas = $("canvas"), ctx = canvas.getContext("2d");
 let drawing = false, hasSignature = false;
 
 // =============================
-// DATE LOGIC (ORIGINAL)
+// DATE LOGIC (RETAINED & FIXED)
 // =============================
 function parseInputDate(value){ const [y,m,d] = value.split("-").map(Number); return new Date(y, m-1, d); }
 function formatDate(date){ const y = date.getFullYear(), m = String(date.getMonth()+1).padStart(2,"0"), d = String(date.getDate()).padStart(2,"0"); return `${y}-${m}-${d}`; }
 function addYears(date, years){ return new Date(date.getFullYear()+years, date.getMonth(), date.getDate()); }
+
+// 50–100 YEARS LIMIT FOR DOB
+function setDOBLimits(){
+    const today = new Date();
+    const maxDOB = new Date(today.getFullYear()-50, today.getMonth(), today.getDate());
+    const minDOB = new Date(today.getFullYear()-100, today.getMonth(), today.getDate());
+    dob.max = formatDate(maxDOB);
+    dob.min = formatDate(minDOB);
+}
+
 function getMaxDOR(birthDate){
     const sixty = addYears(birthDate,60);
     return (birthDate.getDate() === 1) ? new Date(sixty.getFullYear(), sixty.getMonth(), 0) : new Date(sixty.getFullYear(), sixty.getMonth()+1, 0);
@@ -167,27 +177,29 @@ function validateDates(){
 }
 
 // =============================
-// SIGNATURE PAD (ENHANCED)
+// SIGNATURE PAD (FIXED THICKNESS & ORIENTATION)
 // =============================
 function openModal() {
     $("sig-modal").style.display = "flex";
-    resizeCanvas();
+    setTimeout(resizeCanvas, 50); // Small delay ensures modal is fully rendered before sizing
 }
 
 function closeModal() { $("sig-modal").style.display = "none"; }
 
 function resizeCanvas() {
-    const ratio = Math.max(window.devicePixelRatio || 1, 1);
+    const ratio = window.devicePixelRatio || 1;
+    // Internal coordinate size
     canvas.width = canvas.offsetWidth * ratio;
     canvas.height = canvas.offsetHeight * ratio;
+    // visual scale
     ctx.scale(ratio, ratio);
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 1.5; // Thinner, professional line
     ctx.lineCap = "round";
     ctx.strokeStyle = "#000";
 }
 
-// Listen for rotation
 window.addEventListener('resize', () => { if($("sig-modal").style.display === "flex") resizeCanvas(); });
+window.addEventListener('orientationchange', () => { if($("sig-modal").style.display === "flex") setTimeout(resizeCanvas, 200); });
 
 function getPos(e) {
     const rect = canvas.getBoundingClientRect();
@@ -200,7 +212,7 @@ function startDrawing(e) {
     const p = getPos(e);
     ctx.beginPath();
     ctx.moveTo(p.x, p.y);
-    e.preventDefault();
+    if(e.cancelable) e.preventDefault();
 }
 
 function draw(e) {
@@ -208,7 +220,7 @@ function draw(e) {
     const p = getPos(e);
     ctx.lineTo(p.x, p.y);
     ctx.stroke();
-    e.preventDefault();
+    if(e.cancelable) e.preventDefault();
 }
 
 canvas.addEventListener("touchstart", startDrawing, {passive: false});
@@ -221,9 +233,7 @@ window.addEventListener("mouseup", () => drawing = false);
 function clearCanvas() { ctx.clearRect(0,0,canvas.width,canvas.height); hasSignature = false; }
 
 function saveSignature() {
-    // Check if canvas is empty (simplified check)
-    const dataURL = canvas.toDataURL();
-    $("sig-preview").src = dataURL;
+    $("sig-preview").src = canvas.toDataURL();
     $("sig-preview").style.display = "block";
     $("sig-placeholder").style.display = "none";
     hasSignature = true;
@@ -231,7 +241,7 @@ function saveSignature() {
 }
 
 // =============================
-// PDF & WHATSAPP (ORIGINAL)
+// PDF & WHATSAPP (RESTORED ORIGINAL)
 // =============================
 function getData(){
     return {
@@ -284,6 +294,7 @@ function sendToWhatsApp(){
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    setDOBLimits();
     const today = new Date();
     dob.value = formatDate(new Date(today.getFullYear()-60, today.getMonth(), today.getDate()));
     recalcFromDOB();
