@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>IBRA Membership Form</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: powderblue; padding: 6px; min-height: 100vh; }
+        #mobile-guard { display: none; position: fixed; inset: 0; background: white; z-index: 9999; padding: 40px; text-align: center; }
+        @media (min-width: 1024px) { #mobile-guard { display: block; } }
+        .header { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; padding: 12px; text-align: center; background: rgba(255,255,255,0.9); border-bottom: 1px solid #ddd; }
+        .container { max-width: 520px; margin: 80px auto 20px; background: ghostwhite; border-radius: 8px; padding: 15px; box-shadow: 0 2px 10px rgba(0,0,0,.1); }
+        label { font-size: 11px; display: block; margin-top: 12px; margin-bottom: 4px; color: #333; font-weight: 600; text-transform: uppercase; }
+        input, select { width: 100%; padding: 10px; border: 2px solid #dee2e6; border-radius: 6px; font-size: 15px; background: #fff; }
+        .date-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; width: 100%; }
+        .date-row input { font-size: 11px; padding: 8px 2px; }
+        .dob-color { background:#fff3cd !important; } .doj-color { background:#d1ecf1 !important; } .dor-color { background:#d4edda !important; }
+        .upload-box { height: 120px; border: 2px dashed #ccc; border-radius: 6px; background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; position: relative; }
+        #photo-preview, #sig-preview { max-height: 100%; max-width: 100%; object-fit: contain; display: none; }
+        .modal { position: fixed; inset: 0; background: #fff; z-index: 2001; display: none; flex-direction: column; }
+        .modal-header { padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; background: #f8f9fa; border-bottom: 1px solid #ddd; }
+        #canvas { flex: 1; width: 100%; height: 100%; touch-action: none; background: #fff; }
+        .camera-container { flex: 1; position: relative; background: #000; overflow: hidden; }
+        #camera-video { width: 100%; height: 100%; object-fit: cover; }
+        .face-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 200px; height: 260px; border: 2px dashed white; border-radius: 50%; box-shadow: 0 0 0 1000px rgba(0,0,0,0.5); pointer-events: none; }
+        .btn { padding:14px; border-radius:6px; cursor:pointer; font-weight:bold; width: 100%; margin-top: 10px; border: none; }
+        .btn-submit { background:#007bff; color:#fff; font-size: 18px; }
+        .btn-whatsapp { background:#25D366; color:#fff; }
+        .btn-capture { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); background: white; border-radius: 50%; width: 70px; height: 70px; border: 5px solid #666; }
+    </style>
+</head>
+<body>
+<div id="mobile-guard"><h2>Access Denied</h2><p>Please open on your Mobile Device.</p></div>
+<div class="header"><h2 style="color:red; font-size: 20px;">IBRA Membership Form</h2></div>
+<div class="container">
+    <form id="pensionForm">
+        <label>Passport Photo *</label>
+        <div class="upload-box" onclick="openCamera()"><span id="photo-prompt">📷 Capture Photo</span><img id="photo-preview"></div>
+        <label>Full Name *</label><input id="pensionerName" required>
+        <label>Employee ID / SR No *</label><input id="empId" type="number" required>
+        <label>Dates (DOB | DOJ | DOR) *</label>
+        <div class="date-row">
+            <input type="date" id="dob" class="dob-color" required onchange="recalcFromDOB()">
+            <input type="date" id="doj" class="doj-color" required>
+            <input type="date" id="dor" class="dor-color" required>
+        </div>
+        <h3 style="margin-top:15px; font-size:13px; color:#007bff; border-bottom: 1px solid #ddd; padding-bottom:3px;">ADDRESS DETAILS</h3>
+        <label>House / Flat No *</label><input id="hno" required>
+        <label>Area / Landmark</label><input id="area">
+        <label>Colony / Locality</label><input id="colony">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <div><label>City *</label><input id="city" required></div>
+            <div><label>District *</label><input id="dist" required></div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 8px;">
+            <div><label>State *</label><select id="state" required><option value="">Select</option><option value="Andhra Pradesh">Andhra Pradesh</option><option value="Telangāna">Telangāna</option><option value="Tamil Nādu">Tamil Nādu</option><option value="Karnātaka">Karnātaka</option><option value="Kerala">Kerala</option></select></div>
+            <div><label>PIN Code *</label><input id="pin" type="number" required></div>
+        </div>
+        <label>Mobile 1 *</label><input id="mob1" type="tel" required maxlength="10">
+        <label>Mobile 2</label><input id="mob2" type="tel" maxlength="10">
+        <label>Email ID *</label><input id="email" type="email" required>
+        <label>Pension Branch *</label><input id="branch" required>
+        <label>Spouse Name</label><input id="spouse">
+        <label>Signature (Rotate for wide sign) *</label>
+        <div class="upload-box" onclick="openSig()"><span id="sig-prompt">✍️ Tap to Sign</span><img id="sig-preview"></div>
+        <button type="button" class="btn btn-whatsapp" onclick="sendToWhatsApp()">📱 WhatsApp Details</button>
+        <button type="submit" class="btn btn-submit">💾 Save PDF</button>
+    </form>
+</div>
+
+<div id="sig-modal" class="modal">
+    <div class="modal-header">
+        <button type="button" onclick="closeModal('sig-modal')" style="background:none; border:none; color:#666;">Cancel</button>
+        <span style="font-weight:bold">Signature Pad</span>
+        <div><button type="button" onclick="clearCanvas()" style="background:none; border:none; color:red; margin-right:15px;">Clear</button>
+        <button type="button" onclick="saveSignature()" style="background:#007bff; color:white; border:none; padding:6px 15px; border-radius:4px;">Done</button></div>
+    </div>
+    <canvas id="canvas"></canvas>
+</div>
+
+<div id="camera-modal" class="modal">
+    <div class="modal-header"><button type="button" onclick="stopCamera()">Cancel</button><span style="font-weight:bold">Align Face</span><div style="width:40px"></div></div>
+    <div class="camera-container"><video id="camera-video" autoplay playsinline></video><div class="face-overlay"></div><button type="button" class="btn-capture" onclick="takePhoto()"></button></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const canvas = $("canvas"), ctx = canvas.getContext("2d");
+let drawing = false, hasSig = false, hasPhoto = false;
+
+function formatDate(date) { return date.toISOString().split('T')[0]; }
+function recalcFromDOB() {
+    if (!$("dob").value) return;
+    const b = new Date($("dob").value);
+    $("doj").value = formatDate(new Date(b.getFullYear() + 24, b.getMonth(), b.getDate()));
+    $("dor").value = formatDate(new Date(b.getFullYear() + 60, b.getMonth() + 1, 0));
+}
+
+async function openCamera() {
+    $("camera-modal").style.display = "flex";
+    try { const s = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } }); $("camera-video").srcObject = s; } 
+    catch(e) { alert("Camera Error"); stopCamera(); }
+}
+function stopCamera() { if ($("camera-video").srcObject) $("camera-video").srcObject.getTracks().forEach(t => t.stop()); $("camera-modal").style.display = "none"; }
+
+function takePhoto() {
+    const v = $("camera-video");
+    const tmp = document.createElement("canvas");
+    tmp.width = 300; tmp.height = 400; // Optimized capture size
+    tmp.getContext("2d").drawImage(v, 0, 0, 300, 400);
+    // COMPRESSION: JPEG at 0.7 quality reduces size drastically
+    $("photo-preview").src = tmp.toDataURL("image/jpeg", 0.7);
+    $("photo-preview").style.display = "block";
+    $("photo-prompt").style.display = "none";
+    hasPhoto = true;
+    stopCamera();
+}
+
+function openSig() { $("sig-modal").style.display = "flex"; setTimeout(resizeCanvas, 200); }
+function resizeCanvas() {
+    const ratio = window.devicePixelRatio || 1;
+    canvas.width = canvas.offsetWidth * ratio;
+    canvas.height = canvas.offsetHeight * ratio;
+    ctx.scale(ratio, ratio);
+    ctx.lineWidth = 3; ctx.lineCap = "round"; ctx.strokeStyle = "#000";
+}
+window.addEventListener("resize", () => {
+    if($("sig-modal").style.display === "flex") {
+        const data = canvas.toDataURL();
+        resizeCanvas();
+        const img = new Image();
+        img.onload = () => ctx.drawImage(img, 0, 0, canvas.width/devicePixelRatio, canvas.height/devicePixelRatio);
+        img.src = data;
+    }
+});
+function getPos(e) { const r = canvas.getBoundingClientRect(); const t = e.touches ? e.touches[0] : e; return { x: t.clientX - r.left, y: t.clientY - r.top }; }
+canvas.addEventListener("touchstart", (e) => { drawing = true; ctx.beginPath(); ctx.moveTo(getPos(e).x, getPos(e).y); e.preventDefault(); }, {passive:false});
+canvas.addEventListener("touchmove", (e) => { if(!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); e.preventDefault(); }, {passive:false});
+canvas.addEventListener("touchend", () => drawing = false);
+
+function saveSignature() {
+    // Signature is PNG to preserve transparency, captured at current canvas size
+    $("sig-preview").src = canvas.toDataURL("image/png");
+    $("sig-preview").style.display = "block";
+    $("sig-prompt").style.display = "none";
+    hasSig = true;
+    $("sig-modal").style.display = "none";
+}
+function clearCanvas() { ctx.clearRect(0,0,canvas.width,canvas.height); }
+function closeModal(id) { $(id).style.display = "none"; }
+
+$("pensionForm").onsubmit = (e) => {
+    e.preventDefault();
+    if (!hasPhoto || !hasSig) return alert("Photo and Signature required!");
+    const doc = new jsPDF();
+    const today = new Date().toLocaleDateString('en-IN');
+    
+    doc.setFontSize(18); doc.setTextColor(255, 0, 0);
+    doc.text("IBRA MEMBERSHIP FORM", 105, 20, {align:"center"});
+    // Added 'FAST' compression alias to PDF image generation
+    doc.addImage($("photo-preview").src, 'JPEG', 160, 30, 35, 45, undefined, 'FAST');
+    
+    doc.setFontSize(10); doc.setTextColor(0,0,0);
+    doc.text(`Submission Date: ${today}`, 20, 30);
+    
+    const cert = `To, The General Secretary, Indian Bank Retirees’ Association (AP & TS). I wish to enrol as a member and agree to abide by the rules. Remitting Rs.1000/- for Life Membership to Indian Bank A/c 465693063.`;
+    doc.text(doc.splitTextToSize(cert, 130), 20, 40);
+
+    let y = 80; doc.setFontSize(11);
+    const d = [
+        ["Name", $("pensionerName").value], ["SR No", $("empId").value],
+        ["DOB", $("dob").value], ["DOJ", $("doj").value], ["DOR", $("dor").value],
+        ["House No:", $("hno").value], ["Area", $("area").value], ["Colony", $("colony").value],
+        ["City", $("city").value], ["District", $("dist").value], ["State", $("state").value], ["PIN", $("pin").value],
+        ["Mobile 1", $("mob1").value], ["Mobile 2", $("mob2").value],
+        ["Email", $("email").value], ["Branch", $("branch").value], ["Spouse", $("spouse").value]
+    ];
+    d.forEach(([l, v]) => { if(v){ doc.text(`${l}: ${v}`, 20, y); y += 7; } });
+    
+    doc.text("Signature:", 20, y + 10);
+    doc.addImage($("sig-preview").src, 'PNG', 50, y + 5, 50, 18, undefined, 'FAST');
+    doc.save(`IBRA_${$("empId").value}.pdf`);
+};
+
+function sendToWhatsApp() {
+    const d = {
+        name: $("pensionerName").value,
+        id: $("empId").value,
+        dob: $("dob").value,
+        doj: $("doj").value,
+        dor: $("dor").value,
+        hno: $("hno").value,
+        area: $("area").value || 'N/A',
+        colony: $("colony").value || 'N/A',
+        city: $("city").value,
+        dist: $("dist").value,
+        state: $("state").value,
+        pin: $("pin").value,
+        mob1: $("mob1").value,
+        mob2: $("mob2").value || 'N/A',
+        email: $("email").value,
+        branch: $("branch").value,
+        spouse: $("spouse").value || 'N/A'
+    };
+
+    const msg = `*IBRA MEMBERSHIP FORM*
+--------------------------
+*PERSONAL DETAILS*
+*Name:* ${d.name}
+*SR No/ID:* ${d.id}
+*DOB:* ${d.dob}
+*DOJ:* ${d.doj}
+*DOR:* ${d.dor}
+*Spouse:* ${d.spouse}
+
+*ADDRESS*
+*House No:* ${d.hno}
+*Area:* ${d.area}
+*Colony:* ${d.colony}
+*City:* ${d.city}
+*District:* ${d.dist}
+*State:* ${d.state}
+*PIN:* ${d.pin}
+
+*CONTACT & SERVICE*
+*Mobile 1:* ${d.mob1}
+*Mobile 2:* ${d.mob2}
+*Email:* ${d.email}
+*Pension Branch:* ${d.branch}
+--------------------------
+_Submitted via IBRA Mobile Portal_`;
+
+    window.open(`https://wa.me/919989036183?text=${encodeURIComponent(msg)}`, "_blank");
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const t = new Date();
+    $("dob").value = formatDate(new Date(t.getFullYear() - 60, t.getMonth(), t.getDate()));
+    recalcFromDOB();
+});
+</script>
+</body>
+</html>
