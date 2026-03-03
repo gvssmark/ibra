@@ -100,18 +100,12 @@ background:#fff;
 position:relative;
 margin:0;
 touch-action:none;
-display:flex;
-align-items:center;
-justify-content:center;
 }
 .signature-pad canvas{
-width:100vw;
-height:100vh;
-max-width:100vw;
-max-height:100vh;
-background:#fff;
+width:100vw !important;
+height:100vh !important;
 display:block;
-object-fit:contain;
+background:#fff;
 }
 .signature-hint{
 position:absolute;
@@ -270,86 +264,75 @@ z-index:1000;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
 <script>
 // =============================
-// SHORTCUT + ELEMENTS
+// GLOBAL ELEMENTS
 // =============================
 const $ = id => document.getElementById(id);
 const signatureModal = $("signatureModal");
 const signatureError = $("signatureError");
 const canvas = $("signatureCanvas");
 const ctx = canvas.getContext("2d");
-let drawing = false, hasSignature = false;
+let drawing = false;
+let hasSignature = false;
 let signatureDataURL = null;
 
 // =============================
-// SIGNATURE PAD - FIXED VERSION
+// FIXED CANVAS RESIZE FOR LANDSCAPE
 // =============================
 function resizeCanvas() {
-  // Store current signature before resize
-  const currentDataURL = canvas.toDataURL();
-  
-  // Set canvas to screen dimensions
-  const rect = canvas.getBoundingClientRect();
   const dpr = window.devicePixelRatio || 1;
+  const width = window.innerWidth;
+  const height = window.innerHeight - 120; // Account for buttons
   
-  canvas.width = rect.width * dpr;
-  canvas.height = rect.height * dpr;
-  canvas.style.width = rect.width + 'px';
-  canvas.style.height = rect.height + 'px';
+  // Set CSS size
+  canvas.style.width = width + 'px';
+  canvas.style.height = height + 'px';
   
-  // Reset context scaling
+  // Set internal canvas size (high DPI)
+  canvas.width = width * dpr;
+  canvas.height = height * dpr;
+  
+  // Scale context
   ctx.scale(dpr, dpr);
-  ctx.fillStyle = "#fff";
-  ctx.fillRect(0, 0, rect.width, rect.height);
   
-  // Restore signature if it existed
-  if (currentDataURL && currentDataURL !== signatureDataURL) {
-    const img = new Image();
-    img.onload = () => {
-      ctx.drawImage(img, 0, 0, rect.width, rect.height);
-      signatureDataURL = canvas.toDataURL("image/png", 1.0);
-    };
-    img.src = currentDataURL;
-  }
+  // Clear and fill white
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(0, 0, width, height);
 }
 
 function getPos(e) {
   const rect = canvas.getBoundingClientRect();
-  const t = e.touches ? e.touches[0] : e;
+  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+  const clientY = e.touches ? e.touches[0].clientY : e.clientY;
   return {
-    x: t.clientX - rect.left,
-    y: t.clientY - rect.top
+    x: clientX - rect.left,
+    y: clientY - rect.top
   };
 }
 
+// =============================
+// SIGNATURE EVENT HANDLERS
+// =============================
 function initSignatureEvents() {
-  // Clear existing listeners first
-  canvas.removeEventListener('mousedown', handleStart);
-  canvas.removeEventListener('touchstart', handleStart);
-  canvas.removeEventListener('mousemove', handleMove);
-  canvas.removeEventListener('touchmove', handleMove);
-  canvas.removeEventListener('mouseup', handleEnd);
-  canvas.removeEventListener('touchend', handleEnd);
-  
   function handleStart(e) {
     e.preventDefault();
     drawing = true;
     hasSignature = true;
     signatureError.style.display = "none";
     
-    const { x, y } = getPos(e);
+    const pos = getPos(e);
     ctx.lineWidth = 3;
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
     ctx.strokeStyle = "#333";
     ctx.beginPath();
-    ctx.moveTo(x, y);
+    ctx.moveTo(pos.x, pos.y);
   }
   
   function handleMove(e) {
     if (!drawing) return;
     e.preventDefault();
-    const { x, y } = getPos(e);
-    ctx.lineTo(x, y);
+    const pos = getPos(e);
+    ctx.lineTo(pos.x, pos.y);
     ctx.stroke();
   }
   
@@ -360,23 +343,33 @@ function initSignatureEvents() {
     }
   }
   
-  // Add event listeners
-  canvas.addEventListener('mousedown', handleStart, { passive: false });
-  canvas.addEventListener('touchstart', handleStart, { passive: false });
-  canvas.addEventListener('mousemove', handleMove, { passive: false });
-  canvas.addEventListener('touchmove', handleMove, { passive: false });
-  canvas.addEventListener('mouseup', handleEnd, { passive: false });
-  canvas.addEventListener('mouseout', handleEnd, { passive: false });
-  canvas.addEventListener('touchend', handleEnd, { passive: false });
+  // Remove old listeners
+  ['mousedown', 'touchstart', 'mousemove', 'touchmove', 
+   'mouseup', 'touchend', 'mouseout'].forEach(event => {
+    canvas.removeEventListener(event, handleStart);
+    canvas.removeEventListener(event, handleMove);
+    canvas.removeEventListener(event, handleEnd);
+  });
+  
+  // Add fresh listeners
+  canvas.addEventListener('mousedown', handleStart, {passive: false});
+  canvas.addEventListener('touchstart', handleStart, {passive: false});
+  canvas.addEventListener('mousemove', handleMove, {passive: false});
+  canvas.addEventListener('touchmove', handleMove, {passive: false});
+  canvas.addEventListener('mouseup', handleEnd);
+  canvas.addEventListener('touchend', handleEnd);
+  canvas.addEventListener('mouseout', handleEnd);
 }
 
 function openSignatureModal() {
   document.body.style.overflow = 'hidden';
   signatureModal.classList.add("active");
+  
+  // Wait for modal to render, then resize
   setTimeout(() => {
     resizeCanvas();
     initSignatureEvents();
-  }, 100);
+  }, 150);
 }
 
 function closeSignatureModal() {
@@ -392,35 +385,35 @@ function saveSignature() {
 }
 
 function clearSignature() {
-  // FIXED: Proper clear with correct dimensions
-  const rect = canvas.getBoundingClientRect();
+  const width = window.innerWidth;
+  const height = window.innerHeight - 120;
+  
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = "#fff";
-  ctx.fillRect(0, 0, rect.width, rect.height);
+  ctx.fillRect(0, 0, width, height);
+  
   hasSignature = false;
   signatureDataURL = null;
   signatureError.style.display = "none";
 }
 
-// Close on ESC or outside click
+// Close handlers
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && signatureModal.classList.contains('active')) {
     closeSignatureModal();
   }
 });
 
-signatureModal.addEventListener('click', function(e) {
+signatureModal.addEventListener('click', (e) => {
   if (e.target === signatureModal) closeSignatureModal();
 });
 
 window.addEventListener('orientationchange', () => {
-  if (signatureModal.classList.contains('active')) {
-    setTimeout(resizeCanvas, 300);
-  }
+  setTimeout(resizeCanvas, 300);
 });
 
 // =============================
-// FORM LOGIC (UNCHANGED)
+// FORM VALIDATION & DATE LOGIC (UNCHANGED)
 // =============================
 const dob = $("dob"), doj = $("doj"), dor = $("dor");
 const dateError = $("dateError"), dateSuccess = $("dateSuccess");
@@ -534,10 +527,12 @@ function getData() {
 }
 
 function requiredFilled(d) {
-  return d.name && d.empId && d.address &&
-    d.mobile1 && d.email && d.branch;
+  return d.name && d.empId && d.address && d.mobile1 && d.email && d.branch;
 }
 
+// =============================
+// PDF GENERATION & WHATSAPP
+// =============================
 form.addEventListener("submit", e => {
   e.preventDefault();
   const d = getData();
@@ -563,13 +558,7 @@ Please enrol me as member of the Retirees' Association. I have read the Bye-laws
   y += certLines.length * 6 + 6;
   const labelX = 20, valueX = 70, gap = 8;
   doc.setFontSize(12);
-  [
-    ["Name", d.name],
-    ["Employee ID", d.empId],
-    ["Date of Birth", d.dob],
-    ["Date of Joining", d.doj],
-    ["Date of Retirement", d.dor]
-  ].forEach(([label, value]) => {
+  [["Name", d.name], ["Employee ID", d.empId], ["Date of Birth", d.dob], ["Date of Joining", d.doj], ["Date of Retirement", d.dor]].forEach(([label, value]) => {
     doc.text(label, labelX, y);
     doc.text(":", labelX + 45, y);
     doc.text(value, valueX, y);
@@ -584,13 +573,7 @@ Please enrol me as member of the Retirees' Association. I have read the Bye-laws
   doc.text(addrLines, valueX, y);
   y += addrLines.length * 6 + 6;
   doc.setFontSize(12);
-  [
-    ["Mobile 1", d.mobile1],
-    ["Mobile 2", d.mobile2],
-    ["Email", d.email],
-    ["Branch", d.branch],
-    ["Spouse", d.spouse]
-  ].forEach(([label, value]) => {
+  [["Mobile 1", d.mobile1], ["Mobile 2", d.mobile2], ["Email", d.email], ["Branch", d.branch], ["Spouse", d.spouse]].forEach(([label, value]) => {
     if (!value) return;
     doc.text(label, labelX, y);
     doc.text(":", labelX + 45, y);
@@ -606,25 +589,9 @@ Please enrol me as member of the Retirees' Association. I have read the Bye-laws
   doc.save(`IBRA_${d.empId}.pdf`);
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  setDOBLimits();
-  const today = new Date();
-  dob.value = formatDate(
-    new Date(today.getFullYear() - 60, today.getMonth(), today.getDate())
-  );
-  recalcFromDOB();
-  dob.addEventListener("change", recalcFromDOB);
-  doj.addEventListener("change", validateDates);
-  dor.addEventListener("change", validateDates);
-  $("mobile1").addEventListener("input", e => validateMobile(e.target, mobile1Error));
-  $("mobile2").addEventListener("input", e => validateMobile(e.target, mobile2Error));
-});
-
 function sendToWhatsApp() {
   const d = getData();
-  if (!requiredFilled(d) || !validateDates() ||
-    !validateMobile($("mobile1"), mobile1Error) ||
-    !hasSignature) {
+  if (!requiredFilled(d) || !validateDates() || !validateMobile($("mobile1"), mobile1Error) || !hasSignature) {
     signatureError.style.display = hasSignature ? "none" : "block";
     return alert("Please complete form correctly.");
   }
@@ -643,6 +610,21 @@ ${d.spouse ? `Spouse: ${d.spouse}\n` : ""}
 Generated: ${new Date().toLocaleString("en-IN")}`;
   window.open(`https://wa.me/919989036183?text=${encodeURIComponent(msg)}`, "_blank");
 }
+
+// =============================
+// INIT
+// =============================
+document.addEventListener("DOMContentLoaded", () => {
+  setDOBLimits();
+  const today = new Date();
+  dob.value = formatDate(new Date(today.getFullYear() - 60, today.getMonth(), today.getDate()));
+  recalcFromDOB();
+  dob.addEventListener("change", recalcFromDOB);
+  doj.addEventListener("change", validateDates);
+  dor.addEventListener("change", validateDates);
+  $("mobile1").addEventListener("input", e => validateMobile(e.target, mobile1Error));
+  $("mobile2").addEventListener("input", e => validateMobile(e.target, mobile2Error));
+});
 </script>
 </body>
 </html>
