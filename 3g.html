@@ -204,7 +204,7 @@ function sendToWhatsApp() {
         dist: $("dist").value, state: $("state").value, pin: $("pin").value, mob1: $("mob1").value,
         mob2: $("mob2").value || 'NA', email: $("email").value, branch: $("branch").value, spouse: $("spouse").value || 'NA'
     };
-    const msg = `*IBRA FORM SUBMISSION*\n*Name:* ${d.name}\n*ID:* ${d.id}\n*DOB/DOJ/DOR:* ${d.dob}/${d.doj}/${d.dor}\n*Address:* \n House No: ${d.hno}\n Area: ${d.area}\n Locality: ${d.colony}\n City/Town/Village: ${d.city}\n District: ${d.dist}\n State: ${d.state} - ${d.pin}\n*Mobile:* ${d.mob1} / ${d.mob2}\nEmail: ${d.email}\n*Spouse:* ${d.spouse}\n*Branch:* ${d.branch}`;
+    const msg = `*IBRA FORM SUBMISSION*\n*Name:* ${d.name}\n*ID:* ${d.id}\n*DOB/DOJ/DOR:* ${d.dob}/${d.doj}/${d.dor}\n*Address:* \n House No: ${d.hno}\n Area: ${d.area}\n Locality: ${d.colony}\n City/Town/Village: ${d.city}\n District: ${d.dist}\n State: ${d.state} - ${d.pin}\n*Mobile:* ${d.mob1} / ${d.mob2}\n*Email:* ${d.email}\n*Spouse:* ${d.spouse}\n*Branch:* ${d.branch}`;
     window.open(`https://wa.me/919989036183?text=${encodeURIComponent(msg)}`, "_blank");
 }
 
