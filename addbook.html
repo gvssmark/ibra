@@ -103,12 +103,14 @@ async function fetchLatestTimestamp() {
   const res = await fetch(url, { cache: 'no-store' });
   const text = (await res.text()).trim();
   // Handle [[timestamp]] case
-  document.getElementById('loader').style.display='none'
+  //document.getElementById('loader').style.display='none'
   
   try {
     const parsed = JSON.parse(text);
     return Array.isArray(parsed) ? parsed.flat(Infinity)[0] : parsed;
   } catch {
+    document.getElementById('loader').style.display='none'
+  
     return text;
   }
 }
