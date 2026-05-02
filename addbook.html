@@ -103,7 +103,7 @@ async function fetchLatestTimestamp() {
   const res = await fetch(url, { cache: 'no-store' });
   const text = (await res.text()).trim();
   // Handle [[timestamp]] case
-  document.getElementById('loader').style.display='none'
+  
   
   try {
     const parsed = JSON.parse(text);
@@ -213,6 +213,7 @@ async function initReport() {
   }
   //console.log(addBookData)
   //alert('in initReport')
+  document.getElementById('loader').style.display='none'
 }
 initReport();
 
