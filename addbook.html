@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,7 +15,7 @@
     body{background:wheat;font-size:small;margin:0 auto;box-sizing:border-box;width:100%;max-width:500px}
     h2{position:fixed;top:0;width:100%;max-width:480px;background:#004080;color:#fff;text-align:center;padding:10px;margin:0;z-index:1000; )}
     #regions{margin-top:60px}
-    #DataLoadedFrom{text-align:center;margin-top:142px}
+    #DataLoadedFrom{text-align:center;margin-top:141px}
     .pname{font-family:Poppins,sans-serif;text-shadow:3px 3px 3px #ababab;font-size:25px}
     a{text-decoration:none}
     .active,.btn:hover{background:red;color:#fff}
@@ -41,13 +40,10 @@
     #topBtn{display:none;position:fixed;bottom:20px;right:20px;z-index:99;background:#004080;color:#fff;border:none;outline:none;width:45px;height:45px;border-radius:50%;cursor:pointer;font-size:18px}
     
     #paraInThisRegion {}
-    #loader {float:inline-end; width: 5px;  aspect-ratio: 1;  border-radius: 50%;  border: 8px solid green;  border-right-color: red;  animation: l2 1s infinite linear;}
-@keyframes l2 {to{transform: rotate(1turn)}}
   </style>
 </head>
 <body>
 <h2>Indian Bank Retirees' Association</h2>
-<div id="loader"></div>
 <div id="regions">
   <div style="background:powderblue;top:43px;position:fixed;width:100%;max-width:500px;z-index:999">
     <ul >
@@ -64,10 +60,7 @@
     <h4 id='regionHeading' align="center" style="margin:0"></h4>
     <input type="text" id='myInput' placeholder="Search here..." onkeyup="fiterName()">
   </div>
-  
-  
-  <p id='DataLoadedFrom'></p> 
-  
+  <p id='DataLoadedFrom'></p>  
   <p id='paraInThisRegion'></p>
   <div id="myModal" class="modal">
     <div class="modal-content">
@@ -103,14 +96,10 @@ async function fetchLatestTimestamp() {
   const res = await fetch(url, { cache: 'no-store' });
   const text = (await res.text()).trim();
   // Handle [[timestamp]] case
-  
-  
   try {
     const parsed = JSON.parse(text);
     return Array.isArray(parsed) ? parsed.flat(Infinity)[0] : parsed;
   } catch {
-    document.getElementById('loader').style.display='none'
-  
     return text;
   }
 }
@@ -178,16 +167,13 @@ async function initReport() {
   let [addBookData, photoData] = await Promise.all([
     readCachedData('/custom/addbookdata.json'),
     readCachedData('/custom/addbookphotodata.json')
-      ]);
-      
+  ]);
 
   const localTimestamp = localStorage.getItem("data_updated_at");
 
   if (addBookData && photoData && localTimestamp) {
-    showReport(addBookData, photoData, "Cache", localTimestamp);
-     
+    showReport(addBookData, photoData, "Saved & Latest", localTimestamp);
   } else {
-  
     document.getElementById("DataLoadedFrom").textContent = "No cache, waiting for server...";
   }
 
@@ -197,23 +183,26 @@ async function initReport() {
     const localTimestamp = localStorage.getItem("data_updated_at");
 
     if (!addBookData || !photoData || localTimestamp != serverTimestamp) {
+
+      // 👉 Show modal ONLY if timestamps differ (and not first load)
+      if (localTimestamp && localTimestamp != serverTimestamp) {
+        showUpdateModal("Latest Data Loaded");
+      }
+
       // Fetch fresh if missing or outdated
       [addBookData, photoData] = await Promise.all([
         fetchAddBookData(),
         fetchPhotoData()
       ]);
+
       localStorage.setItem("data_updated_at", serverTimestamp);
-      
+
       showReport(addBookData, photoData, "Server (updated)", serverTimestamp);
-      
     }
   } catch (err) {
- 
     console.error("Background refresh failed", err);
   }
-  //console.log(addBookData)
-  //alert('in initReport')
-  document.getElementById('loader').style.display='none'
+  
 }
 initReport();
 
@@ -379,6 +368,24 @@ function fiterName() {
          	let details = navigator.userAgent;
             let regexp = /android|iphone|kindle|ipad/i;
             let isMobileDevice = regexp.test(details);
+            
+            function showUpdateModal(message) {
+  const modal = document.getElementById("myModal");
+  const header = document.getElementById("nameHeader");
+  const content = document.getElementById("modalData");
+
+  header.innerHTML = "Info";
+  content.innerHTML = `<p style="text-align:center;font-size:18px;">${message}</p>`;
+  document.getElementById('photo').innerHTML = "";
+  document.getElementById('whatsapp').innerHTML = "";
+
+  modal.style.display = "block";
+
+  // Auto close after 3 seconds
+  setTimeout(() => {
+    modal.style.display = "none";
+  }, 3000);
+}
 </script>
 </body>
 </html>
