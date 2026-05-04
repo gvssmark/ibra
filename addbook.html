@@ -260,7 +260,7 @@ function selectedRegion(array, n) {
 
                 let inThisRegion = "<table id='regionTable' border='1'><tr><td>Name / Mobile / SR No/<span class='newempid'>NewEmpId</span> / Memb No /Photo </td></tr>";
                 tarr.forEach(a => {
-                    inThisRegion += `<b>
+                    inThisRegion += `
                         <tr align="center" onClick="nameclick(this.id)" id="${a.id}">
                             <td class="${a.fampen.length > 0 ? "fam" : "ser"}">
                                 <span class="pname">${a.name}</span>
@@ -268,7 +268,7 @@ function selectedRegion(array, n) {
                                 ${a.ibeab === 'EAB' ? `<span class="smalleabbadge">&nbsp;</span>` : ``}
                                 <br> Mobile: ${a.mobile} / SR: ${a.srno} /<span class=newempid>${a.newempid}</span> / Memb: ${a.id}  ${isPhoto(a.id)}
                             </td>
-                        </tr></b>`;
+                        </tr>`;
                 });
                 inThisRegion += "</table><br><br><br>";
                 document.getElementById('paraInThisRegion').innerHTML = inThisRegion;
