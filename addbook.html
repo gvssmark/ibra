@@ -186,7 +186,7 @@ async function initReport() {
 
       // 👉 Show modal ONLY if timestamps differ (and not first load)
       if (localTimestamp && localTimestamp != serverTimestamp) {
-        showUpdateModal("Latest Data Loaded");
+       // showUpdateModal("Latest Data Loaded");
       }
 
       // Fetch fresh if missing or outdated
@@ -198,6 +198,7 @@ async function initReport() {
       localStorage.setItem("data_updated_at", serverTimestamp);
 
       showReport(addBookData, photoData, "Server (updated)", serverTimestamp);
+      showUpdateModal("Latest Data Loaded");
     }
   } catch (err) {
     console.error("Background refresh failed", err);
