@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,9 +41,20 @@
     #topBtn{display:none;position:fixed;bottom:20px;right:20px;z-index:99;background:#004080;color:#fff;border:none;outline:none;width:45px;height:45px;border-radius:50%;cursor:pointer;font-size:18px}
     
     #paraInThisRegion {}
+    
+    
+  #loader {  width: 24px;  height: 24px;  position: fixed;  float:left;}
+#loader::after,#loader::before {  content: '';    box-sizing: border-box;
+  width: 48px;  height: 48px;  border-radius: 50%;  background: red;
+  position: absolute;  left: 0px;  top: 0;  animation: animloader 1s linear infinite;}
+#loader::after {  animation-delay: 1s;}
+@keyframes animloader {  0% {    transform: scale(0);    opacity: 1;  }
+  100% {    transform: scale(1);    opacity: 0;  }}
+
   </style>
 </head>
 <body>
+<span id='loader'></span>
 <h2>Indian Bank Retirees' Association</h2>
 <div id="regions">
   <div style="background:powderblue;top:43px;position:fixed;width:100%;max-width:500px;z-index:999">
@@ -57,7 +69,7 @@
       <li onclick="selectedRegion('EAB',7)" class="list">eAB</li>
       <li onclick="selectedRegion('allMembNoWise',8)" class="list">SR No</li>
     </ul>
-    <h4 id='regionHeading' align="center" style="margin:0"></h4>
+    <h4 id='regionHeading' align="center" style="margin:0">Memebrs in </h4>
     <input type="text" id='myInput' placeholder="Search here..." onkeyup="fiterName()">
   </div>
   <p id='DataLoadedFrom'></p>  
@@ -75,7 +87,7 @@
 <button onclick="scrollToTop()" id="topBtn">↑</button>
 
 <script>
-
+loader = document.getElementById("loader")
  window.onscroll=function(){document.getElementById("topBtn").style.display=document.documentElement.scrollTop>200?"block":"none";}
   function scrollToTop(){document.documentElement.scrollTop=0;}
   
@@ -199,7 +211,9 @@ async function initReport() {
 
       showReport(addBookData, photoData, "Server (updated)", serverTimestamp);
       showUpdateModal("Latest Data Loaded");
+      //document.getElementById("loader").style.display="none"
     }
+    document.getElementById("loader").style.display="none"
   } catch (err) {
     console.error("Background refresh failed", err);
   }
@@ -254,7 +268,7 @@ function selectedRegion(array, n) {
                 let famPensionersCount = tarr.filter(a => a.fampen.length > 0).length;
                 let eabcount = tarr.filter(a => a.ibeab === 'EAB').length;
                 let regions = ["All Members", "Visakhapatnam Area", "Godavari Area", "Vijayawada Area", "Seema Area", "Hyderabad Area", "Other States", "e Allahabad", "SR No Sorted"];
-                document.getElementById('regionHeading').innerHTML = "Members in " + regions[n] +
+                document.getElementById('regionHeading').innerHTML = " Members in " + regions[n] +
                     " <span class='badge'>" + tarr.length + "</span>" +
                     "<span class='badge1'>" + famPensionersCount + "</span> " +
                     "<span class='eabbadge'>" + eabcount + "</span>";
