@@ -16,7 +16,7 @@
     body{background:wheat;font-size:small;margin:0 auto;box-sizing:border-box;width:100%;max-width:500px}
     h2{position:fixed;top:0;width:100%;max-width:480px;background:#004080;color:#fff;text-align:center;padding:10px;margin:0;z-index:1000; )}
     #regions{margin-top:60px}
-    #DataLoadedFrom{text-align:center;margin-top:141px}
+    #DataLoadedFrom{text-align:center;margin-top:141px;display: none;}
     .pname{font-family:Poppins,sans-serif;text-shadow:3px 3px 3px #ababab;font-size:25px}
     a{text-decoration:none}
     .active,.btn:hover{background:red;color:#fff}
@@ -39,27 +39,23 @@
     button{background:yellow;border:0;width:170px;padding:5px;border-radius:15px;box-shadow:3px 5px #888;margin-left:5px}
     img{border-radius:50px}
     #topBtn{display:none;position:fixed;bottom:20px;right:20px;z-index:99;background:#004080;color:#fff;border:none;outline:none;width:45px;height:45px;border-radius:50%;cursor:pointer;font-size:18px}
-    
     #paraInThisRegion {}
-    
-    
-  #loader {  width: 24px;  height: 24px;  position: fixed;  float:left;}
-#loader::after,#loader::before {  content: '';    box-sizing: border-box;
-  width: 48px;  height: 48px;  border-radius: 50%;  background: red;
-  position: absolute;  left: 0px;  top: 0;  animation: animloader 1s linear infinite;}
+  #loader {/* width: 100px; *//* height: 24px; */position: fixed;float:left;margin-top: 9px;z-index: 1000;content: "Fresh Data";color: white; display:block;}
+#loader::after,#loader::before {  font-size: large;  content: "Loading Data";  box-sizing: border-box;  width: 104px;  /* height: 28px; */  /* border-radius: 50%; */  background: red;  position: absolute;  left: 0px;  top: 0;  animation: animloader 1s linear infinite;}
 #loader::after {  animation-delay: 1s;}
-@keyframes animloader {  0% {    transform: scale(0);    opacity: 1;  }
-  100% {    transform: scale(1);    opacity: 0;  }}
-.coin {  width: 75px; margin-top:-72px; right:3px;  z-index:1000;  height: 75px;  position: fixed;  perspective: 1000px;  animation: flip 4s linear infinite; /* Move animation here */  transform-style: preserve-3d; /* Important for 3D */}
+@keyframes animloader {  0% {    transform: scale(0);    opacity: 1;  }   100% {    transform: scale(1);    opacity: 0;  }}
+.coin {  width: 75px; margin-top:10px; right:3px;  z-index:1000;  height: 75px;  position: fixed;  perspective: 1000px;  animation: flip 4s linear infinite; /* Move animation here */  transform-style: preserve-3d; /* Important for 3D */}
 .coin .side {  position: absolute;  width: 100%;  height: 100%;  backface-visibility: hidden;  /* Remove animation from here */}
 .coin .back {  transform: rotateY(180deg);}
 @keyframes flip { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(360deg); }}
-    
   </style>
 </head>
 <body>
-<span id='loader'></span>
+
 <h2>Indian Bank Retirees' Association</h2>
+<span id='loader'></span>
+
+<div id='datadate' style="top:72px;float:left; position:fixed; z-index:1000; display:none; color:blue; font-size:x-small; font-family: sans-serif;"></div>
   <div class="coin">
   <img class="side front" src="https://gvssmark.github.io/ibra/images/ibranewlogo.png">
   <img class="side back" src="https://gvssmark.github.io/ibra/images/ibranewlogo.png">
@@ -223,6 +219,10 @@ async function initReport() {
       //document.getElementById("loader").style.display="none"
     }
     document.getElementById("loader").style.display="none"
+document.getElementById("datadate").style.display="block"
+document.getElementById("datadate").innerHTML= new Date().toLocaleString('en-GB', {timeZone: 'Asia/Kolkata'})
+    
+    
   } catch (err) {
     console.error("Background refresh failed", err);
   }
@@ -277,7 +277,7 @@ function selectedRegion(array, n) {
                 let famPensionersCount = tarr.filter(a => a.fampen.length > 0).length;
                 let eabcount = tarr.filter(a => a.ibeab === 'EAB').length;
                 let regions = ["All Members", "Visakhapatnam Area", "Godavari Area", "Vijayawada Area", "Seema Area", "Hyderabad Area", "Other States", "e Allahabad", "SR No Sorted"];
-                document.getElementById('regionHeading').innerHTML = " Members in " + regions[n] +
+                document.getElementById('regionHeading').innerHTML =  regions[n] +
                     " <span class='badge'>" + tarr.length + "</span>" +
                     "<span class='badge1'>" + famPensionersCount + "</span> " +
                     "<span class='eabbadge'>" + eabcount + "</span>";
