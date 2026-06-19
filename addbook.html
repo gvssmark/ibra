@@ -37,9 +37,9 @@
     img{border-radius:50px}
     #topBtn{display:none;position:fixed;bottom:20px;right:  3px; z-index:99; ;border:none;outline:none;width:45px;height:45px;border-radius:50%;cursor:pointer;font-size:18px}
     #paraInThisRegion {}
-#loader{    position:fixed;    margin-top:-74px;    z-index:1000;    font-size:large;    font-weight:bold;    animation: flashText .5s infinite;}
-#loader::before{    content:"Loading Data";}
-@keyframes flashText {    0%   { color:red; }    25%  { color:yellow; }    50%  { color:lime; }    75%  { color:cyan; }    100% { color:red; }}
+#loader{    position:fixed;    margin-top:-74px;    z-index:1000;    font-size:large;    font-weight:bold;    animation: flashText .8s infinite;}
+#loader::before{    content:"Updating Data";}
+@keyframes flashText {0%,100%{ color:white; } 50%{ color:red; }}
 
 .coin {  width: 75px; margin-top:-71px; right:  3px;  z-index:1000;  height: 75px;  position: fixed;  perspective: 1000px;  animation: flip 4s linear infinite; /* Move animation here */  transform-style: preserve-3d; /* Important for 3D */}
 .coin .side {  position: absolute;  width: 100%;  height: 100%;  backface-visibility: hidden;  /* Remove animation from here */}
