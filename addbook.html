@@ -222,7 +222,7 @@ async function initReport() {
     document.getElementById("loader").style.display="none"
 document.getElementById("datadate").style.display="block"
 document.getElementById("datadate").innerHTML= new Date().toLocaleString('en-GB', {timeZone: 'Asia/Kolkata'})
-    
+    showUpdateModal("Data Loaded");
     
   } catch (err) {
     console.error("Background refresh failed", err);
