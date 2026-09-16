@@ -1,17 +1,17 @@
 // ============================================================
 // admin.js — Parameters editing utility
 // Reads the currently-loaded PARAMETERS (from parameters.js) to prefill
-// the form, lets the user add/remove/edit slots, and generates a fresh
-// parameters.js file to download.
+// the form, and generates a fresh parameters.js file to download.
 // ============================================================
-
-let slotCount = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
   prefillGeneralFields();
-  (PARAMETERS.slots || []).forEach((slot) => addSlotCard(slot));
+  updateGapPreview();
 
-  document.getElementById('addSlotBtn').addEventListener('click', () => addSlotCard());
+  ['sevaEndDate', 'minGapDays'].forEach((id) => {
+    document.getElementById(id).addEventListener('input', updateGapPreview);
+  });
+
   document.getElementById('generateBtn').addEventListener('click', generateParametersFile);
   document.getElementById('downloadBtn').addEventListener('click', downloadParametersFile);
 });
@@ -24,6 +24,7 @@ function prefillGeneralFields() {
   document.getElementById('dataEntryOpen').checked = !!PARAMETERS.dataEntryOpen;
   document.getElementById('sevaStartDate').value = ddmmyyyyToISO(PARAMETERS.sevaStartDate);
   document.getElementById('sevaEndDate').value = ddmmyyyyToISO(PARAMETERS.sevaEndDate);
+  document.getElementById('minGapDays').value = PARAMETERS.minGapDays;
   document.getElementById('whatsappNumber').value = PARAMETERS.whatsappNumber;
   document.getElementById('scriptURL').value = PARAMETERS.scriptURL;
   document.getElementById('readScriptURL').value = PARAMETERS.readScriptURL;
@@ -32,71 +33,26 @@ function prefillGeneralFields() {
 }
 
 // ---------------------------------------------------------------
-// Slot cards
+// Live "last open day" preview
 // ---------------------------------------------------------------
-function addSlotCard(slot) {
-  slotCount += 1;
-  const id = slotCount;
+function updateGapPreview() {
+  const previewEl = document.getElementById('gapPreview');
+  const sevaEndISO = document.getElementById('sevaEndDate').value;
+  const minGapDays = Number(document.getElementById('minGapDays').value);
 
-  const card = document.createElement('div');
-  card.className = 'slot-card';
-  card.dataset.slotCardId = id;
-
-  card.innerHTML = `
-    <div class="slot-header">
-      <input type="text" class="slotName" value="${slot ? slot.slotName : `Slot ${id}`}">
-      <button type="button" class="btn-remove-slot">Remove</button>
-    </div>
-    <div class="field">
-      <label>Seva Start Date</label>
-      <input type="date" class="sevaStartDate" value="${slot ? ddmmyyyyToISO(slot.sevaStartDate) : ''}">
-    </div>
-    <div class="field">
-      <label>Seva End Date</label>
-      <input type="date" class="sevaEndDate" value="${slot ? ddmmyyyyToISO(slot.sevaEndDate) : ''}">
-    </div>
-    <div class="field">
-      <label>Data Entry Start Date</label>
-      <input type="date" class="dataEntryStartDate" value="${slot ? ddmmyyyyToISO(slot.dataEntryStartDate) : ''}">
-    </div>
-    <div class="field">
-      <label>Data Entry End Date</label>
-      <input type="date" class="dataEntryEndDate" value="${slot ? ddmmyyyyToISO(slot.dataEntryEndDate) : ''}">
-    </div>
-    <div class="gapNote"></div>
-  `;
-
-  card.querySelector('.btn-remove-slot').addEventListener('click', () => {
-    card.remove();
-  });
-
-  card.querySelectorAll('input[type="date"]').forEach((input) => {
-    input.addEventListener('change', () => updateGapNote(card));
-  });
-
-  document.getElementById('slotsContainer').appendChild(card);
-  updateGapNote(card);
-}
-
-function updateGapNote(card) {
-  const noteEl = card.querySelector('.gapNote');
-  const entryEndISO = card.querySelector('.dataEntryEndDate').value;
-  const sevaStartISO = card.querySelector('.sevaStartDate').value;
-
-  if (!entryEndISO || !sevaStartISO) {
-    noteEl.innerHTML = '';
+  if (!sevaEndISO || isNaN(minGapDays)) {
+    previewEl.innerHTML = '';
     return;
   }
 
-  const entryEnd = new Date(entryEndISO);
-  const sevaStart = new Date(sevaStartISO);
-  const diffDays = Math.round((sevaStart - entryEnd) / (1000 * 60 * 60 * 24));
+  const sevaEnd = new Date(sevaEndISO);
+  const lastOpenDay = new Date(sevaEnd);
+  lastOpenDay.setDate(lastOpenDay.getDate() - minGapDays);
 
-  if (diffDays >= 5) {
-    noteEl.innerHTML = `<span class="gap-note ok">${diffDays} clear day(s) before Seva start — OK</span>`;
-  } else {
-    noteEl.innerHTML = `<span class="gap-note warn">Only ${diffDays} clear day(s) before Seva start — fewer than 5</span>`;
-  }
+  const lastOpenDDMMYYYY = isoToDDMMYYYY(lastOpenDay.toISOString().slice(0, 10));
+
+  previewEl.innerHTML =
+    `<span class="gap-note ok">With a ${minGapDays}-day gap, data entry stays open through ${lastOpenDDMMYYYY} (closes automatically the day after, and reopens the moment you lower this number).</span>`;
 }
 
 // ---------------------------------------------------------------
@@ -117,38 +73,17 @@ function isoToDDMMYYYY(iso) {
 // ---------------------------------------------------------------
 // Generate parameters.js
 // ---------------------------------------------------------------
-function collectSlotsFromForm() {
-  const cards = document.querySelectorAll('#slotsContainer .slot-card');
-  return Array.from(cards).map((card, idx) => ({
-    slotId: idx + 1,
-    slotName: card.querySelector('.slotName').value,
-    sevaStartDate: isoToDDMMYYYY(card.querySelector('.sevaStartDate').value),
-    sevaEndDate: isoToDDMMYYYY(card.querySelector('.sevaEndDate').value),
-    dataEntryStartDate: isoToDDMMYYYY(card.querySelector('.dataEntryStartDate').value),
-    dataEntryEndDate: isoToDDMMYYYY(card.querySelector('.dataEntryEndDate').value)
-  }));
-}
-
 function generateParametersFile() {
   const sevaYear = Number(document.getElementById('sevaYear').value);
   const dataEntryOpen = document.getElementById('dataEntryOpen').checked;
   const sevaStartDate = isoToDDMMYYYY(document.getElementById('sevaStartDate').value);
   const sevaEndDate = isoToDDMMYYYY(document.getElementById('sevaEndDate').value);
+  const minGapDays = Number(document.getElementById('minGapDays').value);
   const whatsappNumber = document.getElementById('whatsappNumber').value.trim();
   const scriptURL = document.getElementById('scriptURL').value.trim();
   const readScriptURL = document.getElementById('readScriptURL').value.trim();
   const sheetId = document.getElementById('sheetId').value.trim();
   const sheetName = document.getElementById('sheetName').value.trim();
-  const slots = collectSlotsFromForm();
-
-  const slotsBlock = slots.map((s) => `    {
-      slotId: ${s.slotId},
-      slotName: "${s.slotName}",
-      sevaStartDate: "${s.sevaStartDate}",
-      sevaEndDate: "${s.sevaEndDate}",
-      dataEntryStartDate: "${s.dataEntryStartDate}",
-      dataEntryEndDate: "${s.dataEntryEndDate}"
-    }`).join(',\n');
 
   // sheetHeaders, relationOptions, mobileNumberRegex and dateFormat are
   // structural (they describe the sheet schema and dropdown choices) and
@@ -173,12 +108,14 @@ const PARAMETERS = {
   sevaStartDate: "${sevaStartDate}",
   sevaEndDate: "${sevaEndDate}",
 
-  // Slot-wise Seva date ranges and their corresponding data-entry windows.
-  // A slot's data entry is considered open when today's date falls between
-  // its dataEntryStartDate and dataEntryEndDate (inclusive).
-  slots: [
-${slotsBlock}
-  ],
+  // Minimum number of clear days required between today and a seva date for
+  // that date to be enterable — gives enough lead time to make arrangements.
+  // A seva date D can be picked as long as (D - today) >= minGapDays, and
+  // D falls within [sevaStartDate, sevaEndDate]. Entry closes automatically
+  // once even the last seva date (sevaEndDate) is closer than this many days
+  // away, and reopens the moment this number is lowered (e.g. to let in
+  // latecomers as the seva period nears its end) or the picture changes.
+  minGapDays: ${minGapDays},
 
   // WhatsApp number for notifications (country code + number, no '+', no spaces)
   whatsappNumber: "${whatsappNumber}",
@@ -213,27 +150,16 @@ ${slotsBlock}
 PARAMETERS.readDataURL =
   \`\${PARAMETERS.readScriptURL}?sheetid=\${PARAMETERS.sheetId}&sheetname=\${PARAMETERS.sheetName}\`;
 
-// Given a sevaDate string in "DD/MM/YYYY" format, returns the matching
-// slot object from PARAMETERS.slots (the slot whose sevaStartDate/sevaEndDate
-// range contains that date), or null if the date falls outside all slots.
-function getSlotForDate(sevaDateStr) {
-  const toDate = (ddmmyyyy) => {
-    const [d, m, y] = ddmmyyyy.split("/").map(Number);
-    return new Date(y, m - 1, d);
-  };
-  const picked = toDate(sevaDateStr);
-  return (
-    PARAMETERS.slots.find((slot) => {
-      const start = toDate(slot.sevaStartDate);
-      const end = toDate(slot.sevaEndDate);
-      return picked >= start && picked <= end;
-    }) || null
-  );
+// Given a "DD/MM/YYYY" string, returns the equivalent local Date object
+// (midnight). Shared by the date-range functions below.
+function ddmmyyyyToDateObj(ddmmyyyy) {
+  const [d, m, y] = ddmmyyyy.split("/").map(Number);
+  return new Date(y, m - 1, d);
 }
 
 // Returns a Date object representing the current moment in India Standard
-// Time (IST, UTC+5:30), constructed the same way slot boundary dates are
-// (a "local" Date built from plain year/month/day/... numbers) so date-only
+// Time (IST, UTC+5:30), constructed the same way ddmmyyyyToDateObj() builds
+// dates (a "local" Date from plain year/month/day/... numbers) so date-only
 // comparisons stay correct no matter what timezone the viewer's browser is in.
 function getISTNow() {
   const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
@@ -250,25 +176,6 @@ function getISTNow() {
   );
 }
 
-// Returns the slot whose DATA ENTRY window (dataEntryStartDate..dataEntryEndDate)
-// contains "now" (defaults to the current moment in IST), or null if no slot's
-// entry window is currently open. Used to figure out which slot's data entry
-// is active right now.
-function getCurrentOpenSlot(now = getISTNow()) {
-  const toDate = (ddmmyyyy) => {
-    const [d, m, y] = ddmmyyyy.split("/").map(Number);
-    return new Date(y, m - 1, d);
-  };
-  return (
-    PARAMETERS.slots.find((slot) => {
-      const start = toDate(slot.dataEntryStartDate);
-      const end = toDate(slot.dataEntryEndDate);
-      end.setHours(23, 59, 59, 999); // include the whole end day
-      return now >= start && now <= end;
-    }) || null
-  );
-}
-
 // Converts a "DD/MM/YYYY" string to "YYYY-MM-DD" (the format <input type="date">
 // requires for its value/min/max attributes).
 function toISODate(ddmmyyyy) {
@@ -276,20 +183,35 @@ function toISODate(ddmmyyyy) {
   return \`\${y}-\${String(m).padStart(2, "0")}-\${String(d).padStart(2, "0")}\`;
 }
 
+// Same as toISODate() but for a Date object rather than a "DD/MM/YYYY" string.
+function dateObjToISO(d) {
+  return \`\${d.getFullYear()}-\${String(d.getMonth() + 1).padStart(2, "0")}-\${String(d.getDate()).padStart(2, "0")}\`;
+}
+
 // Determines the allowed date-picker range right now: based on PARAMETERS.dataEntryOpen
-// (master switch) AND whichever slot's data-entry window currently contains today
-// in IST. The minimum is that slot's own seva start date, but the maximum is always
-// the OVERALL seva end date (not the slot's own end) — so once a slot's window opens,
-// any remaining seva date through the end of the whole seva period can be picked.
-// Returns { slot, minISO, maxISO } if entry is open for some slot, otherwise null
-// (meaning: no valid dates to pick — show a "data entry closed" message instead).
+// (master switch) AND PARAMETERS.minGapDays (the minimum lead time required between
+// today and a seva date). The earliest pickable date is "today + minGapDays",
+// clamped to not go before the overall seva start date. The latest pickable date
+// is always the overall seva end date. If even the last seva date no longer has
+// enough lead time, entry is closed. Lowering minGapDays (e.g. from 5 to 2) or
+// moving today forward both recompute this live — there is no separate "reopen"
+// step, just redeploying parameters.js with the new value.
+// Returns { minISO, maxISO } if entry is open, otherwise null (closed).
 function getAllowedDateRange(now = getISTNow()) {
   if (!PARAMETERS.dataEntryOpen) return null;
-  const slot = getCurrentOpenSlot(now);
-  if (!slot) return null;
+
+  const overallStart = ddmmyyyyToDateObj(PARAMETERS.sevaStartDate);
+  const overallEnd = ddmmyyyyToDateObj(PARAMETERS.sevaEndDate);
+
+  const earliestPickable = new Date(now);
+  earliestPickable.setHours(0, 0, 0, 0);
+  earliestPickable.setDate(earliestPickable.getDate() + PARAMETERS.minGapDays);
+
+  const effectiveMin = earliestPickable > overallStart ? earliestPickable : overallStart;
+  if (effectiveMin > overallEnd) return null; // no valid dates remain — closed
+
   return {
-    slot,
-    minISO: toISODate(slot.sevaStartDate),
+    minISO: dateObjToISO(effectiveMin),
     maxISO: toISODate(PARAMETERS.sevaEndDate)
   };
 }
@@ -299,9 +221,33 @@ function getAllowedDateRange(now = getISTNow()) {
 function rowArrayToRecord(rowArray) {
   const record = {};
   PARAMETERS.sheetHeaders.forEach((header, idx) => {
-    record[header] = rowArray[idx];
+    let value = rowArray[idx];
+    if (header === "sevaDate") {
+      value = normalizeSheetDateValue(value);
+    }
+    record[header] = value;
   });
   return record;
+}
+
+// Google Sheets sometimes auto-converts an incoming "DD/MM/YYYY" text value into
+// an actual Date-type cell; when the read script serializes that cell back to
+// JSON, it comes through as a raw UTC ISO timestamp (e.g. "2026-10-02T18:30:00.000Z")
+// instead of the original text. This detects that case and recovers the intended
+// DD/MM/YYYY by shifting to IST before reading the calendar date (the sheet's
+// stored moment represents IST midnight, not UTC midnight). Plain "DD/MM/YYYY"
+// strings pass through unchanged.
+function normalizeSheetDateValue(value) {
+  if (typeof value !== "string") return value;
+  const isoMatch = value.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?Z$/);
+  if (!isoMatch) return value;
+
+  const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
+  const shifted = new Date(new Date(value).getTime() + IST_OFFSET_MS);
+  const dd = String(shifted.getUTCDate()).padStart(2, "0");
+  const mm = String(shifted.getUTCMonth() + 1).padStart(2, "0");
+  const yyyy = shifted.getUTCFullYear();
+  return \`\${dd}/\${mm}/\${yyyy}\`;
 }
 
 // Export for use in app.js (if using ES modules); otherwise PARAMETERS
