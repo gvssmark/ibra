@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seva Hoarding Report</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+
+  <header class="app-header">
+    <span class="om">ॐ</span>
+    <h1>Hoarding Report</h1>
+    <p>Sorted by Seva Date</p>
+  </header>
+
+  <main>
+
+    <div class="note-box">
+      Telugu names are rendered as sharp embedded images (via the browser's own text engine) so conjuncts and vowel signs display correctly — plain PDF text cannot shape Telugu properly. English/date cells stay as normal, selectable PDF text.
+    </div>
+
+    <p id="status" class="empty-state">Loading entries…</p>
+
+    <div class="preview-table-wrap">
+      <table class="preview-table">
+        <thead>
+          <tr>
+            <th>Seva Date</th>
+            <th>Sponsor</th>
+            <th>Pitru 1</th>
+            <th>Pitru 2</th>
+          </tr>
+        </thead>
+        <tbody id="previewBody"></tbody>
+      </table>
+    </div>
+
+    <button type="button" id="generateBtn" class="btn-primary" disabled>Download PDF</button>
+
+  </main>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script src="parameters.js"></script>
+<script src="telugu-font.js"></script>
+<script src="report.js"></script>
+</body>
+</html>
