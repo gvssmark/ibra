@@ -1,163 +1,132 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SEVA 24 Data Collection</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
-    body { background: #f5f5f5; padding: 15px; }
-    .tab-container { max-width: 420px; margin: auto; background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); }
-    .tabs { display: flex; justify-content: space-around; margin-bottom: 15px; }
-    .tab-btn {
-      flex: 1;
-      padding: 10px;
-      cursor: pointer;
-      background: #e0e0e0;
-      border: none;
-      font-size: 14px;
-      font-weight: bold;
-      transition: background 0.3s;
-    }
-    .tab-btn.active { background: #4CAF50; color: white; }
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
-    label { display: block; margin-top: 10px; font-weight: bold; }
-    input {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 14px;
-    }
-    button {
-      width: 100%;
-      margin-top: 15px;
-      padding: 10px;
-      background: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    button:hover { background: #45a049; }
-    .success { color: green; text-align: center; margin-top: 10px; }
-    .error { color: red; text-align: center; margin-top: 10px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seva Sponsorship Entries</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="tab-container">
-    <div class="tabs">
-      <button class="tab-btn active" onclick="showTab(0)">SEVA Details</button>
-      <button class="tab-btn" onclick="showTab(1)">Pitru Devatas</button>
-      <button class="tab-btn" onclick="showTab(2)">Submit</button>
-    </div>
 
-    <form id="sevaForm">
-      <!-- TAB 1: SEVA DETAILS -->
-      <div class="tab-content active">
-        <label>Date of Seva</label>
-        <input type="date" name="date" required />
+<div class="app">
 
-        <label>Sponsor Name</label>
-        <input type="text" name="sponsor" required />
+  <header class="app-header">
+    <span class="om">ॐ</span>
+    <h1>Seva Sponsorship</h1>
+    <p>Seva Year <span id="sevaYearDisplay"></span></p>
+  </header>
 
-        <label>Sponsor Gotra</label>
-        <input type="text" name="sponsorGotra" required />
+  <nav class="tabs">
+    <button class="tab-btn active" data-target="newEntryView">New Entry</button>
+    <button class="tab-btn" data-target="viewEntriesView">View Entries</button>
+  </nav>
 
-        <label>Co-Sponsor Name</label>
-        <input type="text" name="coSponsor" />
+  <div id="statusBanner" class="status-banner"></div>
 
-        <label>Co-Sponsor Gotra</label>
-        <input type="text" name="coSponsorGotra" />
+  <main>
 
-        <label>Mobile Number</label>
-        <input type="tel" name="mobile" maxlength="10" pattern="[6-9]{1}[0-9]{9}" required />
+    <!-- ============ NEW ENTRY VIEW ============ -->
+    <section id="newEntryView" class="view active">
+
+      <form id="sevaForm" novalidate>
+        <input type="hidden" id="sevaYearHidden">
+
+        <div class="field">
+          <label for="sevaDate">Seva Date <span class="req">*</span></label>
+          <input type="date" id="sevaDate" required>
+        </div>
+
+        <fieldset class="field-group">
+          <legend>Sponsor</legend>
+          <div class="field">
+            <label for="sponsorName">Sponsor Name <span class="req">*</span></label>
+            <input type="text" id="sponsorName" required>
+          </div>
+          <div class="field">
+            <label for="sponsorMobile">Sponsor Mobile <span class="req">*</span></label>
+            <input type="tel" id="sponsorMobile" inputmode="numeric" maxlength="10" placeholder="10-digit mobile number" required>
+          </div>
+          <div class="field">
+            <label for="sponsorGotra">Sponsor Gotra</label>
+            <input type="text" id="sponsorGotra">
+          </div>
+        </fieldset>
+
+        <fieldset class="field-group">
+          <legend>Co-Sponsor (optional)</legend>
+          <div class="field">
+            <label for="coSponsorName">Co-Sponsor Name</label>
+            <input type="text" id="coSponsorName">
+          </div>
+          <div class="field">
+            <label for="coSponsorGotra">Co-Sponsor Gotra</label>
+            <input type="text" id="coSponsorGotra">
+          </div>
+        </fieldset>
+
+        <fieldset class="field-group">
+          <legend>Pitru 1</legend>
+          <div class="field">
+            <label for="pitru1Name">Name <span class="req">*</span></label>
+            <input type="text" id="pitru1Name" required>
+          </div>
+          <div class="field">
+            <label for="pitru1Gotra">Gotra</label>
+            <input type="text" id="pitru1Gotra">
+          </div>
+          <div class="field">
+            <label for="pitru1Relation">Relation <span class="req">*</span></label>
+            <select id="pitru1Relation" required></select>
+          </div>
+          <div class="field" id="pitru1OtherWrap" style="display:none;">
+            <label for="pitru1RelationOther">Specify Relation</label>
+            <input type="text" id="pitru1RelationOther">
+          </div>
+        </fieldset>
+
+        <fieldset class="field-group">
+          <legend>Pitru 2 (optional)</legend>
+          <div class="field">
+            <label for="pitru2Name">Name</label>
+            <input type="text" id="pitru2Name">
+          </div>
+          <div class="field">
+            <label for="pitru2Gotra">Gotra</label>
+            <input type="text" id="pitru2Gotra">
+          </div>
+          <div class="field">
+            <label for="pitru2Relation">Relation</label>
+            <select id="pitru2Relation"></select>
+          </div>
+          <div class="field" id="pitru2OtherWrap" style="display:none;">
+            <label for="pitru2RelationOther">Specify Relation</label>
+            <input type="text" id="pitru2RelationOther">
+          </div>
+        </fieldset>
+
+        <div id="formError" class="error-text"></div>
+
+        <button type="submit" id="submitBtn" class="btn-primary">Submit Seva Details</button>
+      </form>
+
+      <div id="reportContainer"></div>
+
+    </section>
+
+    <!-- ============ VIEW ENTRIES ============ -->
+    <section id="viewEntriesView" class="view">
+      <div class="search-box">
+        <span class="icon">&#128269;</span>
+        <input type="text" id="searchInput" placeholder="Search by mobile or sponsor name">
       </div>
+      <div id="recordsList"></div>
+    </section>
 
-      <!-- TAB 2: PITRU DEVATAS -->
-      <div class="tab-content">
-        <label>Pitru Devata Names</label>
-        <input type="text" name="pitruNames" placeholder="Separate names with commas" required />
+  </main>
 
-        <label>Pitru Gotras</label>
-        <input type="text" name="pitruGotras" placeholder="Separate gotras with commas"  required/>
+</div>
 
-        <label>Relationship</label>
-        <input type="text" name="relationship" placeholder="Separate Relationships with commas" required />
-      </div>
-
-      <!-- TAB 3: SUBMIT -->
-      <div class="tab-content">
-        <button type="submit">Submit & Send to WhatsApp</button>
-        <div id="statusMsg"></div>
-      </div>
-    </form>
-  </div>
-
-  <script>
-    const tabs = document.querySelectorAll(".tab-btn");
-    const contents = document.querySelectorAll(".tab-content");
-
-    function showTab(index) {
-      tabs.forEach((t, i) => {
-        t.classList.toggle("active", i === index);
-        contents[i].classList.toggle("active", i === index);
-      });
-    }
-
-    document.getElementById("sevaForm").addEventListener("submit", async function(e) {
-      e.preventDefault();
-      const statusMsg = document.getElementById("statusMsg");
-
-      // Collect Form Data
-      const formData = new FormData(this);
-      const data = {};
-      formData.forEach((value, key) => data[key] = value);
-
-      // Validate Mobile
-      if (!/^[6-9]\d{9}$/.test(data.mobile)) {
-        statusMsg.innerHTML = "<p class='error'>Invalid mobile number!</p>";
-        return;
-      }
-
-      statusMsg.innerHTML = "<p style='color:blue;'>Submitting...</p>";
-
-      try {
-        // SEND DATA TO GOOGLE SHEET
-        const scriptURL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";  // 🔹 Replace with your actual Web App URL
-        const response = await fetch(scriptURL, {
-          method: "POST",
-          body: new URLSearchParams(data),
-        });
-
-        if (!response.ok) throw new Error("Failed to submit!");
-
-        // Prepare WhatsApp Message
-        const msg = `🕉️ SEVA 24 Details 🕉️%0A
-📅 Date: ${data.date}%0A
-👤 Sponsor: ${data.sponsor} (${data.sponsorGotra})%0A
-🤝 Co-Sponsor: ${data.coSponsor} (${data.coSponsorGotra})%0A
-📱 Mobile: ${data.mobile}%0A
-🙏 Pitru Devatas: ${data.pitruNames}%0A
-🔸 Gotras: ${data.pitruGotras}%0A
-👨‍👩‍👧‍👦 Relationship: ${data.relationship}`;
-
-        // OPEN WHATSAPP
-        const waUrl = `https://wa.me/919989036183?text=${msg}`;
-        window.open(waUrl, "_blank");
-
-        statusMsg.innerHTML = "<p class='success'>Form submitted successfully! Redirecting to WhatsApp...</p>";
-        this.reset();
-        showTab(0);
-      } catch (error) {
-        statusMsg.innerHTML = "<p class='error'>Error submitting form!</p>";
-      }
-    });
-  </script>
+<script src="parameters.js"></script>
+<script src="app.js"></script>
 </body>
 </html>

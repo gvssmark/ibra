@@ -1,0 +1,353 @@
+@import url('https://fonts.googleapis.com/css2?family=Yatra+One&family=Rasa:wght@400;600;700&display=swap');
+
+:root {
+  --color-bg: #FBF3E3;
+  --color-bg-card: #FFFBF3;
+  --color-bg-card-alt: #F5E9D0;
+  --color-primary: #8B1E3F;
+  --color-primary-dark: #6B1730;
+  --color-gold: #B8860B;
+  --color-gold-light: #D9C28C;
+  --color-text: #2B1B12;
+  --color-text-muted: #6B5842;
+  --color-success: #4B6043;
+  --color-success-bg: #E7EEE2;
+  --color-danger: #A13D2B;
+  --color-danger-bg: #F4E3DC;
+
+  --font-display: 'Yatra One', serif;
+  --font-label: 'Rasa', Georgia, serif;
+  --font-data: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--color-bg);
+  background-image:
+    radial-gradient(var(--color-gold-light) 0.6px, transparent 0.6px);
+  background-size: 14px 14px;
+  color: var(--color-text);
+  font-family: var(--font-data);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+.app {
+  width: 100%;
+  max-width: 480px;
+  min-height: 100vh;
+  background: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Header ---------- */
+header.app-header {
+  background: var(--color-primary);
+  color: var(--color-bg-card);
+  padding: 22px 18px 18px;
+  border-bottom: 3px solid var(--color-gold);
+  border-radius: 0 0 28px 28px;
+  text-align: center;
+  position: relative;
+}
+
+header.app-header .om {
+  font-size: 22px;
+  display: block;
+  margin-bottom: 2px;
+  color: var(--color-gold-light);
+}
+
+header.app-header h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 26px;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+header.app-header p {
+  font-family: var(--font-label);
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--color-gold-light);
+}
+
+/* ---------- Tabs ---------- */
+.tabs {
+  display: flex;
+  margin: 16px 16px 0;
+  border: 2px solid var(--color-gold);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 11px 8px;
+  background: var(--color-bg-card);
+  border: none;
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--color-primary);
+  cursor: pointer;
+}
+
+.tab-btn + .tab-btn {
+  border-left: 2px solid var(--color-gold);
+}
+
+.tab-btn.active {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+/* ---------- Status banner ---------- */
+.status-banner {
+  margin: 14px 16px 0;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-family: var(--font-label);
+  font-size: 14px;
+  border: 1px solid transparent;
+}
+
+.status-banner.open {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+  border-color: var(--color-success);
+}
+
+.status-banner.closed {
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+  border-color: var(--color-danger);
+}
+
+/* ---------- Form ---------- */
+main {
+  flex: 1;
+  padding: 16px;
+}
+
+.view { display: none; }
+.view.active { display: block; }
+
+.field {
+  margin-bottom: 14px;
+}
+
+.field label {
+  display: block;
+  font-family: var(--font-label);
+  font-size: 13.5px;
+  color: var(--color-text-muted);
+  margin-bottom: 5px;
+}
+
+.field label .req {
+  color: var(--color-primary);
+}
+
+.field input,
+.field select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid var(--color-gold-light);
+  border-radius: 8px;
+  background: var(--color-bg-card);
+  font-family: var(--font-data);
+  font-size: 15px;
+  color: var(--color-text);
+}
+
+.field input:focus,
+.field select:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+  border-color: var(--color-primary);
+}
+
+.field-group {
+  border: 1px solid var(--color-gold-light);
+  border-radius: 10px;
+  padding: 12px 12px 2px;
+  margin-bottom: 16px;
+  background: var(--color-bg-card-alt);
+}
+
+.field-group legend {
+  font-family: var(--font-label);
+  font-weight: 700;
+  color: var(--color-primary);
+  padding: 0 6px;
+  font-size: 14px;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 13px;
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 9px;
+  font-family: var(--font-display);
+  font-size: 17px;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+}
+
+.btn-primary:disabled {
+  background: #B99;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  background: var(--color-success);
+  color: #fff;
+  border: none;
+  border-radius: 9px;
+  font-family: var(--font-label);
+  font-size: 15px;
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+}
+
+/* ---------- Report ---------- */
+.report-card {
+  background: var(--color-bg-card);
+  border: 2px solid var(--color-gold);
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 6px;
+}
+
+.report-card h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  color: var(--color-primary);
+  font-size: 19px;
+  margin: 0 0 10px;
+  text-align: center;
+}
+
+.report-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--color-gold-light);
+  font-size: 14px;
+}
+
+.report-row span:first-child {
+  font-family: var(--font-label);
+  color: var(--color-text-muted);
+}
+
+.report-row span:last-child {
+  font-weight: 600;
+  text-align: right;
+}
+
+/* ---------- Search ---------- */
+.search-box {
+  margin-bottom: 14px;
+  position: relative;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 11px 12px 11px 36px;
+  border: 1.5px solid var(--color-gold-light);
+  border-radius: 20px;
+  background: var(--color-bg-card);
+  font-family: var(--font-data);
+  font-size: 15px;
+}
+
+.search-box .icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-gold);
+  font-size: 16px;
+}
+
+/* ---------- Record cards ---------- */
+.record-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-gold-light);
+  border-left: 5px solid var(--color-primary);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.record-card .rc-top {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.record-card .sno {
+  font-family: var(--font-display);
+  color: var(--color-gold);
+  font-size: 13px;
+}
+
+.record-card .mobile {
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.3px;
+}
+
+.record-card .row {
+  font-size: 13.5px;
+  color: var(--color-text);
+  margin: 2px 0;
+}
+
+.record-card .row .lbl {
+  font-family: var(--font-label);
+  color: var(--color-text-muted);
+  margin-right: 4px;
+}
+
+.record-card .detail {
+  display: none;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--color-gold-light);
+}
+
+.record-card.expanded .detail {
+  display: block;
+}
+
+.empty-state, .loading-state {
+  text-align: center;
+  padding: 30px 10px;
+  color: var(--color-text-muted);
+  font-family: var(--font-label);
+  font-size: 15px;
+}
+
+.error-text {
+  color: var(--color-danger);
+  font-family: var(--font-label);
+  font-size: 13.5px;
+  margin-top: 6px;
+}
