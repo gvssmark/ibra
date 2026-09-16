@@ -89,6 +89,8 @@ const PARAMETERS = {
     "Mother",
     "Paternal Grand Mother",
     "Maternal Grand Mother",
+    "Father in Law",
+    "Mother in Law",
     "Elder Brother",
     "Elder Brother's Wife",
     "Younger Brother",
