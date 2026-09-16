@@ -2,6 +2,7 @@
 // parameters.js
 // Central configuration for the Seva Data Entry App
 // All dates are in Indian format: DD/MM/YYYY
+// Generated via admin.html on 9/17/2026, 4:47:37 AM
 // ============================================================
 
 const PARAMETERS = {
@@ -14,8 +15,8 @@ const PARAMETERS = {
   dataEntryOpen: true,
 
   // Overall Seva period (informational / used for validation)
-  sevaStartDate: "01/10/2026",
-  sevaEndDate: "15/10/2026",
+  sevaStartDate: "10/10/2026",
+  sevaEndDate: "10/10/2026",
 
   // Minimum number of clear days required between today and a seva date for
   // that date to be enterable — gives enough lead time to make arrangements.
@@ -42,48 +43,46 @@ const PARAMETERS = {
   sheetName: "Data",
 
   // Column headers in the "Data" sheet, in exact order
-  // NOTE: "sponsorMobile" is a new column — add it to the actual Google Sheet's
-  // header row (between sponsorName and sponsorGotra) before going live.
   sheetHeaders: [
-    "sevaYear",
-    "sevaDate",
-    "sponsorName",
-    "sponsorMobile",
-    "sponsorGotra",
-    "coSponsorName",
-    "coSponsorGotra",
-    "pitru1Name",
-    "pitru1Gotra",
-    "pitru1Relation",
-    "pitru2Name",
-    "pitru2Gotra",
-    "pitru2Relation"
+      "sevaYear",
+      "sevaDate",
+      "sponsorName",
+      "sponsorMobile",
+      "sponsorGotra",
+      "coSponsorName",
+      "coSponsorGotra",
+      "pitru1Name",
+      "pitru1Gotra",
+      "pitru1Relation",
+      "pitru2Name",
+      "pitru2Gotra",
+      "pitru2Relation"
   ],
 
   // Dropdown options for the Relation fields (pitru1Relation / pitru2Relation)
   relationOptions: [
-    "Father",
-    "Paternal Grand Father",
-    "Maternal Grand Father",
-    "Mother",
-    "Paternal Grand Mother",
-    "Maternal Grand Mother",
-    "Elder Brother",
-    "Elder Brother's Wife",
-    "Younger Brother",
-    "Younger Brother's Wife",
-    "Elder Sister",
-    "Elder Sister's Husband",
-    "Younger Sister",
-    "Younger Sister's Husband",
-    "Wife",
-    "Husband",
-    "Son",
-    "Son's Wife",
-    "Daughter",
-    "Daughter's Husband",
-    "Friend",
-    "Anyother Specify"
+      "Father",
+      "Paternal Grand Father",
+      "Maternal Grand Father",
+      "Mother",
+      "Paternal Grand Mother",
+      "Maternal Grand Mother",
+      "Elder Brother",
+      "Elder Brother's Wife",
+      "Younger Brother",
+      "Younger Brother's Wife",
+      "Elder Sister",
+      "Elder Sister's Husband",
+      "Younger Sister",
+      "Younger Sister's Husband",
+      "Wife",
+      "Husband",
+      "Son",
+      "Son's Wife",
+      "Daughter",
+      "Daughter's Husband",
+      "Friend",
+      "Anyother Specify"
   ],
 
   // Indian mobile numbers: 10 digits, starting with 6, 7, 8 or 9
