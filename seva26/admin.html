@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seva Parameters — Admin Utility</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+
+  <header class="app-header">
+    <span class="om">ॐ</span>
+    <h1>Parameters Utility</h1>
+    <p>Edit Seva year, dates &amp; slots</p>
+  </header>
+
+  <main>
+
+    <div class="status-banner open" style="margin-top:0;">
+      Edit the fields below, check the "clear days" note under each slot, then generate and download the updated <strong>parameters.js</strong>. Replace the existing file in your GitHub repo with the downloaded one.
+    </div>
+
+    <h2 class="section-title">General</h2>
+
+    <div class="field">
+      <label for="sevaYear">Seva Year</label>
+      <input type="number" id="sevaYear">
+    </div>
+
+    <div class="toggle-row">
+      <label for="dataEntryOpen">Data Entry Open (master switch)</label>
+      <input type="checkbox" id="dataEntryOpen">
+    </div>
+
+    <div class="field">
+      <label for="sevaStartDate">Overall Seva Start Date</label>
+      <input type="date" id="sevaStartDate">
+    </div>
+
+    <div class="field">
+      <label for="sevaEndDate">Overall Seva End Date</label>
+      <input type="date" id="sevaEndDate">
+    </div>
+
+    <div class="field">
+      <label for="whatsappNumber">WhatsApp Number (with country code, no +)</label>
+      <input type="text" id="whatsappNumber">
+    </div>
+
+    <h2 class="section-title">Google Sheet &amp; Scripts</h2>
+
+    <div class="field">
+      <label for="scriptURL">Write Script URL (scriptURL)</label>
+      <input type="text" id="scriptURL">
+    </div>
+
+    <div class="field">
+      <label for="readScriptURL">Read Script URL (readScriptURL)</label>
+      <input type="text" id="readScriptURL">
+    </div>
+
+    <div class="field">
+      <label for="sheetId">Spreadsheet ID</label>
+      <input type="text" id="sheetId">
+    </div>
+
+    <div class="field">
+      <label for="sheetName">Sheet Name</label>
+      <input type="text" id="sheetName">
+    </div>
+
+    <h2 class="section-title">Slots</h2>
+    <p style="font-family: var(--font-label); font-size: 13px; color: var(--color-text-muted); margin-top: -6px;">
+      Each slot needs at least 5 clear days between its data-entry end date and its seva start date, to allow time for arrangements.
+    </p>
+
+    <div id="slotsContainer"></div>
+    <button type="button" id="addSlotBtn" class="btn-add-slot">+ Add another slot</button>
+
+    <button type="button" id="generateBtn" class="btn-primary">Generate parameters.js</button>
+
+    <div id="outputSection" class="output-box" style="display:none; margin-top:16px;">
+      <h2 class="section-title">Generated parameters.js</h2>
+      <textarea id="outputCode" readonly></textarea>
+      <button type="button" id="downloadBtn" class="btn-secondary" style="margin-top:10px;">Download parameters.js</button>
+    </div>
+
+  </main>
+
+  <a href="index.html" class="admin-link">&larr; Back to Seva Entry App</a>
+
+</div>
+
+<script src="parameters.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

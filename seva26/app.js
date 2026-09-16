@@ -34,7 +34,7 @@ function initStatusBanner() {
   if (range) {
     banner.className = 'status-banner open';
     banner.textContent =
-      `Data entry is open for ${range.slot.slotName} (Seva ${range.slot.sevaStartDate} – ${range.slot.sevaEndDate}).`;
+      `Data entry is open. You may pick a Seva date from ${range.slot.sevaStartDate} to ${PARAMETERS.sevaEndDate}.`;
     dateInput.min = range.minISO;
     dateInput.max = range.maxISO;
     dateInput.disabled = false;

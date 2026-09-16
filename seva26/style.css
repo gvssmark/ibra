@@ -351,3 +351,131 @@ main {
   font-size: 13.5px;
   margin-top: 6px;
 }
+
+/* ---------- Admin / parameters utility ---------- */
+.admin-link {
+  display: block;
+  text-align: center;
+  font-family: var(--font-label);
+  font-size: 12.5px;
+  color: var(--color-text-muted);
+  padding: 10px;
+  text-decoration: none;
+}
+
+.slot-card {
+  background: var(--color-bg-card-alt);
+  border: 1px solid var(--color-gold-light);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.slot-card .slot-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.slot-card .slot-header input {
+  font-family: var(--font-label);
+  font-weight: 700;
+  color: var(--color-primary);
+  border: none;
+  background: transparent;
+  font-size: 15px;
+  padding: 2px 0;
+  width: 60%;
+}
+
+.btn-remove-slot {
+  background: none;
+  border: 1px solid var(--color-danger);
+  color: var(--color-danger);
+  border-radius: 6px;
+  font-family: var(--font-label);
+  font-size: 12px;
+  padding: 4px 9px;
+  cursor: pointer;
+}
+
+.btn-add-slot {
+  width: 100%;
+  padding: 10px;
+  background: var(--color-bg-card);
+  border: 1.5px dashed var(--color-gold);
+  color: var(--color-primary);
+  border-radius: 8px;
+  font-family: var(--font-label);
+  font-size: 14px;
+  cursor: pointer;
+  margin-bottom: 18px;
+}
+
+.gap-note {
+  font-family: var(--font-label);
+  font-size: 12.5px;
+  margin-top: 6px;
+  padding: 5px 9px;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+.gap-note.ok {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+}
+
+.gap-note.warn {
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+}
+
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border: 1.5px solid var(--color-gold-light);
+  border-radius: 8px;
+  background: var(--color-bg-card);
+  margin-bottom: 14px;
+}
+
+.toggle-row label {
+  font-family: var(--font-label);
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+.toggle-row input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--color-primary);
+}
+
+.output-box textarea {
+  width: 100%;
+  min-height: 220px;
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 12px;
+  padding: 10px;
+  border: 1.5px solid var(--color-gold-light);
+  border-radius: 8px;
+  background: var(--color-bg-card);
+  color: var(--color-text);
+  white-space: pre;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  color: var(--color-primary);
+  font-size: 18px;
+  margin: 20px 0 10px;
+}
+
+.section-title:first-child {
+  margin-top: 0;
+}

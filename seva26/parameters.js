@@ -89,8 +89,6 @@ const PARAMETERS = {
     "Mother",
     "Paternal Grand Mother",
     "Maternal Grand Mother",
-    "Father in Law",
-    "Mother in Law",
     "Elder Brother",
     "Elder Brother's Wife",
     "Younger Brother",
@@ -139,10 +137,30 @@ function getSlotForDate(sevaDateStr) {
   );
 }
 
+// Returns a Date object representing the current moment in India Standard
+// Time (IST, UTC+5:30), constructed the same way slot boundary dates are
+// (a "local" Date built from plain year/month/day/... numbers) so date-only
+// comparisons stay correct no matter what timezone the viewer's browser is in.
+function getISTNow() {
+  const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
+  const istShifted = new Date(Date.now() + IST_OFFSET_MS);
+  // istShifted's UTC fields now represent IST wall-clock time; rebuild a
+  // plain local Date from those numbers.
+  return new Date(
+    istShifted.getUTCFullYear(),
+    istShifted.getUTCMonth(),
+    istShifted.getUTCDate(),
+    istShifted.getUTCHours(),
+    istShifted.getUTCMinutes(),
+    istShifted.getUTCSeconds()
+  );
+}
+
 // Returns the slot whose DATA ENTRY window (dataEntryStartDate..dataEntryEndDate)
-// contains "now" (defaults to today), or null if no slot's entry window is
-// currently open. Used to figure out which slot's data entry is active right now.
-function getCurrentOpenSlot(now = new Date()) {
+// contains "now" (defaults to the current moment in IST), or null if no slot's
+// entry window is currently open. Used to figure out which slot's data entry
+// is active right now.
+function getCurrentOpenSlot(now = getISTNow()) {
   const toDate = (ddmmyyyy) => {
     const [d, m, y] = ddmmyyyy.split("/").map(Number);
     return new Date(y, m - 1, d);
@@ -166,16 +184,19 @@ function toISODate(ddmmyyyy) {
 
 // Determines the allowed date-picker range right now: based on PARAMETERS.dataEntryOpen
 // (master switch) AND whichever slot's data-entry window currently contains today.
+// The minimum is that slot's own seva start date, but the maximum is always the
+// OVERALL seva end date (not the slot's own end) — so once a slot's window opens,
+// any remaining seva date through the end of the whole seva period can be picked.
 // Returns { slot, minISO, maxISO } if entry is open for some slot, otherwise null
 // (meaning: no valid dates to pick — show a "data entry closed" message instead).
-function getAllowedDateRange(now = new Date()) {
+function getAllowedDateRange(now = getISTNow()) {
   if (!PARAMETERS.dataEntryOpen) return null;
   const slot = getCurrentOpenSlot(now);
   if (!slot) return null;
   return {
     slot,
     minISO: toISODate(slot.sevaStartDate),
-    maxISO: toISODate(slot.sevaEndDate)
+    maxISO: toISODate(PARAMETERS.sevaEndDate)
   };
 }
 
