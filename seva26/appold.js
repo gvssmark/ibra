@@ -123,21 +123,19 @@ function wireForm() {
     submitBtn.textContent = 'Submitting…';
 
     try {
-      const formData = new FormData();
-      formData.append('spreadsheetId', PARAMETERS.sheetId);
-      formData.append('sheetName', PARAMETERS.sheetName);
-      Object.entries(record).forEach(([key, value]) => formData.append(key, value));
-
-      const response = await fetch(PARAMETERS.scriptURL, {
+      const payload = {
+        spreadsheetId: PARAMETERS.sheetId,
+        sheetName: PARAMETERS.sheetName,
+        ...record
+      };
+      await fetch(PARAMETERS.scriptURL, {
         method: 'POST',
-        body: formData
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
       });
-      const result = await response.json();
-
-      if (result.result !== 'success') {
-        throw new Error(result.error || 'Submission failed.');
-      }
-
+      // Apps Script (no-cors) never returns a readable response, so we
+      // treat "no network error" as success, per the app's design.
       showReport(record);
       form.reset();
       document.getElementById('sevaYearHidden').value = PARAMETERS.sevaYear;
@@ -145,7 +143,7 @@ function wireForm() {
       document.getElementById('pitru2OtherWrap').style.display = 'none';
       recordsLoaded = false; // force a refresh next time View Entries is opened
     } catch (err) {
-      errorEl.textContent = err.message || 'Could not submit — please check your connection and try again.';
+      errorEl.textContent = 'Could not submit — please check your connection and try again.';
     } finally {
       submitBtn.disabled = false;
       submitBtn.textContent = 'Submit Seva Details';
