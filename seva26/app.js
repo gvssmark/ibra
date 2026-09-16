@@ -123,11 +123,16 @@ function wireForm() {
     submitBtn.textContent = 'Submitting…';
 
     try {
+      const payload = {
+        spreadsheetId: PARAMETERS.sheetId,
+        sheetName: PARAMETERS.sheetName,
+        ...record
+      };
       await fetch(PARAMETERS.scriptURL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(record)
+        body: JSON.stringify(payload)
       });
       // Apps Script (no-cors) never returns a readable response, so we
       // treat "no network error" as success, per the app's design.
