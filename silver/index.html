@@ -29,15 +29,14 @@
   .btn{border:0;border-radius:10px;padding:12px 18px;font-size:1rem;font-weight:600;cursor:pointer;background:var(--primary);color:#fff}
   .btn:disabled{opacity:.45;cursor:not-allowed}
   .btn.sec{background:#e8ecf7;color:var(--text)}
-  .btn.danger{background:#fdecec;color:var(--err)}
+  .btn.wa{background:#1fa855}
+  [hidden]{display:none!important}
   .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
   .row .btn{flex:1 1 auto}
   table{width:100%;border-collapse:collapse;font-size:.9rem}
   th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}
   th{color:var(--muted);font-size:.75rem;text-transform:uppercase}
-  td.x{text-align:right}
   .tag{font-size:.65rem;background:#fff2d9;color:var(--warn);padding:2px 6px;border-radius:6px;margin-left:6px;vertical-align:middle}
-  .rm{background:none;border:0;color:var(--err);font-size:1.1rem;cursor:pointer}
   .empty{color:var(--muted);text-align:center;padding:16px}
   .tablewrap{overflow-x:auto}
   .toolbar{display:flex;gap:8px;align-items:center;margin-bottom:8px}
@@ -53,7 +52,7 @@
 
   <div class="card">
     <label for="srno">SR No</label>
-    <input id="srno" type="number" inputmode="numeric" placeholder="Enter SR No" autofocus>
+    <input id="srno" type="number" inputmode="numeric" placeholder="Enter SR No">
 
     <label for="name">Name</label>
     <input id="name" type="text" placeholder="Name" readonly>
@@ -71,19 +70,19 @@
 
   <div class="card">
     <div class="row" style="margin-top:0">
-      <button id="exportBtn" class="btn">Export Attendance CSV</button>
-      <button id="exportNewBtn" class="btn sec">Export New Members</button>
-      <button id="resetBtn" class="btn danger">Reset All</button>
+      <button id="exportBtn" class="btn">Export CSV</button>
+      <button id="waBtn" class="btn wa">Send CSV to WhatsApp</button>
+      <button id="toggleBtn" class="btn sec">Show Report</button>
     </div>
   </div>
 
-  <div class="card">
+  <div class="card" id="reportCard" hidden>
     <div class="toolbar">
       <input id="filter" type="text" placeholder="Search marked list (SR No / name)">
     </div>
     <div class="tablewrap">
       <table>
-        <thead><tr><th>#</th><th>SR No</th><th>Name</th><th>Mobile</th><th>Time</th><th></th></tr></thead>
+        <thead><tr><th>#</th><th>SR No</th><th>Name</th><th>Mobile</th><th>Time</th></tr></thead>
         <tbody id="list"></tbody>
       </table>
     </div>
@@ -94,6 +93,8 @@
 <script>
 (function(){
   const KEY = 'attendance_v1';
+  const MOBILE_RE = /^[6-9]\d{9}$/;
+  const WA_NUMBER = '919989036183';
 
   // ---------- Local storage ----------
   // records: [{srno,memno,name,mobile,time,isNew}]
@@ -181,7 +182,7 @@
     const mobile = cleanMobile(mobileEl.value);
 
     if(!name){ setStatus('Please enter the name', 'err'); nameEl.focus(); return; }
-    if(mobileEl.value.trim() && mobile.length !== 10){ setStatus('Mobile must be 10 digits (or leave blank)', 'err'); mobileEl.focus(); return; }
+    if(mobile && !MOBILE_RE.test(mobile)){ setStatus('Mobile must be 10 digits starting with 6, 7, 8 or 9', 'err'); mobileEl.focus(); return; }
     if(isMarked(srno)){ setStatus('Already marked present', 'warn'); return; }
 
     if(isNewEntry){
@@ -207,7 +208,7 @@
     srnoEl.value=''; nameEl.value=''; mobileEl.value=''; nameEl.readOnly=true;
     delete nameEl.dataset.forSr;
     current=null; isNewEntry=false; markBtn.disabled=true; setStatus('');
-    srnoEl.focus();
+    if(document.activeElement) document.activeElement.blur();
   }
 
   // ---------- Render list ----------
@@ -228,20 +229,10 @@
       rows.push(`<tr>
         <td>${i+1}</td><td>${esc(r.srno)}</td>
         <td>${esc(r.name)}${r.isNew?'<span class="tag">NEW</span>':''}</td>
-        <td>${esc(r.mobile)}</td><td>${fmtTime(r.time)}</td>
-        <td class="x"><button class="rm" data-sr="${esc(r.srno)}" title="Remove">&times;</button></td></tr>`);
+        <td>${esc(r.mobile)}</td><td>${fmtTime(r.time)}</td></tr>`);
     }
-    listEl.innerHTML = rows.length ? rows.join('') : '<tr><td colspan="6" class="empty">No attendance marked yet</td></tr>';
+    listEl.innerHTML = rows.length ? rows.join('') : '<tr><td colspan="5" class="empty">No attendance marked yet</td></tr>';
   }
-
-  listEl.addEventListener('click', e=>{
-    const b = e.target.closest('.rm'); if(!b) return;
-    const srno = b.dataset.sr;
-    const rec = store.records.find(r=>r.srno===srno);
-    if(!rec || !confirm('Remove attendance for ' + rec.name + '?')) return;
-    store.records = store.records.filter(r=>r.srno!==srno);
-    save(); render(); onSrnoChange();
-  });
 
   // ---------- CSV export ----------
   function csvCell(v){
@@ -262,28 +253,19 @@
     return d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'_'+p(d.getHours())+p(d.getMinutes());
   }
 
-  $('exportBtn').addEventListener('click', ()=>{
-    if(!store.records.length){ alert('No attendance marked yet.'); return; }
+  function buildRows(){
     const rows = [['S.No','SRNO','MEMNO','NAME','MOBILE','TIME','NEW_MEMBER']];
     store.records.forEach((r,i)=>{
       const d = new Date(r.time), p=n=>String(n).padStart(2,'0');
       const t = `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
       rows.push([i+1, r.srno, r.memno, r.name, r.mobile, t, r.isNew?'Y':'N']);
     });
-    download('attendance_' + stamp() + '.csv', rows);
-  });
+    return rows;
+  }
 
-  $('exportNewBtn').addEventListener('click', ()=>{
-    if(!store.newMembers.length){ alert('No new members added.'); return; }
-    const rows = [['SRNO','NAME','MOBILE']];
-    store.newMembers.forEach(m=>rows.push([m.srno, m.name, m.mobile]));
-    download('new_members_' + stamp() + '.csv', rows);
-  });
-
-  $('resetBtn').addEventListener('click', ()=>{
-    if(!confirm('This deletes ALL marked attendance, new members and mobile edits stored in this browser. Export first! Continue?')) return;
-    localStorage.removeItem(KEY);
-    location.reload();
+  $('exportBtn').addEventListener('click', ()=>{
+    if(!store.records.length){ alert('No attendance marked yet.'); return; }
+    download('attendance_' + stamp() + '.csv', buildRows());
   });
 
   // ---------- Events ----------
@@ -292,15 +274,45 @@
   $('clearBtn').addEventListener('click', resetForm);
   filterEl.addEventListener('input', render);
   [srnoEl,nameEl,mobileEl].forEach(el=>el.addEventListener('keydown', e=>{
-    if(e.key==='Enter'){
-      e.preventDefault();
-      if(el===srnoEl && current && !isMarked(current.srno)) mobileEl.focus();
-      else if(el===srnoEl && isNewEntry) nameEl.focus();
-      else if(el===nameEl) mobileEl.focus();
-      else mark();
-    }
+    if(e.key==='Enter'){ e.preventDefault(); mark(); }
   }));
-  mobileEl.addEventListener('input', ()=>{ mobileEl.value = mobileEl.value.replace(/\D/g,'').slice(0,10); });
+  mobileEl.addEventListener('input', ()=>{
+    mobileEl.value = mobileEl.value.replace(/\D/g,'').slice(0,10);
+    const v = mobileEl.value;
+    if(v && !/^[6-9]/.test(v)) setStatus('Mobile must start with 6, 7, 8 or 9', 'err');
+    else if(statusEl.classList.contains('err')) setStatus('');
+  });
+
+  // ---------- Show / Hide report ----------
+  const reportCard = $('reportCard'), toggleBtn = $('toggleBtn');
+  toggleBtn.addEventListener('click', ()=>{
+    reportCard.hidden = !reportCard.hidden;
+    toggleBtn.textContent = reportCard.hidden ? 'Show Report' : 'Hide Report';
+    toggleBtn.blur();
+  });
+
+  // ---------- WhatsApp (CSV file only) ----------
+  $('waBtn').addEventListener('click', async ()=>{
+    if(!store.records.length){ alert('No attendance marked yet.'); return; }
+    const rows = buildRows();
+    const csv = '\uFEFF' + rows.map(r=>r.map(csvCell).join(',')).join('\r\n');
+    const filename = 'attendance_' + stamp() + '.csv';
+    const file = new File([csv], filename, {type:'text/csv'});
+
+    // Phones: share the CSV file itself (choose WhatsApp, then the contact)
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      try{
+        await navigator.share({files:[file], title:'Attendance'});
+        return;
+      }catch(e){
+        if(e && e.name === 'AbortError') return;   // user cancelled
+      }
+    }
+    // Fallback (desktop): download the CSV and open the chat so it can be attached
+    download(filename, rows);
+    alert('CSV downloaded. WhatsApp will now open - attach the downloaded file (paperclip icon) and send.');
+    window.open('https://wa.me/' + WA_NUMBER, '_blank');
+  });
 
   render();
 })();
