@@ -1,0 +1,69 @@
+// Bump CACHE_VERSION whenever index.html / data.js change to force a refresh.
+const CACHE_VERSION = 'attendance-v4';
+const ASSETS = [
+  './',
+  './index.html',
+  './data.js',
+  './allowedDate.js',
+  './manifest.json',
+  './icons/icon-192.png',
+  './icons/icon-512.png',
+  './icons/maskable-512.png',
+  './icons/apple-touch-icon.png',
+  './icons/favicon-32.png'
+];
+
+self.addEventListener('install', e => {
+  e.waitUntil(
+    caches.open(CACHE_VERSION)
+      // Cache each file separately so one missing file (e.g. a 404 icon) doesn't fail the whole install.
+      .then(c => Promise.allSettled(ASSETS.map(url =>
+        fetch(url, { cache: 'reload' }).then(res => {
+          if (!res.ok) throw new Error(url + ' -> ' + res.status);
+          return c.put(url, res);
+        }).catch(err => console.warn('SW: not cached:', err.message))
+      )))
+      .then(() => self.skipWaiting())
+  );
+});
+
+self.addEventListener('activate', e => {
+  e.waitUntil(
+    caches.keys()
+      .then(keys => Promise.all(keys.filter(k => k !== CACHE_VERSION).map(k => caches.delete(k))))
+      .then(() => self.clients.claim())
+  );
+});
+
+// Stale-while-revalidate: open instantly from cache, refresh cache in background.
+self.addEventListener('fetch', e => {
+  const req = e.request;
+  if (req.method !== 'GET' || new URL(req.url).origin !== location.origin) return;
+
+  // allowedDate.js holds the allowed dates: always try the network first so changes apply immediately.
+  if (new URL(req.url).pathname.endsWith('/allowedDate.js')) {
+    e.respondWith(
+      fetch(req).then(res => {
+        if (res && res.ok) { const copy = res.clone(); caches.open(CACHE_VERSION).then(c => c.put(req, copy)); }
+        return res;
+      }).catch(() => caches.match(req, { ignoreSearch: true }))
+    );
+    return;
+  }
+
+  e.respondWith(
+    caches.open(CACHE_VERSION).then(async cache => {
+      const cached = await cache.match(req, { ignoreSearch: true });
+      const network = fetch(req).then(res => {
+        if (res && res.ok) cache.put(req, res.clone());
+        return res;
+      }).catch(() => null);
+
+      if (cached) { e.waitUntil(network); return cached; }
+      const res = await network;
+      if (res) return res;
+      if (req.mode === 'navigate') return cache.match('./index.html');
+      return new Response('Offline', { status: 503 });
+    })
+  );
+});

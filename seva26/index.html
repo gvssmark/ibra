@@ -2,131 +2,420 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Seva Sponsorship Entries</title>
-<link rel="stylesheet" href="style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Attendance</title>
+<meta name="theme-color" content="#2f5bea">
+<meta name="description" content="Mark attendance offline and export as CSV">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Attendance">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<style>
+  :root{
+    --bg:#f4f6fb; --card:#fff; --text:#1c2333; --muted:#6b7488; --line:#dde2ee;
+    --primary:#2f5bea; --ok:#178a4b; --warn:#b26a00; --err:#c62828;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text)}
+  .wrap{max-width:720px;margin:0 auto;padding:16px}
+  header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+  h1{font-size:1.25rem;margin:0}
+  .counter{background:var(--primary);color:#fff;border-radius:12px;padding:8px 16px;text-align:center;min-width:90px}
+  .counter b{display:block;font-size:1.6rem;line-height:1.1}
+  .counter span{font-size:.7rem;opacity:.9;text-transform:uppercase;letter-spacing:.05em}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:16px}
+  label{display:block;font-size:.8rem;font-weight:600;color:var(--muted);margin:12px 0 4px}
+  label:first-child{margin-top:0}
+  input[type=text],input[type=tel],input[type=number]{
+    width:100%;padding:12px;font-size:1.05rem;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--text)}
+  input:focus{outline:2px solid var(--primary);border-color:var(--primary)}
+  input[readonly]{background:#eef1f8;color:#333}
+  .status{min-height:1.4em;margin-top:8px;font-size:.9rem;font-weight:600}
+  .ok{color:var(--ok)} .warn{color:var(--warn)} .err{color:var(--err)}
+  .btn{border:0;border-radius:10px;padding:12px 18px;font-size:1rem;font-weight:600;cursor:pointer;background:var(--primary);color:#fff}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .btn.sec{background:#e8ecf7;color:var(--text)}
+  .btn.wa{background:#1fa855}
+  [hidden]{display:none!important}
+  .banner{border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:.9rem;font-weight:600}
+  .banner.open{background:#e3f6ea;color:var(--ok)}
+  .banner.closed{background:#fff2d9;color:var(--warn)}
+  select{width:100%;padding:12px;font-size:1rem;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--text)}
+  input:disabled{background:#eef1f8;color:#999}
+  .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .row .btn{flex:1 1 auto}
+  table{width:100%;border-collapse:collapse;font-size:.9rem}
+  th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}
+  th{color:var(--muted);font-size:.75rem;text-transform:uppercase}
+  .tag{font-size:.65rem;background:#fff2d9;color:var(--warn);padding:2px 6px;border-radius:6px;margin-left:6px;vertical-align:middle}
+  .empty{color:var(--muted);text-align:center;padding:16px}
+  .tablewrap{overflow-x:auto}
+  .toolbar{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+  .toolbar input{flex:1}
+</style>
 </head>
 <body>
-
-<div class="app">
-
-  <header class="app-header">
-    <span class="om">ॐ</span>
-    <h1>Seva Sponsorship</h1>
-    <p>Seva Year <span id="sevaYearDisplay"></span></p>
+<div class="wrap">
+  <header>
+    <h1>Attendance</h1>
+    <div class="counter"><b id="count">0</b><span>Present</span></div>
   </header>
 
-  <nav class="tabs">
-    <button class="tab-btn active" data-target="newEntryView">New Entry</button>
-    <button class="tab-btn" data-target="viewEntriesView">View Entries</button>
-  </nav>
+  <div id="banner" class="banner"></div>
 
-  <div id="statusBanner" class="status-banner"></div>
+  <div class="card">
+    <label for="srno">SR No</label>
+    <input id="srno" type="number" inputmode="numeric" placeholder="Enter SR No">
 
-  <main>
+    <label for="name">Name</label>
+    <input id="name" type="text" placeholder="Name" readonly>
 
-    <!-- ============ NEW ENTRY VIEW ============ -->
-    <section id="newEntryView" class="view active">
+    <label for="mobile">Mobile Number</label>
+    <input id="mobile" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit mobile">
 
-      <form id="sevaForm" novalidate>
-        <input type="hidden" id="sevaYearHidden">
+    <div id="status" class="status"></div>
 
-        <div class="field">
-          <label for="sevaDate">Seva Date <span class="req">*</span></label>
-          <input type="date" id="sevaDate" required>
-        </div>
+    <div class="row">
+      <button id="markBtn" class="btn" disabled>Mark Present</button>
+      <button id="clearBtn" class="btn sec" type="button">Clear</button>
+    </div>
+  </div>
 
-        <fieldset class="field-group">
-          <legend>Sponsor</legend>
-          <div class="field">
-            <label for="sponsorName">Sponsor Name <span class="req">*</span></label>
-            <input type="text" id="sponsorName" required>
-          </div>
-          <div class="field">
-            <label for="sponsorMobile">Sponsor Mobile <span class="req">*</span></label>
-            <input type="tel" id="sponsorMobile" inputmode="numeric" maxlength="10" placeholder="10-digit mobile number" required>
-          </div>
-          <div class="field">
-            <label for="sponsorGotra">Sponsor Gotra</label>
-            <input type="text" id="sponsorGotra">
-          </div>
-        </fieldset>
+  <div class="card">
+    <label for="viewSel" style="margin-top:0">Occasion (report / export)</label>
+    <select id="viewSel"></select>
+    <div class="row">
+      <button id="exportBtn" class="btn">Export CSV</button>
+      <button id="waBtn" class="btn wa">Send CSV to WhatsApp</button>
+      <button id="toggleBtn" class="btn sec">Show Report</button>
+    </div>
+  </div>
 
-        <fieldset class="field-group">
-          <legend>Co-Sponsor (optional)</legend>
-          <div class="field">
-            <label for="coSponsorName">Co-Sponsor Name</label>
-            <input type="text" id="coSponsorName">
-          </div>
-          <div class="field">
-            <label for="coSponsorGotra">Co-Sponsor Gotra</label>
-            <input type="text" id="coSponsorGotra">
-          </div>
-        </fieldset>
-
-        <fieldset class="field-group">
-          <legend>Pitru 1</legend>
-          <div class="field">
-            <label for="pitru1Name">Name <span class="req">*</span></label>
-            <input type="text" id="pitru1Name" required>
-          </div>
-          <div class="field">
-            <label for="pitru1Gotra">Gotra</label>
-            <input type="text" id="pitru1Gotra">
-          </div>
-          <div class="field">
-            <label for="pitru1Relation">Relation <span class="req">*</span></label>
-            <select id="pitru1Relation" required></select>
-          </div>
-          <div class="field" id="pitru1OtherWrap" style="display:none;">
-            <label for="pitru1RelationOther">Specify Relation</label>
-            <input type="text" id="pitru1RelationOther">
-          </div>
-        </fieldset>
-
-        <fieldset class="field-group">
-          <legend>Pitru 2 (optional)</legend>
-          <div class="field">
-            <label for="pitru2Name">Name</label>
-            <input type="text" id="pitru2Name">
-          </div>
-          <div class="field">
-            <label for="pitru2Gotra">Gotra</label>
-            <input type="text" id="pitru2Gotra">
-          </div>
-          <div class="field">
-            <label for="pitru2Relation">Relation</label>
-            <select id="pitru2Relation"></select>
-          </div>
-          <div class="field" id="pitru2OtherWrap" style="display:none;">
-            <label for="pitru2RelationOther">Specify Relation</label>
-            <input type="text" id="pitru2RelationOther">
-          </div>
-        </fieldset>
-
-        <div id="formError" class="error-text"></div>
-
-        <button type="submit" id="submitBtn" class="btn-primary">Submit Seva Details</button>
-      </form>
-
-      <div id="reportContainer"></div>
-
-    </section>
-
-    <!-- ============ VIEW ENTRIES ============ -->
-    <section id="viewEntriesView" class="view">
-      <div class="search-box">
-        <span class="icon">&#128269;</span>
-        <input type="text" id="searchInput" placeholder="Search by mobile or sponsor name">
-      </div>
-      <div id="recordsList"></div>
-    </section>
-
-  </main>
-
+  <div class="card" id="reportCard" hidden>
+    <div class="toolbar">
+      <input id="filter" type="text" placeholder="Search marked list (SR No / name)">
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>#</th><th>SR No</th><th>Name</th><th>Mobile</th><th>Time</th></tr></thead>
+        <tbody id="list"></tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
-<script src="parameters.js"></script>
-<script src="app.js"></script>
+<script src="allowedDate.js"></script>
+<script src="data.js"></script>
+<script>
+(function(){
+  const KEY = 'attendance_v1';
+  const MOBILE_RE = /^[6-9]\d{9}$/;
+  const WA_NUMBER = '919989036183';
+
+  // ---------- Local storage ----------
+  // events: { 'YYYY-MM-DD': [{srno,memno,name,mobile,time,isNew}] }   (attendance per occasion)
+  // newMembers: [{srno,name,mobile}]   (members not in data.js)
+  // overrides: { srno: mobile }        (mobile edits for existing members)
+  function ymd(d){ const p=n=>String(n).padStart(2,'0'); return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate()); }
+  let store = load();
+  function load(){
+    try{
+      const s = JSON.parse(localStorage.getItem(KEY));
+      if(s && s.events) return Object.assign({newMembers:[],overrides:{}}, s);
+      if(s && s.records){                       // migrate old single-list format
+        const events = {};
+        s.records.forEach(r=>{ (events[ymd(new Date(r.time))] ||= []).push(r); });
+        return {events, newMembers:s.newMembers||[], overrides:s.overrides||{}};
+      }
+    }catch(e){}
+    return {events:{}, newMembers:[], overrides:{}};
+  }
+  function save(){
+    try{ localStorage.setItem(KEY, JSON.stringify(store)); }
+    catch(e){ alert('Could not save to browser storage: ' + e.message); }
+  }
+
+  // ---------- Occasions (date lock) ----------
+  // allowedDate.js -> array (or a single value / comma-separated string) of ddmmyyyy dates
+  const EVENT_LIST = (function(){
+    const raw = (typeof allowedDate !== 'undefined') ? allowedDate : [];
+    const items = Array.isArray(raw) ? raw : String(raw).split(/[,;\s]+/);
+    const out = [];
+    items.forEach(v=>{
+      const s = String(v ?? '').replace(/\D/g,'').padStart(8,'0');
+      if(s.length !== 8) return;
+      const dd = s.slice(0,2), mm = s.slice(2,4), yyyy = s.slice(4);
+      const d = new Date(+yyyy, +mm-1, +dd);
+      if(d.getFullYear() !== +yyyy || d.getMonth() !== +mm-1 || d.getDate() !== +dd) return;  // invalid date
+      out.push({date: yyyy+'-'+mm+'-'+dd, name: ''});
+    });
+    return out;
+  })();
+  const eventName = d => { const e = EVENT_LIST.find(x=>x.date===d); return e ? e.name : ''; };
+  const fmtDate = d => d.split('-').reverse().join('/');
+  function activeEvent(){ const t = ymd(new Date()); return EVENT_LIST.find(e=>e.date===t) || null; }
+  function nextEvent(){ const t = ymd(new Date()); return EVENT_LIST.filter(e=>e.date>t).sort((a,b)=>a.date<b.date?-1:1)[0] || null; }
+  function activeRecs(){ const e = activeEvent(); return e ? (store.events[e.date] || []) : []; }
+  let viewDate = null;
+  function viewRecs(){ return (viewDate && store.events[viewDate]) || []; }
+
+  // ---------- Member lookup ----------
+  const members = new Map(); // srno -> {srno,memno,name,mobile}
+  (function build(){
+    const rows = (typeof data !== 'undefined' && Array.isArray(data)) ? data.slice(1) : [];
+    rows.forEach(r=>{
+      const srno = String(r[3] ?? '').trim();
+      if(!srno) return;
+      members.set(srno, {srno, memno:r[0] ?? '', name:String(r[1] ?? '').trim(), mobile:cleanMobile(r[2])});
+    });
+    store.newMembers.forEach(m=>{
+      members.set(String(m.srno), {srno:String(m.srno), memno:'', name:m.name, mobile:m.mobile, isNew:true});
+    });
+  })();
+
+  function cleanMobile(v){
+    return String(v ?? '').replace(/\D/g,'').slice(-10);
+  }
+
+  // ---------- Elements ----------
+  const $ = id => document.getElementById(id);
+  const srnoEl=$('srno'), nameEl=$('name'), mobileEl=$('mobile'), statusEl=$('status'),
+        markBtn=$('markBtn'), listEl=$('list'), countEl=$('count'), filterEl=$('filter');
+
+  let current = null;   // matched member or null
+  let isNewEntry = false;
+
+  function setStatus(msg, cls){ statusEl.textContent = msg||''; statusEl.className = 'status ' + (cls||''); }
+
+  function isMarked(srno){ return activeRecs().some(r => r.srno === srno); }
+
+  // ---------- Lookup on input ----------
+  function onSrnoChange(){
+    const srno = srnoEl.value.trim();
+    current = null; isNewEntry = false;
+    if(!srno){
+      nameEl.value=''; mobileEl.value=''; nameEl.readOnly=true; markBtn.disabled=true; setStatus('');
+      return;
+    }
+    const m = members.get(srno);
+    if(m){
+      current = m;
+      nameEl.value = m.name;
+      nameEl.readOnly = true;
+      mobileEl.value = store.overrides[srno] ?? m.mobile;
+      if(isMarked(srno)){
+        setStatus('Already marked present', 'warn');
+        markBtn.disabled = true;
+      }else{
+        setStatus('Member found', 'ok');
+        markBtn.disabled = false;
+      }
+    }else{
+      isNewEntry = true;
+      nameEl.readOnly = false;
+      if(nameEl.dataset.forSr !== srno){ nameEl.value=''; mobileEl.value=''; }
+      nameEl.dataset.forSr = srno;
+      setStatus('SR No not found - enter name & mobile to add as new member', 'warn');
+      markBtn.disabled = false;
+    }
+  }
+
+  // ---------- Mark ----------
+  function mark(){
+    const ev = activeEvent();
+    if(!ev){ applyLock(); setStatus('Attendance is closed - not an allowed date', 'err'); return; }
+    const srno = srnoEl.value.trim();
+    if(!srno) return;
+    const name = nameEl.value.trim();
+    const mobile = cleanMobile(mobileEl.value);
+
+    if(!name){ setStatus('Please enter the name', 'err'); nameEl.focus(); return; }
+    if(mobile && !MOBILE_RE.test(mobile)){ setStatus('Mobile must be 10 digits starting with 6, 7, 8 or 9', 'err'); mobileEl.focus(); return; }
+    if(isMarked(srno)){ setStatus('Already marked present', 'warn'); return; }
+
+    if(isNewEntry){
+      store.newMembers.push({srno, name, mobile});
+      members.set(srno, {srno, memno:'', name, mobile, isNew:true});
+    }else if(mobile !== current.mobile){
+      store.overrides[srno] = mobile;
+    }
+
+    (store.events[ev.date] ||= []).push({
+      srno, memno: isNewEntry ? '' : current.memno, name, mobile,
+      time: new Date().toISOString(), isNew: isNewEntry
+    });
+    save();
+    viewDate = ev.date;
+    refreshSelect();
+    render();
+
+    const msg = name + ' marked present';
+    resetForm();
+    setStatus(msg, 'ok');
+  }
+
+  function resetForm(){
+    srnoEl.value=''; nameEl.value=''; mobileEl.value=''; nameEl.readOnly=true;
+    delete nameEl.dataset.forSr;
+    current=null; isNewEntry=false; markBtn.disabled=true; setStatus('');
+    if(document.activeElement) document.activeElement.blur();
+  }
+
+  // ---------- Render list ----------
+  function fmtTime(iso){
+    const d = new Date(iso);
+    return d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+  }
+  function esc(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+  function render(){
+    const recs = viewRecs();
+    countEl.textContent = recs.length;
+    const q = filterEl.value.trim().toLowerCase();
+    const total = recs.length;
+    const rows = [];
+    for(let i=total-1;i>=0;i--){               // latest first
+      const r = recs[i];
+      if(q && !(r.srno.toLowerCase().includes(q) || r.name.toLowerCase().includes(q))) continue;
+      rows.push(`<tr>
+        <td>${i+1}</td><td>${esc(r.srno)}</td>
+        <td>${esc(r.name)}${r.isNew?'<span class="tag">NEW</span>':''}</td>
+        <td>${esc(r.mobile)}</td><td>${fmtTime(r.time)}</td></tr>`);
+    }
+    listEl.innerHTML = rows.length ? rows.join('') : '<tr><td colspan="5" class="empty">No attendance marked yet</td></tr>';
+  }
+
+  // ---------- CSV export ----------
+  function csvCell(v){
+    const s = String(v ?? '');
+    return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g,'""') + '"' : s;
+  }
+  function download(filename, rows){
+    const csv = '\uFEFF' + rows.map(r=>r.map(csvCell).join(',')).join('\r\n');
+    const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
+  }
+  function stamp(){
+    const d=new Date(), p=n=>String(n).padStart(2,'0');
+    return d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'_'+p(d.getHours())+p(d.getMinutes());
+  }
+
+  function buildRows(){
+    const rows = [['S.No','SRNO','MEMNO','NAME','MOBILE','TIME','NEW_MEMBER']];
+    viewRecs().forEach((r,i)=>{
+      const d = new Date(r.time), p=n=>String(n).padStart(2,'0');
+      const t = `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+      rows.push([i+1, r.srno, r.memno, r.name, r.mobile, t, r.isNew?'Y':'N']);
+    });
+    return rows;
+  }
+
+  $('exportBtn').addEventListener('click', ()=>{
+    if(!viewRecs().length){ alert('No attendance marked for this occasion.'); return; }
+    download('attendance_' + (viewDate||'') + '_' + stamp() + '.csv', buildRows());
+  });
+
+  // ---------- Events ----------
+  srnoEl.addEventListener('input', onSrnoChange);
+  markBtn.addEventListener('click', mark);
+  $('clearBtn').addEventListener('click', resetForm);
+  filterEl.addEventListener('input', render);
+  [srnoEl,nameEl,mobileEl].forEach(el=>el.addEventListener('keydown', e=>{
+    if(e.key==='Enter'){ e.preventDefault(); mark(); }
+  }));
+  mobileEl.addEventListener('input', ()=>{
+    mobileEl.value = mobileEl.value.replace(/\D/g,'').slice(0,10);
+    const v = mobileEl.value;
+    if(v && !/^[6-9]/.test(v)) setStatus('Mobile must start with 6, 7, 8 or 9', 'err');
+    else if(statusEl.classList.contains('err')) setStatus('');
+  });
+
+  // ---------- Show / Hide report ----------
+  const reportCard = $('reportCard'), toggleBtn = $('toggleBtn');
+  toggleBtn.addEventListener('click', ()=>{
+    reportCard.hidden = !reportCard.hidden;
+    toggleBtn.textContent = reportCard.hidden ? 'Show Report' : 'Hide Report';
+    toggleBtn.blur();
+  });
+
+  // ---------- WhatsApp (CSV file only) ----------
+  $('waBtn').addEventListener('click', async ()=>{
+    if(!viewRecs().length){ alert('No attendance marked for this occasion.'); return; }
+    const rows = buildRows();
+    const csv = '\uFEFF' + rows.map(r=>r.map(csvCell).join(',')).join('\r\n');
+    const filename = 'attendance_' + (viewDate||'') + '_' + stamp() + '.csv';
+    const file = new File([csv], filename, {type:'text/csv'});
+
+    // Phones: share the CSV file itself (choose WhatsApp, then the contact)
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      try{
+        await navigator.share({files:[file], title:'Attendance'});
+        return;
+      }catch(e){
+        if(e && e.name === 'AbortError') return;   // user cancelled
+      }
+    }
+    // Fallback (desktop): download the CSV and open the chat so it can be attached
+    download(filename, rows);
+    alert('CSV downloaded. WhatsApp will now open - attach the downloaded file (paperclip icon) and send.');
+    window.open('https://wa.me/' + WA_NUMBER, '_blank');
+  });
+
+  // ---------- Lock / banner / occasion select ----------
+  const bannerEl = $('banner'), viewSel = $('viewSel');
+  const entryEls = [srnoEl, nameEl, mobileEl, markBtn, $('clearBtn')];
+  let lastOpen = null;
+
+  function applyLock(){
+    const ev = activeEvent(), open = !!ev;
+    if(open){
+      bannerEl.className = 'banner open';
+      bannerEl.textContent = 'Attendance open: ' + (ev.name ? ev.name + ' - ' : '') + fmtDate(ev.date);
+    }else{
+      const nx = nextEvent();
+      bannerEl.className = 'banner closed';
+      bannerEl.textContent = 'Attendance closed - today is not an allowed date. ' +
+        (nx ? 'Next: ' + (nx.name ? nx.name + ' - ' : '') + fmtDate(nx.date) : 'No upcoming date in allowedDate.js.');
+    }
+    entryEls.forEach(el => el.disabled = !open);
+    if(open && lastOpen !== true){ markBtn.disabled = true; }
+    if(!open && lastOpen === true){ resetForm(); }
+    if(open && (lastOpen === false || lastOpen === null) && !viewDate) viewDate = ev.date;
+    lastOpen = open;
+  }
+
+  function refreshSelect(){
+    const dates = new Set(Object.keys(store.events));
+    const ev = activeEvent(); if(ev) dates.add(ev.date);
+    const list = [...dates].sort().reverse();
+    if(!viewDate || !dates.has(viewDate)) viewDate = ev ? ev.date : (list[0] || null);
+    viewSel.innerHTML = list.length
+      ? list.map(d=>`<option value="${d}">${fmtDate(d)}${eventName(d)?' - '+esc(eventName(d)):''} (${(store.events[d]||[]).length})</option>`).join('')
+      : '<option value="">No occasions yet</option>';
+    if(viewDate) viewSel.value = viewDate;
+  }
+  viewSel.addEventListener('change', ()=>{ viewDate = viewSel.value || null; render(); });
+
+  applyLock();
+  refreshSelect();
+  render();
+
+  // Re-check the date regularly (app may stay open past midnight) and when returning to the app
+  setInterval(()=>{ applyLock(); refreshSelect(); render(); }, 30000);
+  document.addEventListener('visibilitychange', ()=>{ if(!document.hidden){ applyLock(); refreshSelect(); render(); } });
+})();
+</script>
+<script>
+  if('serviceWorker' in navigator){
+    window.addEventListener('load', ()=>{ navigator.serviceWorker.register('sw.js').catch(()=>{}); });
+  }
+</script>
 </body>
 </html>
