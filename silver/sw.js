@@ -1,9 +1,10 @@
 // Bump CACHE_VERSION whenever index.html / data.js change to force a refresh.
-const CACHE_VERSION = 'attendance-v2';
+const CACHE_VERSION = 'attendance-v4';
 const ASSETS = [
   './',
   './index.html',
   './data.js',
+  './allowedDate.js',
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png',
@@ -38,6 +39,17 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET' || new URL(req.url).origin !== location.origin) return;
+
+  // allowedDate.js holds the allowed dates: always try the network first so changes apply immediately.
+  if (new URL(req.url).pathname.endsWith('/allowedDate.js')) {
+    e.respondWith(
+      fetch(req).then(res => {
+        if (res && res.ok) { const copy = res.clone(); caches.open(CACHE_VERSION).then(c => c.put(req, copy)); }
+        return res;
+      }).catch(() => caches.match(req, { ignoreSearch: true }))
+    );
+    return;
+  }
 
   e.respondWith(
     caches.open(CACHE_VERSION).then(async cache => {

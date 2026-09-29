@@ -40,6 +40,11 @@
   .btn.sec{background:#e8ecf7;color:var(--text)}
   .btn.wa{background:#1fa855}
   [hidden]{display:none!important}
+  .banner{border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:.9rem;font-weight:600}
+  .banner.open{background:#e3f6ea;color:var(--ok)}
+  .banner.closed{background:#fff2d9;color:var(--warn)}
+  select{width:100%;padding:12px;font-size:1rem;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--text)}
+  input:disabled{background:#eef1f8;color:#999}
   .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
   .row .btn{flex:1 1 auto}
   table{width:100%;border-collapse:collapse;font-size:.9rem}
@@ -58,6 +63,8 @@
     <h1>Attendance</h1>
     <div class="counter"><b id="count">0</b><span>Present</span></div>
   </header>
+
+  <div id="banner" class="banner"></div>
 
   <div class="card">
     <label for="srno">SR No</label>
@@ -78,7 +85,9 @@
   </div>
 
   <div class="card">
-    <div class="row" style="margin-top:0">
+    <label for="viewSel" style="margin-top:0">Occasion (report / export)</label>
+    <select id="viewSel"></select>
+    <div class="row">
       <button id="exportBtn" class="btn">Export CSV</button>
       <button id="waBtn" class="btn wa">Send CSV to WhatsApp</button>
       <button id="toggleBtn" class="btn sec">Show Report</button>
@@ -98,6 +107,7 @@
   </div>
 </div>
 
+<script src="allowedDate.js"></script>
 <script src="data.js"></script>
 <script>
 (function(){
@@ -106,21 +116,51 @@
   const WA_NUMBER = '919989036183';
 
   // ---------- Local storage ----------
-  // records: [{srno,memno,name,mobile,time,isNew}]
+  // events: { 'YYYY-MM-DD': [{srno,memno,name,mobile,time,isNew}] }   (attendance per occasion)
   // newMembers: [{srno,name,mobile}]   (members not in data.js)
   // overrides: { srno: mobile }        (mobile edits for existing members)
+  function ymd(d){ const p=n=>String(n).padStart(2,'0'); return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate()); }
   let store = load();
   function load(){
     try{
       const s = JSON.parse(localStorage.getItem(KEY));
-      if(s && s.records) return Object.assign({newMembers:[],overrides:{}}, s);
+      if(s && s.events) return Object.assign({newMembers:[],overrides:{}}, s);
+      if(s && s.records){                       // migrate old single-list format
+        const events = {};
+        s.records.forEach(r=>{ (events[ymd(new Date(r.time))] ||= []).push(r); });
+        return {events, newMembers:s.newMembers||[], overrides:s.overrides||{}};
+      }
     }catch(e){}
-    return {records:[], newMembers:[], overrides:{}};
+    return {events:{}, newMembers:[], overrides:{}};
   }
   function save(){
     try{ localStorage.setItem(KEY, JSON.stringify(store)); }
     catch(e){ alert('Could not save to browser storage: ' + e.message); }
   }
+
+  // ---------- Occasions (date lock) ----------
+  // allowedDate.js -> array (or a single value / comma-separated string) of ddmmyyyy dates
+  const EVENT_LIST = (function(){
+    const raw = (typeof allowedDate !== 'undefined') ? allowedDate : [];
+    const items = Array.isArray(raw) ? raw : String(raw).split(/[,;\s]+/);
+    const out = [];
+    items.forEach(v=>{
+      const s = String(v ?? '').replace(/\D/g,'').padStart(8,'0');
+      if(s.length !== 8) return;
+      const dd = s.slice(0,2), mm = s.slice(2,4), yyyy = s.slice(4);
+      const d = new Date(+yyyy, +mm-1, +dd);
+      if(d.getFullYear() !== +yyyy || d.getMonth() !== +mm-1 || d.getDate() !== +dd) return;  // invalid date
+      out.push({date: yyyy+'-'+mm+'-'+dd, name: ''});
+    });
+    return out;
+  })();
+  const eventName = d => { const e = EVENT_LIST.find(x=>x.date===d); return e ? e.name : ''; };
+  const fmtDate = d => d.split('-').reverse().join('/');
+  function activeEvent(){ const t = ymd(new Date()); return EVENT_LIST.find(e=>e.date===t) || null; }
+  function nextEvent(){ const t = ymd(new Date()); return EVENT_LIST.filter(e=>e.date>t).sort((a,b)=>a.date<b.date?-1:1)[0] || null; }
+  function activeRecs(){ const e = activeEvent(); return e ? (store.events[e.date] || []) : []; }
+  let viewDate = null;
+  function viewRecs(){ return (viewDate && store.events[viewDate]) || []; }
 
   // ---------- Member lookup ----------
   const members = new Map(); // srno -> {srno,memno,name,mobile}
@@ -150,7 +190,7 @@
 
   function setStatus(msg, cls){ statusEl.textContent = msg||''; statusEl.className = 'status ' + (cls||''); }
 
-  function isMarked(srno){ return store.records.some(r => r.srno === srno); }
+  function isMarked(srno){ return activeRecs().some(r => r.srno === srno); }
 
   // ---------- Lookup on input ----------
   function onSrnoChange(){
@@ -185,6 +225,8 @@
 
   // ---------- Mark ----------
   function mark(){
+    const ev = activeEvent();
+    if(!ev){ applyLock(); setStatus('Attendance is closed - not an allowed date', 'err'); return; }
     const srno = srnoEl.value.trim();
     if(!srno) return;
     const name = nameEl.value.trim();
@@ -201,11 +243,13 @@
       store.overrides[srno] = mobile;
     }
 
-    store.records.push({
+    (store.events[ev.date] ||= []).push({
       srno, memno: isNewEntry ? '' : current.memno, name, mobile,
       time: new Date().toISOString(), isNew: isNewEntry
     });
     save();
+    viewDate = ev.date;
+    refreshSelect();
     render();
 
     const msg = name + ' marked present';
@@ -228,12 +272,13 @@
   function esc(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
   function render(){
-    countEl.textContent = store.records.length;
+    const recs = viewRecs();
+    countEl.textContent = recs.length;
     const q = filterEl.value.trim().toLowerCase();
-    const total = store.records.length;
+    const total = recs.length;
     const rows = [];
     for(let i=total-1;i>=0;i--){               // latest first
-      const r = store.records[i];
+      const r = recs[i];
       if(q && !(r.srno.toLowerCase().includes(q) || r.name.toLowerCase().includes(q))) continue;
       rows.push(`<tr>
         <td>${i+1}</td><td>${esc(r.srno)}</td>
@@ -264,7 +309,7 @@
 
   function buildRows(){
     const rows = [['S.No','SRNO','MEMNO','NAME','MOBILE','TIME','NEW_MEMBER']];
-    store.records.forEach((r,i)=>{
+    viewRecs().forEach((r,i)=>{
       const d = new Date(r.time), p=n=>String(n).padStart(2,'0');
       const t = `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
       rows.push([i+1, r.srno, r.memno, r.name, r.mobile, t, r.isNew?'Y':'N']);
@@ -273,8 +318,8 @@
   }
 
   $('exportBtn').addEventListener('click', ()=>{
-    if(!store.records.length){ alert('No attendance marked yet.'); return; }
-    download('attendance_' + stamp() + '.csv', buildRows());
+    if(!viewRecs().length){ alert('No attendance marked for this occasion.'); return; }
+    download('attendance_' + (viewDate||'') + '_' + stamp() + '.csv', buildRows());
   });
 
   // ---------- Events ----------
@@ -302,10 +347,10 @@
 
   // ---------- WhatsApp (CSV file only) ----------
   $('waBtn').addEventListener('click', async ()=>{
-    if(!store.records.length){ alert('No attendance marked yet.'); return; }
+    if(!viewRecs().length){ alert('No attendance marked for this occasion.'); return; }
     const rows = buildRows();
     const csv = '\uFEFF' + rows.map(r=>r.map(csvCell).join(',')).join('\r\n');
-    const filename = 'attendance_' + stamp() + '.csv';
+    const filename = 'attendance_' + (viewDate||'') + '_' + stamp() + '.csv';
     const file = new File([csv], filename, {type:'text/csv'});
 
     // Phones: share the CSV file itself (choose WhatsApp, then the contact)
@@ -323,7 +368,48 @@
     window.open('https://wa.me/' + WA_NUMBER, '_blank');
   });
 
+  // ---------- Lock / banner / occasion select ----------
+  const bannerEl = $('banner'), viewSel = $('viewSel');
+  const entryEls = [srnoEl, nameEl, mobileEl, markBtn, $('clearBtn')];
+  let lastOpen = null;
+
+  function applyLock(){
+    const ev = activeEvent(), open = !!ev;
+    if(open){
+      bannerEl.className = 'banner open';
+      bannerEl.textContent = 'Attendance open: ' + (ev.name ? ev.name + ' - ' : '') + fmtDate(ev.date);
+    }else{
+      const nx = nextEvent();
+      bannerEl.className = 'banner closed';
+      bannerEl.textContent = 'Attendance closed - today is not an allowed date. ' +
+        (nx ? 'Next: ' + (nx.name ? nx.name + ' - ' : '') + fmtDate(nx.date) : 'No upcoming date in allowedDate.js.');
+    }
+    entryEls.forEach(el => el.disabled = !open);
+    if(open && lastOpen !== true){ markBtn.disabled = true; }
+    if(!open && lastOpen === true){ resetForm(); }
+    if(open && (lastOpen === false || lastOpen === null) && !viewDate) viewDate = ev.date;
+    lastOpen = open;
+  }
+
+  function refreshSelect(){
+    const dates = new Set(Object.keys(store.events));
+    const ev = activeEvent(); if(ev) dates.add(ev.date);
+    const list = [...dates].sort().reverse();
+    if(!viewDate || !dates.has(viewDate)) viewDate = ev ? ev.date : (list[0] || null);
+    viewSel.innerHTML = list.length
+      ? list.map(d=>`<option value="${d}">${fmtDate(d)}${eventName(d)?' - '+esc(eventName(d)):''} (${(store.events[d]||[]).length})</option>`).join('')
+      : '<option value="">No occasions yet</option>';
+    if(viewDate) viewSel.value = viewDate;
+  }
+  viewSel.addEventListener('change', ()=>{ viewDate = viewSel.value || null; render(); });
+
+  applyLock();
+  refreshSelect();
   render();
+
+  // Re-check the date regularly (app may stay open past midnight) and when returning to the app
+  setInterval(()=>{ applyLock(); refreshSelect(); render(); }, 30000);
+  document.addEventListener('visibilitychange', ()=>{ if(!document.hidden){ applyLock(); refreshSelect(); render(); } });
 })();
 </script>
 <script>
