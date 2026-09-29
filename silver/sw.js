@@ -1,5 +1,5 @@
 // Bump CACHE_VERSION whenever index.html / data.js change to force a refresh.
-const CACHE_VERSION = 'attendance-v1';
+const CACHE_VERSION = 'attendance-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -14,7 +14,15 @@ const ASSETS = [
 
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(CACHE_VERSION).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting())
+    caches.open(CACHE_VERSION)
+      // Cache each file separately so one missing file (e.g. a 404 icon) doesn't fail the whole install.
+      .then(c => Promise.allSettled(ASSETS.map(url =>
+        fetch(url, { cache: 'reload' }).then(res => {
+          if (!res.ok) throw new Error(url + ' -> ' + res.status);
+          return c.put(url, res);
+        }).catch(err => console.warn('SW: not cached:', err.message))
+      )))
+      .then(() => self.skipWaiting())
   );
 });
 
