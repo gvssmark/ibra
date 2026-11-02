@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1f5fbf">
 <title>IBA Group Medical Insurance – Retirees 2026-27</title>
 <style>
   :root {
@@ -92,15 +93,79 @@
     padding: 10px 18px; border-top: 1px solid var(--border); }
   .modal footer .pos { color: var(--muted); font-size: .82rem; }
 
+  html { -webkit-text-size-adjust: 100%; }
+  body { -webkit-tap-highlight-color: transparent; padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); }
+  .modal .body { overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+  .toggle, .msort, .handle { display: none; }
+  .toggle .badge { display: inline-block; min-width: 18px; padding: 0 5px; margin-left: 6px; border-radius: 9px;
+    background: var(--accent); color: #fff; font-size: .75rem; line-height: 18px; text-align: center; }
+  .toggle .badge:empty { display: none; }
+  .extra { display: contents; }
+
+  @media (min-width: 761px) {
+    .f-id { order: 1; } .f-name { order: 2; } .f-spouse { order: 3; } .f-cover { order: 4; } #clear { order: 5; }
+  }
+
+  /* ---------- Tablet / phone ---------- */
   @media (max-width: 760px) {
-    .filters { grid-template-columns: 1fr 1fr; }
-    .filters .f-name, .filters .f-spouse { grid-column: span 2; }
-    th, td { padding: 9px 8px; }
+    .wrap { padding: 12px 12px 0; }
+    h1 { font-size: 1.05rem; }
+    .field input, .field select, .msort select { font-size: 16px; }   /* stops iOS zoom-on-focus */
+    .field input, .field select, .btn { min-height: 44px; }
+    .filters { grid-template-columns: 1fr auto; gap: 8px; }
+    .toggle { display: inline-flex; align-items: center; }
+    .extra { display: none; grid-column: 1 / -1; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .extra.open { display: grid; }
+    .extra .f-spouse, .extra #clear { grid-column: 1 / -1; }
+    .filters .field label { display: none; }
+    .extra.open .field label { display: block; }
+    th, td { padding: 10px 8px; }
     dl { grid-template-columns: 112px 1fr; }
   }
+
+  /* ---------- Phone: rows become cards ---------- */
+  @media (max-width: 640px) {
+    .meta { margin: 8px 2px; }
+    .meta label.ps { display: none; }
+    .msort { display: inline-flex; align-items: center; gap: 6px; }
+    .msort select { font: inherit; font-size: 16px; color: var(--text); background: var(--surface);
+      border: 1px solid var(--border); border-radius: 8px; padding: 6px 8px; min-height: 40px; }
+
+    .table-box { background: transparent; border: 0; overflow: visible; border-radius: 0; }
+    table, tbody { display: block; }
+    thead { display: none; }
+    tbody tr[data-i] {
+      display: grid; grid-template-columns: auto 1fr; grid-template-areas: "name name" "id sp";
+      column-gap: 14px; row-gap: 3px; padding: 12px 14px; margin-bottom: 8px; min-height: 44px;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    }
+    tbody tr[data-i]:hover { background: var(--surface); }
+    tbody tr[data-i]:active { background: var(--row-hover); }
+    tbody tr[data-i] td { display: block; border: 0; padding: 0; min-width: 0; }
+    td:nth-child(2) { grid-area: name; font-weight: 600; font-size: 1rem; }
+    td.id { grid-area: id; width: auto; font-size: .85rem; color: var(--muted); }
+    td:nth-child(3) { grid-area: sp; font-size: .85rem; color: var(--muted); overflow-wrap: anywhere; }
+    td.id::before { content: "ID "; }
+    td:nth-child(3)::before { content: "Spouse: "; }
+    tbody tr:not([data-i]) td { display: block; }
+
+    .pager { position: sticky; bottom: 0; z-index: 5; margin: 0 -12px; padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
+      background: var(--bg); border-top: 1px solid var(--border); gap: 6px; flex-wrap: nowrap; }
+    .pager .btn { padding: 8px 12px; }
+    .pager .info { min-width: 0; flex: 1; font-size: .8rem; }
+  }
+
+  /* ---------- Small phone: modal becomes a bottom sheet ---------- */
   @media (max-width: 480px) {
     .overlay { padding: 0; align-items: flex-end; }
-    .modal { max-width: none; max-height: 94vh; border-radius: 16px 16px 0 0; }
+    .modal { max-width: none; max-height: 92vh; max-height: 92dvh; border-radius: 18px 18px 0 0; }
+    .handle { display: block; width: 40px; height: 4px; border-radius: 2px; background: var(--border); margin: 8px auto 0; }
+    .modal header { padding: 10px 16px 10px; }
+    .modal .body { padding: 4px 16px 12px; }
+    .modal footer { padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); }
+    .modal footer .btn { min-height: 44px; }
+    .x { font-size: 2rem; min-width: 44px; min-height: 44px; }
+    dl { grid-template-columns: 100px 1fr; }
   }
 </style>
 </head>
@@ -110,17 +175,28 @@
   <p class="sub">List of retirees who paid the insurance premium in Oct'26 &middot; tap a row for full details</p>
 
   <div class="filters">
-    <div class="field"><label for="fId">Employee ID</label><input id="fId" type="search" inputmode="search" autocomplete="off" placeholder="e.g. 7001"></div>
-    <div class="field f-name"><label for="fName">Name</label><input id="fName" type="search" autocomplete="off" placeholder="Search name"></div>
-    <div class="field f-spouse"><label for="fSpouse">Spouse name</label><input id="fSpouse" type="search" autocomplete="off" placeholder="Search spouse name"></div>
-    <div class="field"><label for="fCover">Cover type</label>
-      <select id="fCover"><option value="">All</option></select></div>
-    <button class="btn" id="clear" type="button">Clear</button>
+    <div class="field f-name"><label for="fName">Name</label><input id="fName" type="search" enterkeyhint="search" autocomplete="off" autocapitalize="off" placeholder="Search name"></div>
+    <button class="btn toggle" id="toggleFilters" type="button" aria-expanded="false" aria-controls="extra">Filters<span class="badge" id="badge"></span></button>
+    <div class="extra" id="extra">
+      <div class="field f-id"><label for="fId">Employee ID</label><input id="fId" type="search" inputmode="search" enterkeyhint="search" autocomplete="off" placeholder="e.g. 7001"></div>
+      <div class="field f-cover"><label for="fCover">Cover type</label>
+        <select id="fCover"><option value="">All</option></select></div>
+      <div class="field f-spouse"><label for="fSpouse">Spouse name</label><input id="fSpouse" type="search" enterkeyhint="search" autocomplete="off" autocapitalize="off" placeholder="Search spouse name"></div>
+      <button class="btn" id="clear" type="button">Clear all</button>
+    </div>
   </div>
 
   <div class="meta">
     <span id="count"></span>
-    <label>Rows per page
+    <label class="msort">Sort
+      <select id="mSort">
+        <option value="">Original order</option>
+        <option value="id:1">ID (low to high)</option><option value="id:-1">ID (high to low)</option>
+        <option value="name:1">Name A&ndash;Z</option><option value="name:-1">Name Z&ndash;A</option>
+        <option value="spouseName:1">Spouse A&ndash;Z</option><option value="spouseName:-1">Spouse Z&ndash;A</option>
+      </select>
+    </label>
+    <label class="ps">Rows per page
       <select id="pageSize"><option>25</option><option selected>50</option><option>100</option><option>250</option></select>
     </label>
   </div>
@@ -147,6 +223,7 @@
 
 <div class="overlay" id="overlay" aria-hidden="true">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <div class="handle" aria-hidden="true"></div>
     <header>
       <div>
         <h2 id="mTitle"></h2>
@@ -234,6 +311,8 @@
       });
     }
     page = 1;
+    var active = (fId.value.trim() ? 1 : 0) + (fSpouse.value.trim() ? 1 : 0) + (fCover.value ? 1 : 0);
+    $("badge").textContent = active ? active : "";
     render();
   }
 
@@ -265,6 +344,7 @@
     $("first").disabled = $("prev").disabled = page <= 1;
     $("next").disabled = $("last").disabled = page >= pages;
 
+    $("mSort").value = sortKey ? sortKey + ":" + sortDir : "";
     document.querySelectorAll("th[data-k]").forEach(function (th) {
       var on = th.dataset.k === sortKey;
       th.querySelector(".arrow").textContent = on ? (sortDir === 1 ? "\u25B2" : "\u25BC") : "";
@@ -340,10 +420,42 @@
   });
 
   $("pageSize").addEventListener("change", function () { pageSize = +this.value; page = 1; render(); });
-  $("first").addEventListener("click", function () { page = 1; render(); });
-  $("prev").addEventListener("click", function () { page--; render(); });
-  $("next").addEventListener("click", function () { page++; render(); });
-  $("last").addEventListener("click", function () { page = Math.ceil(view.length / pageSize); render(); });
+  function toTop() {
+    var y = document.querySelector(".table-box").getBoundingClientRect().top + window.pageYOffset - 70;
+    window.scrollTo(0, Math.max(0, y));
+  }
+  $("first").addEventListener("click", function () { page = 1; render(); toTop(); });
+  $("prev").addEventListener("click", function () { page--; render(); toTop(); });
+  $("next").addEventListener("click", function () { page++; render(); toTop(); });
+  $("last").addEventListener("click", function () { page = Math.ceil(view.length / pageSize); render(); toTop(); });
+
+  // collapsible filters (phones)
+  $("toggleFilters").addEventListener("click", function () {
+    var open = $("extra").classList.toggle("open");
+    this.setAttribute("aria-expanded", open);
+  });
+  // mobile sort dropdown
+  $("mSort").addEventListener("change", function () {
+    if (!this.value) { sortKey = null; sortDir = 1; }
+    else { var p = this.value.split(":"); sortKey = p[0]; sortDir = +p[1]; }
+    applyFilters();
+  });
+  // Enter closes the on-screen keyboard so results are visible
+  [fId, fName, fSpouse].forEach(function (el) {
+    el.addEventListener("keydown", function (e) { if (e.key === "Enter") el.blur(); });
+  });
+
+  // swipe inside the modal: left/right = next/previous, down on the header = close
+  var tx = 0, ty = 0, fromHeader = false;
+  $("overlay").addEventListener("touchstart", function (e) {
+    var t = e.changedTouches[0]; tx = t.clientX; ty = t.clientY;
+    fromHeader = !!e.target.closest(".handle, header");
+  }, { passive: true });
+  $("overlay").addEventListener("touchend", function (e) {
+    var t = e.changedTouches[0], dx = t.clientX - tx, dy = t.clientY - ty;
+    if (fromHeader && dy > 80 && Math.abs(dx) < 60) { closeModal(); return; }
+    if (Math.abs(dx) > 70 && Math.abs(dy) < 45) openModal(modalIndex + (dx < 0 ? 1 : -1));
+  }, { passive: true });
 
   function sortBy(th) {
     var k = th.dataset.k;
